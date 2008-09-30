@@ -20,5 +20,6 @@ public class GroupByDatasourceTest extends TestCase {
         for (int i = 0; i < hits.getHits().length; i++) {
             assertEquals(193, hits.getHits()[i].getGroupTotalHitLength());
         }
+
     }
 }

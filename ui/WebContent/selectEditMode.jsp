@@ -21,17 +21,7 @@
 				</form>
 			</td>
 			<td>
-				<form method="post" action="<%=response.encodeURL("selectWorkingFolder.jsp")%>">
-					<input type="button" name="back" value="Zur&#x00FC;ck" onclick="history.back()"/>
-				</form>
-			</td>
-			<td>
-				<form method="post" action="<%=response.encodeURL("selectWorkingFolder.jsp")%>">
-					<input type="button" name="cancel" value="Abbrechen" onclick="window.location.href='<%=response.encodeURL("../step1/index.jsp")%>'"/>
-				</form>							
-			</td>
-			<td>
-				<form method="post" action="<%=response.encodeURL("save.jsp?mode=reindex")%>">
+				<form method="post" action="<%=response.encodeURL("scheduling.jsp")%>">
 					<input type="submit" value="Nur Zeitsteuerung bearbeiten / sofortige Neuindizierung"/>
 				</form>
 			</td>

@@ -2,29 +2,23 @@
 
 <project xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance.xsd" xsi:noNamespaceSchemaLocation="http://maven.apache.org/xsd/maven-project-3.0.0.xsd">
   <pomVersion>3</pomVersion>
-  <artifactId>start-ingrid-iplug-dsc</artifactId>
-  <name>start-ingrid-iplug-dsc</name>
+  <artifactId>ingrid-iplug-csw-dsc-distribution</artifactId>
+  <name>ingrid-iplug-csw-dsc-distribution</name>
   <groupId>ingrid</groupId>
-  <currentVersion>1.1.7</currentVersion>
+  <currentVersion>1.1.0</currentVersion>
   <repository>
-    <connection>scm:svn:https://127.0.0.1:444/svn/ingrid/start-ingrid-iplug-dsc/trunk</connection>
+    <connection>scm:svn:https://127.0.0.1:444/svn/ingrid/ingrid-iplug-csw-dsc/trunk/distribution</connection>
   </repository>
   <dependencies>
     <dependency>
       <groupId>ingrid</groupId>
-      <artifactId>ingrid-iplug-dsc</artifactId>
+      <artifactId>ingrid-iplug-csw-dsc</artifactId>
       <version>1.1.0-SNAPSHOT</version>
       <type>jar</type>
     </dependency>
     <dependency>
       <groupId>ingrid</groupId>
-      <artifactId>ingrid-iplug-admin-step1</artifactId>
-      <version>1.1.0-SNAPSHOT</version>
-      <type>war</type>
-    </dependency>
-    <dependency>
-      <groupId>ingrid</groupId>
-      <artifactId>ingrid-iplug-admin-step2-dsc</artifactId>
+      <artifactId>ingrid-iplug-csw-dsc-ui</artifactId>
       <version>1.1.0-SNAPSHOT</version>
       <type>war</type>
     </dependency>
@@ -156,56 +150,4 @@
       <version>1.3</version>
     </dependency>
   </dependencies>
-  <versions>
-    <version>
-      <id>1.0.0</id>
-      <name>1.0.0</name>
-      <tag>1.0.0</tag>
-    </version>
-    <version>
-      <id>1.1.0</id>
-      <name>1.1.0</name>
-      <tag>1.1.0</tag>
-    </version>
-    <version>
-      <id>1.1.1</id>
-      <name>1.1.1</name>
-      <tag>1.1.1</tag>
-    </version>
-    <version>
-      <id>1.1.2</id>
-      <name>1.1.2</name>
-      <tag>1.1.2</tag>
-    </version>
-    <version>
-      <id>1.1.3</id>
-      <name>1.1.3</name>
-      <tag>1.1.3</tag>
-    </version>
-    <version>
-      <id>1.1.4</id>
-      <name>1.1.4</name>
-      <tag>1.1.4</tag>
-    </version>
-    <version>
-      <id>1.1.5-alpha</id>
-      <name>1.1.5-alpha</name>
-      <tag>1.1.5-alpha</tag>
-    </version>
-    <version>
-      <id>1.1.5</id>
-      <name>1.1.5</name>
-      <tag>1.1.5</tag>
-    </version>
-    <version>
-      <id>1.1.6</id>
-      <name>1.1.6</name>
-      <tag>1.1.6</tag>
-    </version>
-    <version>
-      <id>1.1.7</id>
-      <name>1.1.7</name>
-      <tag>1.1.7</tag>
-    </version>
-  </versions>
 </project>
