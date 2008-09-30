@@ -1,0 +1,36 @@
+<project xmlns:deploy="deploy" xmlns:ant="jelly:ant">
+    
+    <goal name="bundle">
+	    <mkdir dir="${maven.build.dir}/${pom.artifactId}-${pom.currentVersion}" />
+		<mkdir dir="${maven.build.dir}/${pom.artifactId}-${pom.currentVersion}/lib" />
+		<mkdir dir="${maven.build.dir}/${pom.artifactId}-${pom.currentVersion}/conf" />
+		<mkdir dir="${maven.build.dir}/${pom.artifactId}-${pom.currentVersion}/udk_presets" />
+		<mkdir dir="${maven.build.dir}/${pom.artifactId}-${pom.currentVersion}/webapp" />
+		<mkdir dir="${maven.build.dir}/${pom.artifactId}-${pom.currentVersion}/webapp/step1" />
+		<mkdir dir="${maven.build.dir}/${pom.artifactId}-${pom.currentVersion}/webapp/step2" />
+		<!-- copy the shell script -->
+		<copy todir="${maven.build.dir}/${pom.artifactId}-${pom.currentVersion}/">
+		   <fileset dir="${basedir}/src/scripts" />
+  		</copy>
+        <!-- copy the conf -->
+        <copy todir="${maven.build.dir}/${pom.artifactId}-${pom.currentVersion}/conf">
+		    <fileset dir="${basedir}/conf" />
+  		</copy>
+        <!-- copy the udk_presets -->
+        <copy todir="${maven.build.dir}/${pom.artifactId}-${pom.currentVersion}/udk_presets">
+		    <fileset dir="${basedir}/udk_presets" />
+  		</copy>
+  		<!-- copy the dependencies -->
+        <deploy:copy-deps todir="${maven.build.dir}/${pom.artifactId}-${pom.currentVersion}/lib" excludes="ingrid-iplug-admin-step1,ingrid-iplug-admin-step2-dsc"/>
+        <ant:unzip src="${maven.repo.local}/ingrid/wars/ingrid-iplug-admin-step1-1.1.0-SNAPSHOT.war" dest="${maven.build.dir}/${pom.artifactId}-${pom.currentVersion}/webapp/step1"/>
+        <ant:unzip src="${maven.repo.local}/ingrid/wars/ingrid-iplug-admin-step2-dsc-1.1.0-SNAPSHOT.war" dest="${maven.build.dir}/${pom.artifactId}-${pom.currentVersion}/webapp/step2"/>
+    </goal>
+    
+    <goal name="deploy-bundle">
+	    <attainGoal name="bundle" />
+        <mkdir dir="/srv/www/htdocs/ingrid/maven/ingrid/dist/${pom.currentVersion}" />
+    	<tar tarfile="${maven.build.dir}/${pom.artifactId}-${pom.currentVersion}.tar" basedir="${maven.build.dir}/${pom.artifactId}-${pom.currentVersion}"/>
+    	<copy file="${maven.build.dir}/${pom.artifactId}-${pom.currentVersion}.tar" todir="/srv/www/htdocs/ingrid/maven/ingrid/dist/${pom.currentVersion}"/>
+    	<copy file="${basedir}/CHANGES-DSC.TXT" todir="/srv/www/htdocs/ingrid/maven/ingrid/dist/"/>
+    </goal>
+</project>
