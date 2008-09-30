@@ -18,10 +18,5 @@ if (null == description) {
     serializer.serialize(description,pd_file);
 }
 
-String mode = WebUtil.getParameter(request, "mode", "editall");
-if(mode.equals("editall")){
-	response.sendRedirect(response.encodeRedirectURL("/step2/index.jsp?mode=editall"));
-}else{
-	response.sendRedirect(response.encodeRedirectURL("/step2/index.jsp?mode=reindex"));
-}
+response.sendRedirect(response.encodeRedirectURL("/step1/index.jsp"));
 %>
