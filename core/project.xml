@@ -1,0 +1,170 @@
+<?xml version="1.0" encoding="utf-8"?>
+<project xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance.xsd" xsi:noNamespaceSchemaLocation="http://maven.apache.org/xsd/maven-project-3.0.0.xsd">
+    <pomVersion>3</pomVersion>
+    <artifactId>ingrid-iplug-dsc</artifactId>
+    <name>ingrid-iplug-dsc</name>
+    <groupId>ingrid</groupId>
+    <currentVersion>1.1.0-SNAPSHOT</currentVersion>
+    <inceptionYear>2005</inceptionYear>
+    <logo>/images/logo.gif</logo>
+    <mailingLists>
+        <mailingList>
+            <name>${pom.name} Dev List</name>
+        </mailingList>
+        <mailingList>
+            <name>${pom.name} User List</name>
+        </mailingList>
+    </mailingLists>
+    <developers>
+        <developer>
+            <id>sg</id>
+            <name>Sefan Groschupf</name>
+            <email>sg(at)media-style.com</email>
+            <organization>media style GmbH</organization>
+            <organizationUrl>http://www.media-style.com</organizationUrl>
+            <roles>
+                <role>project leader</role>
+                <role>developer</role>
+            </roles>
+        </developer>
+        <developer>
+            <id>fh</id>
+            <name>Frank Henze</name>
+            <email>fh(at)media-style.com</email>
+            <organization>media style GmbH</organization>
+            <organizationUrl>http://www.media-style.com</organizationUrl>
+            <roles>
+                <role>project leader</role>
+                <role>developer</role>
+            </roles>
+        </developer>
+        <developer>
+            <id>mb</id>
+            <name>Marko Bauhardt</name>
+            <email>mb(at)media-style.com</email>
+            <organization>media style GmbH</organization>
+            <organizationUrl>http://www.media-style.com</organizationUrl>
+            <roles>
+                <role>developer</role>
+            </roles>
+        </developer>
+        <developer>
+            <id>ms</id>
+            <name>Martin Schaaf</name>
+            <email>ms(at)media(stripe)style(dot)com</email>
+            <organization>media style GmbH</organization>
+            <organizationUrl>http://www.media-style.com</organizationUrl>
+            <roles>
+                <role>developer</role>
+            </roles>
+        </developer>
+    </developers>
+    <shortDescription>todo short description</shortDescription>
+    <issueTrackingUrl>http://jira.media-style.com/browse/INGRID</issueTrackingUrl>
+    <siteAddress>http://213.144.28.209/ingrid/ingrid-iplug-dsc</siteAddress>
+    <siteDirectory>/srv/www/htdocs/ingrid/ingrid-iplug-dsc</siteDirectory>
+    <repository>
+        <connection>scm:svn:https://127.0.0.1:444/svn/ingrid/ingrid-iplug-dsc/trunk</connection>
+    </repository>
+    <dependencies>
+        <dependency>
+            <groupId>ingrid</groupId>
+            <artifactId>ingrid-iplug</artifactId>
+            <version>1.1.0-SNAPSHOT</version>
+            <type>jar</type>
+        </dependency>
+        <dependency>
+            <groupId>hsqldb</groupId>
+            <artifactId>hsqldb</artifactId>
+            <version>1.8.0.1</version>
+            <type>jar</type>
+        </dependency>
+        <dependency>
+            <groupId>mysql</groupId>
+            <artifactId>mysql-connector-java</artifactId>
+            <version>3.0.10</version>
+            <type>jar</type>
+            <properties>
+		      <war.bundle>true</war.bundle>
+		    </properties>
+        </dependency>
+        <dependency>
+            <groupId>hsqldb</groupId>
+            <artifactId>hsqldb</artifactId>
+            <version>1.8.0.2</version>
+            <type>jar</type>
+            <properties>
+		      <war.bundle>true</war.bundle>
+		    </properties>
+        </dependency>
+        <dependency>
+            <groupId>ingrid</groupId>
+            <artifactId>ingrid-utils</artifactId>
+            <version>1.1.0-SNAPSHOT</version>
+            <type>jar</type>
+        </dependency>
+        <dependency>
+            <groupId>lucene</groupId>
+            <artifactId>lucene</artifactId>
+            <version>1.4.3</version>
+            <type>jar</type>
+        </dependency>
+        <dependency>
+            <groupId>commons-logging</groupId>
+            <artifactId>commons-logging</artifactId>
+            <version>1.0.2</version>
+            <type>jar</type>
+            <url>http://jakarta.apache.org/commons/logging/</url>
+        </dependency>
+        <dependency>
+            <groupId>quartz</groupId>
+            <artifactId>quartz</artifactId>
+            <version>1.5.0</version>
+            <type>jar</type>
+        </dependency>
+        <dependency>
+            <groupId>xpp3</groupId>
+            <artifactId>xpp3</artifactId>
+            <version>1.1.2a</version>
+            <type>jar</type>
+        </dependency>
+        <dependency>
+            <groupId>xstream</groupId>
+            <artifactId>xstream</artifactId>
+            <version>1.1.2</version>
+            <type>jar</type>
+        </dependency>
+    </dependencies>
+    <build>
+        <sourceDirectory>src/java</sourceDirectory>
+        <unitTestSourceDirectory>src/test</unitTestSourceDirectory>
+        <unitTest>
+            <includes>
+                <include>**/*Test.java</include>
+            </includes>
+        </unitTest>
+        <resources>
+            <resource>
+                <directory>src/conf</directory>
+                <filtering>false</filtering>
+            </resource>
+        </resources>
+    </build>
+    <reports>
+        <report>maven-junit-report-plugin</report>
+        <report>maven-jcoverage-plugin</report>
+        <report>maven-simian-plugin</report>
+        <report>maven-javadoc-plugin</report>
+        <report>maven-pmd-plugin</report>
+        <report>maven-changes-plugin</report>
+        <report>maven-developer-activity-plugin</report>
+        <report>maven-file-activity-plugin</report>
+        <report>maven-jdepend-plugin</report>
+        <report>maven-tasklist-plugin</report>
+        <report>maven-license-plugin</report>
+        <report>maven-checkstyle-plugin</report>
+        <report>maven-jxr-plugin</report>
+        <report>maven-changelog-plugin</report>
+    </reports>
+</project>
+
