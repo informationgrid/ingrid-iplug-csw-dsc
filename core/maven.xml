@@ -6,7 +6,5 @@
 <project xmlns:j="jelly:core"
          xmlns:deploy="deploy">
          
-         &maven1;
-         &maven2;
          
 </project>
