@@ -19,7 +19,7 @@ if(action.equals("save")){
 	if(description.getBusUrls().length < 1){
 		error = "noIbusAdded";
 	}else{
-		response.sendRedirect(response.encodeRedirectURL("save.jsp"));
+		response.sendRedirect(response.encodeRedirectURL("cswInfos.jsp"));
 	}
 }
 %>

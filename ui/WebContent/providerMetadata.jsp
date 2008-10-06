@@ -213,6 +213,7 @@ if (!WebUtil.getParameter(request, "organisationAbbr", "").equals("")
 	
 	// generate this dynamic
 	description.setPlugId(plugId);
+	description.setIPlugClass("de.ingrid.iplug.csw.dsc.index.DSCSearcher");
 	response.sendRedirect(response.encodeRedirectURL("addPartner.jsp"));
 }
 %>

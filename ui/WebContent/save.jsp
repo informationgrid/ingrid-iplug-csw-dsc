@@ -18,5 +18,5 @@ if (null == description) {
     serializer.serialize(description,pd_file);
 }
 
-response.sendRedirect(response.encodeRedirectURL("/step1/index.jsp"));
+response.sendRedirect(response.encodeRedirectURL("finish.jsp"));
 %>

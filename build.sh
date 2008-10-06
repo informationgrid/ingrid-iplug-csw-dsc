@@ -7,6 +7,6 @@ cd ../ui
 maven clean:clean war:install
 
 cd ../distribution
-maven clean:clean bundle
+maven clean:clean bundle -o
 
 cd ..
