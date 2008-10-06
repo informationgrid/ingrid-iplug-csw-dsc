@@ -1,5 +1,8 @@
 set -e
 
+# this file is used on the ingrid build server, set javaHome to hard coded value
+export JAVA_HOME=/opt/jdk1.5.0_11
+
 cd core
 maven clean:clean jar:deploy
 
