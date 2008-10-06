@@ -6,6 +6,7 @@ package de.ingrid.iplug.csw.dsc.index;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 
 import org.apache.lucene.document.Document;
@@ -29,7 +30,7 @@ public class DSCSearcher extends AbstractSearcher {
 
 	private PlugDescription fPlugDescription;
 
-	private List<IIngridHitEnrichment> _enrichmentCollection;
+	private List<IIngridHitEnrichment> _enrichmentCollection = new ArrayList<IIngridHitEnrichment>();
 
 	/**
 	 * Initilaizes the DSC searcher variant.
