@@ -13,8 +13,10 @@ import org.apache.lucene.document.Document;
 import org.apache.lucene.search.IndexSearcher;
 
 import de.ingrid.iplug.scheduler.SchedulingService;
+import de.ingrid.utils.IIngridHitEnrichment;
 import de.ingrid.utils.IngridHit;
 import de.ingrid.utils.IngridHits;
+import de.ingrid.utils.IngridHitsEnrichmentFactory;
 import de.ingrid.utils.PlugDescription;
 import de.ingrid.utils.dsc.Record;
 import de.ingrid.utils.query.IngridQuery;
@@ -57,8 +59,9 @@ public class DSCSearcher extends AbstractSearcher {
 		this.fDetailer = new RecordLoader();
 		this.fScheduler = new SchedulingService(new File(plugDescription
 				.getWorkinDirectory(), "jobstore"));
-		_enrichmentCollection = new IngridHitsEnrichmentFactory()
-				.getIngridHitsEnrichmentCollection();
+		IngridHitsEnrichmentFactory factory = new IngridHitsEnrichmentFactory();
+		factory.register(new CswDscIdentifierEnrichment());
+		_enrichmentCollection = factory.getIngridHitsEnrichmentCollection();
 	}
 
 	public IngridHits search(IngridQuery query, int start, int length)
