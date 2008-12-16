@@ -4,20 +4,30 @@
 
 package de.ingrid.iplug.csw.dsc.cswclient.impl;
 
+import java.net.URL;
+import java.net.URLClassLoader;
 import java.util.List;
 
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.w3c.dom.Document;
 
 import de.ingrid.iplug.csw.dsc.cswclient.CSWCapabilities;
 import de.ingrid.iplug.csw.dsc.cswclient.CSWClient;
 import de.ingrid.iplug.csw.dsc.cswclient.CSWClientFactory;
 import de.ingrid.iplug.csw.dsc.cswclient.CSWDomain;
+import de.ingrid.iplug.csw.dsc.cswclient.CSWQuery;
 import de.ingrid.iplug.csw.dsc.cswclient.CSWRecord;
 import de.ingrid.iplug.csw.dsc.cswclient.CSWRecordDescription;
+import de.ingrid.iplug.csw.dsc.cswclient.constants.ElementSetName;
+import de.ingrid.iplug.csw.dsc.cswclient.constants.ResultType;
+import de.ingrid.iplug.csw.dsc.index.AbstractSearcher;
 
 public class GenericClient implements CSWClient {
 
-	private CSWClientFactory factory;
+	final protected static Log log = LogFactory.getLog(GenericClient.class);
+	
+	protected CSWClientFactory factory;
 
 	@Override
 	public void configure(CSWClientFactory factory) {
@@ -40,21 +50,34 @@ public class GenericClient implements CSWClient {
 
 	@Override
 	public CSWRecordDescription describeRecord() throws Exception {
-		return null;
+		throw new UnsupportedOperationException("Not implemented yet.");
 	}
 
 	@Override
 	public CSWDomain getDomain() throws Exception {
-		return null;
+		throw new UnsupportedOperationException("Not implemented yet.");
 	}
 
 	@Override
-	public List<CSWRecord> getRecords() throws Exception {
-		return null;
+	public List<CSWRecord> getRecords(Document filter, ResultType resultType, 
+			ElementSetName elementSetName) throws Exception {
+		log.debug("getRecords");
+		if (factory != null) {
+			CSWQuery query = factory.createQuery();
+			query.setFilter(filter);
+			query.setResultType(resultType);
+			query.setElementSetName(elementSetName);
+			
+			String serviceUrl = factory.getConfigurationValue("serviceUrl");
+			Document recordDoc = factory.createRequest().doGetRecords(serviceUrl, query);
+			return null;
+		}
+		else
+			throw new RuntimeException("CSWClient is not configured properly. Make sure to call CSWClient.configure.");
 	}
 
 	@Override
-	public CSWRecord getRecordById() throws Exception {
+	public CSWRecord getRecordById(String id) throws Exception {
 		return null;
 	}
 }

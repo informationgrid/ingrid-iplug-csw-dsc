@@ -13,7 +13,7 @@ public class AllTests {
 		TestSuite suite = new TestSuite("Test for de.ingrid.iplug.csw.dsc.cswclient");
 		//$JUnit-BEGIN$
 		suite.addTestSuite(CSWClientFactoryTest.class);
-		suite.addTestSuite(CSWClientTest.class);
+		suite.addTestSuite(CSWClientTestLocal.class);
 		//$JUnit-END$
 		return suite;
 	}

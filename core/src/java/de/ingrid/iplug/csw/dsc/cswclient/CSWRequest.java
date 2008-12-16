@@ -18,4 +18,12 @@ public interface CSWRequest {
 	 * @return The response DOM Document
 	 */
 	public Document doGetCapabilitiesRequest(String serverURL) throws Exception;
+
+	/**
+	 * Do the GetRecords request
+	 * @param serverURL
+	 * @param query
+	 * @return The response DOM Document
+	 */
+	public Document doGetRecords(String serverURL, CSWQuery query) throws Exception;
 }

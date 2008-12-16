@@ -39,4 +39,10 @@ public class GenericCapabilities implements CSWCapabilities {
 		}
 		return supportingOperations == operations.length;
 	}
+
+	@Override
+	public boolean isSupportingIsoProfiles() {
+		NodeList constraintNodes = XPathUtils.getNodeList(capDoc, "Capabilities/OperationsMetadata/Operation/Constraint[@name='IsoProfiles']");
+		return constraintNodes.getLength() > 0;
+	}
 }

@@ -14,7 +14,9 @@ import javax.xml.parsers.DocumentBuilderFactory;
 import org.w3c.dom.Document;
 
 import de.ingrid.iplug.csw.dsc.cswclient.CSWConstants;
+import de.ingrid.iplug.csw.dsc.cswclient.CSWQuery;
 import de.ingrid.iplug.csw.dsc.cswclient.CSWRequest;
+import de.ingrid.iplug.csw.dsc.cswclient.constants.Operation;
 
 public class KVPGetRequest implements CSWRequest {
 
@@ -23,7 +25,7 @@ public class KVPGetRequest implements CSWRequest {
 		
 		// add the GetCapability request parameters, 
 		// @note Parameters must be treated in case-insensitive manner on the server side
-		String requestURL = serverURL+"?SERVICE="+CSWConstants.SERVICE_TYPE+"&REQUEST="+CSWConstants.OP_GET_CAPABILITIES+
+		String requestURL = serverURL+"?SERVICE="+CSWConstants.SERVICE_TYPE+"&REQUEST="+Operation.GET_CAPABILITIES+
 			"&acceptversion="+CSWConstants.PREFERRED_VERSION+"&outputFormat=text/xml";
 		
 		// and make the call
@@ -57,5 +59,10 @@ public class KVPGetRequest implements CSWRequest {
 				rd.close();
 		}
 		return result;
+	}
+
+	@Override
+	public Document doGetRecords(String serverURL, CSWQuery query) throws Exception {
+		throw new UnsupportedOperationException("This method binding is not mandatory. Please use the SOAP equivalent.");
 	}
 }
