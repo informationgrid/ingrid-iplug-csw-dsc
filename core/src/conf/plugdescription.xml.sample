@@ -799,6 +799,8 @@
 	<string>de.ingrid.iplug.csw.dsc.cswclient.impl.SoapRequest</string>
 	<string>CSWQueryImpl</string>
 	<string>de.ingrid.iplug.csw.dsc.cswclient.impl.APIsoQuery</string>
+	<string>CSWSearchResultImpl</string>
+	<string>de.ingrid.iplug.csw.dsc.cswclient.impl.GenericSearchResult</string>
 	<string>CSWRecordImpl</string>
 	<string>de.ingrid.iplug.csw.dsc.cswclient.impl.GenericRecord</string>
 </de.ingrid.utils.PlugDescription>

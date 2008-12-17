@@ -10,12 +10,12 @@ import de.ingrid.iplug.csw.dsc.cswclient.CSWConstants;
 
 public enum TypeName {
 	MD_METADATA { public QName getQName() { return metaDataQName; } },
-	RECORD 		{ public QName getQName() { return recordQName; } };
+	RECORD 		{ public QName getQName() { return recordQName; } },
+	DATASET		{ public QName getQName() { return datasetQName; } };
 	
-	QName metaDataQName = new QName(CSWConstants.NAMESPACE_GMD.getNamespaceURI(), "MD_Metadata", 
-			CSWConstants.NAMESPACE_GMD.getPrefix());
-	QName recordQName = new QName(CSWConstants.NAMESPACE_CSW.getNamespaceURI(), "Record", 
-			CSWConstants.NAMESPACE_CSW.getPrefix());
+	QName metaDataQName = CSWConstants.NAMESPACE_ISO_METADATA;
+	QName recordQName = CSWConstants.NAMESPACE_CSW_RECORD;
+	QName datasetQName = CSWConstants.NAMESPACE_CSW_DATASET;
 	
 	public abstract QName getQName(); 
 }

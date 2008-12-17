@@ -11,11 +11,9 @@ import junit.framework.TestCase;
 
 public class CSWClientFactoryTest extends TestCase {
 
-	public static final String serviceUrlGet = "http://www.portalu.de/csw";
-	//public static final String serviceUrlSoap = "http://www.portalu.de/csw";
-	//public static final String serviceUrlSoap = "http://csw.wsv.de/";
-	public static final String serviceUrlSoap = "http://demo.disy.net/preludio2.lubw/ws/csw";
-	//public static final String serviceUrlSoap = "http://www.inspire-geoportal.eu/csw/services/OGC_Service_SOAP_Port";
+	public static final String URL_PORTALU = "http://www.portalu.de/csw";
+	public static final String URL_WSVCSW = "http://csw.wsv.de/";
+	public static final String URL_DISY_PRELUDIO = "http://demo.disy.net/preludio2.lubw/ws/csw";
 
 	public static final String cswClientImpl = "de.ingrid.iplug.csw.dsc.cswclient.impl.GenericClient";
 	public static final String cswCapabilitiesImpl = "de.ingrid.iplug.csw.dsc.cswclient.impl.GenericCapabilities";
@@ -23,6 +21,7 @@ public class CSWClientFactoryTest extends TestCase {
 	public static final String cswRequestKVPGetImpl = "de.ingrid.iplug.csw.dsc.cswclient.impl.KVPGetRequest";
 	public static final String cswRequestSoapImpl = "de.ingrid.iplug.csw.dsc.cswclient.impl.SoapRequest";
 	public static final String cswQueryImpl = "de.ingrid.iplug.csw.dsc.cswclient.impl.APIsoQuery";
+	public static final String cswSearchResultImpl = "de.ingrid.iplug.csw.dsc.cswclient.impl.GenericSearchResult";
 	public static final String cswRecordImpl = "de.ingrid.iplug.csw.dsc.cswclient.impl.GenericRecord";
 	
     /**
@@ -42,6 +41,8 @@ public class CSWClientFactoryTest extends TestCase {
     		desc.put("CSWRequestImpl", cswRequestKVPGetImpl);
     	if (!desc.containsKey("CSWQueryImpl"))
     		desc.put("CSWQueryImpl", cswQueryImpl);
+    	if (!desc.containsKey("CSWSearchResultImpl"))
+    		desc.put("CSWSearchResultImpl", cswSearchResultImpl);
     	if (!desc.containsKey("CSWRecordImpl"))
     		desc.put("CSWRecordImpl", cswRecordImpl);
 		File workingDir = new File("c:\\");
@@ -71,6 +72,9 @@ public class CSWClientFactoryTest extends TestCase {
 
 		assertTrue("createQuery returns a CSWQuery implementation",
 				f.createQuery() instanceof CSWQuery);
+		
+		assertTrue("createQuery returns a CSWSearchResult implementation",
+				f.createSearchResult() instanceof CSWSearchResult);
 		
 		assertTrue("createRecord returns a CSWRecord implementation",
 				f.createRecord() instanceof CSWRecord);

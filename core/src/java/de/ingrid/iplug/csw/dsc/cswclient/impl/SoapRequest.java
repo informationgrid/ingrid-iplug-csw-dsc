@@ -23,6 +23,8 @@ import org.apache.axis2.client.Options;
 import org.apache.axis2.client.ServiceClient;
 import org.apache.axis2.transport.http.HTTPConstants;
 import org.apache.axis2.util.XMLUtils;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.w3c.dom.Document;
 import org.xml.sax.InputSource;
 
@@ -38,6 +40,8 @@ import de.ingrid.iplug.csw.dsc.cswclient.constants.Operation;
  * The message payload will be in the body of the SOAP envelope.
  */
 public class SoapRequest implements CSWRequest {
+	
+	final protected static Log log = LogFactory.getLog(CSWRequest.class);
 
 	@Override
 	/**
@@ -98,35 +102,41 @@ public class SoapRequest implements CSWRequest {
 
 		// create the request
 		OMFactory fac = OMAbstractFactory.getOMFactory();
-		OMNamespace cswNs = fac.createOMNamespace(
-				CSWConstants.NAMESPACE_CSW.getNamespaceURI()+"/"+CSWConstants.PREFERRED_VERSION, 
-				CSWConstants.NAMESPACE_CSW.getPrefix());
+		OMNamespace cswNs = fac.createOMNamespace(query.getSchema().getNamespaceURI(), query.getSchema().getPrefix());
 		
 		// create method
 		OMElement method = fac.createOMElement(Operation.GET_RECORDS.toString(), cswNs);
+
 		// add the default parameters
 		method.addAttribute("service", CSWConstants.SERVICE_TYPE, null);
-		method.addAttribute("version", CSWConstants.PREFERRED_VERSION, null);
-		method.addAttribute("outputFormat", "application/xml", null);
+
 		// add the query specific parameters
+		method.addAttribute("version", query.getVersion(), null);
+		method.addAttribute("outputFormat", query.getOutputFormat(), null);
 		method.addAttribute("resultType", query.getResultType().toString(), null);
-		method.addAttribute("outputSchema", query.getOutputSchema().getNamespaceURI(), null);
+		method.addAttribute("startPosition", Integer.toString(query.getStartPosition()), null);
+		method.addAttribute("maxRecords", Integer.toString(query.getMaxRecords()), null);
+		
+		QName outputSchemaQN = query.getOutputSchema();
+		method.declareNamespace(outputSchemaQN.getNamespaceURI(), outputSchemaQN.getPrefix());
+		method.addAttribute("outputSchema", outputSchemaQN.getPrefix()+":"+outputSchemaQN.getLocalPart(), null);
 
 		// create Query element typename
 		OMElement queryElem = fac.createOMElement("Query", cswNs);
 		QName typeNameQN = query.getTypeNames().getQName();
-		OMNamespace tnNs = fac.createOMNamespace(typeNameQN.getNamespaceURI(), typeNameQN.getPrefix());
-		queryElem.addAttribute("typeNames", typeNameQN.getLocalPart(), tnNs);
+		method.declareNamespace(typeNameQN.getNamespaceURI(), typeNameQN.getPrefix());
+		method.addAttribute(typeNameQN.getPrefix(), typeNameQN.getNamespaceURI(), null);
+		queryElem.addAttribute("typeNames", typeNameQN.getPrefix()+":"+typeNameQN.getLocalPart(), null);
 
 		// create ElementSetName element typename
 		OMElement elementSetName = fac.createOMElement("ElementSetName", cswNs);
-		elementSetName.addAttribute("typeNames", typeNameQN.getLocalPart(), tnNs);
+		elementSetName.addAttribute("typeNames", typeNameQN.getPrefix()+":"+typeNameQN.getLocalPart(), null);
 		elementSetName.setText(query.getElementSetName().toString());
 		queryElem.addChild(elementSetName);
 
 		// create Constraint
 		OMElement constraintName = fac.createOMElement("Constraint", cswNs);
-		constraintName.addAttribute("version", "1.1.0", null);
+		constraintName.addAttribute("version", query.getConstraintVersion(), null);
 		queryElem.addChild(constraintName);
 		
 		// add the Filter
@@ -162,7 +172,8 @@ public class SoapRequest implements CSWRequest {
 		// send the request
 		OMElement result = null;
 		result = serviceClient.sendReceive(payload);
-		System.out.println(serializeElement(result.cloneOMElement()));
+		if (log.isDebugEnabled())
+			log.debug("Response document: "+serializeElement(result.cloneOMElement()));
 		return convertToDOM(result);
 	}
 
@@ -179,6 +190,7 @@ public class SoapRequest implements CSWRequest {
 		Options opts = new Options();
 		opts.setTo(new EndpointReference(serverURL));
 		opts.setProperty(HTTPConstants.CHUNKED, false);
+		//opts.setProperty(HTTPConstants.HTTP_PROTOCOL_VERSION, HTTPConstants.HEADER_PROTOCOL_10);
 		opts.setSoapVersionURI(SOAP12Constants.SOAP_ENVELOPE_NAMESPACE_URI);
 		opts.setAction("urn:anonOutInOp");
 		serviceClient.setOptions(opts);

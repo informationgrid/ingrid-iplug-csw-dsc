@@ -20,6 +20,18 @@ import de.ingrid.iplug.csw.dsc.cswclient.constants.TypeName;
 public interface CSWQuery {
 
 	/**
+	 * Set the query schema
+	 * @param schema
+	 */
+	public void setSchema(QName schema);
+
+	/**
+	 * Get the query schema
+	 * @return QName
+	 */
+	public QName getSchema();
+
+	/**
 	 * Set the output schema
 	 * @param schema
 	 */
@@ -30,6 +42,30 @@ public interface CSWQuery {
 	 * @return QName
 	 */
 	public QName getOutputSchema();
+
+	/**
+	 * Set the output format
+	 * @param schema
+	 */
+	public void setOutputFormat(String format);
+
+	/**
+	 * Get the output format
+	 * @return String
+	 */
+	public String getOutputFormat();
+
+	/**
+	 * Set the version
+	 * @param version
+	 */
+	public void setVersion(String version);
+
+	/**
+	 * Get the version
+	 * @return String
+	 */
+	public String getVersion();
 
 	/**
 	 * Get the typeNames for this query 
@@ -68,6 +104,18 @@ public interface CSWQuery {
 	public ElementSetName getElementSetName();
 
 	/**
+	 * Set the constraint version
+	 * @param version
+	 */
+	public void setConstraintVersion(String version);
+
+	/**
+	 * Get the constraint version
+	 * @return String
+	 */
+	public String getConstraintVersion();
+
+	/**
 	 * Set the OGC filter
 	 * @param filter
 	 */
@@ -78,4 +126,28 @@ public interface CSWQuery {
 	 * @return Document
 	 */
 	public Document getFilter();
+
+	/**
+	 * Set the start position
+	 * @param position
+	 */
+	public void setStartPosition(int position);
+
+	/**
+	 * Get the start position
+	 * @return int
+	 */
+	public int getStartPosition();
+
+	/**
+	 * Set the maximum number of records
+	 * @param max
+	 */
+	public void setMaxRecords(int max);
+
+	/**
+	 * Get the maximum number of records
+	 * @return int
+	 */
+	public int getMaxRecords();
 }

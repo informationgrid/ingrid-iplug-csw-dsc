@@ -4,8 +4,6 @@
 
 package de.ingrid.iplug.csw.dsc.cswclient.impl;
 
-import javax.xml.namespace.QName;
-
 import de.ingrid.iplug.csw.dsc.cswclient.CSWConstants;
 import de.ingrid.iplug.csw.dsc.cswclient.constants.TypeName;
 
@@ -13,23 +11,17 @@ import de.ingrid.iplug.csw.dsc.cswclient.constants.TypeName;
  * Implementation of the ap iso compatible query
  * @author ingo herwig <ingo@wemove.com>
  */
-public class APIsoQuery extends AbstractQuery {
+public class APIsoQuery extends GenericQuery {
 
 	public APIsoQuery() {
 		super();
 		
 		// set the default values
+		this.setSchema(CSWConstants.NAMESPACE_CSW_2_0_2);
 		this.outputSchema = CSWConstants.NAMESPACE_GMD;
+		this.outputFormat = "application/xml";
+		this.version = CSWConstants.VERSION_2_0_2;
 		this.typeName = TypeName.MD_METADATA;
-	}
-
-	@Override
-	public void setOutputSchema(QName schema) {
-		// ignore
-	}
-
-	@Override
-	public void setTypeNames(TypeName typeName) {
-		// ignore
+		this.constraintVersion = "1.1.0";
 	}
 }

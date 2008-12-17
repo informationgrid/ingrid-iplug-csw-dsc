@@ -4,10 +4,6 @@
 
 package de.ingrid.iplug.csw.dsc.cswclient.impl;
 
-import java.net.URL;
-import java.net.URLClassLoader;
-import java.util.List;
-
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.w3c.dom.Document;
@@ -19,9 +15,9 @@ import de.ingrid.iplug.csw.dsc.cswclient.CSWDomain;
 import de.ingrid.iplug.csw.dsc.cswclient.CSWQuery;
 import de.ingrid.iplug.csw.dsc.cswclient.CSWRecord;
 import de.ingrid.iplug.csw.dsc.cswclient.CSWRecordDescription;
+import de.ingrid.iplug.csw.dsc.cswclient.CSWSearchResult;
 import de.ingrid.iplug.csw.dsc.cswclient.constants.ElementSetName;
 import de.ingrid.iplug.csw.dsc.cswclient.constants.ResultType;
-import de.ingrid.iplug.csw.dsc.index.AbstractSearcher;
 
 public class GenericClient implements CSWClient {
 
@@ -59,18 +55,31 @@ public class GenericClient implements CSWClient {
 	}
 
 	@Override
-	public List<CSWRecord> getRecords(Document filter, ResultType resultType, 
-			ElementSetName elementSetName) throws Exception {
-		log.debug("getRecords");
+	public CSWSearchResult getRecords(Document filter, ResultType resultType, 
+			ElementSetName elementSetName, int startPosition, int maxRecords) throws Exception {
 		if (factory != null) {
 			CSWQuery query = factory.createQuery();
 			query.setFilter(filter);
+			query.setStartPosition(startPosition);
+			query.setMaxRecords(maxRecords);
 			query.setResultType(resultType);
 			query.setElementSetName(elementSetName);
 			
+			return this.getRecords(query);
+		}
+		else
+			throw new RuntimeException("CSWClient is not configured properly. Make sure to call CSWClient.configure.");
+	}
+
+	@Override
+	public CSWSearchResult getRecords(CSWQuery query) throws Exception {
+		if (factory != null) {
 			String serviceUrl = factory.getConfigurationValue("serviceUrl");
 			Document recordDoc = factory.createRequest().doGetRecords(serviceUrl, query);
-			return null;
+
+			CSWSearchResult result = factory.createSearchResult();
+			result.configure(query, recordDoc);
+			return result;
 		}
 		else
 			throw new RuntimeException("CSWClient is not configured properly. Make sure to call CSWClient.configure.");

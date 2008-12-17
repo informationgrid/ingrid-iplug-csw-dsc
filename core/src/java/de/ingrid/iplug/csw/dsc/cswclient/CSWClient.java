@@ -4,11 +4,8 @@
 
 package de.ingrid.iplug.csw.dsc.cswclient;
 
-import java.util.List;
-
 import org.w3c.dom.Document;
 
-import de.ingrid.iplug.csw.dsc.cswclient.CSWClientFactory;
 import de.ingrid.iplug.csw.dsc.cswclient.constants.ElementSetName;
 import de.ingrid.iplug.csw.dsc.cswclient.constants.ResultType;
 
@@ -43,14 +40,25 @@ public interface CSWClient {
 	public CSWDomain getDomain() throws Exception;
 
 	/**
-	 * Do the CSW-Discovery.GetRecords request
+	 * Do the CSW-Discovery.GetRecords request using the
+	 * CSWQuery implementation provided by CSWClientFactory
 	 * @param filter A OGC filter document
 	 * @param resultType The ResultType
 	 * @param elementSetName The ElementSetName
-	 * @return A list of CSWRecord instances
+	 * @param startPosition The position to start fetching from
+	 * @param maxRecords The maximum number if records to get
+	 * @return A CSWSearchResult instances
 	 */
-	public List<CSWRecord> getRecords(Document filter, ResultType resultType, 
-			ElementSetName elementSetName) throws Exception;
+	public CSWSearchResult getRecords(Document filter, ResultType resultType, 
+			ElementSetName elementSetName, int startPosition, int maxRecords) throws Exception;
+
+	/**
+	 * Do the CSW-Discovery.GetRecords request using a
+	 * given CSWQuery implementation
+	 * @param query
+	 * @return A CSWSearchResult instances
+	 */
+	public CSWSearchResult getRecords(CSWQuery query) throws Exception;
 
 	/**
 	 * Do the CSW-Discovery.GetRecordById request

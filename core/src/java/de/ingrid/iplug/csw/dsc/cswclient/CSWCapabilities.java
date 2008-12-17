@@ -9,6 +9,7 @@ import org.w3c.dom.Document;
 /**
  * Representation of a CSW Server's getCapabilities response that
  * describes the service metadata.
+ * TODO: add methods to get the parameters of a getRecords request, to check the configuration against
  * @author ingo herwig <ingo@wemove.com>
  */
 public interface CSWCapabilities {

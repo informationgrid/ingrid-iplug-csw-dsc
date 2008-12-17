@@ -21,6 +21,7 @@ public class CSWClientFactory {
 	private static final String CWS_CAPABILITIES_IMPL 		= "CSWCapabilitiesImpl";
 	private static final String CWS_RECORD_DESCRIPTION_IMPL = "CSWRecordDescriptionImpl";
 	private static final String CWS_QUERY_IMPL 				= "CSWQueryImpl";
+	private static final String CWS_SEARCH_RESULT_IMPL 		= "CSWSearchResultImpl";
 	private static final String CWS_RECORD_IMPL 			= "CSWRecordImpl";
 
 	private static PlugDescription plugDescription;
@@ -42,6 +43,8 @@ public class CSWClientFactory {
 			throw new IllegalArgumentException("Key '"+CWS_RECORD_DESCRIPTION_IMPL+"' missing in plugdescription.xml");
 		if (!plugDescription.containsKey(CWS_QUERY_IMPL))
 			throw new IllegalArgumentException("Key '"+CWS_QUERY_IMPL+"' missing in plugdescription.xml");
+		if (!plugDescription.containsKey(CWS_SEARCH_RESULT_IMPL))
+			throw new IllegalArgumentException("Key '"+CWS_SEARCH_RESULT_IMPL+"' missing in plugdescription.xml");
 		if (!plugDescription.containsKey(CWS_RECORD_IMPL))
 			throw new IllegalArgumentException("Key '"+CWS_RECORD_IMPL+"' missing in plugdescription.xml");
 		// assign member
@@ -130,6 +133,21 @@ public class CSWClientFactory {
 			String className = (String)plugDescription.get(CWS_QUERY_IMPL);
 			CSWQuery query = (CSWQuery)Class.forName(className).newInstance();
 			return query;
+		}
+		else
+			throw new RuntimeException("CSWClientFactory is not configured properly. Make sure to call CSWClientFactory.configure.");
+	}
+
+	/**
+	 * Create a CSWSearchResult.
+	 * @return A concrete CSWSearchResult instance
+	 */
+	public CSWSearchResult createSearchResult() throws Exception {
+		if (plugDescription != null)
+		{
+			String className = (String)plugDescription.get(CWS_SEARCH_RESULT_IMPL);
+			CSWSearchResult result = (CSWSearchResult)Class.forName(className).newInstance();
+			return result;
 		}
 		else
 			throw new RuntimeException("CSWClientFactory is not configured properly. Make sure to call CSWClientFactory.configure.");
