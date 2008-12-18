@@ -15,6 +15,7 @@ import org.xml.sax.InputSource;
 
 import de.ingrid.iplug.csw.dsc.cswclient.constants.ElementSetName;
 import de.ingrid.iplug.csw.dsc.cswclient.constants.Operation;
+import de.ingrid.iplug.csw.dsc.cswclient.constants.OutputFormat;
 import de.ingrid.iplug.csw.dsc.cswclient.constants.ResultType;
 import de.ingrid.iplug.csw.dsc.cswclient.constants.TypeName;
 import de.ingrid.iplug.csw.dsc.cswclient.impl.GenericQuery;
@@ -72,6 +73,8 @@ public class CSWClientTestLocal extends TestCase {
 
 	public void testGetRecordsSoap() throws Exception {
 		
+		int recordCount = 4;
+		
 		// set up factory - Soap requests
 		PlugDescription desc = new PlugDescription();
 		//desc.put("serviceUrl", CSWClientFactoryTest.URL_DISY_PRELUDIO);
@@ -94,44 +97,74 @@ public class CSWClientTestLocal extends TestCase {
 		DocumentBuilderFactory docBuilderFactory = DocumentBuilderFactory.newInstance();
 		DocumentBuilder docBuilder = docBuilderFactory.newDocumentBuilder();
 		Document filter = docBuilder.parse(new InputSource(new StringReader(filterStr)));
-		//CSWQuery query = createDisyQuery(filter);
-		CSWQuery query = createPortalUQuery(filter);
-		
-		query.setMaxRecords(4);
+		//CSWQuery query = createDisyQuery();
+		CSWQuery query = createPortalUQuery();
+
+		query.setConstraint(filter);
+		query.setMaxRecords(recordCount);
 
 		// do request
 		CSWSearchResult result = client.getRecords(query);
 		
-		System.out.println(result.getNumberOfRecordsTotal());
-		
 		// tests
+		assertTrue("Fetched "+recordCount+" records from the server",
+				recordCount == result.getNumberOfRecords());
+		assertTrue("First record has id 1AFDCB03-3818-40F1-9560-9FB082956357",
+				result.getRecordList().get(0).getId().equals("1AFDCB03-3818-40F1-9560-9FB082956357"));
 	}
 	
-	private CSWQuery createDisyQuery(Document filter) {
+	public void testGetRecordByIdSoap() throws Exception {
+		
+		// set up factory - Soap requests
+		PlugDescription desc = new PlugDescription();
+		//desc.put("serviceUrl", CSWClientFactoryTest.URL_DISY_PRELUDIO);
+		desc.put("serviceUrl", CSWClientFactoryTest.URL_PORTALU);
+		desc.put("CSWRequestImpl", CSWClientFactoryTest.cswRequestSoapImpl);
+		CSWClientFactory f = CSWClientFactoryTest.createFactory(desc);
+
+		// set up client
+		CSWClient client = (CSWClient)f.createClient();
+		client.configure(f);
+
+		// create the query
+		String recordId1 = "1AFDCB03-3818-40F1-9560-9FB082956357";
+		String recordId2 = "1A7EFA6F-FEDF-44D4-B139-6D92FD68CF58";
+		//CSWQuery query = createDisyQuery();
+		CSWQuery query = createPortalUQuery();
+		
+		query.setId(recordId1);
+
+		// do request
+		CSWRecord result = client.getRecordById(query);
+		
+		// tests
+		assertTrue("Fetched "+recordId1+" from the server",
+				recordId1.equals(result.getId()));
+	}
+	
+	private CSWQuery createDisyQuery() {
 		CSWQuery query = new GenericQuery();
 		query.setSchema(CSWConstants.NAMESPACE_CSW);
 		query.setOutputSchema(CSWConstants.NAMESPACE_CSW_PROFILE);
-		query.setOutputFormat("application/xml");
+		query.setOutputFormat(OutputFormat.APPLICATION_XML);
 		query.setVersion("2.0.1");
-		query.setTypeNames(TypeName.RECORD);
+		query.setTypeNames(new TypeName[] { TypeName.RECORD });
 		query.setResultType(ResultType.RESULTS);
 		query.setElementSetName(ElementSetName.BRIEF);
 		query.setConstraintVersion("1.1.0");
-		query.setFilter(filter);
 		return query;
 	}
 
-	private CSWQuery createPortalUQuery(Document filter) {
+	private CSWQuery createPortalUQuery() {
 		CSWQuery query = new GenericQuery();
 		query.setSchema(CSWConstants.NAMESPACE_CSW);
 		query.setOutputSchema(CSWConstants.NAMESPACE_CSW_PROFILE);
-		query.setOutputFormat("text/xml");
+		query.setOutputFormat(OutputFormat.TEXT_XML);
 		query.setVersion("2.0.0");
-		query.setTypeNames(TypeName.DATASET);
+		query.setTypeNames(new TypeName[] { TypeName.DATASET });
 		query.setResultType(ResultType.RESULTS);
 		query.setElementSetName(ElementSetName.BRIEF);
 		query.setConstraintVersion("1.0.0");
-		query.setFilter(filter);
 		return query;
 	}
 }

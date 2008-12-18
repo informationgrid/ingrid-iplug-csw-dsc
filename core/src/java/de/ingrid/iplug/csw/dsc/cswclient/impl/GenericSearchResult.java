@@ -4,12 +4,14 @@
 
 package de.ingrid.iplug.csw.dsc.cswclient.impl;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.w3c.dom.Document;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 
+import de.ingrid.iplug.csw.dsc.cswclient.CSWClientFactory;
 import de.ingrid.iplug.csw.dsc.cswclient.CSWQuery;
 import de.ingrid.iplug.csw.dsc.cswclient.CSWRecord;
 import de.ingrid.iplug.csw.dsc.cswclient.CSWSearchResult;
@@ -24,20 +26,23 @@ public class GenericSearchResult implements CSWSearchResult {
 	protected int startIndex = 0;
 
 	@Override
-	public void configure(CSWQuery query, Document document) {
+	public void configure(CSWQuery query, Document document) throws Exception {
 		this.query = query;
 		this.document = document;
+		this.records = new ArrayList<CSWRecord>();
 		
 		// parse the document and create the record list
 		Integer numMatched = XPathUtils.getInt(document, "GetRecordsResponse/SearchResults/@numberOfRecordsMatched");
 		if (numMatched != null) {
 			this.recordsTotal = numMatched.intValue();
 			
-			NodeList records = XPathUtils.getNodeList(document, "//fileIdentifier/CharacterString");
-			if (records != null) {
-				for (int i=0; i<records.getLength(); i++) {
-					Node record = records.item(i);
-					System.out.println(record.getTextContent());
+			NodeList recordNodes = XPathUtils.getNodeList(document, "//fileIdentifier/CharacterString");
+			if (recordNodes != null) {
+				for (int i=0; i<recordNodes.getLength(); i++) {
+					Node recordNode = recordNodes.item(i);
+					CSWRecord record = CSWClientFactory.getInstance().createRecord();
+					record.setId(recordNode.getTextContent());
+					records.add(record);
 				}
 		    }
 		}

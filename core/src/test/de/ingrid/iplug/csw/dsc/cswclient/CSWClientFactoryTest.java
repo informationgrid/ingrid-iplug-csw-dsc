@@ -20,7 +20,7 @@ public class CSWClientFactoryTest extends TestCase {
 	public static final String cswRecordDescriptionImpl = "de.ingrid.iplug.csw.dsc.cswclient.impl.GenericRecordDescription";
 	public static final String cswRequestKVPGetImpl = "de.ingrid.iplug.csw.dsc.cswclient.impl.KVPGetRequest";
 	public static final String cswRequestSoapImpl = "de.ingrid.iplug.csw.dsc.cswclient.impl.SoapRequest";
-	public static final String cswQueryImpl = "de.ingrid.iplug.csw.dsc.cswclient.impl.APIsoQuery";
+	public static final String cswQueryImpl = "de.ingrid.iplug.csw.dsc.cswclient.impl.GenericQuery";
 	public static final String cswSearchResultImpl = "de.ingrid.iplug.csw.dsc.cswclient.impl.GenericSearchResult";
 	public static final String cswRecordImpl = "de.ingrid.iplug.csw.dsc.cswclient.impl.GenericRecord";
 	
@@ -49,7 +49,7 @@ public class CSWClientFactoryTest extends TestCase {
 		desc.setWorkinDirectory(workingDir);
 
 		// create the factory
-		CSWClientFactory f = new CSWClientFactory();
+		CSWClientFactory f = CSWClientFactory.getInstance();
 		f.configure(desc);
 		return f;
     } 

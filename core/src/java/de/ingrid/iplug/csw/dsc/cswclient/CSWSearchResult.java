@@ -16,9 +16,10 @@ public interface CSWSearchResult {
 
 	/**
 	 * Set the query and original response document
+	 * param query
 	 * param document
 	 */
-	public void configure(CSWQuery query, Document document);
+	public void configure(CSWQuery query, Document document) throws Exception;
 	
 	/**
 	 * Get the associated query

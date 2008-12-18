@@ -8,8 +8,11 @@ import javax.xml.namespace.QName;
 
 import org.w3c.dom.Document;
 
+import de.ingrid.iplug.csw.dsc.cswclient.CSWConstants;
 import de.ingrid.iplug.csw.dsc.cswclient.CSWQuery;
+import de.ingrid.iplug.csw.dsc.cswclient.constants.ConstraintLanguage;
 import de.ingrid.iplug.csw.dsc.cswclient.constants.ElementSetName;
+import de.ingrid.iplug.csw.dsc.cswclient.constants.OutputFormat;
 import de.ingrid.iplug.csw.dsc.cswclient.constants.ResultType;
 import de.ingrid.iplug.csw.dsc.cswclient.constants.TypeName;
 
@@ -17,22 +20,44 @@ public class GenericQuery implements CSWQuery {
 
 	protected QName schema = null;
 	protected QName outputSchema = null;
-	protected String outputFormat = null;
+	protected OutputFormat outputFormat = null;
 	protected String version = null;
 	protected ElementSetName elementSetName = null;
-	protected TypeName typeName = null;
+
+	/**
+	 * GetRecords specific
+	 */
+	protected TypeName[] typeNames = null;
 	protected ResultType resultType = null;
-	protected String constraintVersion = null;
-	protected Document filter = null;
+	protected ConstraintLanguage constraintLanguage = null;
+	protected String constraintLanguageVersion = null;	
+	protected Document constraint = null;
 	protected int startPosition = 1;
 	protected int maxRecords = 0;
 
+	/**
+	 * GetRecordById specific
+	 */
+	protected String id = null;
+	
+	/**
+	 * Constructor
+	 */
     public GenericQuery() {
-    }
-
-    public GenericQuery(String schema, String outputSchema, String outputFormat, String version, 
-    		String elementSetName, String typeName, String resultType, String constraintVersion) {
-    	System.out.println("construct generic query");
+    	
+    	// set defaults according to
+    	// OpenGIS Catalogue Services Specification 2.0.2 - ISO Metadata Application Profile 8.2.2.1.1
+    	this.schema = CSWConstants.NAMESPACE_CSW;
+    	this.outputSchema = CSWConstants.NAMESPACE_CSW_2_0_2;
+    	this.outputFormat = OutputFormat.APPLICATION_XML;
+    	this.version = CSWConstants.VERSION_2_0_2;
+    	this.elementSetName = ElementSetName.SUMMARY;
+    	this.typeNames = new TypeName[] { TypeName.RECORD };
+    	this.resultType = ResultType.HITS;
+    	this.constraintLanguage = ConstraintLanguage.FILTER;
+    	this.constraintLanguageVersion = "1.1.0";
+    	this.startPosition = 1;
+    	this.maxRecords = 10;
     }
 
 	@Override
@@ -56,12 +81,12 @@ public class GenericQuery implements CSWQuery {
 	}
 
 	@Override
-	public void setOutputFormat(String format) {
+	public void setOutputFormat(OutputFormat format) {
 		this.outputFormat = format;
 	}
 
 	@Override
-	public String getOutputFormat() {
+	public OutputFormat getOutputFormat() {
 		return this.outputFormat;
 	}
 
@@ -76,13 +101,13 @@ public class GenericQuery implements CSWQuery {
 	}
 
 	@Override
-	public void setTypeNames(TypeName typeName) {
-		this.typeName = typeName;
+	public void setTypeNames(TypeName[] typeNames) {
+		this.typeNames = typeNames;
 	}
 
 	@Override
-	public TypeName getTypeNames() {
-		return this.typeName;
+	public TypeName[] getTypeNames() {
+		return this.typeNames;
 	}
 
 	@Override
@@ -106,23 +131,33 @@ public class GenericQuery implements CSWQuery {
 	}
 
 	@Override
+	public void setConstraintLanguage(ConstraintLanguage language) {
+		this.constraintLanguage  = language;
+	}
+
+	@Override
+	public ConstraintLanguage getConstraintLanguage() {
+		return this.constraintLanguage;
+	}
+
+	@Override
 	public void setConstraintVersion(String version) {
-		this.constraintVersion = version;
+		this.constraintLanguageVersion = version;
 	}
 
 	@Override
 	public String getConstraintVersion() {
-		return this.constraintVersion;
+		return this.constraintLanguageVersion;
 	}
 
 	@Override
-	public void setFilter(Document filter) {
-		this.filter = filter;
+	public void setConstraint(Document filter) {
+		this.constraint = filter;
 	}
 
 	@Override
-	public Document getFilter() {
-		return this.filter ;
+	public Document getConstraint() {
+		return this.constraint ;
 	}
 
 	@Override
@@ -143,5 +178,15 @@ public class GenericQuery implements CSWQuery {
 	@Override
 	public int getMaxRecords() {
 		return this.maxRecords;
+	}
+	
+	@Override
+	public void setId(String id) {
+		this.id = id;
+	}
+
+	@Override
+	public String getId() {
+		return this.id;
 	}
 }

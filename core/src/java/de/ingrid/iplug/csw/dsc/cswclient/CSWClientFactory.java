@@ -26,6 +26,15 @@ public class CSWClientFactory {
 
 	private static PlugDescription plugDescription;
 	
+	private static CSWClientFactory instance;
+	private CSWClientFactory() {}
+	public static CSWClientFactory getInstance() {
+		if (instance == null) {
+			instance = new CSWClientFactory();
+		}
+		return instance;
+	}
+
 	/**
 	 * Configure the factory.
 	 * @param plugDescription

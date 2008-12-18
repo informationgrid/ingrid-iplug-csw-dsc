@@ -8,13 +8,19 @@ import javax.xml.namespace.QName;
 
 import org.w3c.dom.Document;
 
+import de.ingrid.iplug.csw.dsc.cswclient.constants.ConstraintLanguage;
 import de.ingrid.iplug.csw.dsc.cswclient.constants.ElementSetName;
+import de.ingrid.iplug.csw.dsc.cswclient.constants.OutputFormat;
 import de.ingrid.iplug.csw.dsc.cswclient.constants.ResultType;
 import de.ingrid.iplug.csw.dsc.cswclient.constants.TypeName;
 
 /**
  * Representation of a CSW query. Encapsulates the varying parts of a query.
- * @see OpenGIS Catalogue Services Specification 2.0.2 - ISO Metadata Application Profile 8.2.2.1
+ * Instances may be used for the GetRecords or the GetRecordById request, where the
+ * first would reuqire a constraint to be set, while the latter requires an id to be
+ * set. Properties that are not needed for the specific request are ignored.
+ * @see OpenGIS Catalogue Services Specification 2.0.2 - ISO Metadata Application Profile 8.2.2.1 and
+ * OpenGIS Catalogue Services Specification 2.0.2 - ISO Metadata Application Profile 8.2.2.2
  * @author ingo herwig <ingo@wemove.com>
  */
 public interface CSWQuery {
@@ -47,13 +53,13 @@ public interface CSWQuery {
 	 * Set the output format
 	 * @param schema
 	 */
-	public void setOutputFormat(String format);
+	public void setOutputFormat(OutputFormat format);
 
 	/**
 	 * Get the output format
-	 * @return String
+	 * @return OutputFormat
 	 */
-	public String getOutputFormat();
+	public OutputFormat getOutputFormat();
 
 	/**
 	 * Set the version
@@ -68,16 +74,16 @@ public interface CSWQuery {
 	public String getVersion();
 
 	/**
-	 * Get the typeNames for this query 
+	 * Set the typeNames for this query 
 	 * @param typeName
 	 */
-	public void setTypeNames(TypeName typeName);
+	public void setTypeNames(TypeName[] typeNames);
 
 	/**
 	 * Get the typeNames for this query 
-	 * @return TypeName
+	 * @return TypeName[]
 	 */
-	public TypeName getTypeNames();
+	public TypeName[] getTypeNames();
 
 	/**
 	 * Set the result type for this query
@@ -116,16 +122,28 @@ public interface CSWQuery {
 	public String getConstraintVersion();
 
 	/**
-	 * Set the OGC filter
-	 * @param filter
+	 * Set the constraint language
+	 * @param language
 	 */
-	public void setFilter(Document filter);
+	public void setConstraintLanguage(ConstraintLanguage language);
 
 	/**
-	 * Get the OGC filter
+	 * Get the constraint language
+	 * @return ConstraintLanguage
+	 */
+	public ConstraintLanguage getConstraintLanguage();
+
+	/**
+	 * Set the OGC filter (child element of Constraint node)
+	 * @param filter
+	 */
+	public void setConstraint(Document constraint);
+
+	/**
+	 * Get the OGC filter (child element of Constraint node)
 	 * @return Document
 	 */
-	public Document getFilter();
+	public Document getConstraint();
 
 	/**
 	 * Set the start position
@@ -150,4 +168,16 @@ public interface CSWQuery {
 	 * @return int
 	 */
 	public int getMaxRecords();
+
+	/**
+	 * Set the id of the record to retrieve
+	 * @param id
+	 */
+	public void setId(String id);
+
+	/**
+	 * Get the id of the record to retrieve
+	 * @return String
+	 */
+	public String getId();
 }

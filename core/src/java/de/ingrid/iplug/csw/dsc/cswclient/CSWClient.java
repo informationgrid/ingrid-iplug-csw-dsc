@@ -42,14 +42,14 @@ public interface CSWClient {
 	/**
 	 * Do the CSW-Discovery.GetRecords request using the
 	 * CSWQuery implementation provided by CSWClientFactory
-	 * @param filter A OGC filter document
+	 * @param constraint A OGC filter document
 	 * @param resultType The ResultType
 	 * @param elementSetName The ElementSetName
 	 * @param startPosition The position to start fetching from
 	 * @param maxRecords The maximum number if records to get
 	 * @return A CSWSearchResult instances
 	 */
-	public CSWSearchResult getRecords(Document filter, ResultType resultType, 
+	public CSWSearchResult getRecords(Document constraint, ResultType resultType, 
 			ElementSetName elementSetName, int startPosition, int maxRecords) throws Exception;
 
 	/**
@@ -62,8 +62,8 @@ public interface CSWClient {
 
 	/**
 	 * Do the CSW-Discovery.GetRecordById request
-	 * @param id The id
+	 * @param query
 	 * @return A CSWRecord instances
 	 */
-	public CSWRecord getRecordById(String id) throws Exception;
+	public CSWRecord getRecordById(CSWQuery query) throws Exception;
 }

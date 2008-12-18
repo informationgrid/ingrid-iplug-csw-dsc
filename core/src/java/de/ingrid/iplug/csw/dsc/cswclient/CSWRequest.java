@@ -26,4 +26,12 @@ public interface CSWRequest {
 	 * @return The response DOM Document
 	 */
 	public Document doGetRecords(String serverURL, CSWQuery query) throws Exception;
+
+	/**
+	 * Do the GetRecordById request
+	 * @param serverURL
+	 * @param query
+	 * @return The response DOM Document
+	 */
+	public Document doGetRecordById(String serverURL, CSWQuery query) throws Exception;
 }

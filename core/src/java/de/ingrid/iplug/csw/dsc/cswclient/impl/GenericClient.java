@@ -55,11 +55,11 @@ public class GenericClient implements CSWClient {
 	}
 
 	@Override
-	public CSWSearchResult getRecords(Document filter, ResultType resultType, 
+	public CSWSearchResult getRecords(Document constraint, ResultType resultType, 
 			ElementSetName elementSetName, int startPosition, int maxRecords) throws Exception {
 		if (factory != null) {
 			CSWQuery query = factory.createQuery();
-			query.setFilter(filter);
+			query.setConstraint(constraint);
 			query.setStartPosition(startPosition);
 			query.setMaxRecords(maxRecords);
 			query.setResultType(resultType);
@@ -86,7 +86,16 @@ public class GenericClient implements CSWClient {
 	}
 
 	@Override
-	public CSWRecord getRecordById(String id) throws Exception {
-		return null;
+	public CSWRecord getRecordById(CSWQuery query) throws Exception {
+		if (factory != null) {
+			String serviceUrl = factory.getConfigurationValue("serviceUrl");
+			Document recordDoc = factory.createRequest().doGetRecordById(serviceUrl, query);
+			
+			CSWRecord result = factory.createRecord();
+			result.configure(query, recordDoc);
+			return result;
+		}
+		else
+			throw new RuntimeException("CSWClient is not configured properly. Make sure to call CSWClient.configure.");
 	}
 }
