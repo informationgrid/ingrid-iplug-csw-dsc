@@ -4,7 +4,7 @@
 
 package de.ingrid.iplug.csw.dsc.cswclient.impl;
 
-import javax.xml.namespace.QName;
+import java.io.Serializable;
 
 import org.w3c.dom.Document;
 
@@ -12,14 +12,17 @@ import de.ingrid.iplug.csw.dsc.cswclient.CSWConstants;
 import de.ingrid.iplug.csw.dsc.cswclient.CSWQuery;
 import de.ingrid.iplug.csw.dsc.cswclient.constants.ConstraintLanguage;
 import de.ingrid.iplug.csw.dsc.cswclient.constants.ElementSetName;
+import de.ingrid.iplug.csw.dsc.cswclient.constants.Namespace;
 import de.ingrid.iplug.csw.dsc.cswclient.constants.OutputFormat;
 import de.ingrid.iplug.csw.dsc.cswclient.constants.ResultType;
 import de.ingrid.iplug.csw.dsc.cswclient.constants.TypeName;
 
-public class GenericQuery implements CSWQuery {
+public class GenericQuery implements Serializable, CSWQuery {
 
-	protected QName schema = null;
-	protected QName outputSchema = null;
+	private static final long serialVersionUID = GenericQuery.class.getName().hashCode();
+
+	protected Namespace schema = null;
+	protected Namespace outputSchema = null;
 	protected OutputFormat outputFormat = null;
 	protected String version = null;
 	protected ElementSetName elementSetName = null;
@@ -44,11 +47,10 @@ public class GenericQuery implements CSWQuery {
 	 * Constructor
 	 */
     public GenericQuery() {
-    	
     	// set defaults according to
     	// OpenGIS Catalogue Services Specification 2.0.2 - ISO Metadata Application Profile 8.2.2.1.1
-    	this.schema = CSWConstants.NAMESPACE_CSW;
-    	this.outputSchema = CSWConstants.NAMESPACE_CSW_2_0_2;
+    	this.schema = Namespace.CSW;
+    	this.outputSchema = Namespace.CSW_2_0_2;
     	this.outputFormat = OutputFormat.APPLICATION_XML;
     	this.version = CSWConstants.VERSION_2_0_2;
     	this.elementSetName = ElementSetName.SUMMARY;
@@ -61,22 +63,22 @@ public class GenericQuery implements CSWQuery {
     }
 
 	@Override
-	public void setSchema(QName schema) {
+	public void setSchema(Namespace schema) {
 		this.schema = schema;
 	}
 
 	@Override
-	public QName getSchema() {
+	public Namespace getSchema() {
 		return this.schema; 
 	}
 
 	@Override
-	public void setOutputSchema(QName schema) {
+	public void setOutputSchema(Namespace schema) {
 		this.outputSchema = schema;
 	}
 
 	@Override
-	public QName getOutputSchema() {
+	public Namespace getOutputSchema() {
 		return this.outputSchema;
 	}
 
@@ -141,12 +143,12 @@ public class GenericQuery implements CSWQuery {
 	}
 
 	@Override
-	public void setConstraintVersion(String version) {
+	public void setConstraintLanguageVersion(String version) {
 		this.constraintLanguageVersion = version;
 	}
 
 	@Override
-	public String getConstraintVersion() {
+	public String getConstraintLanguageVersion() {
 		return this.constraintLanguageVersion;
 	}
 

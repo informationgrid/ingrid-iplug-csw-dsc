@@ -35,7 +35,7 @@ public class GenericClient implements CSWClient {
 		if (factory != null) {
 			CSWCapabilities cap = factory.createCapabilities();
 
-			String serviceUrl = factory.getConfigurationValue("serviceUrl");
+			String serviceUrl = factory.getServiceUrl();
 			Document capDoc = factory.createRequest().doGetCapabilitiesRequest(serviceUrl);
 			cap.configure(capDoc);
 			return cap;
@@ -74,11 +74,11 @@ public class GenericClient implements CSWClient {
 	@Override
 	public CSWSearchResult getRecords(CSWQuery query) throws Exception {
 		if (factory != null) {
-			String serviceUrl = factory.getConfigurationValue("serviceUrl");
+			String serviceUrl = factory.getServiceUrl();
 			Document recordDoc = factory.createRequest().doGetRecords(serviceUrl, query);
 
 			CSWSearchResult result = factory.createSearchResult();
-			result.configure(query, recordDoc);
+			result.configure(factory, query, recordDoc);
 			return result;
 		}
 		else
@@ -88,11 +88,11 @@ public class GenericClient implements CSWClient {
 	@Override
 	public CSWRecord getRecordById(CSWQuery query) throws Exception {
 		if (factory != null) {
-			String serviceUrl = factory.getConfigurationValue("serviceUrl");
+			String serviceUrl = factory.getServiceUrl();
 			Document recordDoc = factory.createRequest().doGetRecordById(serviceUrl, query);
 			
 			CSWRecord result = factory.createRecord();
-			result.configure(query, recordDoc);
+			result.configure(recordDoc);
 			return result;
 		}
 		else

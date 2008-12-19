@@ -4,12 +4,11 @@
 
 package de.ingrid.iplug.csw.dsc.cswclient;
 
-import javax.xml.namespace.QName;
-
 import org.w3c.dom.Document;
 
 import de.ingrid.iplug.csw.dsc.cswclient.constants.ConstraintLanguage;
 import de.ingrid.iplug.csw.dsc.cswclient.constants.ElementSetName;
+import de.ingrid.iplug.csw.dsc.cswclient.constants.Namespace;
 import de.ingrid.iplug.csw.dsc.cswclient.constants.OutputFormat;
 import de.ingrid.iplug.csw.dsc.cswclient.constants.ResultType;
 import de.ingrid.iplug.csw.dsc.cswclient.constants.TypeName;
@@ -29,25 +28,25 @@ public interface CSWQuery {
 	 * Set the query schema
 	 * @param schema
 	 */
-	public void setSchema(QName schema);
+	public void setSchema(Namespace schema);
 
 	/**
 	 * Get the query schema
-	 * @return QName
+	 * @return Namespace
 	 */
-	public QName getSchema();
+	public Namespace getSchema();
 
 	/**
 	 * Set the output schema
 	 * @param schema
 	 */
-	public void setOutputSchema(QName schema);
+	public void setOutputSchema(Namespace schema);
 
 	/**
 	 * Get the output schema
-	 * @return QName
+	 * @return Namespace
 	 */
-	public QName getOutputSchema();
+	public Namespace getOutputSchema();
 
 	/**
 	 * Set the output format
@@ -110,18 +109,6 @@ public interface CSWQuery {
 	public ElementSetName getElementSetName();
 
 	/**
-	 * Set the constraint version
-	 * @param version
-	 */
-	public void setConstraintVersion(String version);
-
-	/**
-	 * Get the constraint version
-	 * @return String
-	 */
-	public String getConstraintVersion();
-
-	/**
 	 * Set the constraint language
 	 * @param language
 	 */
@@ -132,6 +119,18 @@ public interface CSWQuery {
 	 * @return ConstraintLanguage
 	 */
 	public ConstraintLanguage getConstraintLanguage();
+
+	/**
+	 * Set the constraint language version
+	 * @param version
+	 */
+	public void setConstraintLanguageVersion(String version);
+
+	/**
+	 * Get the constraint language version
+	 * @return String
+	 */
+	public String getConstraintLanguageVersion();
 
 	/**
 	 * Set the OGC filter (child element of Constraint node)

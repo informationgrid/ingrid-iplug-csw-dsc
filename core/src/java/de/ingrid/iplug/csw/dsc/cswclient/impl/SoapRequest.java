@@ -32,6 +32,7 @@ import org.xml.sax.InputSource;
 import de.ingrid.iplug.csw.dsc.cswclient.CSWConstants;
 import de.ingrid.iplug.csw.dsc.cswclient.CSWQuery;
 import de.ingrid.iplug.csw.dsc.cswclient.CSWRequest;
+import de.ingrid.iplug.csw.dsc.cswclient.constants.Namespace;
 import de.ingrid.iplug.csw.dsc.cswclient.constants.Operation;
 import de.ingrid.iplug.csw.dsc.cswclient.constants.OutputFormat;
 import de.ingrid.iplug.csw.dsc.cswclient.constants.TypeName;
@@ -59,10 +60,10 @@ public class SoapRequest implements CSWRequest {
 
 		// create the request
 		OMFactory fac = OMAbstractFactory.getOMFactory();
-		OMNamespace cswNs = fac.createOMNamespace(CSWConstants.NAMESPACE_CSW.getNamespaceURI(), 
-				CSWConstants.NAMESPACE_CSW.getPrefix());
-		OMNamespace owsNs = fac.createOMNamespace(CSWConstants.NAMESPACE_OWS.getNamespaceURI(),
-				CSWConstants.NAMESPACE_OWS.getPrefix());
+		OMNamespace cswNs = fac.createOMNamespace(Namespace.CSW.getQName().getNamespaceURI(), 
+				Namespace.CSW.getQName().getPrefix());
+		OMNamespace owsNs = fac.createOMNamespace(Namespace.OWS.getQName().getNamespaceURI(),
+				Namespace.OWS.getQName().getPrefix());
 
 		// create method
 		OMElement method = fac.createOMElement(Operation.GET_CAPABILITIES.toString(), cswNs);
@@ -99,7 +100,8 @@ public class SoapRequest implements CSWRequest {
 
 		// create the request
 		OMFactory fac = OMAbstractFactory.getOMFactory();
-		OMNamespace cswNs = fac.createOMNamespace(query.getSchema().getNamespaceURI(), query.getSchema().getPrefix());
+		OMNamespace cswNs = fac.createOMNamespace(query.getSchema().getQName().getNamespaceURI(), 
+				query.getSchema().getQName().getPrefix());
 		
 		// create method
 		OMElement method = fac.createOMElement(Operation.GET_RECORDS.toString(), cswNs);
@@ -114,7 +116,7 @@ public class SoapRequest implements CSWRequest {
 		method.addAttribute("startPosition", Integer.toString(query.getStartPosition()), null);
 		method.addAttribute("maxRecords", Integer.toString(query.getMaxRecords()), null);
 		
-		QName outputSchemaQN = query.getOutputSchema();
+		QName outputSchemaQN = query.getOutputSchema().getQName();
 		method.declareNamespace(outputSchemaQN.getNamespaceURI(), outputSchemaQN.getPrefix());
 		method.addAttribute("outputSchema", outputSchemaQN.getPrefix()+":"+outputSchemaQN.getLocalPart(), null);
 
@@ -137,7 +139,7 @@ public class SoapRequest implements CSWRequest {
 
 		// create Constraint
 		OMElement constraint = fac.createOMElement("Constraint", cswNs);
-		constraint.addAttribute("version", query.getConstraintVersion(), null);
+		constraint.addAttribute("version", query.getConstraintLanguageVersion(), null);
 		queryElem.addChild(constraint);
 		
 		// add the Filter
@@ -164,7 +166,8 @@ public class SoapRequest implements CSWRequest {
 		
 		// create the request
 		OMFactory fac = OMAbstractFactory.getOMFactory();
-		OMNamespace cswNs = fac.createOMNamespace(query.getSchema().getNamespaceURI(), query.getSchema().getPrefix());
+		OMNamespace cswNs = fac.createOMNamespace(query.getSchema().getQName().getNamespaceURI(), 
+				query.getSchema().getQName().getPrefix());
 		
 		// create method
 		OMElement method = fac.createOMElement(Operation.GET_RECORD_BY_ID.toString(), cswNs);
@@ -176,7 +179,7 @@ public class SoapRequest implements CSWRequest {
 		method.addAttribute("version", query.getVersion(), null);
 		method.addAttribute("outputFormat", query.getOutputFormat().toString(), null);
 		
-		QName outputSchemaQN = query.getOutputSchema();
+		QName outputSchemaQN = query.getOutputSchema().getQName();
 		method.declareNamespace(outputSchemaQN.getNamespaceURI(), outputSchemaQN.getPrefix());
 		method.addAttribute("outputSchema", outputSchemaQN.getPrefix()+":"+outputSchemaQN.getLocalPart(), null);
 

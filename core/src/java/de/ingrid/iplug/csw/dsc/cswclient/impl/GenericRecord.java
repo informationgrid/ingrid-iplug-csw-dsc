@@ -7,19 +7,16 @@ package de.ingrid.iplug.csw.dsc.cswclient.impl;
 import org.w3c.dom.Document;
 import org.w3c.dom.Node;
 
-import de.ingrid.iplug.csw.dsc.cswclient.CSWQuery;
 import de.ingrid.iplug.csw.dsc.cswclient.CSWRecord;
 import de.ingrid.iplug.csw.dsc.tools.XPathUtils;
 
 public class GenericRecord implements CSWRecord {
 
-	protected CSWQuery query = null;
 	protected Document document = null;
 	protected String id = "";
 	
 	@Override
-	public void configure(CSWQuery query, Document document) throws Exception{
-		this.query = query;
+	public void configure(Document document) throws Exception{
 		this.document = document;
 
 		// parse the document and get the record id
@@ -27,11 +24,6 @@ public class GenericRecord implements CSWRecord {
 		if (recordNode != null) {
 			this.setId(recordNode.getTextContent());
 		}
-	}
-
-	@Override
-	public CSWQuery getQuery() {
-		return this.query;
 	}
 
 	@Override

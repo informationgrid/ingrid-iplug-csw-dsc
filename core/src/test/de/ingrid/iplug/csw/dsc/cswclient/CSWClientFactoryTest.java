@@ -4,10 +4,8 @@
 
 package de.ingrid.iplug.csw.dsc.cswclient;
 
-import java.io.File;
-
-import de.ingrid.utils.PlugDescription;
 import junit.framework.TestCase;
+import de.ingrid.utils.PlugDescription;
 
 public class CSWClientFactoryTest extends TestCase {
 
@@ -30,27 +28,48 @@ public class CSWClientFactoryTest extends TestCase {
      */ 
     public static CSWClientFactory createFactory(PlugDescription desc) { 
 
+		// create the factory
+		CSWClientFactory f = new CSWClientFactory();
+		
+		if (desc.containsKey("serviceUrl"))
+			f.setServiceUrl(desc.get("serviceUrl").toString());
+
 		// add default values, if not already defined
     	if (!desc.containsKey("CSWClientImpl"))
-    		desc.put("CSWClientImpl", cswClientImpl);
+    		f.setClientImpl(cswClientImpl);
+    	else
+    		f.setClientImpl(desc.get("CSWClientImpl").toString());
+    	
     	if (!desc.containsKey("CSWCapabilitiesImpl"))
-    		desc.put("CSWCapabilitiesImpl", cswCapabilitiesImpl);
+    		f.setCapabilitiesImpl(cswCapabilitiesImpl);
+    	else
+    		f.setCapabilitiesImpl(desc.get("CSWCapabilitiesImpl").toString());
+    	
     	if (!desc.containsKey("CSWRecordDescriptionImpl"))
-			desc.put("CSWRecordDescriptionImpl", cswRecordDescriptionImpl);
-    	if (!desc.containsKey("CSWRequestImpl"))
-    		desc.put("CSWRequestImpl", cswRequestKVPGetImpl);
-    	if (!desc.containsKey("CSWQueryImpl"))
-    		desc.put("CSWQueryImpl", cswQueryImpl);
-    	if (!desc.containsKey("CSWSearchResultImpl"))
-    		desc.put("CSWSearchResultImpl", cswSearchResultImpl);
-    	if (!desc.containsKey("CSWRecordImpl"))
-    		desc.put("CSWRecordImpl", cswRecordImpl);
-		File workingDir = new File("c:\\");
-		desc.setWorkinDirectory(workingDir);
+			f.setRecordDescriptionImpl(cswRecordDescriptionImpl);
+    	else
+    		f.setRecordDescriptionImpl(desc.get("CSWRecordDescriptionImpl").toString());
 
-		// create the factory
-		CSWClientFactory f = CSWClientFactory.getInstance();
-		f.configure(desc);
+    	if (!desc.containsKey("CSWRequestImpl"))
+    		f.setRequestImpl(cswRequestKVPGetImpl);
+    	else
+    		f.setRequestImpl(desc.get("CSWRequestImpl").toString());
+
+    	if (!desc.containsKey("CSWQueryImpl"))
+    		f.setQueryImpl(cswQueryImpl);
+    	else
+    		f.setQueryImpl(desc.get("CSWQueryImpl").toString());
+
+    	if (!desc.containsKey("CSWSearchResultImpl"))
+    		f.setSearchResultImpl(cswSearchResultImpl);
+    	else
+    		f.setSearchResultImpl(desc.get("CSWSearchResultImpl").toString());
+
+    	if (!desc.containsKey("setRecordImpl"))
+    		f.setRecordImpl(cswRecordImpl);
+    	else
+    		f.setRecordImpl(desc.get("setRecordImpl").toString());
+
 		return f;
     } 
 

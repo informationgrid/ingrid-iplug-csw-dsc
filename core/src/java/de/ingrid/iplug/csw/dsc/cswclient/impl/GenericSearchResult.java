@@ -26,7 +26,7 @@ public class GenericSearchResult implements CSWSearchResult {
 	protected int startIndex = 0;
 
 	@Override
-	public void configure(CSWQuery query, Document document) throws Exception {
+	public void configure(CSWClientFactory factory, CSWQuery query, Document document) throws Exception {
 		this.query = query;
 		this.document = document;
 		this.records = new ArrayList<CSWRecord>();
@@ -40,7 +40,7 @@ public class GenericSearchResult implements CSWSearchResult {
 			if (recordNodes != null) {
 				for (int i=0; i<recordNodes.getLength(); i++) {
 					Node recordNode = recordNodes.item(i);
-					CSWRecord record = CSWClientFactory.getInstance().createRecord();
+					CSWRecord record = factory.createRecord();
 					record.setId(recordNode.getTextContent());
 					records.add(record);
 				}

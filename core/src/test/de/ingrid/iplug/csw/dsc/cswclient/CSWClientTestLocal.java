@@ -14,6 +14,7 @@ import org.w3c.dom.Document;
 import org.xml.sax.InputSource;
 
 import de.ingrid.iplug.csw.dsc.cswclient.constants.ElementSetName;
+import de.ingrid.iplug.csw.dsc.cswclient.constants.Namespace;
 import de.ingrid.iplug.csw.dsc.cswclient.constants.Operation;
 import de.ingrid.iplug.csw.dsc.cswclient.constants.OutputFormat;
 import de.ingrid.iplug.csw.dsc.cswclient.constants.ResultType;
@@ -21,6 +22,7 @@ import de.ingrid.iplug.csw.dsc.cswclient.constants.TypeName;
 import de.ingrid.iplug.csw.dsc.cswclient.impl.GenericQuery;
 import de.ingrid.utils.PlugDescription;
 
+@SuppressWarnings("unused")
 public class CSWClientTestLocal extends TestCase {
 	
 	public void testGetCapabilitiesKVPGet() throws Exception {
@@ -97,8 +99,8 @@ public class CSWClientTestLocal extends TestCase {
 		DocumentBuilderFactory docBuilderFactory = DocumentBuilderFactory.newInstance();
 		DocumentBuilder docBuilder = docBuilderFactory.newDocumentBuilder();
 		Document filter = docBuilder.parse(new InputSource(new StringReader(filterStr)));
-		//CSWQuery query = createDisyQuery();
-		CSWQuery query = createPortalUQuery();
+		//CSWQuery query = createDisyQuery(f.createQuery());
+		CSWQuery query = createPortalUQuery(f.createQuery());
 
 		query.setConstraint(filter);
 		query.setMaxRecords(recordCount);
@@ -129,8 +131,8 @@ public class CSWClientTestLocal extends TestCase {
 		// create the query
 		String recordId1 = "1AFDCB03-3818-40F1-9560-9FB082956357";
 		String recordId2 = "1A7EFA6F-FEDF-44D4-B139-6D92FD68CF58";
-		//CSWQuery query = createDisyQuery();
-		CSWQuery query = createPortalUQuery();
+		//CSWQuery query = createDisyQuery(f.createQuery());
+		CSWQuery query = createPortalUQuery(f.createQuery());
 		
 		query.setId(recordId1);
 
@@ -142,29 +144,27 @@ public class CSWClientTestLocal extends TestCase {
 				recordId1.equals(result.getId()));
 	}
 	
-	private CSWQuery createDisyQuery() {
-		CSWQuery query = new GenericQuery();
-		query.setSchema(CSWConstants.NAMESPACE_CSW);
-		query.setOutputSchema(CSWConstants.NAMESPACE_CSW_PROFILE);
+	private CSWQuery createDisyQuery(CSWQuery query) {
+		query.setSchema(Namespace.CSW);
+		query.setOutputSchema(Namespace.CSW_PROFILE);
 		query.setOutputFormat(OutputFormat.APPLICATION_XML);
 		query.setVersion("2.0.1");
 		query.setTypeNames(new TypeName[] { TypeName.RECORD });
 		query.setResultType(ResultType.RESULTS);
 		query.setElementSetName(ElementSetName.BRIEF);
-		query.setConstraintVersion("1.1.0");
+		query.setConstraintLanguageVersion("1.1.0");
 		return query;
 	}
 
-	private CSWQuery createPortalUQuery() {
-		CSWQuery query = new GenericQuery();
-		query.setSchema(CSWConstants.NAMESPACE_CSW);
-		query.setOutputSchema(CSWConstants.NAMESPACE_CSW_PROFILE);
+	private CSWQuery createPortalUQuery(CSWQuery query) {
+		query.setSchema(Namespace.CSW);
+		query.setOutputSchema(Namespace.CSW_PROFILE);
 		query.setOutputFormat(OutputFormat.TEXT_XML);
 		query.setVersion("2.0.0");
 		query.setTypeNames(new TypeName[] { TypeName.DATASET });
 		query.setResultType(ResultType.RESULTS);
 		query.setElementSetName(ElementSetName.BRIEF);
-		query.setConstraintVersion("1.0.0");
+		query.setConstraintLanguageVersion("1.0.0");
 		return query;
 	}
 }

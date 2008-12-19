@@ -65,7 +65,7 @@ public class KVPGetRequest implements CSWRequest {
 			"&OUTPUTFORMAT="+query.getOutputFormat().toString()+
 			"&VERSION="+CSWConstants.PREFERRED_VERSION+
 			"&ELEMENTSETNAME="+query.getElementSetName().toString()+
-			"&OUTPUTSCHEMA="+query.getOutputSchema().getNamespaceURI()+
+			"&OUTPUTSCHEMA="+query.getOutputSchema().getQName().getNamespaceURI()+
 			"&ID="+query.getId();
 		
 		Document result = sendRequest(requestURL);

@@ -791,6 +791,8 @@
 	<string>http://www.portalu.de/csw</string>
 	<string>CSWClientImpl</string>
 	<string>de.ingrid.iplug.csw.dsc.cswclient.impl.GenericClient</string>
+	<string>CSWRequestImpl</string>
+	<string>de.ingrid.iplug.csw.dsc.cswclient.impl.SoapRequest</string>
 	<string>CSWCapabilitiesImpl</string>
 	<string>de.ingrid.iplug.csw.dsc.cswclient.impl.GenericCapabilities</string>
 	<string>CSWRecordDescriptionImpl</string>

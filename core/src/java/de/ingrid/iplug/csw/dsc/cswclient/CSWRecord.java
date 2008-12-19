@@ -14,17 +14,10 @@ public interface CSWRecord {
 
 	/**
 	 * Set the query and original response document
-	 * param query
 	 * param document
 	 */
-	public void configure(CSWQuery query, Document document) throws Exception;
+	public void configure(Document document) throws Exception;
 	
-	/**
-	 * Get the associated query
-	 * @return CSWQuery
-	 */
-	public CSWQuery getQuery();
-
 	/**
 	 * Get the original response document
 	 * @return Document

@@ -15,11 +15,12 @@ import org.w3c.dom.Document;
 public interface CSWSearchResult {
 
 	/**
-	 * Set the query and original response document
+	 * Configure
+	 * param factory
 	 * param query
 	 * param document
 	 */
-	public void configure(CSWQuery query, Document document) throws Exception;
+	public void configure(CSWClientFactory factory, CSWQuery query, Document document) throws Exception;
 	
 	/**
 	 * Get the associated query
