@@ -32,6 +32,6 @@ public class UpdateJobTest extends TestCase {
 		assertTrue("output format is application/xml", l.equals(q.getOutputFormat()));
         
 		UpdateJob job = UpdateJob.getInstance();
-		job.execute();
+		job.execute(f, 30, 2000);
 	}
 }
