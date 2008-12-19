@@ -12,7 +12,7 @@ import de.ingrid.iplug.csw.dsc.cswclient.constants.OutputFormat;
 import de.ingrid.utils.PlugDescription;
 import de.ingrid.utils.xml.XMLSerializer;
 
-public class UpdateJobTest extends TestCase {
+public class UpdateJobTestLocal extends TestCase {
 
     private File descFile = new File("src/conf/plugdescription.xml");
 	
