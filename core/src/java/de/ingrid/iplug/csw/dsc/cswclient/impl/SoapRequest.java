@@ -4,13 +4,10 @@
 
 package de.ingrid.iplug.csw.dsc.cswclient.impl;
 
-import java.io.StringReader;
 import java.util.ArrayList;
 import java.util.List;
 
 import javax.xml.namespace.QName;
-import javax.xml.parsers.DocumentBuilder;
-import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.stream.XMLStreamException;
 
 import org.apache.axiom.om.OMAbstractFactory;
@@ -27,7 +24,6 @@ import org.apache.axis2.util.XMLUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.w3c.dom.Document;
-import org.xml.sax.InputSource;
 
 import de.ingrid.iplug.csw.dsc.cswclient.CSWConstants;
 import de.ingrid.iplug.csw.dsc.cswclient.CSWQuery;
@@ -242,10 +238,12 @@ public class SoapRequest implements CSWRequest {
 		}
 		
 		// send the request
+		if (log.isDebugEnabled())
+			log.debug("Request: "+serializeElement(payload.cloneOMElement()));
 		OMElement result = null;
 		result = serviceClient.sendReceive(payload);
 		if (log.isDebugEnabled())
-			log.debug("Response document: "+serializeElement(result.cloneOMElement()));
+			log.debug("Response: "+serializeElement(result.cloneOMElement()));
 		return convertToDOM(result);
 	}
 
@@ -268,11 +266,6 @@ public class SoapRequest implements CSWRequest {
 	 */
 	protected Document convertToDOM(OMElement element) throws Exception {
 		String xmlString = serializeElement(element);
-		
-        DocumentBuilderFactory domFactory = DocumentBuilderFactory.newInstance();
-        DocumentBuilder builder = domFactory.newDocumentBuilder();
-	    InputSource inStream = new InputSource();
-	    inStream.setCharacterStream(new StringReader(xmlString));
-	    return builder.parse(inStream);
+	    return StringUtils.stringToDocument(xmlString);
 	}
 }

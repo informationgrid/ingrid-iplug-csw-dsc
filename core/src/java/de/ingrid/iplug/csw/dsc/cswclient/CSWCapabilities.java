@@ -15,10 +15,10 @@ import org.w3c.dom.Document;
 public interface CSWCapabilities {
 	
 	/**
-	 * Configure the CSWCapabilities instance.
+	 * Initialize the CSWCapabilities instance.
 	 * @param capDoc The capabilities document received from a CSW server
 	 */
-	public void configure(Document capDoc);
+	public void initialize(Document capDoc);
 	
 	/**
 	 * Check if the CSW server supports the given operations

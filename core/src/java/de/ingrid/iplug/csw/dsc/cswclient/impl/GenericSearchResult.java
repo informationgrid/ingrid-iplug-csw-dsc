@@ -8,7 +8,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.w3c.dom.Document;
-import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 
 import de.ingrid.iplug.csw.dsc.cswclient.CSWClientFactory;
@@ -26,7 +25,7 @@ public class GenericSearchResult implements CSWSearchResult {
 	protected int startIndex = 0;
 
 	@Override
-	public void configure(CSWClientFactory factory, CSWQuery query, Document document) throws Exception {
+	public void initialize(CSWClientFactory factory, CSWQuery query, Document document) throws Exception {
 		this.query = query;
 		this.document = document;
 		this.records = new ArrayList<CSWRecord>();
@@ -36,12 +35,11 @@ public class GenericSearchResult implements CSWSearchResult {
 		if (numMatched != null) {
 			this.recordsTotal = numMatched.intValue();
 			
-			NodeList recordNodes = XPathUtils.getNodeList(document, "//fileIdentifier/CharacterString");
+			NodeList recordNodes = XPathUtils.getNodeList(document, "GetRecordsResponse/SearchResults/child::node()");
 			if (recordNodes != null) {
 				for (int i=0; i<recordNodes.getLength(); i++) {
-					Node recordNode = recordNodes.item(i);
 					CSWRecord record = factory.createRecord();
-					record.setId(recordNode.getTextContent());
+					record.initialize(query.getElementSetName(), recordNodes.item(i));
 					records.add(record);
 				}
 		    }

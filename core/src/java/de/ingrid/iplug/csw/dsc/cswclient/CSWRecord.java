@@ -4,7 +4,9 @@
 
 package de.ingrid.iplug.csw.dsc.cswclient;
 
-import org.w3c.dom.Document;
+import org.w3c.dom.Node;
+
+import de.ingrid.iplug.csw.dsc.cswclient.constants.ElementSetName;
 
 /**
  * Representation of a record returned by a CSW server.
@@ -13,26 +15,28 @@ import org.w3c.dom.Document;
 public interface CSWRecord {
 
 	/**
-	 * Set the query and original response document
-	 * param document
+	 * Initialize the record.
+	 * param elementSetName
+	 * param node
 	 */
-	public void configure(Document document) throws Exception;
+	public void initialize(ElementSetName elementSetName, Node node) throws Exception;
 	
-	/**
-	 * Get the original response document
-	 * @return Document
-	 */
-	public Document getOriginalResponse();	
-	
-	/**
-	 * Set the id of the record
-	 * @param id
-	 */
-	public void setId(String id);
-
 	/**
 	 * Get the id of the record
-	 * @return id
+	 * @return String
 	 */
 	public String getId();
+
+	/**
+	 * Get the elementset name of the record
+	 * @return ElementSetName
+	 */
+	public ElementSetName getElementSetName();
+
+	/**
+	 * Get the original response document
+	 * @return Node
+	 */
+	public Node getOriginalResponse();	
+	
 }

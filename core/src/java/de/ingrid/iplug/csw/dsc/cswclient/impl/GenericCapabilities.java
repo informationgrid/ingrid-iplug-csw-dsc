@@ -18,7 +18,7 @@ public class GenericCapabilities implements CSWCapabilities {
 	protected Document capDoc = null;
 
 	@Override
-	public void configure(Document capDoc) {
+	public void initialize(Document capDoc) {
 		this.capDoc = capDoc;
 	}
 	

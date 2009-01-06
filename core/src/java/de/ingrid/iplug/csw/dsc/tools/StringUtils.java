@@ -4,6 +4,22 @@
 
 package de.ingrid.iplug.csw.dsc.tools;
 
+import java.io.StringReader;
+import java.io.StringWriter;
+
+import javax.xml.parsers.DocumentBuilder;
+import javax.xml.parsers.DocumentBuilderFactory;
+import javax.xml.transform.Result;
+import javax.xml.transform.Source;
+import javax.xml.transform.Transformer;
+import javax.xml.transform.TransformerFactory;
+import javax.xml.transform.dom.DOMSource;
+import javax.xml.transform.stream.StreamResult;
+
+import org.w3c.dom.Document;
+import org.w3c.dom.Node;
+import org.xml.sax.InputSource;
+
 
 public class StringUtils {
 
@@ -16,5 +32,27 @@ public class StringUtils {
 			return str.substring(0, str.length()-separator.length());
 		
 		return str.toString();
+	}
+
+	public static String nodeToString(Node node) {
+		try {
+			Source source = new DOMSource(node);
+			StringWriter stringWriter = new StringWriter();
+			Result result = new StreamResult(stringWriter);
+			TransformerFactory factory = TransformerFactory.newInstance();
+			Transformer transformer = factory.newTransformer();
+			transformer.transform(source, result);
+			return stringWriter.getBuffer().toString();
+		} catch (Exception e) {
+			return e.getMessage();
+		}
+	}
+	
+	public static Document stringToDocument(String string) throws Exception {
+        DocumentBuilderFactory domFactory = DocumentBuilderFactory.newInstance();
+        DocumentBuilder builder = domFactory.newDocumentBuilder();
+	    InputSource inStream = new InputSource();
+	    inStream.setCharacterStream(new StringReader(string));
+	    return builder.parse(inStream);		
 	}
 }

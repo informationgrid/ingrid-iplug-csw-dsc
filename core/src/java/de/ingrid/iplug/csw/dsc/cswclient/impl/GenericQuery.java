@@ -129,7 +129,7 @@ public class GenericQuery implements Serializable, CSWQuery {
 
 	@Override
 	public ElementSetName getElementSetName() {
-		return elementSetName;
+		return this.elementSetName;
 	}
 
 	@Override

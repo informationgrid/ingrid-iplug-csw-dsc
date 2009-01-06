@@ -37,7 +37,7 @@ public class GenericClient implements CSWClient {
 
 			String serviceUrl = factory.getServiceUrl();
 			Document capDoc = factory.createRequest().doGetCapabilitiesRequest(serviceUrl);
-			cap.configure(capDoc);
+			cap.initialize(capDoc);
 			return cap;
 		}
 		else
@@ -78,7 +78,7 @@ public class GenericClient implements CSWClient {
 			Document recordDoc = factory.createRequest().doGetRecords(serviceUrl, query);
 
 			CSWSearchResult result = factory.createSearchResult();
-			result.configure(factory, query, recordDoc);
+			result.initialize(factory, query, recordDoc);
 			return result;
 		}
 		else
@@ -91,9 +91,9 @@ public class GenericClient implements CSWClient {
 			String serviceUrl = factory.getServiceUrl();
 			Document recordDoc = factory.createRequest().doGetRecordById(serviceUrl, query);
 			
-			CSWRecord result = factory.createRecord();
-			result.configure(recordDoc);
-			return result;
+			CSWRecord record = factory.createRecord();
+			record.initialize(query.getElementSetName(), recordDoc);
+			return record;
 		}
 		else
 			throw new RuntimeException("CSWClient is not configured properly. Make sure to call CSWClient.configure.");

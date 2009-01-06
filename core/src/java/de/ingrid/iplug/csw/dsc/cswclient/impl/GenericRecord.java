@@ -4,40 +4,60 @@
 
 package de.ingrid.iplug.csw.dsc.cswclient.impl;
 
-import org.w3c.dom.Document;
 import org.w3c.dom.Node;
+import org.w3c.dom.NodeList;
 
 import de.ingrid.iplug.csw.dsc.cswclient.CSWRecord;
+import de.ingrid.iplug.csw.dsc.cswclient.constants.ElementSetName;
+import de.ingrid.iplug.csw.dsc.tools.StringUtils;
 import de.ingrid.iplug.csw.dsc.tools.XPathUtils;
 
 public class GenericRecord implements CSWRecord {
 
-	protected Document document = null;
-	protected String id = "";
+	protected String id = null;
+	protected ElementSetName elementSetName = null;
+	protected Node node = null;
 	
 	@Override
-	public void configure(Document document) throws Exception{
-		this.document = document;
+	public void initialize(ElementSetName elementSetName, Node node) throws Exception{
+		this.node = node;
+		this.elementSetName = elementSetName;
+		Node doc = StringUtils.stringToDocument(StringUtils.nodeToString(node));
 
-		// parse the document and get the record id
-		Node recordNode = XPathUtils.getNode(document, "//fileIdentifier/CharacterString");
-		if (recordNode != null) {
-			this.setId(recordNode.getTextContent());
-		}
-	}
-
-	@Override
-	public Document getOriginalResponse() {
-		return this.document;
-	}
-	
-	@Override
-	public void setId(String id) {
-		this.id = id;
+		// get the record id
+		NodeList idNodes = XPathUtils.getNodeList(doc, "//fileIdentifier/CharacterString");
+		if (idNodes == null)
+			throw new RuntimeException("CSWRecord does not contain an id (looking for //fileIdentifier/CharacterString):\n"+StringUtils.nodeToString(node));
+		if (idNodes.getLength() > 1)
+			throw new RuntimeException("CSWRecord contains more than one id (looking for //fileIdentifier/CharacterString):\n"+StringUtils.nodeToString(node));
+		
+		this.id = idNodes.item(0).getTextContent();
 	}
 
 	@Override
 	public String getId() {
-		return this.id;
+		if (this.id != null) {
+			return this.id;
+		}
+		else
+			throw new RuntimeException("CSWRecord is not initialized properly. Make sure to call CSWRecord.configure.");
+	}
+
+	@Override
+	public ElementSetName getElementSetName() {
+		if (this.elementSetName != null) {
+			return this.elementSetName;
+		}
+		else
+			throw new RuntimeException("CSWRecord is not initialized properly. Make sure to call CSWRecord.configure.");
+	}
+
+	@Override
+	public  Node getOriginalResponse() {
+		if (this.node != null) {
+			return this.node;
+		}
+		else
+			throw new RuntimeException("CSWRecord is not initialized properly. Make sure to call CSWRecord.configure.");
 	}
 }
