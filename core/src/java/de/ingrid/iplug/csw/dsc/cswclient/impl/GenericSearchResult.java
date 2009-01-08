@@ -8,12 +8,14 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.w3c.dom.Document;
+import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 
 import de.ingrid.iplug.csw.dsc.cswclient.CSWClientFactory;
 import de.ingrid.iplug.csw.dsc.cswclient.CSWQuery;
 import de.ingrid.iplug.csw.dsc.cswclient.CSWRecord;
 import de.ingrid.iplug.csw.dsc.cswclient.CSWSearchResult;
+import de.ingrid.iplug.csw.dsc.tools.StringUtils;
 import de.ingrid.iplug.csw.dsc.tools.XPathUtils;
 
 public class GenericSearchResult implements CSWSearchResult {
@@ -38,8 +40,14 @@ public class GenericSearchResult implements CSWSearchResult {
 			NodeList recordNodes = XPathUtils.getNodeList(document, "GetRecordsResponse/SearchResults/child::node()");
 			if (recordNodes != null) {
 				for (int i=0; i<recordNodes.getLength(); i++) {
+					
+					// make sure to only pass the node (not the whole document)
+					// TODO: check if this can be done better
+					Node node = StringUtils.stringToDocument(StringUtils.nodeToString(recordNodes.item(i)));
+
+					// create the record
 					CSWRecord record = factory.createRecord();
-					record.initialize(query.getElementSetName(), recordNodes.item(i));
+					record.initialize(query.getElementSetName(), node);
 					records.add(record);
 				}
 		    }

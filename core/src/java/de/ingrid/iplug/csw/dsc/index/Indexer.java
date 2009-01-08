@@ -54,8 +54,8 @@ public class Indexer implements IIndexer {
 	public void index(IDocumentReader documentReader) throws IOException {
 		while (documentReader.hasNext()) {
 			Document document = documentReader.next();
-			System.out.println("Indexer.index() " + document);
-			LOG.debug("add document: " + document);
+			if (LOG.isDebugEnabled())
+				LOG.debug("Indexer.index() " + document);
 			_indexWriter.addDocument(document);
 		}
 	}

@@ -5,17 +5,10 @@
 package de.ingrid.iplug.csw.dsc.cache;
 
 import java.io.File;
-import java.io.StringReader;
 import java.util.Set;
 
-import javax.xml.parsers.DocumentBuilder;
-import javax.xml.parsers.DocumentBuilderFactory;
-
 import junit.framework.TestCase;
-
-import org.w3c.dom.Document;
-import org.xml.sax.InputSource;
-
+import de.ingrid.iplug.csw.dsc.TestData;
 import de.ingrid.iplug.csw.dsc.cache.impl.DefaultFileCache;
 import de.ingrid.iplug.csw.dsc.cswclient.CSWRecord;
 import de.ingrid.iplug.csw.dsc.cswclient.constants.ElementSetName;
@@ -27,7 +20,7 @@ public class CacheTestLocal extends TestCase {
 
 	public void testPut() throws Exception {
 		
-		String id = "1AFDCB03-3818-40F1-9560-9FB082956357";
+		String id = "1A0D667F-56E7-4EA7-9893-248F1658E0BF";
 		ElementSetName elementSetName = ElementSetName.BRIEF;
 		
 		this.putRecord(id, elementSetName);
@@ -38,7 +31,7 @@ public class CacheTestLocal extends TestCase {
 
 	public void testExists() throws Exception {
 
-		String id = "1AFDCB03-3818-40F1-9560-9FB082956357";
+		String id = "1A0D667F-56E7-4EA7-9893-248F1658E0BF";
 		ElementSetName elementSetName = ElementSetName.BRIEF;
 		
 		this.putRecord(id, elementSetName);
@@ -50,7 +43,7 @@ public class CacheTestLocal extends TestCase {
 
 	public void testGet() throws Exception {
 
-		String id = "1AFDCB03-3818-40F1-9560-9FB082956357";
+		String id = "1A0D667F-56E7-4EA7-9893-248F1658E0BF";
 		ElementSetName elementSetName = ElementSetName.BRIEF;
 		
 		this.putRecord(id, elementSetName);
@@ -63,8 +56,8 @@ public class CacheTestLocal extends TestCase {
 	public void testGetIds() throws Exception {
 
 		String[] ids = new String[]{
-				"1AFDCB03-3818-40F1-9560-9FB082956357",
-				"1AFDCB03-3818-40F1-9560-9FB082956358"
+				"1A0D667F-56E7-4EA7-9893-248F1658E0BF",
+				"1A1CBD95-23BB-47D6-90D2-8DBCFBA07E32"
 		};
 		
 		this.putRecord(ids[0], ElementSetName.BRIEF);
@@ -80,8 +73,8 @@ public class CacheTestLocal extends TestCase {
 	public void testRemoveRecord() throws Exception {
 
 		String[] ids = new String[]{
-				"1AFDCB03-3818-40F1-9560-9FB082956357",
-				"1AFDCB03-3818-40F1-9560-9FB082956358"
+				"1A0D667F-56E7-4EA7-9893-248F1658E0BF",
+				"1A1CBD95-23BB-47D6-90D2-8DBCFBA07E32"
 		};
 		
 		this.putRecord(ids[0], ElementSetName.BRIEF);
@@ -97,8 +90,8 @@ public class CacheTestLocal extends TestCase {
 	public void testRemoveAllRecords() throws Exception {
 
 		String[] ids = new String[]{
-				"1AFDCB03-3818-40F1-9560-9FB082956357",
-				"1AFDCB03-3818-40F1-9560-9FB082956358"
+				"1A0D667F-56E7-4EA7-9893-248F1658E0BF",
+				"1A1CBD95-23BB-47D6-90D2-8DBCFBA07E32"
 		};
 		
 		this.putRecord(ids[0], ElementSetName.BRIEF);
@@ -135,36 +128,7 @@ public class CacheTestLocal extends TestCase {
 	
 	private void putRecord(String id, ElementSetName elementSetName) throws Exception {
 		Cache cache = this.setupCache();
-		CSWRecord record = new GenericRecord();
-		record.initialize(elementSetName, this.getRecordNode(id));
+		CSWRecord record = TestData.getRecord(id, elementSetName, new GenericRecord());
 		cache.putRecord(record);
-	}
-	
-	private Document getRecordNode(String id) throws Exception {
-		String xmlStr = "<?xml version=\"1.0\" encoding=\"utf-8\"?>"+
-		"<iso19115brief:MD_Metadata xmlns:iso19115brief=\"http://schemas.opengis.net/iso19115brief\" "+
-		"xmlns:iso19119=\"http://schemas.opengis.net/iso19119\" "+
-		"xmlns:smXML=\"http://metadata.dgiwg.org/smXML\">"+
-		"<fileIdentifier>"+
-		"<smXML:CharacterString>"+id+"</smXML:CharacterString>"+
-		"</fileIdentifier>"+
-		"<hierarchyLevel>"+
-		"<smXML:MD_ScopeCode codeList=\"http://www.tc211.org/ISO19139/resources/codeList.xml?MD_ScopeCode\" codeListValue=\"dataset\" />"+
-		"</hierarchyLevel>"+
-		"<iso19115brief:identificationInfo>"+
-		"<smXML:MD_DataIdentification>"+
-		"<smXML:title>"+
-		"<smXML:CharacterString>Landschaftsschutzgebiete Deutschlands</smXML:CharacterString>"+
-		"</smXML:title>"+
-		"<smXML:topicCategory>"+
-		"<smXML:MD_TopicCategoryCode>7</smXML:MD_TopicCategoryCode>"+
-		"</smXML:topicCategory>"+
-		"</smXML:MD_DataIdentification>"+
-		"</iso19115brief:identificationInfo>"+
-		"</iso19115brief:MD_Metadata>";
-		
-		DocumentBuilderFactory docBuilderFactory = DocumentBuilderFactory.newInstance();
-		DocumentBuilder docBuilder = docBuilderFactory.newDocumentBuilder();
-		return docBuilder.parse(new InputSource(new StringReader(xmlStr)));		
 	}
 }

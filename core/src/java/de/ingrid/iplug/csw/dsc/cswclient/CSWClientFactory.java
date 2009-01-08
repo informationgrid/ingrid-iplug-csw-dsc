@@ -37,12 +37,11 @@ public class CSWClientFactory implements Serializable {
 	 * @throws RuntimeException 
 	 */
 	public String getServiceUrl() throws Exception {
-		if (serviceUrl != null)
-		{
-			return serviceUrl;
+		if (this.serviceUrl != null) {
+			return this.serviceUrl;
 		}
 		else
-			throw new RuntimeException("CSWClientFactory is not configured properly. Check the plugdescription for problems.");
+			throw new RuntimeException("CSWClientFactory is not configured properly. Parameter 'serviceUrl' is missing in plugdescription.");
 	}
 	
 	/**
@@ -122,7 +121,7 @@ public class CSWClientFactory implements Serializable {
 	 * @return CSWQuery
 	 */
 	public CSWQuery getQueryTemplate() {
-		return queryTemplate;
+		return this.queryTemplate;
 	}
 
 	/**
@@ -132,70 +131,67 @@ public class CSWClientFactory implements Serializable {
 	/**
 	 * Create a CSWClient.
 	 * @return A concrete CSWClient instance
-	 * @throws ClassNotFoundException 
-	 * @throws IllegalAccessException 
-	 * @throws InstantiationException 
 	 */
-	public CSWClient createClient() throws Exception {
-		if (clientImpl != null)
-		{
-			GenericClient factory = (GenericClient)Class.forName(clientImpl).newInstance();
-			return factory;
+	public CSWClient createClient() throws RuntimeException {
+		GenericClient factory;
+		try {
+			factory = (GenericClient)Class.forName(this.clientImpl).newInstance();
+		} catch (Exception e) {
+			throw new RuntimeException("CSWClientFactory is not configured properly. Parameter 'clientImpl' is missing or wrong in plugdescription.");
 		}
-		else
-			throw new RuntimeException("CSWClientFactory is not configured properly. Check the plugdescription for problems.");
+		return factory;
 	}
 
 	/**
 	 * Create a CSWRequest.
 	 * @return A concrete CSWRequest instance
 	 */
-	public CSWRequest createRequest() throws Exception {
-		if (requestImpl != null)
-		{
-			CSWRequest request = (CSWRequest)Class.forName(requestImpl).newInstance();
-			return request;
+	public CSWRequest createRequest() throws RuntimeException {
+		CSWRequest request;
+		try {
+			request = (CSWRequest)Class.forName(this.requestImpl).newInstance();
+		} catch (Exception e) {
+			throw new RuntimeException("CSWClientFactory is not configured properly. Parameter 'requestImpl' is missing or wrong in plugdescription.");
 		}
-		else
-			throw new RuntimeException("CSWClientFactory is not configured properly. Check the plugdescription for problems.");
+		return request;
 	}
 
 	/**
 	 * Create a CSWCapabilities.
 	 * @return A concrete CSWCapabilities instance
 	 */
-	public CSWCapabilities createCapabilities() throws Exception {
-		if (capabilitiesImpl != null)
-		{
-			CSWCapabilities capabilities = (CSWCapabilities)Class.forName(capabilitiesImpl).newInstance();
-			return capabilities;
+	public CSWCapabilities createCapabilities() throws RuntimeException {
+		CSWCapabilities capabilities;
+		try {
+			capabilities = (CSWCapabilities)Class.forName(this.capabilitiesImpl).newInstance();
+		} catch (Exception e) {
+			throw new RuntimeException("CSWClientFactory is not configured properly. Parameter 'capabilitiesImpl' is missing or wrong in plugdescription.");
 		}
-		else
-			throw new RuntimeException("CSWClientFactory is not configured properly. Check the plugdescription for problems.");
+		return capabilities;
 	}
 
 	/**
 	 * Create a CSWRecordDescription.
 	 * @return A concrete CSWRecordDescription instance
 	 */
-	public CSWRecordDescription createRecordDescription() throws Exception {
-		if (recordDescriptionImpl != null)
-		{
-			CSWRecordDescription description = (CSWRecordDescription)Class.forName(recordDescriptionImpl).newInstance();
-			return description;
+	public CSWRecordDescription createRecordDescription() throws RuntimeException {
+		CSWRecordDescription description;
+		try {
+			description = (CSWRecordDescription)Class.forName(this.recordDescriptionImpl).newInstance();
+		} catch (Exception e) {
+			throw new RuntimeException("CSWClientFactory is not configured properly. Parameter 'recordDescriptionImpl' is missing or wrong in plugdescription.");
 		}
-		else
-			throw new RuntimeException("CSWClientFactory is not configured properly. Check the plugdescription for problems.");
+		return description;
 	}
 
 	/**
 	 * Create a CSWQuery.
 	 * @return A concrete CSWQuery instance
 	 */
-	public CSWQuery createQuery() throws Exception {
-		if (queryImpl != null)
-		{
-			CSWQuery query = (CSWQuery)Class.forName(queryImpl).newInstance();
+	public CSWQuery createQuery() throws RuntimeException {
+		CSWQuery query;
+		try {
+			query = (CSWQuery)Class.forName(this.queryImpl).newInstance();
 
 			// set default config values from the template query
 			if (queryTemplate != null) {
@@ -209,38 +205,37 @@ public class CSWClientFactory implements Serializable {
 				query.setConstraintLanguage(queryTemplate.getConstraintLanguage());
 				query.setConstraintLanguageVersion(queryTemplate.getConstraintLanguageVersion());
 			}
-			
-			return query;
+		} catch (Exception e) {
+			throw new RuntimeException("CSWClientFactory is not configured properly. Parameter 'queryImpl' is missing or wrong in plugdescription.");
 		}
-		else
-			throw new RuntimeException("CSWClientFactory is not configured properly. Check the plugdescription for problems.");
+		return query;
 	}
 
 	/**
 	 * Create a CSWSearchResult.
 	 * @return A concrete CSWSearchResult instance
 	 */
-	public CSWSearchResult createSearchResult() throws Exception {
-		if (searchResultImpl != null)
-		{
-			CSWSearchResult result = (CSWSearchResult)Class.forName(searchResultImpl).newInstance();
-			return result;
+	public CSWSearchResult createSearchResult() throws RuntimeException {
+		CSWSearchResult result;
+		try {
+			result = (CSWSearchResult)Class.forName(this.searchResultImpl).newInstance();
+		} catch (Exception e) {
+			throw new RuntimeException("CSWClientFactory is not configured properly. Parameter 'searchResultImpl' is missing or wrong in plugdescription.");
 		}
-		else
-			throw new RuntimeException("CSWClientFactory is not configured properly. Check the plugdescription for problems.");
+		return result;
 	}
 
 	/**
 	 * Create a CSWRecord.
 	 * @return A concrete CSWRecord instance
 	 */
-	public CSWRecord createRecord() throws Exception {
-		if (recordImpl != null)
-		{
-			CSWRecord record = (CSWRecord)Class.forName(recordImpl).newInstance();
-			return record;
+	public CSWRecord createRecord() throws RuntimeException {
+		CSWRecord record;
+		try {
+			record = (CSWRecord)Class.forName(this.recordImpl).newInstance();
+		} catch (Exception e) {
+			throw new RuntimeException("CSWClientFactory is not configured properly. Parameter 'recordImpl' is missing or wrong in plugdescription.");
 		}
-		else
-			throw new RuntimeException("CSWClientFactory is not configured properly. Check the plugdescription for problems.");
+		return record;
 	}
 }

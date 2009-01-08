@@ -111,7 +111,7 @@ public class UpdateJob {
 		for (CSWRecord record : result.getRecordList()) {
 			String id = record.getId();
 			if (log.isDebugEnabled())
-				log.debug("Record: "+id);
+				log.debug("Record: "+id+" "+record.getElementSetName());
 			if (fetchedRecordIds.contains(id)) {
 				log.warn("Duplicated id: "+id+". Overriding previous entry.");
 			}

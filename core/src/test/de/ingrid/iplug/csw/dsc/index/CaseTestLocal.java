@@ -14,7 +14,7 @@ import org.apache.lucene.search.IndexSearcher;
 /**
  * 
  */
-public class CaseTest extends TestCase {
+public class CaseTestLocal extends TestCase {
 
     /**
      * @throws Exception

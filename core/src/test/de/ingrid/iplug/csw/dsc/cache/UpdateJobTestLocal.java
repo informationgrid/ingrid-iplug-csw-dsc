@@ -7,6 +7,7 @@ package de.ingrid.iplug.csw.dsc.cache;
 import java.io.File;
 
 import junit.framework.TestCase;
+import de.ingrid.iplug.csw.dsc.ConfigurationKeys;
 import de.ingrid.iplug.csw.dsc.cache.Cache;
 import de.ingrid.iplug.csw.dsc.cache.UpdateJob;
 import de.ingrid.iplug.csw.dsc.cache.impl.DefaultFileCache;
@@ -20,7 +21,8 @@ import de.ingrid.utils.xml.XMLSerializer;
 
 public class UpdateJobTestLocal extends TestCase {
 
-    private File descFile = new File("src/conf/plugdescription.xml");
+    private final File descFile = new File("src/conf/plugdescription.xml");
+    private final String cachePath = "./test_case_updatejob";
 	
 	public void testExecute() throws Exception {
 		
@@ -30,9 +32,11 @@ public class UpdateJobTestLocal extends TestCase {
 		PlugDescription desc = (PlugDescription)serializer.deSerialize(this.descFile);
 
 		// get instances from plugdescription
-		CSWClientFactory factory = (CSWClientFactory)desc.get("cswFactory");
-		factory.setQueryTemplate((CSWQuery)desc.get("cswQueryTemplate"));
-		Cache cache = (DefaultFileCache)desc.get("cswCache");
+		CSWClientFactory factory = (CSWClientFactory)desc.get(ConfigurationKeys.CSW_FACTORY);
+		factory.setQueryTemplate((CSWQuery)desc.get(ConfigurationKeys.CSW_QUERY_TEMPLATE));
+		Cache cache = (Cache)desc.get(ConfigurationKeys.CSW_CACHE);
+		if (cache instanceof DefaultFileCache)
+			((DefaultFileCache)cache).setCachePath(cachePath);
 		
         // check query configuration
 		CSWQuery q = factory.createQuery();
@@ -41,7 +45,7 @@ public class UpdateJobTestLocal extends TestCase {
 
 		// run the update job for all elementset names
 		UpdateJob job = new UpdateJob();
-		job.configure(factory, cache, (String)desc.get("cswHarvestFilter"));
+		job.configure(factory, cache, (String)desc.get(ConfigurationKeys.CSW_HARVEST_FILTER));
 		
 		ElementSetName[] names = ElementSetName.values();
 		for (int i=0; i<names.length; i++)

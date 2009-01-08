@@ -163,9 +163,11 @@ public abstract class AbstractSearcher implements IPlug, IRecordLoader {
 		}
 
 		Query luceneQuery = buildLuceneQuery(query, addDataTypes);
-		log.debug("LuceneQuery: " + luceneQuery.toString());
+		if (log.isDebugEnabled())
+			log.debug("LuceneQuery: " + luceneQuery.toString());
 		Hits luceneHits = this.fSearcher.search(luceneQuery);
-		log.debug("hits: " + luceneHits.length());
+		if (log.isDebugEnabled())
+			log.debug("hits: " + luceneHits.length());
 		int count = luceneHits.length();
 		int max = 0;
 		final int countMinusStart = count - start;

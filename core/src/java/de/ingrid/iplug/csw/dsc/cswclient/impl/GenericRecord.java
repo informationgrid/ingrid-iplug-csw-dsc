@@ -22,10 +22,9 @@ public class GenericRecord implements CSWRecord {
 	public void initialize(ElementSetName elementSetName, Node node) throws Exception{
 		this.node = node;
 		this.elementSetName = elementSetName;
-		Node doc = StringUtils.stringToDocument(StringUtils.nodeToString(node));
 
 		// get the record id
-		NodeList idNodes = XPathUtils.getNodeList(doc, "//fileIdentifier/CharacterString");
+		NodeList idNodes = XPathUtils.getNodeList(node, "//fileIdentifier/CharacterString");
 		if (idNodes == null)
 			throw new RuntimeException("CSWRecord does not contain an id (looking for //fileIdentifier/CharacterString):\n"+StringUtils.nodeToString(node));
 		if (idNodes.getLength() > 1)

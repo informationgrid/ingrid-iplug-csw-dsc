@@ -1,5 +1,5 @@
 <de.ingrid.utils.PlugDescription>
-	<int>20</int>
+	<int>21</int>
 	<string>personPhone</string>
 	<string>0345 5 222 702</string>
 	<string>personName</string>
@@ -72,4 +72,9 @@
 			</ogc:PropertyIsLike>
 		</ogc:Filter>]]>
 	</string>
+	<string>cswMapper</string>
+	<de.ingrid.iplug.csw.dsc.mapping.impl.ScriptMapper>
+		<cswToLuceneMapping>./src/conf/csw_to_lucene.js</cswToLuceneMapping>
+		<cswToIngridMapping>./src/conf/csw_to_ingrid.js</cswToIngridMapping>
+	</de.ingrid.iplug.csw.dsc.mapping.impl.ScriptMapper>
 </de.ingrid.utils.PlugDescription>

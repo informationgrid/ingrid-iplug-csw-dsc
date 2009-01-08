@@ -26,8 +26,7 @@ public class IndexingJob implements StatefulJob {
 			IIndexer indexer = new Indexer();
 			indexer.open(file);
 
-			List<IDocumentReader> collection = DocumentReaderFactory
-					.getDocumentReaderCollection();
+			List<IDocumentReader> collection = DocumentReaderFactory.getDocumentReaderCollection(plugDescription);
 			for (IDocumentReader documentReader : collection) {
 				indexer.index(documentReader);
 			}
