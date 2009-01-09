@@ -8,7 +8,7 @@ import de.ingrid.iplug.csw.dsc.ConfigurationKeys;
 import de.ingrid.iplug.csw.dsc.TestUtil;
 import de.ingrid.iplug.csw.dsc.cache.Cache;
 import de.ingrid.iplug.csw.dsc.cache.impl.DefaultFileCache;
-import de.ingrid.iplug.csw.dsc.cswclient.CSWClientFactory;
+import de.ingrid.iplug.csw.dsc.cswclient.CSWFactory;
 import de.ingrid.iplug.csw.dsc.cswclient.constants.ElementSetName;
 import de.ingrid.iplug.csw.dsc.cswclient.impl.GenericRecord;
 import de.ingrid.iplug.csw.dsc.mapping.DocumentMapper;
@@ -53,7 +53,7 @@ public class IndexesTestLocal extends TestCase {
 		serializer.aliasClass(PlugDescription.class.getName(), PlugDescription.class);
 		PlugDescription desc = (PlugDescription)serializer.deSerialize(this.descFile);
 
-		CSWClientFactory factory = (CSWClientFactory)desc.get(ConfigurationKeys.CSW_FACTORY);
+		CSWFactory factory = (CSWFactory)desc.get(ConfigurationKeys.CSW_FACTORY);
 		DocumentMapper mapper = (DocumentMapper)desc.get(ConfigurationKeys.CSW_MAPPER);
 		
 		// prepare the cache

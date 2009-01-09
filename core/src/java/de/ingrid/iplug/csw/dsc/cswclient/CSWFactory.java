@@ -15,9 +15,9 @@ import de.ingrid.iplug.csw.dsc.cswclient.impl.GenericClient;
  * @author ingo herwig <ingo@wemove.com>
  * TODO: Check if request implementation may vary with operation
  */
-public class CSWClientFactory implements Serializable {
+public class CSWFactory implements Serializable {
 
-	private static final long serialVersionUID = CSWClientFactory.class.getName().hashCode();
+	private static final long serialVersionUID = CSWFactory.class.getName().hashCode();
 	
 	private String serviceUrl;
 	
@@ -41,7 +41,7 @@ public class CSWClientFactory implements Serializable {
 			return this.serviceUrl;
 		}
 		else
-			throw new RuntimeException("CSWClientFactory is not configured properly. Parameter 'serviceUrl' is missing in plugdescription.");
+			throw new RuntimeException("CSWFactory is not configured properly. Parameter 'serviceUrl' is missing in plugdescription.");
 	}
 	
 	/**
@@ -137,7 +137,7 @@ public class CSWClientFactory implements Serializable {
 		try {
 			factory = (GenericClient)Class.forName(this.clientImpl).newInstance();
 		} catch (Exception e) {
-			throw new RuntimeException("CSWClientFactory is not configured properly. Parameter 'clientImpl' is missing or wrong in plugdescription.");
+			throw new RuntimeException("CSWFactory is not configured properly. Parameter 'clientImpl' is missing or wrong in plugdescription.");
 		}
 		return factory;
 	}
@@ -151,7 +151,7 @@ public class CSWClientFactory implements Serializable {
 		try {
 			request = (CSWRequest)Class.forName(this.requestImpl).newInstance();
 		} catch (Exception e) {
-			throw new RuntimeException("CSWClientFactory is not configured properly. Parameter 'requestImpl' is missing or wrong in plugdescription.");
+			throw new RuntimeException("CSWFactory is not configured properly. Parameter 'requestImpl' is missing or wrong in plugdescription.");
 		}
 		return request;
 	}
@@ -165,7 +165,7 @@ public class CSWClientFactory implements Serializable {
 		try {
 			capabilities = (CSWCapabilities)Class.forName(this.capabilitiesImpl).newInstance();
 		} catch (Exception e) {
-			throw new RuntimeException("CSWClientFactory is not configured properly. Parameter 'capabilitiesImpl' is missing or wrong in plugdescription.");
+			throw new RuntimeException("CSWFactory is not configured properly. Parameter 'capabilitiesImpl' is missing or wrong in plugdescription.");
 		}
 		return capabilities;
 	}
@@ -179,7 +179,7 @@ public class CSWClientFactory implements Serializable {
 		try {
 			description = (CSWRecordDescription)Class.forName(this.recordDescriptionImpl).newInstance();
 		} catch (Exception e) {
-			throw new RuntimeException("CSWClientFactory is not configured properly. Parameter 'recordDescriptionImpl' is missing or wrong in plugdescription.");
+			throw new RuntimeException("CSWFactory is not configured properly. Parameter 'recordDescriptionImpl' is missing or wrong in plugdescription.");
 		}
 		return description;
 	}
@@ -206,7 +206,7 @@ public class CSWClientFactory implements Serializable {
 				query.setConstraintLanguageVersion(queryTemplate.getConstraintLanguageVersion());
 			}
 		} catch (Exception e) {
-			throw new RuntimeException("CSWClientFactory is not configured properly. Parameter 'queryImpl' is missing or wrong in plugdescription.");
+			throw new RuntimeException("CSWFactory is not configured properly. Parameter 'queryImpl' is missing or wrong in plugdescription.");
 		}
 		return query;
 	}
@@ -220,7 +220,7 @@ public class CSWClientFactory implements Serializable {
 		try {
 			result = (CSWSearchResult)Class.forName(this.searchResultImpl).newInstance();
 		} catch (Exception e) {
-			throw new RuntimeException("CSWClientFactory is not configured properly. Parameter 'searchResultImpl' is missing or wrong in plugdescription.");
+			throw new RuntimeException("CSWFactory is not configured properly. Parameter 'searchResultImpl' is missing or wrong in plugdescription.");
 		}
 		return result;
 	}
@@ -234,7 +234,7 @@ public class CSWClientFactory implements Serializable {
 		try {
 			record = (CSWRecord)Class.forName(this.recordImpl).newInstance();
 		} catch (Exception e) {
-			throw new RuntimeException("CSWClientFactory is not configured properly. Parameter 'recordImpl' is missing or wrong in plugdescription.");
+			throw new RuntimeException("CSWFactory is not configured properly. Parameter 'recordImpl' is missing or wrong in plugdescription.");
 		}
 		return record;
 	}

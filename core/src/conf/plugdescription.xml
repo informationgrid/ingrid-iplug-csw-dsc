@@ -35,7 +35,7 @@
 	<string>motherIbusUrl</string>
 	<string>j</string>
 	<string>cswFactory</string>
-	<de.ingrid.iplug.csw.dsc.cswclient.CSWClientFactory>
+	<de.ingrid.iplug.csw.dsc.cswclient.CSWFactory>
 		<serviceUrl>http://www.portalu.de/csw</serviceUrl>
 		<clientImpl>de.ingrid.iplug.csw.dsc.cswclient.impl.GenericClient</clientImpl>
 		<requestImpl>de.ingrid.iplug.csw.dsc.cswclient.impl.SoapRequest</requestImpl>
@@ -44,7 +44,7 @@
 		<queryImpl>de.ingrid.iplug.csw.dsc.cswclient.impl.GenericQuery</queryImpl>
 		<searchResultImpl>de.ingrid.iplug.csw.dsc.cswclient.impl.GenericSearchResult</searchResultImpl>
 		<recordImpl>de.ingrid.iplug.csw.dsc.cswclient.impl.GenericRecord</recordImpl>
-	</de.ingrid.iplug.csw.dsc.cswclient.CSWClientFactory>
+	</de.ingrid.iplug.csw.dsc.cswclient.CSWFactory>
 	<string>cswQueryTemplate</string>
 	<de.ingrid.iplug.csw.dsc.cswclient.impl.GenericQuery>
 		<schema>CSW</schema>

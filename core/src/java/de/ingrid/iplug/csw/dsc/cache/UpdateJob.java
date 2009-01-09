@@ -19,7 +19,7 @@ import org.w3c.dom.Document;
 import org.xml.sax.InputSource;
 
 import de.ingrid.iplug.csw.dsc.cswclient.CSWClient;
-import de.ingrid.iplug.csw.dsc.cswclient.CSWClientFactory;
+import de.ingrid.iplug.csw.dsc.cswclient.CSWFactory;
 import de.ingrid.iplug.csw.dsc.cswclient.CSWQuery;
 import de.ingrid.iplug.csw.dsc.cswclient.CSWRecord;
 import de.ingrid.iplug.csw.dsc.cswclient.CSWSearchResult;
@@ -34,7 +34,7 @@ public class UpdateJob {
 
 	final protected static Log log = LogFactory.getLog(UpdateJob.class);
 	
-	protected CSWClientFactory factory = null;	
+	protected CSWFactory factory = null;	
 	protected Cache cache = null;
 	protected Document filter = null;
 
@@ -45,7 +45,7 @@ public class UpdateJob {
 	 * @param filterStr The ogc:Filter string to query the server with
 	 * @throws Exception 
 	 */
-	public void configure(CSWClientFactory factory, Cache cache, String filterStr) throws Exception {
+	public void configure(CSWFactory factory, Cache cache, String filterStr) throws Exception {
 		this.factory = factory;
 		this.cache = cache;
 		

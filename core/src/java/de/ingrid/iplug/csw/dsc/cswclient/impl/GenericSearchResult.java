@@ -11,7 +11,7 @@ import org.w3c.dom.Document;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 
-import de.ingrid.iplug.csw.dsc.cswclient.CSWClientFactory;
+import de.ingrid.iplug.csw.dsc.cswclient.CSWFactory;
 import de.ingrid.iplug.csw.dsc.cswclient.CSWQuery;
 import de.ingrid.iplug.csw.dsc.cswclient.CSWRecord;
 import de.ingrid.iplug.csw.dsc.cswclient.CSWSearchResult;
@@ -27,7 +27,7 @@ public class GenericSearchResult implements CSWSearchResult {
 	protected int startIndex = 0;
 
 	@Override
-	public void initialize(CSWClientFactory factory, CSWQuery query, Document document) throws Exception {
+	public void initialize(CSWFactory factory, CSWQuery query, Document document) throws Exception {
 		this.query = query;
 		this.document = document;
 		this.records = new ArrayList<CSWRecord>();

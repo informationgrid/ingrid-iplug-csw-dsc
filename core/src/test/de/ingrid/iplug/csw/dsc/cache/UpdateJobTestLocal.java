@@ -12,7 +12,7 @@ import de.ingrid.iplug.csw.dsc.TestUtil;
 import de.ingrid.iplug.csw.dsc.cache.Cache;
 import de.ingrid.iplug.csw.dsc.cache.UpdateJob;
 import de.ingrid.iplug.csw.dsc.cache.impl.DefaultFileCache;
-import de.ingrid.iplug.csw.dsc.cswclient.CSWClientFactory;
+import de.ingrid.iplug.csw.dsc.cswclient.CSWFactory;
 import de.ingrid.iplug.csw.dsc.cswclient.CSWQuery;
 import de.ingrid.iplug.csw.dsc.cswclient.CSWRecord;
 import de.ingrid.iplug.csw.dsc.cswclient.constants.ElementSetName;
@@ -34,7 +34,7 @@ public class UpdateJobTestLocal extends TestCase {
 		PlugDescription desc = (PlugDescription)serializer.deSerialize(this.descFile);
 
 		// get instances from plugdescription
-		CSWClientFactory factory = (CSWClientFactory)desc.get(ConfigurationKeys.CSW_FACTORY);
+		CSWFactory factory = (CSWFactory)desc.get(ConfigurationKeys.CSW_FACTORY);
 		factory.setQueryTemplate((CSWQuery)desc.get(ConfigurationKeys.CSW_QUERY_TEMPLATE));
 		Cache cache = (Cache)desc.get(ConfigurationKeys.CSW_CACHE);
 		if (cache instanceof DefaultFileCache)

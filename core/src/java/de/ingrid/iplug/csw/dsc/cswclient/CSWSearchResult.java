@@ -20,7 +20,7 @@ public interface CSWSearchResult {
 	 * param query
 	 * param document
 	 */
-	public void initialize(CSWClientFactory factory, CSWQuery query, Document document) throws Exception;
+	public void initialize(CSWFactory factory, CSWQuery query, Document document) throws Exception;
 	
 	/**
 	 * Get the associated query

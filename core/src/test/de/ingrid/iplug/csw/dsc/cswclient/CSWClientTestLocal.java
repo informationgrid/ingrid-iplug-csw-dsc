@@ -29,9 +29,9 @@ public class CSWClientTestLocal extends TestCase {
 		
 		// set up factory - KVPGet requests
 		PlugDescription desc = new PlugDescription();
-		desc.put("serviceUrl", CSWClientFactoryTest.URL_PORTALU);
-		desc.put("CSWRequestImpl", CSWClientFactoryTest.cswRequestKVPGetImpl);
-		CSWClientFactory f = CSWClientFactoryTest.createFactory(desc);
+		desc.put("serviceUrl", CSWFactoryTest.URL_PORTALU);
+		desc.put("CSWRequestImpl", CSWFactoryTest.cswRequestKVPGetImpl);
+		CSWFactory f = CSWFactoryTest.createFactory(desc);
 
 		// set up client
 		CSWClient client = (CSWClient)f.createClient();
@@ -53,9 +53,9 @@ public class CSWClientTestLocal extends TestCase {
 		
 		// set up factory - Soap requests
 		PlugDescription desc = new PlugDescription();
-		desc.put("serviceUrl", CSWClientFactoryTest.URL_DISY_PRELUDIO);
-		desc.put("CSWRequestImpl", CSWClientFactoryTest.cswRequestSoapImpl);
-		CSWClientFactory f = CSWClientFactoryTest.createFactory(desc);
+		desc.put("serviceUrl", CSWFactoryTest.URL_DISY_PRELUDIO);
+		desc.put("CSWRequestImpl", CSWFactoryTest.cswRequestSoapImpl);
+		CSWFactory f = CSWFactoryTest.createFactory(desc);
 
 		// set up client
 		CSWClient client = (CSWClient)f.createClient();
@@ -79,10 +79,10 @@ public class CSWClientTestLocal extends TestCase {
 		
 		// set up factory - Soap requests
 		PlugDescription desc = new PlugDescription();
-		//desc.put("serviceUrl", CSWClientFactoryTest.URL_DISY_PRELUDIO);
-		desc.put("serviceUrl", CSWClientFactoryTest.URL_PORTALU);
-		desc.put("CSWRequestImpl", CSWClientFactoryTest.cswRequestSoapImpl);
-		CSWClientFactory f = CSWClientFactoryTest.createFactory(desc);
+		//desc.put("serviceUrl", CSWFactoryTest.URL_DISY_PRELUDIO);
+		desc.put("serviceUrl", CSWFactoryTest.URL_PORTALU);
+		desc.put("CSWRequestImpl", CSWFactoryTest.cswRequestSoapImpl);
+		CSWFactory f = CSWFactoryTest.createFactory(desc);
 
 		// set up client
 		CSWClient client = (CSWClient)f.createClient();
@@ -119,10 +119,10 @@ public class CSWClientTestLocal extends TestCase {
 		
 		// set up factory - Soap requests
 		PlugDescription desc = new PlugDescription();
-		//desc.put("serviceUrl", CSWClientFactoryTest.URL_DISY_PRELUDIO);
-		desc.put("serviceUrl", CSWClientFactoryTest.URL_PORTALU);
-		desc.put("CSWRequestImpl", CSWClientFactoryTest.cswRequestSoapImpl);
-		CSWClientFactory f = CSWClientFactoryTest.createFactory(desc);
+		//desc.put("serviceUrl", CSWFactoryTest.URL_DISY_PRELUDIO);
+		desc.put("serviceUrl", CSWFactoryTest.URL_PORTALU);
+		desc.put("CSWRequestImpl", CSWFactoryTest.cswRequestSoapImpl);
+		CSWFactory f = CSWFactoryTest.createFactory(desc);
 
 		// set up client
 		CSWClient client = (CSWClient)f.createClient();

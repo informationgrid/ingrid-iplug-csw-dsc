@@ -10,7 +10,7 @@ import org.w3c.dom.Document;
 
 import de.ingrid.iplug.csw.dsc.cswclient.CSWCapabilities;
 import de.ingrid.iplug.csw.dsc.cswclient.CSWClient;
-import de.ingrid.iplug.csw.dsc.cswclient.CSWClientFactory;
+import de.ingrid.iplug.csw.dsc.cswclient.CSWFactory;
 import de.ingrid.iplug.csw.dsc.cswclient.CSWDomain;
 import de.ingrid.iplug.csw.dsc.cswclient.CSWQuery;
 import de.ingrid.iplug.csw.dsc.cswclient.CSWRecord;
@@ -23,10 +23,10 @@ public class GenericClient implements CSWClient {
 
 	final protected static Log log = LogFactory.getLog(GenericClient.class);
 	
-	protected CSWClientFactory factory;
+	protected CSWFactory factory;
 
 	@Override
-	public void configure(CSWClientFactory factory) {
+	public void configure(CSWFactory factory) {
 		this.factory = factory;
 	}
 

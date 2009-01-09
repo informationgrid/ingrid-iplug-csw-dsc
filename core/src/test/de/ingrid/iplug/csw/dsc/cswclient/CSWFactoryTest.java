@@ -7,7 +7,7 @@ package de.ingrid.iplug.csw.dsc.cswclient;
 import junit.framework.TestCase;
 import de.ingrid.utils.PlugDescription;
 
-public class CSWClientFactoryTest extends TestCase {
+public class CSWFactoryTest extends TestCase {
 
 	public static final String URL_PORTALU = "http://www.portalu.de/csw";
 	public static final String URL_WSVCSW = "http://csw.wsv.de/";
@@ -26,10 +26,10 @@ public class CSWClientFactoryTest extends TestCase {
      * Sets up the test fixture. 
      * (Called before every test case method.) 
      */ 
-    public static CSWClientFactory createFactory(PlugDescription desc) { 
+    public static CSWFactory createFactory(PlugDescription desc) { 
 
 		// create the factory
-		CSWClientFactory f = new CSWClientFactory();
+		CSWFactory f = new CSWFactory();
 		
 		if (desc.containsKey("serviceUrl"))
 			f.setServiceUrl(desc.get("serviceUrl").toString());
@@ -74,7 +74,7 @@ public class CSWClientFactoryTest extends TestCase {
     } 
 
 	public void testCreation() throws Exception {
-    	CSWClientFactory f = createFactory(new PlugDescription());
+    	CSWFactory f = createFactory(new PlugDescription());
 		
 		// tests
 		assertTrue("createClient returns a CSWClient implementation",

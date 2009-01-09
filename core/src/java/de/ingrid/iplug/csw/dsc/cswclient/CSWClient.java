@@ -19,7 +19,7 @@ public interface CSWClient {
 	 * Configure the CSWClient
 	 * @param factory
 	 */
-	public void configure(CSWClientFactory factory);
+	public void configure(CSWFactory factory);
 
 	/**
 	 * Do the OGC_Service.GetCapabilities request
@@ -41,7 +41,7 @@ public interface CSWClient {
 
 	/**
 	 * Do the CSW-Discovery.GetRecords request using the
-	 * CSWQuery implementation provided by CSWClientFactory
+	 * CSWQuery implementation provided by CSWFactory
 	 * @param constraint A OGC filter document
 	 * @param resultType The ResultType
 	 * @param elementSetName The ElementSetName

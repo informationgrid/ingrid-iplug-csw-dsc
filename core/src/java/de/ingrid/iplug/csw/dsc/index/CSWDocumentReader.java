@@ -12,7 +12,7 @@ import org.apache.commons.logging.LogFactory;
 import org.apache.lucene.document.Document;
 
 import de.ingrid.iplug.csw.dsc.cache.Cache;
-import de.ingrid.iplug.csw.dsc.cswclient.CSWClientFactory;
+import de.ingrid.iplug.csw.dsc.cswclient.CSWFactory;
 import de.ingrid.iplug.csw.dsc.cswclient.CSWRecord;
 import de.ingrid.iplug.csw.dsc.cswclient.constants.ElementSetName;
 import de.ingrid.iplug.csw.dsc.mapping.DocumentMapper;
@@ -25,12 +25,12 @@ public class CSWDocumentReader implements IDocumentReader {
 
 	final protected static Log log = LogFactory.getLog(CSWDocumentReader.class);
 	
-	protected CSWClientFactory factory = null;
+	protected CSWFactory factory = null;
 	protected Cache cache = null;
 	protected Iterator<String> recordIter = null;
 	protected DocumentMapper mapper = null;
 
-	public CSWDocumentReader(Cache cache, DocumentMapper mapper, CSWClientFactory factory) {
+	public CSWDocumentReader(Cache cache, DocumentMapper mapper, CSWFactory factory) {
 		
 		this.cache = cache;
 		this.recordIter = this.cache.getCachedRecordIds().iterator();

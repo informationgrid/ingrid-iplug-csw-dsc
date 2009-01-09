@@ -12,7 +12,7 @@ import org.quartz.StatefulJob;
 import de.ingrid.iplug.PlugServer;
 import de.ingrid.iplug.csw.dsc.ConfigurationKeys;
 import de.ingrid.iplug.csw.dsc.cache.Cache;
-import de.ingrid.iplug.csw.dsc.cswclient.CSWClientFactory;
+import de.ingrid.iplug.csw.dsc.cswclient.CSWFactory;
 import de.ingrid.iplug.csw.dsc.mapping.DocumentMapper;
 import de.ingrid.utils.PlugDescription;
 
@@ -30,7 +30,7 @@ public class IndexingJob implements StatefulJob {
 			PlugDescription plugDescription = PlugServer.getPlugDescription();
 			File file = plugDescription.getWorkinDirectory();
 			
-			CSWClientFactory factory = (CSWClientFactory)plugDescription.get(ConfigurationKeys.CSW_FACTORY);
+			CSWFactory factory = (CSWFactory)plugDescription.get(ConfigurationKeys.CSW_FACTORY);
 			DocumentMapper mapper = (DocumentMapper)plugDescription.get(ConfigurationKeys.CSW_MAPPER);
 			Cache cache = (Cache)plugDescription.get(ConfigurationKeys.CSW_CACHE);
 			
