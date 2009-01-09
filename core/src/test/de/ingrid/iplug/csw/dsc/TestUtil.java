@@ -1,13 +1,29 @@
 package de.ingrid.iplug.csw.dsc;
 
+import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
+import java.io.FileReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.util.HashSet;
+import java.util.Set;
+
+import org.w3c.dom.Document;
+import org.w3c.dom.Node;
+
+import de.ingrid.iplug.csw.dsc.cswclient.CSWRecord;
+import de.ingrid.iplug.csw.dsc.cswclient.constants.ElementSetName;
+import de.ingrid.iplug.csw.dsc.tools.StringUtils;
+import de.ingrid.iplug.csw.dsc.tools.XPathUtils;
 
 public class TestUtil {
+
+	/**
+	 * File related methods
+	 */
 
 	public static final boolean deleteDirectory(File directory) {
 		if (!directory.exists()) {
@@ -52,5 +68,69 @@ public class TestUtil {
 			outputStream.close();
 		}
 	}
+	
+	/**
+	 * Record related methods
+	 */
 
+    private final static String dataFolder = "./resources/test_records";
+
+	public static Set<String> getRecordIds() {
+		Set<String> recordIds = new HashSet<String>();
+		
+		// read all record ids from the storage
+		File dataLocation = new File(dataFolder);
+		File[] files = dataLocation.listFiles();
+		if (files != null) {
+			for (int i=0; i<files.length; i++) {
+				File file = files[i];
+				if (!file.isDirectory() && file.getName().endsWith(".xml")) {
+					String filename = file.getName();
+					recordIds.add(filename.substring(0, filename.lastIndexOf("_")));
+				}
+			}
+		}
+		return recordIds;
+	}
+
+	public static CSWRecord getRecord(String id, ElementSetName elementSetName, CSWRecord record) {
+		try {
+			return getRecordNode(id, elementSetName, record);
+		} catch (Exception e) {
+			throw new RuntimeException(e);
+		}
+	}
+
+	public static String getRecordTitle(CSWRecord record) {
+		return XPathUtils.getString(record.getOriginalResponse(), "//title/CharacterString");
+	}
+
+	public static void setRecordTitle(CSWRecord record, String title) {
+		Node titleNode = XPathUtils.getNode(record.getOriginalResponse(), "//title/CharacterString");
+		titleNode.setTextContent(title);
+	}
+
+	private static CSWRecord getRecordNode(String id, ElementSetName elementSetName, CSWRecord record) throws Exception {
+		
+		File file = new File(dataFolder+"/"+id+"_"+elementSetName.toString()+".xml");
+		StringBuilder content = new StringBuilder();
+		BufferedReader input =  new BufferedReader(new FileReader(file));
+		try {
+			String line = null;
+			while((line = input.readLine()) != null) {
+				content.append(line);
+				content.append(System.getProperty("line.separator"));
+			}
+			input.close();
+			input = null;
+			
+			Document node = StringUtils.stringToDocument(content.toString());
+			record.initialize(elementSetName, node);
+			return record;
+		}
+		finally {
+			if (input != null)
+				input.close();
+		}
+	}
 }

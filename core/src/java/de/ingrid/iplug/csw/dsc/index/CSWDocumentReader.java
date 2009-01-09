@@ -11,13 +11,11 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.apache.lucene.document.Document;
 
-import de.ingrid.iplug.csw.dsc.ConfigurationKeys;
 import de.ingrid.iplug.csw.dsc.cache.Cache;
 import de.ingrid.iplug.csw.dsc.cswclient.CSWClientFactory;
 import de.ingrid.iplug.csw.dsc.cswclient.CSWRecord;
 import de.ingrid.iplug.csw.dsc.cswclient.constants.ElementSetName;
 import de.ingrid.iplug.csw.dsc.mapping.DocumentMapper;
-import de.ingrid.utils.PlugDescription;
 
 /**
  * Provides documents for the Indexer
@@ -32,33 +30,12 @@ public class CSWDocumentReader implements IDocumentReader {
 	protected Iterator<String> recordIter = null;
 	protected DocumentMapper mapper = null;
 
-	/**
-	 * Constructor
-	 * @param plugDescription
-	 */
-	public CSWDocumentReader(PlugDescription plugDescription) {
+	public CSWDocumentReader(Cache cache, DocumentMapper mapper, CSWClientFactory factory) {
 		
-		// get the csw factory instance from the configuration 
-		if (plugDescription.containsKey(ConfigurationKeys.CSW_FACTORY)) {
-			this.factory = (CSWClientFactory)plugDescription.get(ConfigurationKeys.CSW_FACTORY);
-		}
-		else
-			throw new IllegalArgumentException("The plugdescription does not contain a key '"+ConfigurationKeys.CSW_FACTORY+"'");
-
-		// get the cache instance from the configuration 
-		if (plugDescription.containsKey(ConfigurationKeys.CSW_CACHE)) {
-			this.cache = (Cache)plugDescription.get(ConfigurationKeys.CSW_CACHE);
-			this.recordIter = this.cache.getCachedRecordIds().iterator();
-		}
-		else
-			throw new IllegalArgumentException("The plugdescription does not contain a key '"+ConfigurationKeys.CSW_CACHE+"'");
-
-		// get the mapper instance from the configuration 
-		if (plugDescription.containsKey(ConfigurationKeys.CSW_MAPPER)) {
-			this.mapper = (DocumentMapper)plugDescription.get(ConfigurationKeys.CSW_MAPPER);
-		}
-		else
-			throw new IllegalArgumentException("The plugdescription does not contain a key '"+ConfigurationKeys.CSW_MAPPER+"'");
+		this.cache = cache;
+		this.recordIter = this.cache.getCachedRecordIds().iterator();
+		this.mapper = mapper;
+		this.factory = factory;
 	}
 	
 	@Override

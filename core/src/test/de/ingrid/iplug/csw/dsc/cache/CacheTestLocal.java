@@ -8,7 +8,7 @@ import java.io.File;
 import java.util.Set;
 
 import junit.framework.TestCase;
-import de.ingrid.iplug.csw.dsc.TestData;
+import de.ingrid.iplug.csw.dsc.TestUtil;
 import de.ingrid.iplug.csw.dsc.cache.impl.DefaultFileCache;
 import de.ingrid.iplug.csw.dsc.cswclient.CSWRecord;
 import de.ingrid.iplug.csw.dsc.cswclient.constants.ElementSetName;
@@ -17,15 +17,17 @@ import de.ingrid.iplug.csw.dsc.cswclient.impl.GenericRecord;
 public class CacheTestLocal extends TestCase {
 	
 	final String CACHE_PATH = "./test_case_cache";
+	private Cache cache = null;
 
 	public void testPut() throws Exception {
 		
-		String id = "1A0D667F-56E7-4EA7-9893-248F1658E0BF";
+		String id = "A-12345";
 		ElementSetName elementSetName = ElementSetName.BRIEF;
 		
 		this.putRecord(id, elementSetName);
 		
-		File file = new File(CACHE_PATH+"/"+id+"_"+elementSetName+".xml");
+		DefaultFileCache cache = (DefaultFileCache)this.setupCache();
+		File file = new File(cache.getAbsoluteFilename(id, elementSetName));
 		assertTrue("The record exists in the filesystem.", file.exists());
 	}
 
@@ -103,32 +105,165 @@ public class CacheTestLocal extends TestCase {
 		assertTrue("No files are cached.", cachedIds.size() == 0);
 	}
 
+	public void testTransactionModifyWithCommit() throws Exception {
+
+		String id = "1A0D667F-56E7-4EA7-9893-248F1658E0BF";
+		ElementSetName elementSetName = ElementSetName.BRIEF;
+
+		Cache cache = this.setupCache();
+		
+		// create original set
+		CSWRecord originalRecord = TestUtil.getRecord(id, elementSetName, new GenericRecord());
+		String originalTitle = TestUtil.getRecordTitle(originalRecord);
+		cache.putRecord(originalRecord);
+		
+		// start transaction
+		Cache tmpCache = cache.startTransaction();
+		CSWRecord modifiedRecord = TestUtil.getRecord(id, elementSetName, new GenericRecord());
+		String modifiedTitle = "Modified Title "+System.currentTimeMillis();
+		TestUtil.setRecordTitle(modifiedRecord, modifiedTitle);
+		tmpCache.putRecord(modifiedRecord);
+		
+		// get original record while transaction is open
+		CSWRecord originalRecordInTransaction = cache.getRecord(id, elementSetName, new GenericRecord());
+		assertTrue("The cached record title has not changed, since the transaction is not committet.", 
+				originalTitle.equals(TestUtil.getRecordTitle(originalRecordInTransaction)));
+		
+		// commit the transaction
+		tmpCache.commitTransaction();
+		
+		// get original record after transaction is committed
+		CSWRecord originalRecordAfterTransaction = cache.getRecord(id, elementSetName, new GenericRecord());
+		assertTrue("The cached record title is changed after the transaction is committet.", 
+				modifiedTitle.equals(TestUtil.getRecordTitle(originalRecordAfterTransaction)));
+		
+		// check if the cache temporary cache is deleted
+		File tmpPath = new File(((DefaultFileCache)tmpCache).getTempPath());
+		assertTrue("The temporary cache is deleted.", !tmpPath.exists());
+	}
+
+	public void testTransactionModifyWithRollback() throws Exception {
+
+		String id = "1A0D667F-56E7-4EA7-9893-248F1658E0BF";
+		ElementSetName elementSetName = ElementSetName.BRIEF;
+
+		Cache cache = this.setupCache();
+		
+		// create original set
+		CSWRecord originalRecord = TestUtil.getRecord(id, elementSetName, new GenericRecord());
+		String originalTitle = TestUtil.getRecordTitle(originalRecord);
+		cache.putRecord(originalRecord);
+		
+		// start transaction
+		Cache tmpCache = cache.startTransaction();
+		CSWRecord modifiedRecord = TestUtil.getRecord(id, elementSetName, new GenericRecord());
+		String modifiedTitle = "Modified Title "+System.currentTimeMillis();
+		TestUtil.setRecordTitle(modifiedRecord, modifiedTitle);
+		tmpCache.putRecord(modifiedRecord);
+		
+		// get original record while transaction is open
+		CSWRecord originalRecordInTransaction = cache.getRecord(id, elementSetName, new GenericRecord());
+		assertTrue("The cached record title has not changed, since the transaction is not committet.", 
+				originalTitle.equals(TestUtil.getRecordTitle(originalRecordInTransaction)));
+		
+		// rollback the transaction
+		tmpCache.rollbackTransaction();
+		
+		// get original record after transaction is committed
+		CSWRecord originalRecordAfterTransaction = cache.getRecord(id, elementSetName, new GenericRecord());
+		assertTrue("The cached record title is changed after the transaction is committet.", 
+				originalTitle.equals(TestUtil.getRecordTitle(originalRecordAfterTransaction)));
+		
+		// check if the cache temporary cache is deleted
+		File tmpPath = new File(((DefaultFileCache)tmpCache).getTempPath());
+		assertTrue("The temporary cache is deleted.", !tmpPath.exists());
+	}
+
+	public void testTransactionRemoveWithCommit() throws Exception {
+
+		String id = "1A0D667F-56E7-4EA7-9893-248F1658E0BF";
+		ElementSetName elementSetName = ElementSetName.BRIEF;
+
+		Cache cache = this.setupCache();
+		
+		// create original set
+		CSWRecord originalRecord = TestUtil.getRecord(id, elementSetName, new GenericRecord());
+		cache.putRecord(originalRecord);
+		
+		// start transaction
+		Cache tmpCache = cache.startTransaction();
+		tmpCache.removeRecord(id);
+
+		// check if the record is removed from the tmp cache
+		assertTrue("The record is deleted from temp cache.", !tmpCache.isCached(id, elementSetName));
+		
+		// check if the record is still in the original cache
+		assertTrue("The cached record still exists, since the transaction is not committet.", cache.isCached(id, elementSetName));
+		
+		// commit the transaction
+		tmpCache.commitTransaction();
+		
+		// check if the original record is deleted after transaction is committed
+		assertTrue("The cached record deleted after the transaction is committet.", !cache.isCached(id, elementSetName));
+		
+		// check if the cache temporary cache is deleted
+		File tmpPath = new File(((DefaultFileCache)tmpCache).getTempPath());
+		assertTrue("The temporary cache is deleted.", !tmpPath.exists());
+	}
+
+	public void testTransactionRemoveWithRollback() throws Exception {
+
+		String id = "1A0D667F-56E7-4EA7-9893-248F1658E0BF";
+		ElementSetName elementSetName = ElementSetName.BRIEF;
+
+		Cache cache = this.setupCache();
+		
+		// create original set
+		CSWRecord originalRecord = TestUtil.getRecord(id, elementSetName, new GenericRecord());
+		cache.putRecord(originalRecord);
+		
+		// start transaction
+		Cache tmpCache = cache.startTransaction();
+		tmpCache.removeRecord(id);
+		
+		// check if the record is removed from the tmp cache
+		assertTrue("The record is deleted from temp cache.", !tmpCache.isCached(id, elementSetName));
+		
+		// check if the record is still in the original cache
+		assertTrue("The cached record still exists, since the transaction is not committet.", cache.isCached(id, elementSetName));
+		
+		// commit the transaction
+		tmpCache.rollbackTransaction();
+		
+		// check if the original record is deleted after transaction is committed
+		assertTrue("The cached record still exists after the transaction is committet.", cache.isCached(id, elementSetName));
+		
+		// check if the cache temporary cache is deleted
+		File tmpPath = new File(((DefaultFileCache)tmpCache).getTempPath());
+		assertTrue("The temporary cache is deleted.", !tmpPath.exists());
+	}
+
 	/**
 	 * Helper methods
 	 */
 
 	protected void tearDown() {
-		// remove all files from the cache
-		File cacheLocation = new File(CACHE_PATH);
-		if (cacheLocation.exists()) {
-			File[] files = cacheLocation.listFiles();
-			if (files != null) {
-				for (int i=0; i<files.length; i++) {
-					files[i].delete();
-				}
-			}
-		}		
+		// delete cache
+		TestUtil.deleteDirectory(new File(CACHE_PATH));
 	}
 	
 	private Cache setupCache() {
-		DefaultFileCache cache = new DefaultFileCache();
-		cache.setCachePath(CACHE_PATH);
-		return cache;
+		if (this.cache == null) {
+			DefaultFileCache cache = new DefaultFileCache();
+			cache.setCachePath(CACHE_PATH);
+			this.cache = cache;
+		}
+		return this.cache;
 	}
 	
 	private void putRecord(String id, ElementSetName elementSetName) throws Exception {
 		Cache cache = this.setupCache();
-		CSWRecord record = TestData.getRecord(id, elementSetName, new GenericRecord());
+		CSWRecord record = TestUtil.getRecord(id, elementSetName, new GenericRecord());
 		cache.putRecord(record);
 	}
 }

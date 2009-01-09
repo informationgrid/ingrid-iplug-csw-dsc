@@ -4,7 +4,6 @@
 
 package de.ingrid.iplug.csw.dsc.cswclient.impl;
 
-import java.io.BufferedReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
 
@@ -87,7 +86,6 @@ public class KVPGetRequest implements CSWRequest {
 		// and make the call
 		Document result = null;
 		HttpURLConnection conn = null;
-		BufferedReader rd = null;
 		try {
 			URL url = new URL(requestURL);
 			conn = (HttpURLConnection)url.openConnection();
@@ -104,6 +102,8 @@ public class KVPGetRequest implements CSWRequest {
 		        DocumentBuilder builder = domFactory.newDocumentBuilder();
 		        result = builder.parse(conn.getInputStream());
 			}
+			conn.disconnect();
+			conn = null;
 		}
 		catch (Exception e) {
 			throw e;
@@ -111,8 +111,6 @@ public class KVPGetRequest implements CSWRequest {
 		finally {
 			if (conn != null)
 				conn.disconnect();
-			if (rd != null)
-				rd.close();
 		}
 		return result;
 	}

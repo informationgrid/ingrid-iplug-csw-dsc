@@ -8,6 +8,7 @@ import java.io.StringReader;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
@@ -65,6 +66,9 @@ public class UpdateJob {
 		
 		int numTotal = 0;
 		List<String> fetchedRecordIds = new ArrayList<String>();
+		
+		// get cached record ids (for later removal of records that do not exist anymore)
+		Set<String> cachedRecordIds = this.cache.getCachedRecordIds();
 
 		// set up client
 		CSWClient client = (CSWClient)this.factory.createClient();
@@ -102,9 +106,16 @@ public class UpdateJob {
 				processResult(result, fetchedRecordIds);			
 			}
 		}
+		
 		// check duplicates
 		int duplicates = fetchedRecordIds.size() - new HashSet<String>(fetchedRecordIds).size();
 		log.info("Fetched "+fetchedRecordIds.size()+" records of "+numTotal+". Duplicates: "+duplicates);
+		
+		// remove deprecated records
+		for (String cachedRecordId : cachedRecordIds) {
+			if (!fetchedRecordIds.contains(cachedRecordId))
+				this.cache.removeRecord(cachedRecordId);
+		}
 	}
 	
 	protected void processResult(CSWSearchResult result, List<String> fetchedRecordIds) throws Exception {

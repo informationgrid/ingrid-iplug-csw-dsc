@@ -6,6 +6,7 @@ package de.ingrid.iplug.csw.dsc.tools;
 
 import java.io.StringReader;
 import java.io.StringWriter;
+import java.util.UUID;
 
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
@@ -55,4 +56,13 @@ public class StringUtils {
 	    inStream.setCharacterStream(new StringReader(string));
 	    return builder.parse(inStream);		
 	}
+	
+    public static String generateUuid() { 
+        UUID uuid = UUID.randomUUID();
+        StringBuffer idcUuid = new StringBuffer(uuid.toString().toUpperCase()); 
+        while (idcUuid.length() < 36) { 
+             idcUuid.append("0"); 
+        }
+        return idcUuid.toString();
+   }
 }

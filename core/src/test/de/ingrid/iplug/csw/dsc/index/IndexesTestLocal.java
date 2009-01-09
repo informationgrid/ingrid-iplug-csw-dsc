@@ -5,12 +5,13 @@ import java.util.List;
 
 import junit.framework.TestCase;
 import de.ingrid.iplug.csw.dsc.ConfigurationKeys;
-import de.ingrid.iplug.csw.dsc.TestData;
 import de.ingrid.iplug.csw.dsc.TestUtil;
 import de.ingrid.iplug.csw.dsc.cache.Cache;
 import de.ingrid.iplug.csw.dsc.cache.impl.DefaultFileCache;
+import de.ingrid.iplug.csw.dsc.cswclient.CSWClientFactory;
 import de.ingrid.iplug.csw.dsc.cswclient.constants.ElementSetName;
 import de.ingrid.iplug.csw.dsc.cswclient.impl.GenericRecord;
+import de.ingrid.iplug.csw.dsc.mapping.DocumentMapper;
 import de.ingrid.utils.IngridHits;
 import de.ingrid.utils.PlugDescription;
 import de.ingrid.utils.queryparser.QueryStringParser;
@@ -51,26 +52,37 @@ public class IndexesTestLocal extends TestCase {
 		XMLSerializer serializer = new XMLSerializer();
 		serializer.aliasClass(PlugDescription.class.getName(), PlugDescription.class);
 		PlugDescription desc = (PlugDescription)serializer.deSerialize(this.descFile);
+
+		CSWClientFactory factory = (CSWClientFactory)desc.get(ConfigurationKeys.CSW_FACTORY);
+		DocumentMapper mapper = (DocumentMapper)desc.get(ConfigurationKeys.CSW_MAPPER);
 		
 		// prepare the cache
 		Cache cache = (Cache)desc.get(ConfigurationKeys.CSW_CACHE);
 		if (cache instanceof DefaultFileCache)
 			((DefaultFileCache)cache).setCachePath(cachePath);
-		cache.removeAllRecords();
-		for(String id : TestData.getRecordIds())
-			cache.putRecord(TestData.getRecord(id, ElementSetName.BRIEF, new GenericRecord()));
+		
+		// start transaction
+		Cache tmpCache = cache.startTransaction();
+		tmpCache.removeAllRecords();
+		
+		// fill tmp cache
+		for(String id : TestUtil.getRecordIds())
+			tmpCache.putRecord(TestUtil.getRecord(id, ElementSetName.BRIEF, new GenericRecord()));
 
+		// run indexer
 		Indexer indexer = new Indexer();
 		indexer.open(folder);
-
-		List<IDocumentReader> collection = DocumentReaderFactory.getDocumentReaderCollection(desc);
+		List<IDocumentReader> collection = DocumentReaderFactory.getDocumentReaderCollection(tmpCache, mapper, factory);
 		for (IDocumentReader documentReader : collection) {
 			indexer.index(documentReader);
 		}
-
 		indexer.close();
-		DSCSearcher searcher = new DSCSearcher(new File(folder, "index"),
-				"content");
+		
+		// commit transaction
+		tmpCache.commitTransaction();
+		
+		// do some search tests
+		DSCSearcher searcher = new DSCSearcher(new File(folder, "index"), "content");
 		IngridHits hits = searcher.search(QueryStringParser.parse("1"), 0, 100);
 		assertNotNull(hits);
 		assertTrue(hits.getHits().length > 0);
