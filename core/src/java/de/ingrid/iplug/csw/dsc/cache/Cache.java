@@ -7,6 +7,7 @@ package de.ingrid.iplug.csw.dsc.cache;
 import java.io.IOException;
 import java.util.Set;
 
+import de.ingrid.iplug.csw.dsc.cswclient.CSWFactory;
 import de.ingrid.iplug.csw.dsc.cswclient.CSWRecord;
 import de.ingrid.iplug.csw.dsc.cswclient.constants.ElementSetName;
 
@@ -21,6 +22,12 @@ import de.ingrid.iplug.csw.dsc.cswclient.constants.ElementSetName;
  * @author ingo herwig <ingo@wemove.com>
  */
 public interface Cache {
+
+	/**
+	 * Configure the cache.
+	 * @param factory
+	 */
+	public void configure(CSWFactory factory);
 
 	/**
 	 * Get the ids all the records, that are cached.
@@ -40,10 +47,9 @@ public interface Cache {
 	 * Get a record.
 	 * @param id
 	 * @param elementSetName
-	 * @param record The record instance to fill
 	 * @return CSWRecord
 	 */
-	public CSWRecord getRecord(String id, ElementSetName elementSetName, CSWRecord record) throws IOException;
+	public CSWRecord getRecord(String id, ElementSetName elementSetName) throws IOException;
 
 	/**
 	 * Store a record.

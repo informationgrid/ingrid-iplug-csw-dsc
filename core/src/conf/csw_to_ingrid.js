@@ -11,11 +11,11 @@
  */
 importPackage(Packages.de.ingrid.iplug.csw.dsc.tools);
 
-log.debug("Mapping csw record "+cswRecord.getId()+" to lucene document\n");
+log.debug("Mapping csw record "+cswRecord.getId()+" to ingrid document");
 
 // get the xml content of the record
 var recordNode = cswRecord.getOriginalResponse();
 
-// attribute extraction example
+// map the record id
 var id = XPathUtils.getString(recordNode, "//fileIdentifier/CharacterString")
-log.debug("Extracted id: "+id+"\n");
+document.put("T01_object.obj_id", id);

@@ -18,6 +18,8 @@ import de.ingrid.iplug.csw.dsc.cswclient.CSWRecord;
 import de.ingrid.iplug.csw.dsc.cswclient.constants.ElementSetName;
 import de.ingrid.iplug.csw.dsc.tools.StringUtils;
 import de.ingrid.iplug.csw.dsc.tools.XPathUtils;
+import de.ingrid.utils.PlugDescription;
+import de.ingrid.utils.xml.XMLSerializer;
 
 public class TestUtil {
 
@@ -67,6 +69,15 @@ public class TestUtil {
 			inputStream.close();
 			outputStream.close();
 		}
+	}
+	
+	public static PlugDescription getPlugDescription() throws IOException {
+		// read the PlugDescription
+	    File descFile = new File("src/conf/plugdescription.xml");
+		XMLSerializer serializer = new XMLSerializer();
+		serializer.aliasClass(PlugDescription.class.getName(), PlugDescription.class);
+		PlugDescription desc = (PlugDescription)serializer.deSerialize(descFile);
+		return desc;
 	}
 	
 	/**

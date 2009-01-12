@@ -1,5 +1,7 @@
 package de.ingrid.iplug.csw.dsc.index;
 
+import java.io.File;
+
 import junit.framework.TestCase;
 
 import org.apache.lucene.analysis.WhitespaceAnalyzer;
@@ -11,24 +13,33 @@ import org.apache.lucene.queryParser.QueryParser;
 import org.apache.lucene.search.Hits;
 import org.apache.lucene.search.IndexSearcher;
 
+import de.ingrid.iplug.csw.dsc.TestUtil;
+
 /**
  * 
  */
 public class CaseTestLocal extends TestCase {
 
+	private final File folder = new File("./test_case_index");
+
+	@Override
+	protected void tearDown() throws Exception {
+		System.gc();
+		TestUtil.deleteDirectory(folder);
+	}
+
     /**
      * @throws Exception
      */
     public void testCasesAndTest() throws Exception {
-        String path = "./test_case_index";
         StandardAnalyzer analyzer = new StandardAnalyzer();
         Document document = new Document();
         document.add(Field.Text("test", "Test 23"));
         document.add(Field.Keyword("key", "T23t"));
-        IndexWriter writer = new IndexWriter(path, analyzer, true);
+        IndexWriter writer = new IndexWriter(folder.getName(), analyzer, true);
         writer.addDocument(document);
         writer.close();
-        IndexSearcher searcher = new IndexSearcher(path);
+        IndexSearcher searcher = new IndexSearcher(folder.getName());
         
         Hits hits = searcher.search(QueryParser.parse("Test", "test", analyzer));
         assertEquals(1, hits.length());

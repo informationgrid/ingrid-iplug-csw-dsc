@@ -12,7 +12,6 @@ import org.apache.commons.logging.LogFactory;
 import org.apache.lucene.document.Document;
 
 import de.ingrid.iplug.csw.dsc.cache.Cache;
-import de.ingrid.iplug.csw.dsc.cswclient.CSWFactory;
 import de.ingrid.iplug.csw.dsc.cswclient.CSWRecord;
 import de.ingrid.iplug.csw.dsc.cswclient.constants.ElementSetName;
 import de.ingrid.iplug.csw.dsc.mapping.DocumentMapper;
@@ -25,17 +24,15 @@ public class CSWDocumentReader implements IDocumentReader {
 
 	final protected static Log log = LogFactory.getLog(CSWDocumentReader.class);
 	
-	protected CSWFactory factory = null;
 	protected Cache cache = null;
 	protected Iterator<String> recordIter = null;
 	protected DocumentMapper mapper = null;
 
-	public CSWDocumentReader(Cache cache, DocumentMapper mapper, CSWFactory factory) {
+	public CSWDocumentReader(Cache cache, DocumentMapper mapper) {
 		
 		this.cache = cache;
 		this.recordIter = this.cache.getCachedRecordIds().iterator();
 		this.mapper = mapper;
-		this.factory = factory;
 	}
 	
 	@Override
@@ -47,20 +44,14 @@ public class CSWDocumentReader implements IDocumentReader {
 	@Override
 	public Document next() {
 		
-		Document document = new Document();
+		Document luceneDocument = new Document();
 
 		// get the record from the cache
 		String recordId = this.recordIter.next();
 		ElementSetName elementSetName = ElementSetName.BRIEF;
-		CSWRecord record = null;
+		CSWRecord cswRecord = null;
 		try {
-			record = this.factory.createRecord();
-		} catch (RuntimeException e) {
-			// record creation went wrong most likely because of configuration problems
-			throw new RuntimeException("Could not create a record", e);
-		}
-		try {
-			record = this.cache.getRecord(recordId, elementSetName, record);
+			cswRecord = this.cache.getRecord(recordId, elementSetName);
 		} catch (IOException e) {
 			// the cache entry does not exist, so we proceed with an empty record
 			throw new RuntimeException("Could not retrieve cached record "+recordId+" ["+elementSetName+"]", e);
@@ -68,12 +59,12 @@ public class CSWDocumentReader implements IDocumentReader {
 		
 		// do the mapping from CSWRecord to Document
 		try {
-			document = this.mapper.mapCswToLucene(record);
+			luceneDocument = this.mapper.mapCswToLucene(cswRecord);
 		} catch (Exception e) {
 			throw new RuntimeException("Could not map record "+recordId+" ["+elementSetName+"]", e);
 		}
 		
-		return document;
+		return luceneDocument;
 	}
 
 	@Override

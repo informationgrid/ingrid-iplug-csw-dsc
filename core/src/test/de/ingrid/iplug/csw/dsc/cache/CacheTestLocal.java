@@ -10,13 +10,14 @@ import java.util.Set;
 import junit.framework.TestCase;
 import de.ingrid.iplug.csw.dsc.TestUtil;
 import de.ingrid.iplug.csw.dsc.cache.impl.DefaultFileCache;
+import de.ingrid.iplug.csw.dsc.cswclient.CSWFactory;
 import de.ingrid.iplug.csw.dsc.cswclient.CSWRecord;
 import de.ingrid.iplug.csw.dsc.cswclient.constants.ElementSetName;
 import de.ingrid.iplug.csw.dsc.cswclient.impl.GenericRecord;
 
 public class CacheTestLocal extends TestCase {
 	
-	final String CACHE_PATH = "./test_case_cache";
+	private final String cachePath = "./test_case_cache";
 	private Cache cache = null;
 
 	public void testPut() throws Exception {
@@ -51,7 +52,7 @@ public class CacheTestLocal extends TestCase {
 		this.putRecord(id, elementSetName);
 		
 		Cache cache = this.setupCache();
-		CSWRecord record = cache.getRecord(id, elementSetName, new GenericRecord());
+		CSWRecord record = cache.getRecord(id, elementSetName);
 		assertTrue("The cached record has the requested id.", id.equals(record.getId()));
 	}
 
@@ -125,7 +126,7 @@ public class CacheTestLocal extends TestCase {
 		tmpCache.putRecord(modifiedRecord);
 		
 		// get original record while transaction is open
-		CSWRecord originalRecordInTransaction = cache.getRecord(id, elementSetName, new GenericRecord());
+		CSWRecord originalRecordInTransaction = cache.getRecord(id, elementSetName);
 		assertTrue("The cached record title has not changed, since the transaction is not committet.", 
 				originalTitle.equals(TestUtil.getRecordTitle(originalRecordInTransaction)));
 		
@@ -133,7 +134,7 @@ public class CacheTestLocal extends TestCase {
 		tmpCache.commitTransaction();
 		
 		// get original record after transaction is committed
-		CSWRecord originalRecordAfterTransaction = cache.getRecord(id, elementSetName, new GenericRecord());
+		CSWRecord originalRecordAfterTransaction = cache.getRecord(id, elementSetName);
 		assertTrue("The cached record title is changed after the transaction is committet.", 
 				modifiedTitle.equals(TestUtil.getRecordTitle(originalRecordAfterTransaction)));
 		
@@ -162,7 +163,7 @@ public class CacheTestLocal extends TestCase {
 		tmpCache.putRecord(modifiedRecord);
 		
 		// get original record while transaction is open
-		CSWRecord originalRecordInTransaction = cache.getRecord(id, elementSetName, new GenericRecord());
+		CSWRecord originalRecordInTransaction = cache.getRecord(id, elementSetName);
 		assertTrue("The cached record title has not changed, since the transaction is not committet.", 
 				originalTitle.equals(TestUtil.getRecordTitle(originalRecordInTransaction)));
 		
@@ -170,7 +171,7 @@ public class CacheTestLocal extends TestCase {
 		tmpCache.rollbackTransaction();
 		
 		// get original record after transaction is committed
-		CSWRecord originalRecordAfterTransaction = cache.getRecord(id, elementSetName, new GenericRecord());
+		CSWRecord originalRecordAfterTransaction = cache.getRecord(id, elementSetName);
 		assertTrue("The cached record title is changed after the transaction is committet.", 
 				originalTitle.equals(TestUtil.getRecordTitle(originalRecordAfterTransaction)));
 		
@@ -249,13 +250,16 @@ public class CacheTestLocal extends TestCase {
 
 	protected void tearDown() {
 		// delete cache
-		TestUtil.deleteDirectory(new File(CACHE_PATH));
+		TestUtil.deleteDirectory(new File(cachePath));
 	}
 	
 	private Cache setupCache() {
 		if (this.cache == null) {
+			CSWFactory factory = new CSWFactory();
+			factory.setRecordImpl("de.ingrid.iplug.csw.dsc.cswclient.impl.GenericRecord");
 			DefaultFileCache cache = new DefaultFileCache();
-			cache.setCachePath(CACHE_PATH);
+			cache.configure(factory);
+			cache.setCachePath(cachePath);
 			this.cache = cache;
 		}
 		return this.cache;

@@ -21,6 +21,7 @@ import org.apache.commons.logging.LogFactory;
 import org.w3c.dom.Document;
 
 import de.ingrid.iplug.csw.dsc.cache.Cache;
+import de.ingrid.iplug.csw.dsc.cswclient.CSWFactory;
 import de.ingrid.iplug.csw.dsc.cswclient.CSWRecord;
 import de.ingrid.iplug.csw.dsc.cswclient.constants.ElementSetName;
 import de.ingrid.iplug.csw.dsc.tools.FileUtils;
@@ -31,6 +32,8 @@ public class DefaultFileCache implements Cache, Serializable {
 	private static final long serialVersionUID = DefaultFileCache.class.getName().hashCode();
 	
 	final protected static Log log = LogFactory.getLog(DefaultFileCache.class);
+
+	protected CSWFactory factory = null;
 
 	protected boolean isInitialized = false;
 	protected boolean inTransaction = false;
@@ -67,6 +70,10 @@ public class DefaultFileCache implements Cache, Serializable {
 	 * Initialize the cache
 	 */
 	protected void initialize() {
+		// check configuration
+		if (this.factory == null)
+			throw new RuntimeException("Cache is not configured properly. The 'factory' property is not set.");
+		
 		// check for original path
 		String originalPath = this.getCachePath();
 		if (originalPath == null)
@@ -209,6 +216,11 @@ public class DefaultFileCache implements Cache, Serializable {
 	/**
 	 * Cache interface implementation
 	 */
+
+	@Override
+	public void configure(CSWFactory factory) {
+		this.factory = factory;
+	}
 	
 	@Override
 	public Set<String> getCachedRecordIds() {
@@ -229,7 +241,7 @@ public class DefaultFileCache implements Cache, Serializable {
 	}
 
 	@Override
-	public CSWRecord getRecord(String id, ElementSetName elementSetName, CSWRecord record) throws IOException {
+	public CSWRecord getRecord(String id, ElementSetName elementSetName) throws IOException {
 		if (!isInitialized())
 			initialize();
 		
@@ -249,6 +261,7 @@ public class DefaultFileCache implements Cache, Serializable {
 				input = null;
 				
 				Document node = StringUtils.stringToDocument(content.toString());
+				CSWRecord record = this.factory.createRecord();
 				record.initialize(elementSetName, node);
 				return record;
 			}
@@ -320,6 +333,7 @@ public class DefaultFileCache implements Cache, Serializable {
 			initialize();
 
 		DefaultFileCache cache = new DefaultFileCache();
+		cache.configure(this.factory);
 		
 		// the original content of the new cache instance
 		// is the content of this cache

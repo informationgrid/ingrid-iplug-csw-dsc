@@ -4,13 +4,9 @@
 
 package de.ingrid.iplug.csw.dsc.cache;
 
-import java.io.File;
-
 import junit.framework.TestCase;
 import de.ingrid.iplug.csw.dsc.ConfigurationKeys;
 import de.ingrid.iplug.csw.dsc.TestUtil;
-import de.ingrid.iplug.csw.dsc.cache.Cache;
-import de.ingrid.iplug.csw.dsc.cache.UpdateJob;
 import de.ingrid.iplug.csw.dsc.cache.impl.DefaultFileCache;
 import de.ingrid.iplug.csw.dsc.cswclient.CSWFactory;
 import de.ingrid.iplug.csw.dsc.cswclient.CSWQuery;
@@ -19,24 +15,20 @@ import de.ingrid.iplug.csw.dsc.cswclient.constants.ElementSetName;
 import de.ingrid.iplug.csw.dsc.cswclient.constants.OutputFormat;
 import de.ingrid.iplug.csw.dsc.cswclient.impl.GenericRecord;
 import de.ingrid.utils.PlugDescription;
-import de.ingrid.utils.xml.XMLSerializer;
 
 public class UpdateJobTestLocal extends TestCase {
 
-    private final File descFile = new File("src/conf/plugdescription.xml");
     private final String cachePath = "./test_case_updatejob";
 	
 	public void testExecute() throws Exception {
 		
-		// read the PlugDescription
-		XMLSerializer serializer = new XMLSerializer();
-		serializer.aliasClass(PlugDescription.class.getName(), PlugDescription.class);
-		PlugDescription desc = (PlugDescription)serializer.deSerialize(this.descFile);
-
+		PlugDescription desc = TestUtil.getPlugDescription();
+		
 		// get instances from plugdescription
 		CSWFactory factory = (CSWFactory)desc.get(ConfigurationKeys.CSW_FACTORY);
 		factory.setQueryTemplate((CSWQuery)desc.get(ConfigurationKeys.CSW_QUERY_TEMPLATE));
 		Cache cache = (Cache)desc.get(ConfigurationKeys.CSW_CACHE);
+		cache.configure(factory);
 		if (cache instanceof DefaultFileCache)
 			((DefaultFileCache)cache).setCachePath(cachePath);
 		
@@ -66,11 +58,11 @@ public class UpdateJobTestLocal extends TestCase {
 		
 		// check for a cached record
 		String id = "1AFDCB03-3818-40F1-9560-9FB082956357";
-		CSWRecord recordBrief = cache.getRecord(id, ElementSetName.BRIEF, factory.createRecord());
+		CSWRecord recordBrief = cache.getRecord(id, ElementSetName.BRIEF);
 		assertTrue("record "+id+" was cached", recordBrief.getId().equals(id));
-		CSWRecord recordSummary = cache.getRecord(id, ElementSetName.SUMMARY, factory.createRecord());
+		CSWRecord recordSummary = cache.getRecord(id, ElementSetName.SUMMARY);
 		assertTrue("record "+id+" was cached", recordSummary.getId().equals(id));
-		CSWRecord recordFull = cache.getRecord(id, ElementSetName.FULL, factory.createRecord());
+		CSWRecord recordFull = cache.getRecord(id, ElementSetName.FULL);
 		assertTrue("record "+id+" was cached", recordFull.getId().equals(id));
 		
 		// check if old record is removed

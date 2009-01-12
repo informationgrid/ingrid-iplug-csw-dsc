@@ -12,21 +12,23 @@
 importPackage(Packages.org.apache.lucene.document);
 importPackage(Packages.de.ingrid.iplug.csw.dsc.tools);
 
-log.debug("Mapping csw record "+cswRecord.getId()+" to lucene document\n");
+var _store = true;
+var _index = true;
+var _token = true;
+
+log.debug("Mapping csw record "+cswRecord.getId()+" to lucene document");
 
 // get the xml content of the record
 var recordNode = cswRecord.getOriginalResponse();
 
-// attribute extraction example
+// map the record id
 var id = XPathUtils.getString(recordNode, "//fileIdentifier/CharacterString")
-log.debug("Extracted id: "+id+"\n");
+document.add(new Field("T01_object.obj_id", id, _store, _index, !_token));
+
 
 // code below is copied from DummyDocumentReader as demonstration 
 // (satisfies IndexesTest.testIndexer())
 var _counter = 1;
-var _store = true;
-var _index = true;
-var _token = true;
 
 document.add(new Field("datatype", "default", !_store, _index, !_token));
 document.add(new Field("title", "title " + _counter, _store, _index, _token));

@@ -63,7 +63,7 @@ public class ScriptMapper implements DocumentMapper, Serializable {
 	 */
 	protected void doMap(String script, Map<String, Object> parameters) throws Exception {
         // check if the script exists
-        File scriptFile = new File(this.cswToLuceneMapping);
+        File scriptFile = new File(script);
         if (!scriptFile.exists())
         	throw new IOException("The mapping script "+scriptFile.getAbsolutePath()+" does not exist.");
 

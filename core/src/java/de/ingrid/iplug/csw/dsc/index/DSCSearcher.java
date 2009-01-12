@@ -12,6 +12,9 @@ import java.util.List;
 import org.apache.lucene.document.Document;
 import org.apache.lucene.search.IndexSearcher;
 
+import de.ingrid.iplug.csw.dsc.ConfigurationKeys;
+import de.ingrid.iplug.csw.dsc.cache.Cache;
+import de.ingrid.iplug.csw.dsc.mapping.DocumentMapper;
 import de.ingrid.iplug.scheduler.SchedulingService;
 import de.ingrid.utils.IIngridHitEnrichment;
 import de.ingrid.utils.IngridHit;
@@ -34,6 +37,9 @@ public class DSCSearcher extends AbstractSearcher {
 
 	private List<IIngridHitEnrichment> _enrichmentCollection = new ArrayList<IIngridHitEnrichment>();
 
+	private DocumentMapper mapper = null;
+	private Cache cache = null;
+
 	/**
 	 * Initilaizes the DSC searcher variant.
 	 */
@@ -50,6 +56,7 @@ public class DSCSearcher extends AbstractSearcher {
 		super(file, string);
 	}
 
+	@SuppressWarnings("unchecked")
 	public void configure(PlugDescription plugDescription) throws Exception {
 		this.fPlugDescription = plugDescription;
 		this.fPlugId = plugDescription.getPlugId();
@@ -62,6 +69,18 @@ public class DSCSearcher extends AbstractSearcher {
 		IngridHitsEnrichmentFactory factory = new IngridHitsEnrichmentFactory();
 		factory.register(new CswDscIdentifierEnrichment());
 		_enrichmentCollection = factory.getIngridHitsEnrichmentCollection();
+		
+		if (plugDescription.containsKey(ConfigurationKeys.CSW_MAPPER))
+			this.mapper = (DocumentMapper)plugDescription.get(ConfigurationKeys.CSW_MAPPER);
+		else
+			throw new RuntimeException("DSCSearcher is not configured properly. "+
+					"Parameter '"+ConfigurationKeys.CSW_MAPPER+"' is missing in plugdescription.");
+
+		if (plugDescription.containsKey(ConfigurationKeys.CSW_CACHE))
+			this.cache = (Cache)plugDescription.get(ConfigurationKeys.CSW_CACHE);
+		else
+			throw new RuntimeException("DSCSearcher is not configured properly. "+
+					"Parameter '"+ConfigurationKeys.CSW_CACHE+"' is missing in plugdescription.");
 	}
 
 	public IngridHits search(IngridQuery query, int start, int length)
@@ -82,7 +101,7 @@ public class DSCSearcher extends AbstractSearcher {
 
 	public Record getRecord(IngridHit hit) throws Exception {
 		Document document = this.fSearcher.doc(hit.getDocumentId());
-		Record record = this.fDetailer.getDetails(document);
+		Record record = this.fDetailer.getDetails(document, this.mapper, this.cache);
 
 		return record;
 	}

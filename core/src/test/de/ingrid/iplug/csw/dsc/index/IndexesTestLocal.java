@@ -14,8 +14,8 @@ import de.ingrid.iplug.csw.dsc.cswclient.impl.GenericRecord;
 import de.ingrid.iplug.csw.dsc.mapping.DocumentMapper;
 import de.ingrid.utils.IngridHits;
 import de.ingrid.utils.PlugDescription;
+import de.ingrid.utils.dsc.Record;
 import de.ingrid.utils.queryparser.QueryStringParser;
-import de.ingrid.utils.xml.XMLSerializer;
 
 /**
  * TODO comment for IndexesTest
@@ -29,7 +29,6 @@ import de.ingrid.utils.xml.XMLSerializer;
  */
 public class IndexesTestLocal extends TestCase {
 
-    private final File descFile = new File("src/conf/plugdescription.xml");
 	private final File folder = new File("./test_case_index", Indexer.class.getName());
 	private final String cachePath = folder.getPath()+"/cache";
 
@@ -49,15 +48,15 @@ public class IndexesTestLocal extends TestCase {
 	public void testIndexer() throws Exception {
 
 		// read the PlugDescription
-		XMLSerializer serializer = new XMLSerializer();
-		serializer.aliasClass(PlugDescription.class.getName(), PlugDescription.class);
-		PlugDescription desc = (PlugDescription)serializer.deSerialize(this.descFile);
+		PlugDescription desc = TestUtil.getPlugDescription();
+		desc.setWorkinDirectory(folder);
 
 		CSWFactory factory = (CSWFactory)desc.get(ConfigurationKeys.CSW_FACTORY);
 		DocumentMapper mapper = (DocumentMapper)desc.get(ConfigurationKeys.CSW_MAPPER);
 		
 		// prepare the cache
 		Cache cache = (Cache)desc.get(ConfigurationKeys.CSW_CACHE);
+		cache.configure(factory);
 		if (cache instanceof DefaultFileCache)
 			((DefaultFileCache)cache).setCachePath(cachePath);
 		
@@ -66,13 +65,16 @@ public class IndexesTestLocal extends TestCase {
 		tmpCache.removeAllRecords();
 		
 		// fill tmp cache
-		for(String id : TestUtil.getRecordIds())
+		for(String id : TestUtil.getRecordIds()) {
 			tmpCache.putRecord(TestUtil.getRecord(id, ElementSetName.BRIEF, new GenericRecord()));
+			tmpCache.putRecord(TestUtil.getRecord(id, ElementSetName.SUMMARY, new GenericRecord()));
+			tmpCache.putRecord(TestUtil.getRecord(id, ElementSetName.FULL, new GenericRecord()));
+		}
 
 		// run indexer
 		Indexer indexer = new Indexer();
 		indexer.open(folder);
-		List<IDocumentReader> collection = DocumentReaderFactory.getDocumentReaderCollection(tmpCache, mapper, factory);
+		List<IDocumentReader> collection = DocumentReaderFactory.getDocumentReaderCollection(tmpCache, mapper);
 		for (IDocumentReader documentReader : collection) {
 			indexer.index(documentReader);
 		}
@@ -83,6 +85,8 @@ public class IndexesTestLocal extends TestCase {
 		
 		// do some search tests
 		DSCSearcher searcher = new DSCSearcher(new File(folder, "index"), "content");
+		searcher.configure(desc);
+		
 		IngridHits hits = searcher.search(QueryStringParser.parse("1"), 0, 100);
 		assertNotNull(hits);
 		assertTrue(hits.getHits().length > 0);
@@ -94,5 +98,8 @@ public class IndexesTestLocal extends TestCase {
 		hits = searcher.search(QueryStringParser.parse("title:title~"), 0, 100);
 		assertNotNull(hits);
 		assertTrue(hits.getHits().length > 0);
+		
+		Record record = searcher.getRecord(hits.getHits()[0]);
+		assertTrue("Detail record found.", record != null);
 	}
 }
