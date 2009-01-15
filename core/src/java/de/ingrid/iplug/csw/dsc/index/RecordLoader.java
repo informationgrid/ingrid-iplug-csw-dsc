@@ -37,7 +37,7 @@ public class RecordLoader {
 	public Record getDetails(Document document, DocumentMapper mapper, Cache cache) throws RuntimeException {
 
 		// get the id of the CSW record from the document
-		String recordId = document.get("T01_object.obj_id");
+		String recordId = document.get("t01_object.obj_id");
 		ElementSetName elementSetName = ElementSetName.FULL;
 		
 		// fetch the record from the cache

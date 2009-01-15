@@ -73,7 +73,7 @@ public class TestUtil {
 	
 	public static PlugDescription getPlugDescription() throws IOException {
 		// read the PlugDescription
-	    File descFile = new File("src/conf/plugdescription.xml");
+	    File descFile = new File("src/conf/plugdescription_test_csw-2.0.2-AP-ISO-1.0.xml");
 		XMLSerializer serializer = new XMLSerializer();
 		serializer.aliasClass(PlugDescription.class.getName(), PlugDescription.class);
 		PlugDescription desc = (PlugDescription)serializer.deSerialize(descFile);

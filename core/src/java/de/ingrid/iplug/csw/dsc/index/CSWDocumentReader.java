@@ -48,7 +48,7 @@ public class CSWDocumentReader implements IDocumentReader {
 
 		// get the record from the cache
 		String recordId = this.recordIter.next();
-		ElementSetName elementSetName = ElementSetName.BRIEF;
+		ElementSetName elementSetName = ElementSetName.FULL;
 		CSWRecord cswRecord = null;
 		try {
 			cswRecord = this.cache.getRecord(recordId, elementSetName);

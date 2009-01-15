@@ -1,7 +1,10 @@
 package de.ingrid.iplug.csw.dsc.index;
 
 import java.io.File;
+import java.util.HashSet;
 import java.util.List;
+
+import org.hsqldb.lib.Set;
 
 import junit.framework.TestCase;
 import de.ingrid.iplug.csw.dsc.ConfigurationKeys;
@@ -27,7 +30,7 @@ import de.ingrid.utils.queryparser.QueryStringParser;
  * @author $Author: ${lastedit}
  * 
  */
-public class IndexesTestLocal extends TestCase {
+public class IndexesCsw2_0_2ApIso1_0TestLocal extends TestCase {
 
 	private final File folder = new File("./test_case_index", Indexer.class.getName());
 	private final String cachePath = folder.getPath()+"/cache";
@@ -64,8 +67,14 @@ public class IndexesTestLocal extends TestCase {
 		Cache tmpCache = cache.startTransaction();
 		tmpCache.removeAllRecords();
 		
+		HashSet<String> recordIds = new HashSet<String>();
+		// service
+		recordIds.add("33462e89-e5ab-11c3-737d-b3a61366d028");
+		// dataset
+		recordIds.add("550e8400-e29b-41d4-a716-446655441234");
+		
 		// fill tmp cache
-		for(String id : TestUtil.getRecordIds()) {
+		for(String id : recordIds) {
 			tmpCache.putRecord(TestUtil.getRecord(id, ElementSetName.FULL, new GenericRecord()));
 		}
 
@@ -93,7 +102,7 @@ public class IndexesTestLocal extends TestCase {
 		assertNotNull(hits);
 		assertTrue(hits.getHits().length > 0);
 
-		hits = searcher.search(QueryStringParser.parse("title:Karte*"), 0, 100);
+		hits = searcher.search(QueryStringParser.parse("title:JRC*"), 0, 100);
 		assertNotNull(hits);
 		assertTrue(hits.getHits().length > 0);
 		
