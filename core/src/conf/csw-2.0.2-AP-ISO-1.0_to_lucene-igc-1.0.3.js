@@ -11,7 +11,10 @@
  */
 importPackage(Packages.org.apache.lucene.document);
 importPackage(Packages.de.ingrid.iplug.csw.dsc.tools);
+importPackage(Packages.de.ingrid.iplug.csw.dsc.index);
 importPackage(Packages.de.ingrid.utils.udk);
+importPackage(Packages.org.w3c.dom);
+
 
 
 var _store = true;
@@ -24,11 +27,28 @@ log.debug("Mapping csw record "+cswRecord.getId()+" to lucene document");
 var recordNode = cswRecord.getOriginalResponse();
 
 // define one-to-one mappings
+/**  each entry consists off the following possible values:
+	
+	indexField: The name of the field in the index the data will be put into.
+	     xpath: The xpath expression for the data in the XML input file. Multiple xpath 
+	     		results will be put in the same index field.
+	 transform: The transformation to be executed on the value
+	  		     funct: The transformation function to use.
+	   		    params: The parameters for the transformation function additional to the value 
+	  		            from the xpath expression that is always the first parameter. 
+	   execute: The function to be executed. No xpath value is obtained. Instead the recordNode of the 
+				source XML is put as default parameter to the function.  
+	  	         funct: The function to execute.
+	  	        params: The parameters for the function additional to the recordNode 
+	  		            that is always the first parameter.
+	 tokenized: If set to "false" no tokenizing will take place before the value is put into the index.
+*/
 var transformationDescriptions = [
 		{	"indexField":"t01_object.obj_id",
 			"xpath":"//fileIdentifier/CharacterString"
 		}, 
 		{	"indexField":"title",
+			"tokenized":false,
 			"xpath":"//identificationInfo//citation/CI_Citation/title/CharacterString"
 		},
 		{	"indexField":"t01_object.org_obj_id",
@@ -144,7 +164,6 @@ addResourceMaintenance(recordNode);
 var _counter = 1;
 
 document.add(new Field("datatype", "default", !_store, _index, !_token));
-document.add(new Field("content", "content " + _counter, _store, _index, _token));
 document.add(new Field("url", "url " + _counter, _store, _index, _token));
 
 
@@ -159,16 +178,27 @@ for (var i in transformationDescriptions) {
 	if (hasValue(t.execute)) {
 		call_f(t.execute.funct, t.execute.params)
 	} else {
-		value = XPathUtils.getString(recordNode, t.xpath);
-		// check for transformation
-		if (hasValue(t.transform)) {
-			var args = new Array(value);
-			if (hasValue(t.transform.params)) {
-				args = args.concat(t.transform.params);
+		var tokenized = true;
+		// iterate over all xpath results
+		var nodeList = XPathUtils.getNodeList(recordNode, t.xpath);
+		for (j=0; j<nodeList.getLength(); j++ ) {
+			value = nodeList.item(j).getTextContent()
+			// check for transformation
+			if (hasValue(t.transform)) {
+				var args = new Array(value);
+				if (hasValue(t.transform.params)) {
+					args = args.concat(t.transform.params);
+				}
+				value = call_f(t.transform.funct,args);
 			}
-			value = call_f(t.transform.funct,args);
+			// check for NOT tokenized
+			if (hasValue(t.tokenized)) {
+				if (!t.tokenized) {
+					tokenized = false;
+				}
+			}
+			addToDoc(t.indexField, value, tokenized);
 		}
-		addToDoc(t.indexField, value);
 	}
 }
 
@@ -209,11 +239,11 @@ function addResourceMaintenance() {
 		// transform to IGC domain id
 		var idcCode = UtilsUDKCodeLists.getCodeListDomainId(518, maintenanceFrequencyCode, 94);
 		if (hasValue(idcCode)) {
-			addToDoc("t01_object.time_period", idcCode);
-			addToDoc("t01_object.time_descr", XPathUtils.getString(recordNode, "//identificationInfo//resourceMaintenance/MD_MaintenanceInformation/maintenanceNote/CharacterString"));
+			addToDoc("t01_object.time_period", idcCode, false);
+			addToDoc("t01_object.time_descr", XPathUtils.getString(recordNode, "//identificationInfo//resourceMaintenance/MD_MaintenanceInformation/maintenanceNote/CharacterString"), true);
 			var periodDuration = XPathUtils.getString(recordNode, "//identificationInfo//resourceMaintenance/MD_MaintenanceInformation/userDefinedMaintenanceFrequency/TM_PeriodDuration");
-			addToDoc("t01_object.time_interval", new TM_PeriodDurationToTimeInterval().parse(periodDuration));
-			addToDoc("t01_object.time_alle", new TM_PeriodDurationToTimeAlle().parse(periodDuration));
+			addToDoc("t01_object.time_interval", new TM_PeriodDurationToTimeInterval().parse(periodDuration), false);
+			addToDoc("t01_object.time_alle", new TM_PeriodDurationToTimeAlle().parse(periodDuration), false);
 		} else {
 			log.debug("MD_MaintenanceFrequencyCode '" + maintenanceFrequencyCode + "' unknown.")
 		}
@@ -226,19 +256,19 @@ function addTimeConstraints() {
 	var timeType;
 	if (hasValue(t1) && hasValue(t2)) {
 		if (t1 == t2) {
-			addToDoc("t01_object.time_type", "am");
-			addToDoc("t0", t1);
+			addToDoc("t01_object.time_type", "am", false);
+			addToDoc("t0", t1, false);
 		} else {
-			addToDoc("t01_object.time_type", "von");
-			addToDoc("t1", t1);
-			addToDoc("t2", t2);
+			addToDoc("t01_object.time_type", "von", false);
+			addToDoc("t1", t1, false);
+			addToDoc("t2", t2, false);
 		}
 	} else if (hasValue(t1) && !hasValue(t2)) {
-		addToDoc("t01_object.time_type", "seit");
-		addToDoc("t1", t1);
+		addToDoc("t01_object.time_type", "seit", false);
+		addToDoc("t1", t1, false);
 	} else if (!hasValue(t1) && hasValue(t2)) {
-		addToDoc("t01_object.time_type", "bis");
-		addToDoc("t2", t2);
+		addToDoc("t01_object.time_type", "bis", false);
+		addToDoc("t2", t2, false);
 	}
 }
 
@@ -253,10 +283,12 @@ function getObjectClassFromHierarchyLevel(val) {
 	return result;
 }
 
-function addToDoc(field, content) {
+function addToDoc(field, content, tokenized) {
 	if (hasValue(content)) {
 		log.debug("Add '" + field + "'='" + content + "' to lucene index");
-		document.add(new Field(field, content, _store, _index, !_token));
+		document.add(new Field(field, content, _store, _index, tokenized));
+		document.add(Field.Text("content", content));
+		document.add(Field.Text("content", AbstractSearcher.filterTerm(content)));
 	}
 }
 
