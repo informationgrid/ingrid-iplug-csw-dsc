@@ -37,11 +37,11 @@ var recordNode = cswRecord.getOriginalResponse();
 	   		    params: The parameters for the transformation function additional to the value 
 	  		            from the xpath expression that is always the first parameter. 
 	   execute: The function to be executed. No xpath value is obtained. Instead the recordNode of the 
-				source XML is put as default parameter to the function.  
+				source XML is put as default parameter to the function. All other parameters are ignored.
 	  	         funct: The function to execute.
 	  	        params: The parameters for the function additional to the recordNode 
 	  		            that is always the first parameter.
-	 tokenized: If set to "false" no tokenizing will take place before the value is put into the index.
+	 tokenized: If set to false no tokenizing will take place before the value is put into the index.
 */
 var transformationDescriptions = [
 		{	"indexField":"t01_object.obj_id",
@@ -148,6 +148,19 @@ var transformationDescriptions = [
 			"transform":{
 				"funct":UtilsCSWDate.mapDateFromIso8601ToIndex
 			}
+		},
+		{	"indexField":"object_access.restriction_key",
+			"xpath":"//identificationInfo//resourceConstraints//otherConstraints/CharacterString",
+			"transform":{
+				"funct":transformToIgcDomainId,
+				"params":[6010]
+			}
+		},
+		{	"indexField":"object_access.restriction_value",
+			"xpath":"//identificationInfo//resourceConstraints//otherConstraints/CharacterString"
+		},
+		{	"indexField":"object_access.terms_of_use",
+			"xpath":"//identificationInfo//resourceConstraints//useLimitation/CharacterString"
 		}
 		
 	];
@@ -287,8 +300,8 @@ function addToDoc(field, content, tokenized) {
 	if (hasValue(content)) {
 		log.debug("Add '" + field + "'='" + content + "' to lucene index");
 		document.add(new Field(field, content, _store, _index, tokenized));
-		document.add(Field.Text("content", content));
-		document.add(Field.Text("content", AbstractSearcher.filterTerm(content)));
+		document.add(new Field("content", content, !_store, _index, true));
+		document.add(new Field("content", AbstractSearcher.filterTerm(content), !_store, _index, true));
 	}
 }
 
