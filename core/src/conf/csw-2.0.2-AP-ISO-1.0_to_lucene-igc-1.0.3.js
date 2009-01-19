@@ -149,6 +149,7 @@ var transformationDescriptions = [
 				"funct":UtilsCSWDate.mapDateFromIso8601ToIndex
 			}
 		},
+		// object_access
 		{	"indexField":"object_access.restriction_key",
 			"xpath":"//identificationInfo//resourceConstraints//otherConstraints/CharacterString",
 			"transform":{
@@ -161,8 +162,34 @@ var transformationDescriptions = [
 		},
 		{	"indexField":"object_access.terms_of_use",
 			"xpath":"//identificationInfo//resourceConstraints//useLimitation/CharacterString"
+		},
+		// t0110_avail_format
+		{	"indexField":"t0110_avail_format.name",
+			"xpath":"//distributionInfo/MD_Distribution/distributionFormat/MD_Format/name/CharacterString"
+		},
+		{	"indexField":"t0110_avail_format.version",
+			"xpath":"//distributionInfo/MD_Distribution/distributionFormat/MD_Format/version/CharacterString"
+		},
+		{	"indexField":"t0110_avail_format.file_decompression_technique",
+			"xpath":"//distributionInfo/MD_Distribution/distributionFormat/MD_Format/fileDecompressionTechnique/CharacterString"
+		},
+		{	"indexField":"t0110_avail_format.specification",
+			"xpath":"//distributionInfo/MD_Distribution/distributionFormat/MD_Format/specification/CharacterString"
+		},
+		// t0113_dataset_reference
+		{	"indexField":"t0113_dataset_reference.reference_date",
+			"xpath":"//identificationInfo//citation/CI_Citation/date/CI_Date/date/Date",
+			"transform":{
+				"funct":UtilsCSWDate.mapDateFromIso8601ToIndex
+			}
+		},
+		{	"indexField":"t0113_dataset_reference.type",
+			"xpath":"//identificationInfo//citation/CI_Citation/date/CI_Date/dateType/CI_DateTypeCode/@codeListValue",
+			"transform":{
+				"funct":transformToIgcDomainId,
+				"params":[502]
+			}
 		}
-		
 	];
 
 
