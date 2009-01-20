@@ -189,7 +189,90 @@ var transformationDescriptions = [
 				"funct":transformToIgcDomainId,
 				"params":[502]
 			}
+		},
+		//  t011_obj_serv
+		{	"indexField":"t011_obj_serv.type",
+			"xpath":"//identificationInfo//serviceType/LocalName"
+		},
+		{	"indexField":"t011_obj_serv.history",
+			"xpath":"//dataQualityInfo/DQ_DataQuality/lineage/LI_Lineage/processStep/LI_ProcessStep/description/CharacterString"
+		},
+		{	"indexField":"t011_obj_serv.base",
+			"xpath":"//dataQualityInfo/DQ_DataQuality/lineage/LI_Lineage/source/LI_Source/description/CharacterString"
+		},
+		// t011_obj_serv_op_connpoint
+		{	"indexField":"t011_obj_serv_op_connpoint.connect_point",
+			"xpath":"//identificationInfo//srv:containsOperations/SV_OperationMetadata/connectPoint/CI_OnlineResource/linkage/URL"
+		},
+		// t011_obj_serv_op_depends
+		{	"indexField":"t011_obj_serv_op_depends.depends_on",
+			"xpath":"//identificationInfo//containsOperations/SV_OperationMetadata/dependsOn/SV_OperationMetadata/operationName/CharacterString"
+		},
+		// t011_obj_serv_op_para
+		{	"indexField":"t011_obj_serv_op_para.name",
+			"xpath":"//identificationInfo//containsOperations/SV_OperationMetadata/parameters/SV_Parameter/name"
+		},
+		{	"indexField":"t011_obj_serv_op_para.direction",
+			"xpath":"//identificationInfo//containsOperations/SV_OperationMetadata/parameters/SV_Parameter/direction/SV_ParameterDirection"
+		},
+		{	"indexField":"t011_obj_serv_op_para.descr",
+			"xpath":"//identificationInfo//containsOperations/SV_OperationMetadata/parameters/SV_Parameter/description/CharacterString"
+		},
+		{	"indexField":"t011_obj_serv_op_para.optional",
+			"xpath":"//identificationInfo//containsOperations/SV_OperationMetadata/parameters/SV_Parameter/optionality/CharacterString",
+			"transform":{
+				"funct":transformGeneric,
+				"params":[{"optional":"1", "mandatory":"0"}, false]
+			}			
+		},
+		{	"indexField":"t011_obj_serv_op_para.repeatability",
+			"xpath":"//identificationInfo//containsOperations/SV_OperationMetadata/parameters/SV_Parameter/repeatability/Boolean",
+			"transform":{
+				"funct":transformGeneric,
+				"params":[{"true":"1", "false":"0"}, false]
+			}			
+		},
+		// t011_obj_serv_op_platform
+		{	"indexField":"t011_obj_serv_op_platform.platform",
+			"xpath":"//identificationInfo//containsOperations/SV_OperationMetadata/DCP/DCPList/@codeListValue"
+		},
+		// t011_obj_serv_operation
+		{	"indexField":"t011_obj_serv_operation.name",
+			"xpath":"//identificationInfo//containsOperations/SV_OperationMetadata/operationName/CharacterString"
+		},
+		{	"indexField":"t011_obj_serv_operation.descr",
+			"xpath":"//identificationInfo//containsOperations/SV_OperationMetadata/operationDescription/CharacterString"
+		},
+		{	"indexField":"t011_obj_serv_operation.invocation_name",
+			"xpath":"//identificationInfo//containsOperations/SV_OperationMetadata/invocationName/CharacterString"
+		},
+		// t011_obj_serv_version
+		{	"indexField":"t011_obj_serv_version.serv_version",
+			"xpath":"//identificationInfo//serviceTypeVersion/CharacterString"
+		},
+		// t011_obj_topic_cat
+		{	"indexField":"t011_obj_topic_cat.topic_category",
+			"xpath":"//identificationInfo//topicCategory/MD_TopicCategoryCode",
+			"transform":{
+				"funct":transformToIgcDomainId,
+				"params":[527]
+			}
+		},
+		// t011_obj_geo
+		{	"indexField":"t011_obj_geo.special_base",
+			"xpath":"//dataQualityInfo/DQ_DataQuality/lineage/LI_Lineage/statement/CharacterString"
+		},
+		{	"indexField":"t011_obj_geo.data_base",
+			"xpath":"//dataQualityInfo/DQ_DataQuality/lineage/LI_Lineage/source/LI_Source/description/CharacterString"
+		},
+		{	"indexField":"t011_obj_geo.method",
+			"xpath":"/dataQualityInfo/DQ_DataQuality/lineage/LI_Lineage/processStep/LI_ProcessStep/description/CharacterString"
+		},
+		{	"execute":{
+				"funct":mapReferenceSystemInfo
+			}
 		}
+		
 	];
 
 
@@ -212,12 +295,13 @@ document.add(new Field("url", "url " + _counter, _store, _index, _token));
 var value;
 for (var i in transformationDescriptions) {
 	var t = transformationDescriptions[i];
-	log.debug("Working on " + t.indexField)
 	
 	// check for execution (special function)
 	if (hasValue(t.execute)) {
+		log.debug("Execute function: " + t.execute.funct.name)
 		call_f(t.execute.funct, t.execute.params)
 	} else {
+		log.debug("Working on " + t.indexField)
 		var tokenized = true;
 		// iterate over all xpath results
 		var nodeList = XPathUtils.getNodeList(recordNode, t.xpath);
@@ -240,6 +324,40 @@ for (var i in transformationDescriptions) {
 			addToDoc(t.indexField, value, tokenized);
 		}
 	}
+}
+
+
+function mapReferenceSystemInfo() {
+	var rsIdentifiers = XPathUtils.getNodeList(recordNode, "//referenceSystemInfo/MD_ReferenceSystem/referenceSystemIdentifier/RS_Identifier");
+	if (hasValue(rsIdentifiers)) {
+		for (i=0; i<rsIdentifiers.getLength(); i++ ) {
+			var code = XPathUtils.getString(rsIdentifiers.item(i), "code/CharacterString");
+			var codeSpace = XPathUtils.getString(rsIdentifiers.item(i), "codeSpace/CharacterString");
+			if (hasValue(codeSpace) && hasValue(code)) {
+				addToDoc("t011_obj_geo.referencesystem_id", codeSpace+":"+code, true);
+			} else if (hasValue(code)) {
+				addToDoc("t011_obj_geo.referencesystem_id", code, true);
+			}
+		}
+	}
+}
+
+
+function transformGeneric(val, mappings, caseSensitive) {
+	for (var t in mappings) {
+		for (var key in t) {
+			if (caseSensitive) {
+				if (key == val) {
+					return t[key];
+				}
+			} else {
+				if (key.toLowerCase() == val.toLowerCase()) {
+					return t[key];
+				}
+			}
+		}
+	}
+	return val;
 }
 
 
@@ -349,14 +467,16 @@ function call_f(f,args)
   f.call_self = function(ars)
   {
     var callstr = "";
-    for(var i = 0; i < ars.length; i++)
-    {
-      callstr += "ars["+i+"]";
-      if(i < ars.length - 1)
-      {
-        callstr += ',';
-      }
-    }
+    if (hasValue(ars)) {
+	    for(var i = 0; i < ars.length; i++)
+	    {
+	      callstr += "ars["+i+"]";
+	      if(i < ars.length - 1)
+	      {
+	        callstr += ',';
+	      }
+	    }
+	}
     return eval("this("+callstr+")");
   };
 
