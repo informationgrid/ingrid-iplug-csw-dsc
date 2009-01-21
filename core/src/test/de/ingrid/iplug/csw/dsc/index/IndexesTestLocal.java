@@ -89,10 +89,6 @@ public class IndexesTestLocal extends TestCase {
 		assertNotNull(hits);
 		assertTrue(hits.getHits().length > 0);
 
-		hits = searcher.search(QueryStringParser.parse("url:ur*"), 0, 100);
-		assertNotNull(hits);
-		assertTrue(hits.getHits().length > 0);
-
 		hits = searcher.search(QueryStringParser.parse("title:Karte*"), 0, 100);
 		assertNotNull(hits);
 		assertTrue(hits.getHits().length > 0);

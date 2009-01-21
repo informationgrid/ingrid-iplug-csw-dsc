@@ -266,30 +266,151 @@ var transformationDescriptions = [
 			"xpath":"//dataQualityInfo/DQ_DataQuality/lineage/LI_Lineage/source/LI_Source/description/CharacterString"
 		},
 		{	"indexField":"t011_obj_geo.method",
-			"xpath":"/dataQualityInfo/DQ_DataQuality/lineage/LI_Lineage/processStep/LI_ProcessStep/description/CharacterString"
+			"xpath":"//dataQualityInfo/DQ_DataQuality/lineage/LI_Lineage/processStep/LI_ProcessStep/description/CharacterString"
 		},
 		{	"execute":{
 				"funct":mapReferenceSystemInfo
 			}
+		},
+		{	"indexField":"t011_obj_geo.rec_exact",
+			"xpath":"//dataQualityInfo/DQ_DataQuality/report/DQ_RelativeInternalPositionalAccuracy/DQ_QuantitativeResult/value/Record"
+		},
+		{	"indexField":"t011_obj_geo.rec_grade",
+			"xpath":"//dataQualityInfo/DQ_DataQuality/report/DQ_CompletenessCommission/DQ_QuantitativeResult/value/Record"
+		},
+		{	"indexField":"t011_obj_geo.hierarchy_level",
+			"xpath":"//hierarchyLevel/MD_ScopeCode/@codeListValue",
+			"transform":{
+				"funct":transformGeneric,
+				"params":[{"dataset":"5", "series":"6"}, false]
+			}
+		},
+		{	"indexField":"t011_obj_geo.vector_topology_level",
+			"xpath":"//spatialRepresentationInfo/MD_VectorSpatialRepresentation/topologyLevel/MD_TopologyLevelCode/@codeListValue",
+			"transform":{
+				"funct":transformToIgcDomainId,
+				"params":[528]
+			}
+		},
+		{	"indexField":"t011_obj_geo.pos_accuracy_vertical",
+			"xpath":"//dataQualityInfo/DQ_DataQuality/report/DQ_RelativeInternalPositionalAccuracy[measureDescription/CharacterString='vertical']/DQ_QuantitativeResult/value/Record"
+		},
+		{	"indexField":"t011_obj_geo.keyc_incl_w_dataset",
+			"xpath":"//contentInfo/MD_FeatureCatalogueDescription/includedWithDataset/Boolean",
+			"transform":{
+				"funct":transformGeneric,
+				"params":[{"true":"1", "false":"0"}, false]
+			}			
+		},
+		// accept RS_Indentifier and MD_Identifier with xpath: "...identifier//code..."
+		{	"indexField":"t011_obj_geo.datasource_uuid",
+			"xpath":"//identificationInfo/MD_DataIdentification/citation/CI_Citation/identifier//code/CharacterString"
+		},
+		// t011_obj_geo_keyc
+		{	"indexField":"t011_obj_geo_keyc.subject_cat",
+			"xpath":"//contentInfo/MD_FeatureCatalogueDescription/featureCatalogueCitation/CI_Citation/title/CharacterString"
+		},
+		{	"indexField":"t011_obj_geo_keyc.key_date",
+			"xpath":"//contentInfo/MD_FeatureCatalogueDescription/featureCatalogueCitation/CI_Citation/date/CI_Date/date/Date",
+			"transform":{
+				"funct":UtilsCSWDate.mapDateFromIso8601ToIndex
+			}
+		},
+		{	"indexField":"t011_obj_geo_keyc.edition",
+			"xpath":"//contentInfo/MD_FeatureCatalogueDescription/featureCatalogueCitation/CI_Citation/edition/CharacterString"
+		},
+		// t011_obj_geo_scale
+		{	"indexField":"t011_obj_geo_scale.scale",
+			"xpath":"//identificationInfo/MD_DataIdentification/spatialResolution/MD_Resolution/equivalentScale/MD_RepresentativeFraction/denominator/Integer"
+		},
+		{	"indexField":"t011_obj_geo_scale.resolution_ground",
+			"xpath":"//identificationInfo/MD_DataIdentification/spatialResolution/MD_Resolution/distance/Distance[@uom='meter']"
+		},
+		{	"indexField":"t011_obj_geo_scale.resolution_scan",
+			"xpath":"//identificationInfo/MD_DataIdentification/spatialResolution/MD_Resolution/distance/Distance[@uom='dpi']"
+		},
+		// t011_obj_geo_spatial_rep
+		{	"indexField":"t011_obj_geo_spatial_rep.type",
+			"xpath":"//identificationInfo/MD_DataIdentification/spatialRepresentationType/MD_SpatialRepresentationTypeCode/@codeListValue",
+			"transform":{
+				"funct":transformToIgcDomainId,
+				"params":[526]
+			}
+		},
+		// t011_obj_geo_supplinfo
+		{	"indexField":"t011_obj_geo_supplinfo.feature_type",
+			"xpath":"//contentInfo/MD_FeatureCatalogueDescription/featureTypes/LocalName"
+		},
+		// t011_obj_geo_symc
+		{	"indexField":"t011_obj_geo_symc.symbol_cat",
+			"xpath":"//portrayalCatalogueInfo/MD_PortrayalCatalogueReference/portrayalCatalogueCitation/CI_Citation/title/CharacterString"
+		},
+		{	"indexField":"t011_obj_geo_symc.symbol_date",
+			"xpath":"//portrayalCatalogueInfo/MD_PortrayalCatalogueReference/portrayalCatalogueCitation/CI_Citation/date/CI_Date/date/Date",
+			"transform":{
+				"funct":UtilsCSWDate.mapDateFromIso8601ToIndex
+			}
+		},
+		{	"indexField":"t011_obj_geo_symc.edition",
+			"xpath":"//portrayalCatalogueInfo/MD_PortrayalCatalogueReference/portrayalCatalogueCitation/CI_Citation/edition/CharacterString"
+		},
+		// t011_obj_geo_vector
+		{	"indexField":"t011_obj_geo_vector.geometric_object_type",
+			"xpath":"//spatialRepresentationInfo/MD_VectorSpatialRepresentation/geometricObjects/MD_GeometricObjects/geometricObjectType/MD_GeometricObjectTypeCode/@codeListValue",
+			"transform":{
+				"funct":transformToIgcDomainId,
+				"params":[515]
+			}
+		},
+		{	"indexField":"t011_obj_geo_vector.geometric_object_count",
+			"xpath":"//spatialRepresentationInfo/MD_VectorSpatialRepresentation/geometricObjects/MD_GeometricObjects/geometricObjectCount/Integer"
+		},
+		// t017_url_ref
+		{	"indexField":"t017_url_ref.url_link",
+			"xpath":"//distributionInfo/MD_Distribution/transferOptions/MD_DigitalTransferOptions/online/CI_OnlineResource/linkage/URL"
+		},
+		{	"indexField":"t017_url_ref.content",
+			"xpath":"//distributionInfo/MD_Distribution/transferOptions/MD_DigitalTransferOptions/online/CI_OnlineResource/name/CharacterString"
+		},
+		{	"indexField":"t017_url_ref.descr",
+			"xpath":"//distributionInfo/MD_Distribution/transferOptions/MD_DigitalTransferOptions/online/CI_OnlineResource/description/CharacterString"
+		},
+		{	"indexField":"t017_url_ref.descr",
+			"xpath":"//distributionInfo/MD_Distribution/transferOptions/MD_DigitalTransferOptions/online/CI_OnlineResource/description/CharacterString"
+		},
+		// object_references
+		{	"execute":{
+				"funct":mapReferences,
+				"params":[recordNode]
+			}
+		},
+		// keywords
+		{	"execute":{
+				"funct":mapKeywords,
+				"params":[recordNode]
+			}
+		},
+		// geographic elements
+		{	"execute":{
+				"funct":mapGeographicElements,
+				"params":[recordNode]
+			}
+		},
+		// time constraints
+		{	"execute":{
+				"funct":addTimeConstraints,
+				"params":[recordNode]
+			}
+		},
+		// resource maintenance
+		{	"execute":{
+				"funct":addResourceMaintenance,
+				"params":[recordNode]
+			}
 		}
-		
 	];
 
-
-// map more complex values
-// map time constraints 
-addTimeConstraints(recordNode);
-// map resourceMaintenance
-addResourceMaintenance(recordNode);
-
-// code below is copied from DummyDocumentReader as demonstration 
-// (satisfies IndexesTest.testIndexer())
-var _counter = 1;
-
 document.add(new Field("datatype", "default", !_store, _index, !_token));
-document.add(new Field("url", "url " + _counter, _store, _index, _token));
-
-
 	
 // iterate over all transformation descriptions
 var value;
@@ -321,7 +442,141 @@ for (var i in transformationDescriptions) {
 					tokenized = false;
 				}
 			}
-			addToDoc(t.indexField, value, tokenized);
+			if (hasValue(value)) {
+				addToDoc(t.indexField, value, tokenized);
+			}
+		}
+	}
+}
+
+function mapGeographicElements(recordNode) {
+	var geographicElements = XPathUtils.getNodeList(recordNode, "//identificationInfo//extent/EX_Extent/geographicElement");
+	if (hasValue(geographicElements)) {
+		for (i=0; i<geographicElements.getLength(); i++ ) {
+			var value = XPathUtils.getString(geographicElements.item(i), "EX_GeographicDescription/geographicIdentifier/MD_Identifier/code/CharacterString");
+			if (hasValue(value)) {
+				addToDoc("spatial_ref_value.name_value", value, true);
+				addToDoc("x1", "", false);
+				addToDoc("x2", "", false);
+				addToDoc("y1", "", false);
+				addToDoc("y2", "", false);
+			}
+			var boundingBoxes = XPathUtils.getNodeList(geographicElements.item(i), "EX_GeographicBoundingBox");
+			for (j=0; j<boundingBoxes.getLength(); j++ ) {
+				if (hasValue(boundingBoxes.item(j)) && hasValue(XPathUtils.getString(boundingBoxes.item(j), "westBoundLongitude/Decimal"))) {
+					addToDoc("spatial_ref_value.name_value", "", true);
+					addToDoc("x1", XPathUtils.getString(boundingBoxes.item(j), "westBoundLongitude/Decimal"), false);
+					addToDoc("x2", XPathUtils.getString(boundingBoxes.item(j), "eastBoundLongitude/Decimal"), false);
+					addToDoc("y1", XPathUtils.getString(boundingBoxes.item(j), "southBoundLatitude/Decimal"), false);
+					addToDoc("y2", XPathUtils.getString(boundingBoxes.item(j), "northBoundLatitude/Decimal"), false);
+				}
+			}
+		}
+	}
+}
+
+
+function mapKeywords(recordNode) {
+	var usedKeywords = "";
+	// check for INSPIRE themes
+	var keywords = XPathUtils.getNodeList(recordNode, "//identificationInfo//descriptiveKeywords/MD_Keywords[thesaurusName/CI_Citation/title/CharacterString='GEMET - INSPIRE themes, version 1.0']/keyword/CharacterString");
+	if (hasValue(keywords)) {
+		for (i=0; i<keywords.getLength(); i++ ) {
+			var value = keywords.item(i).getTextContent().trim()
+			if (hasValue(value) && usedKeywords.indexOf(value) == -1) {
+				addToDoc("searchterm_value.term", value, true);
+				addToDoc("searchterm_value.type", "I", false);
+				usedKeywords+=value+";"
+			}
+		}
+	}
+	// check for GEMET keywords
+	var keywords = XPathUtils.getNodeList(recordNode, "//identificationInfo//descriptiveKeywords/MD_Keywords[thesaurusName/CI_Citation/title/CharacterString='GEMET - Concepts, version 2.1']/keyword/CharacterString");
+	if (hasValue(keywords)) {
+		for (i=0; i<keywords.getLength(); i++ ) {
+			var value = keywords.item(i).getTextContent().trim()
+			if (hasValue(value) && usedKeywords.indexOf(value) == -1) {
+				addToDoc("searchterm_value.term", value, true);
+				addToDoc("searchterm_value.type", "G", false);
+				usedKeywords+=value+";"
+			}
+		}
+	}
+	// check for UMTHES keywords
+	var keywords = XPathUtils.getNodeList(recordNode, "//identificationInfo//descriptiveKeywords/MD_Keywords[thesaurusName/CI_Citation/title/CharacterString='UMTHES Thesaurus']/keyword/CharacterString");
+	if (hasValue(keywords)) {
+		for (i=0; i<keywords.getLength(); i++ ) {
+			var value = keywords.item(i).getTextContent().trim()
+			if (hasValue(value) && usedKeywords.indexOf(value) == -1) {
+				addToDoc("searchterm_value.term", value, true);
+				addToDoc("searchterm_value.type", "T", false);
+				usedKeywords+=value+";"
+			}
+		}
+	}
+	// check for other keywords
+	var keywords = XPathUtils.getNodeList(recordNode, "//identificationInfo//descriptiveKeywords/MD_Keywords/keyword/CharacterString");
+	if (hasValue(keywords)) {
+		for (i=0; i<keywords.getLength(); i++ ) {
+			var value = keywords.item(i).getTextContent().trim();
+			if (hasValue(value) && usedKeywords.indexOf(value) == -1) {
+				addToDoc("searchterm_value.term", value, true);
+				addToDoc("searchterm_value.type", "F", false);
+				usedKeywords+=value+";"
+			}
+		}
+	}
+}
+
+
+function mapReferences(recordNode) {
+	// check for coupled resources, bound to a specific operation in services
+	var usedUuids="";
+	var coupledResources = XPathUtils.getNodeList(recordNode, "//identificationInfo/SV_ServiceIdentification/coupledResource/SV_CoupledResource/identifier/CharacterString");
+	if (hasValue(coupledResources)) {
+		for (i=0; i<coupledResources.getLength(); i++ ) {
+			var value = coupledResources.item(i).getTextContent()
+			if (hasValue(value) && usedUuids.indexOf(value+"3345") == -1) {
+				addToDoc("object_reference.obj_to_uuid", value, true);
+				addToDoc("object_reference.special_ref", "3345", true);
+				usedUuids+=value+"3345;"
+			}
+		}
+	}
+	// check for coupled resources (operatedOn)
+	var operatesOn = XPathUtils.getNodeList(recordNode, "//identificationInfo/SV_ServiceIdentification/operatesOn/@uuidref");
+	if (hasValue(operatesOn)) {
+		for (i=0; i<operatesOn.getLength(); i++ ) {
+			var value = operatesOn.item(i).getTextContent()
+			if (hasValue(value) && usedUuids.indexOf(value+"3345") == -1) {
+				addToDoc("object_reference.obj_to_uuid", value, true);
+				addToDoc("object_reference.special_ref", "3345", true);
+				usedUuids+=value+"3345;"
+			}
+		}
+	}
+	// check for content info references (Schlüsselkatalog)
+	var operatesOn = XPathUtils.getNodeList(recordNode, "//contentInfo/@uuidref");
+	if (hasValue(operatesOn)) {
+		for (i=0; i<operatesOn.getLength(); i++ ) {
+			var value = operatesOn.item(i).getTextContent()
+			if (hasValue(value) && usedUuids.indexOf(value+"3535") == -1) {
+				addToDoc("object_reference.obj_to_uuid", value, true);
+				addToDoc("object_reference.special_ref", "3535", true);
+				usedUuids+=value+"3535;"
+			}
+		}
+	}
+	// check for portrayalCatalogue info references (Symbolkatalog)
+	var operatesOn = XPathUtils.getNodeList(recordNode, "//contentInfo/@uuidref");
+	if (hasValue(operatesOn)) {
+		for (i=0; i<operatesOn.getLength(); i++ ) {
+			var value = operatesOn.item(i).getTextContent()
+			if (hasValue(value) && usedUuids.indexOf(value+"3555") == -1) {
+				addToDoc("object_reference.obj_to_uuid", value, true);
+				addToDoc("object_reference.special_ref", "3555", true);
+				usedUuids+=value+"3555;"
+			}
 		}
 	}
 }
@@ -357,7 +612,7 @@ function transformGeneric(val, mappings, caseSensitive) {
 			}
 		}
 	}
-	return val;
+	return null;
 }
 
 
@@ -442,7 +697,7 @@ function getObjectClassFromHierarchyLevel(val) {
 }
 
 function addToDoc(field, content, tokenized) {
-	if (hasValue(content)) {
+	if (typeof content != "undefined" && content != null) {
 		log.debug("Add '" + field + "'='" + content + "' to lucene index");
 		document.add(new Field(field, content, _store, _index, tokenized));
 		document.add(new Field("content", content, !_store, _index, true));

@@ -98,10 +98,6 @@ public class IndexesCsw2_0_2ApIso1_0TestLocal extends TestCase {
 		assertNotNull(hits);
 		assertTrue(hits.getHits().length > 0);
 
-		hits = searcher.search(QueryStringParser.parse("url:ur*"), 0, 100);
-		assertNotNull(hits);
-		assertTrue(hits.getHits().length > 0);
-
 		hits = searcher.search(QueryStringParser.parse("title:JR*"), 0, 100);
 		assertNotNull(hits);
 		assertTrue(hits.getHits().length > 0);
