@@ -25,7 +25,7 @@
 	<string>organisationAbbr</string>
 	<string>NLWKN</string>
 	<string>iPlugClass</string>
-	<string>de.ingrid.iplug.dsc.index.DSCSearcher</string>
+	<string>de.ingrid.iplug.csw.dsc.index.DSCSearcher</string>
 	<string>personMail</string>
 	<string>fh@media-style.com</string>
 	<string>organisation</string>
@@ -68,13 +68,13 @@
 		<![CDATA[<ogc:Filter xmlns:ogc="http://www.opengis.net/ogc">
 			<ogc:PropertyIsLike escapeChar="\\" singleChar="?" wildCard="*">
 			<ogc:PropertyName>fileIdentifier</ogc:PropertyName>
-			<ogc:Literal>1*</ogc:Literal>
+			<ogc:Literal>10*</ogc:Literal>
 			</ogc:PropertyIsLike>
 		</ogc:Filter>]]>
 	</string>
 	<string>cswMapper</string>
 	<de.ingrid.iplug.csw.dsc.mapping.impl.ScriptMapper>
-		<cswToLuceneMapping>./src/conf/csw_to_lucene.js</cswToLuceneMapping>
-		<cswToIngridMapping>./src/conf/csw_to_ingrid.js</cswToIngridMapping>
+		<cswToLuceneMapping>conf/csw-2.0.2-AP-ISO-1.0_to_lucene-igc-1.0.3.js</cswToLuceneMapping>
+		<cswToIngridMapping>conf/csw_to_ingrid.js</cswToIngridMapping>
 	</de.ingrid.iplug.csw.dsc.mapping.impl.ScriptMapper>
 </de.ingrid.utils.PlugDescription>
