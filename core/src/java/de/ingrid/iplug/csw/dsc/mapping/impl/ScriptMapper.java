@@ -34,6 +34,8 @@ public class ScriptMapper implements DocumentMapper, Serializable {
 
 	final protected static Log log = LogFactory.getLog(ScriptMapper.class);
 	
+	private ScriptEngine engine = null;
+	
 	/**
 	 * Script files used for mapping
 	 */
@@ -55,6 +57,20 @@ public class ScriptMapper implements DocumentMapper, Serializable {
 	public void setCswToIngridMapping(String mappingFile) {
 		this.cswToIngridMapping = mappingFile;
 	}
+	
+	/**
+	 * Get the script engine (JavaScript). It returns always the same instance once initialized.
+	 * 
+	 * @return script engine.
+	 */
+	protected ScriptEngine getScriptEngine()  {
+		if (engine == null) {
+			ScriptEngineManager manager = new ScriptEngineManager();
+	        engine = manager.getEngineByName("JavaScript");
+		}
+		return engine;
+	}
+
 
 	/**
 	 * Do the mapping
@@ -66,18 +82,15 @@ public class ScriptMapper implements DocumentMapper, Serializable {
         File scriptFile = new File(script);
         if (!scriptFile.exists())
         	throw new IOException("The mapping script "+scriptFile.getAbsolutePath()+" does not exist.");
-
-		// instantiate the engine
-        ScriptEngineManager manager = new ScriptEngineManager();
-        ScriptEngine engine = manager.getEngineByName("JavaScript");
-
-		// pass all parameters
+        
+        ScriptEngine engine = this.getScriptEngine();
+		
+        // pass all parameters
         for(String param : parameters.keySet())
         	engine.put(param, parameters.get(param));
         engine.put("log", log);
 
 		// execute the mapping
-        System.out.println(scriptFile.getAbsolutePath());
         InputStream st = new FileInputStream(scriptFile);
     	engine.eval(new InputStreamReader(st));
 	}
