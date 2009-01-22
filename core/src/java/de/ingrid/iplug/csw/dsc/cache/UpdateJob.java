@@ -93,6 +93,7 @@ public class UpdateJob {
 			processResult(result, fetchedRecordIds);	
 			
 			while (result.getNumberOfRecords() > 0 && fetchedRecordIds.size() < numTotal) {
+				log.info("Fetched "+fetchedRecordIds.size()+" records of "+numTotal+" for Elementset " + elementSetName + ".");
 
 				Thread.sleep(requestPause);
 
@@ -109,7 +110,7 @@ public class UpdateJob {
 		
 		// check duplicates
 		int duplicates = fetchedRecordIds.size() - new HashSet<String>(fetchedRecordIds).size();
-		log.info("Fetched "+fetchedRecordIds.size()+" records of "+numTotal+". Duplicates: "+duplicates);
+		log.info("Fetched "+fetchedRecordIds.size()+" records of "+numTotal+" for Elementset " + elementSetName + ". Duplicates: "+duplicates);
 		
 		// remove deprecated records
 		for (String cachedRecordId : cachedRecordIds) {
