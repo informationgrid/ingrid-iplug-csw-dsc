@@ -59,7 +59,14 @@ public class CSWDocumentReader implements IDocumentReader {
 		
 		// do the mapping from CSWRecord to Document
 		try {
+			long startTime = 0;
+			if (log.isInfoEnabled()) {
+				startTime = System.currentTimeMillis();
+			}
 			luceneDocument = this.mapper.mapCswToLucene(cswRecord);
+			if (log.isInfoEnabled()) {
+				log.info("Mapping record '" + recordId + "' within "+ (System.currentTimeMillis() - startTime) + " ms.");
+			}
 		} catch (Exception e) {
 			throw new RuntimeException("Could not map record "+recordId+" ["+elementSetName+"]", e);
 		}
