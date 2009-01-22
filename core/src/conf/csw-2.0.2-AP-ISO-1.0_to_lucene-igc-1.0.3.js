@@ -450,8 +450,9 @@ for (var i in transformationDescriptions) {
 }
 
 function mapAddresses(recordNode) {
-	var addresses = XPathUtils.getNodeList(recordNode, "//CI_ResponsibleParty");
+	var addresses = XPathUtils.getNodeList(recordNode, "//*/CI_ResponsibleParty");
 	if (hasValue(addresses)) {
+		log.debug("number of found addresses:" + addresses.getLength())
 		for (i=0; i<addresses.getLength(); i++ ) {
 			var addressRole = XPathUtils.getString(addresses.item(i), "role/CI_RoleCode/@codeListValue");
 			if (hasValue(addressRole)) {
