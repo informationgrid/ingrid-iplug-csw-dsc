@@ -407,6 +407,12 @@ var transformationDescriptions = [
 				"funct":addResourceMaintenance,
 				"params":[recordNode]
 			}
+		},
+		// addresses 
+		{	"execute":{
+				"funct":mapAddresses,
+				"params":[recordNode]
+			}
 		}
 	];
 
@@ -448,6 +454,72 @@ for (var i in transformationDescriptions) {
 		}
 	}
 }
+
+function mapAddresses(recordNode) {
+	var addresses = XPathUtils.getNodeList(recordNode, "//CI_ResponsibleParty");
+	if (hasValue(addresses)) {
+		for (i=0; i<addresses.getLength(); i++ ) {
+			var addressRole = XPathUtils.getString(addresses.item(i), "role/CI_RoleCode/@codeListValue");
+			if (hasValue(addressRole)) {
+				// map address role
+				addToDoc("t012_obj_adr.special_ref", "0", true);
+				var mappedAddressRole = transformToIgcDomainId(addressRole, 505);
+				if (hasValue(mappedAddressRole) && mappedAddressRole != "-1") {
+					// mapping to code list 505 successful
+					addToDoc("t012_obj_adr.typ", mappedAddressRole, false);
+					addToDoc("t012_obj_adr.special_name", "", true);
+				} else {
+					addToDoc("t012_obj_adr.typ", "-1", true);
+					addToDoc("t012_obj_adr.special_name", addressRole, true);
+				}
+				// map address data
+				addToDoc("t02_address.institution", XPathUtils.getString(addresses.item(i), "organisationName/CharacterString"), true);
+				addToDoc("t02_address.lastname", XPathUtils.getString(addresses.item(i), "individualName/CharacterString"), true);
+				addToDoc("t02_address.street", XPathUtils.getString(addresses.item(i), "contactInfo/CI_Contact/address/CI_Address/deliveryPoint/CharacterString"), true);
+				addToDoc("t02_address.postcode", XPathUtils.getString(addresses.item(i), "contactInfo/CI_Contact/address/CI_Address/postalCode/CharacterString"), true);
+				addToDoc("t02_address.city", XPathUtils.getString(addresses.item(i), "contactInfo/CI_Contact/address/CI_Address/city/CharacterString"), true);
+				addToDoc("t02_address.country_code", XPathUtils.getString(addresses.item(i), "contactInfo/CI_Contact/address/CI_Address/country/CharacterString"), true);
+				addToDoc("t02_address.job", XPathUtils.getString(addresses.item(i), "positionName/CharacterString"), true);
+				addToDoc("t02_address.descr", XPathUtils.getString(addresses.item(i), "contactInfo/CI_Contact/contactInstructions/CharacterString"), true);
+				// map communication Data
+				// phone
+				var entries = XPathUtils.getNodeList(addresses.item(i), "contactInfo/CI_Contact/phone/CI_Telephone/voice/CharacterString");
+				if (hasValue(entries)) {
+					for (j=0; j<entries.getLength(); j++ ) {
+						addToDoc("t021_communication.comm_type", "Telefon", true);
+						addToDoc("t021_communication.comm_value", entries.item(j).getTextContent(), true);
+					}
+				}
+				// fax
+				var entries = XPathUtils.getNodeList(addresses.item(i), "contactInfo/CI_Contact/phone/CI_Telephone/facsimile/CharacterString");
+				if (hasValue(entries)) {
+					for (j=0; j<entries.getLength(); j++ ) {
+						addToDoc("t021_communication.comm_type", "Fax", true);
+						addToDoc("t021_communication.comm_value", entries.item(j).getTextContent(), true);
+					}
+				}
+				// email
+				var entries = XPathUtils.getNodeList(addresses.item(i), "contactInfo/CI_Contact/address/CI_Address/electronicMailAddress/CharacterString");
+				if (hasValue(entries)) {
+					for (j=0; j<entries.getLength(); j++ ) {
+						addToDoc("t021_communication.comm_type", "Email", true);
+						addToDoc("t021_communication.comm_value", entries.item(j).getTextContent(), true);
+					}
+				}
+				// url
+				var entries = XPathUtils.getNodeList(addresses.item(i), "contactInfo/CI_Contact/onlineResource/CI_OnlineResource/linkage/URL");
+				if (hasValue(entries)) {
+					for (j=0; j<entries.getLength(); j++ ) {
+						addToDoc("t021_communication.comm_type", "URL", true);
+						addToDoc("t021_communication.comm_value", entries.item(j).getTextContent(), true);
+					}
+				}
+			}
+			
+		}
+	}
+}
+
 
 function mapGeographicElements(recordNode) {
 	var geographicElements = XPathUtils.getNodeList(recordNode, "//identificationInfo//extent/EX_Extent/geographicElement");
