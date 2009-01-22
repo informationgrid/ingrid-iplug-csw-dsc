@@ -138,12 +138,6 @@ var transformationDescriptions = [
 			"xpath":"//distributionInfo/MD_Distribution/distributor/MD_Distributor/distributionOrderProcess/MD_StandardOrderProcess/orderingInstructions/CharacterString"
 		},
 		{	"indexField":"t01_object.mod_time",
-			"xpath":"//dateStamp/Date",
-			"transform":{
-				"funct":UtilsCSWDate.mapDateFromIso8601ToIndex
-			}
-		},
-		{	"indexField":"t01_object.mod_time",
 			"xpath":"//dateStamp/DateTime",
 			"transform":{
 				"funct":UtilsCSWDate.mapDateFromIso8601ToIndex
