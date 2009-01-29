@@ -727,6 +727,17 @@ function addResourceMaintenance() {
 	}
 }
 
+/*
+ * Set the boundaries of dates to values that can be compared with lucene. The
+ * value of inifinite pas is '00000000' and the value for inifinit future is '99999999'.
+ * 
+ * Makes sure that the fields are only set, if we have a UDK date type of 'seit' or 'bis'. 
+ * We can do this because the mapping filters and maps the dates to t0 in case of date type
+ * 'am' and to t1 in case of 'seit', even if the database fields are the same. Thus we do not 
+ * need to look at the DB field time_type which controls the date 
+ * type ('am', 'seit', 'bis', 'von (von-bis)')   
+ * 
+ */
 function addTimeConstraints() {
 	var t1 = UtilsCSWDate.mapDateFromIso8601ToIndex(XPathUtils.getString(recordNode, "//identificationInfo//EX_Extent/temporalElement/EX_TemporalExtent/extent/TimePeriod/beginPosition"));
 	var t2 = UtilsCSWDate.mapDateFromIso8601ToIndex(XPathUtils.getString(recordNode, "//identificationInfo//EX_Extent/temporalElement/EX_TemporalExtent/extent/TimePeriod/endPosition"));
@@ -743,8 +754,10 @@ function addTimeConstraints() {
 	} else if (hasValue(t1) && !hasValue(t2)) {
 		addToDoc("t01_object.time_type", "seit", false);
 		addToDoc("t1", t1, false);
+		addToDoc("t2", "99999999", false);
 	} else if (!hasValue(t1) && hasValue(t2)) {
 		addToDoc("t01_object.time_type", "bis", false);
+		addToDoc("t1", "00000000", false);
 		addToDoc("t2", t2, false);
 	}
 }
