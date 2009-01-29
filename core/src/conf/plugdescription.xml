@@ -1,39 +1,85 @@
 <de.ingrid.utils.PlugDescription>
-	<int>21</int>
+	<int>28</int>
 	<string>personPhone</string>
 	<string>0345 5 222 702</string>
 	<string>personName</string>
 	<string>Frank</string>
 	<string>dataType</string>
 	<list>
-		<string>dsc_other</string>
+	    <string>default</string>
+	    <string>topics</string>
+	    <string>metadata</string>
+	    <string>dsc_ecs</string>
 	</list>
 	<string>proxyServiceUrl</string>
-	<string>socket://localhost:50002</string>
+	<string>/torwald-group:csw-dsc-jm_</string>
+	<string>IPLUG_ADMIN_PASSWORD</string>
+	<string>password</string>
 	<string>plugId</string>
-	<string>192.168.0.2-1138524346937</string>
+	<string>/torwald-group:csw-dsc-jm1</string>
 	<string>personTitle</string>
 	<string/>
 	<string>workingDirectory</string>
 	<string>./</string>
+	<string>fields</string>
+	<list>
+	  <string>datatype</string>
+	  <string>partner</string>
+	  <string>funct_category</string>
+	  <string>lang</string>
+	  <string>topic</string>
+	  <string>provider</string>
+	  <string>x1</string>
+	  <string>x2</string>
+	  <string>y1</string>
+	  <string>y2</string>
+	  <string>t1</string>
+	  <string>t2</string>
+	  <string>t0</string>
+	  <string>time</string>
+	  <string>coord</string>
+	  <string>buzzword</string>
+	  <string>areaid</string>
+	  <string>site</string>
+	  <string>url</string>
+	  <string>incl_meta</string>
+	</list>
 	<string>dataSourceDescription</string>
 	<string>enthaelt Daten ueber Messstellen, deutschlandweit</string>
 	<string>personSureName</string>
 	<string>Henze</string>
+	<string>IPLUG_ADMIN_GUI_URL</string>
+	<string>http://plant.its-technidata.de/iplug-admin-se-search-myles/</string>
 	<string>dataSourceName</string>
 	<string>LDB-Wasser</string>
 	<string>organisationAbbr</string>
 	<string>NLWKN</string>
+	<string>partner</string>
+	<list>
+	  <string>bund</string>
+	</list>
+	 <string>IPLUG_ADMIN_GUI_PORT</string>
+	 <int>50061</int>
+	<string>busUrls</string>
+	<list>
+	  <string>/torwald-group:torwald-ibus</string>
+	</list>
+	<string>md5Hash</string>
+	<string>/torwald-group:csw-dsc-jm_</string>
 	<string>iPlugClass</string>
 	<string>de.ingrid.iplug.csw.dsc.index.DSCSearcher</string>
+	<string>provider</string>
+	<list>
+	  <string>kst</string>
+	</list>
 	<string>personMail</string>
 	<string>fh@media-style.com</string>
 	<string>organisation</string>
 	<string>Niedersaechsischer Landesbetrieb fuer Wasserwirtschaft, Kuesten- und Naturschutz</string>
-	<string>partner</string>
-	<string>Anhalt</string>
-	<string>motherIbusUrl</string>
-	<string>j</string>
+	<string>ranking</string>
+	<list>
+	  <string>score</string> <!-- Liste der Rankingvarianten -->
+	</list>
 	<string>cswFactory</string>
 	<de.ingrid.iplug.csw.dsc.cswclient.CSWFactory>
 		<serviceUrl>http://www.portalu.de/csw</serviceUrl>
