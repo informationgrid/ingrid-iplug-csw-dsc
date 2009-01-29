@@ -361,16 +361,13 @@ var transformationDescriptions = [
 		},
 		// t017_url_ref
 		{	"indexField":"t017_url_ref.url_link",
-			"xpath":"//distributionInfo/MD_Distribution/transferOptions/MD_DigitalTransferOptions/online/CI_OnlineResource/linkage/URL"
+			"xpath":"//distributionInfo/MD_Distribution/transferOptions/MD_DigitalTransferOptions/onLine/CI_OnlineResource/linkage/URL"
 		},
 		{	"indexField":"t017_url_ref.content",
-			"xpath":"//distributionInfo/MD_Distribution/transferOptions/MD_DigitalTransferOptions/online/CI_OnlineResource/name/CharacterString"
+			"xpath":"//distributionInfo/MD_Distribution/transferOptions/MD_DigitalTransferOptions/onLine/CI_OnlineResource/name/CharacterString"
 		},
 		{	"indexField":"t017_url_ref.descr",
-			"xpath":"//distributionInfo/MD_Distribution/transferOptions/MD_DigitalTransferOptions/online/CI_OnlineResource/description/CharacterString"
-		},
-		{	"indexField":"t017_url_ref.descr",
-			"xpath":"//distributionInfo/MD_Distribution/transferOptions/MD_DigitalTransferOptions/online/CI_OnlineResource/description/CharacterString"
+			"xpath":"//distributionInfo/MD_Distribution/transferOptions/MD_DigitalTransferOptions/onLine/CI_OnlineResource/description/CharacterString"
 		},
 		// object_references
 		{	"execute":{
