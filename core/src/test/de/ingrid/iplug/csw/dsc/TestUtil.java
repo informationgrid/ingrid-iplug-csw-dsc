@@ -18,7 +18,6 @@ import org.w3c.dom.Node;
 
 import de.ingrid.iplug.csw.dsc.cswclient.CSWRecord;
 import de.ingrid.iplug.csw.dsc.cswclient.constants.ElementSetName;
-import de.ingrid.iplug.csw.dsc.mapping.impl.ScriptMapper;
 import de.ingrid.iplug.csw.dsc.tools.StringUtils;
 import de.ingrid.iplug.csw.dsc.tools.XPathUtils;
 import de.ingrid.utils.PlugDescription;
@@ -27,7 +26,7 @@ import de.ingrid.utils.xml.XMLSerializer;
 public class TestUtil {
 
 	final protected static Log log = LogFactory.getLog(TestUtil.class);
-	
+
 	/**
 	 * File related methods
 	 */

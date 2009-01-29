@@ -13,8 +13,11 @@ import org.apache.lucene.document.Document;
 import org.apache.lucene.search.IndexSearcher;
 
 import de.ingrid.iplug.csw.dsc.ConfigurationKeys;
+import de.ingrid.iplug.csw.dsc.TestUtil;
 import de.ingrid.iplug.csw.dsc.cache.Cache;
+import de.ingrid.iplug.csw.dsc.cswclient.CSWFactory;
 import de.ingrid.iplug.csw.dsc.mapping.DocumentMapper;
+import de.ingrid.iplug.csw.dsc.tools.SimpleSpringBeanFactory;
 import de.ingrid.iplug.scheduler.SchedulingService;
 import de.ingrid.utils.IIngridHitEnrichment;
 import de.ingrid.utils.IngridHit;
@@ -70,17 +73,20 @@ public class DSCSearcher extends AbstractSearcher {
 		factory.register(new CswDscIdentifierEnrichment());
 		_enrichmentCollection = factory.getIngridHitsEnrichmentCollection();
 		
-		if (plugDescription.containsKey(ConfigurationKeys.CSW_MAPPER))
-			this.mapper = (DocumentMapper)plugDescription.get(ConfigurationKeys.CSW_MAPPER);
-		else
+		this.mapper = SimpleSpringBeanFactory.INSTANCE.getBean(ConfigurationKeys.CSW_MAPPER, DocumentMapper.class);
+		if (this.mapper == null) {
 			throw new RuntimeException("DSCSearcher is not configured properly. "+
-					"Parameter '"+ConfigurationKeys.CSW_MAPPER+"' is missing in plugdescription.");
+					"Bean '"+ConfigurationKeys.CSW_MAPPER+"' is missing in spring configuration.");
+		}
 
-		if (plugDescription.containsKey(ConfigurationKeys.CSW_CACHE))
-			this.cache = (Cache)plugDescription.get(ConfigurationKeys.CSW_CACHE);
-		else
+
+		this.cache = SimpleSpringBeanFactory.INSTANCE.getBean(ConfigurationKeys.CSW_CACHE, Cache.class);
+		if (this.cache == null) {
 			throw new RuntimeException("DSCSearcher is not configured properly. "+
-					"Parameter '"+ConfigurationKeys.CSW_CACHE+"' is missing in plugdescription.");
+					"Bean '"+ConfigurationKeys.CSW_CACHE+"' is missing in spring configuration.");
+		} else {
+			this.cache.configure(SimpleSpringBeanFactory.INSTANCE.getBean(ConfigurationKeys.CSW_FACTORY, CSWFactory.class));
+		}
 	}
 
 	public IngridHits search(IngridQuery query, int start, int length)

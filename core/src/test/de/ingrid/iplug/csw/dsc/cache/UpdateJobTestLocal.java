@@ -14,6 +14,7 @@ import de.ingrid.iplug.csw.dsc.cswclient.CSWRecord;
 import de.ingrid.iplug.csw.dsc.cswclient.constants.ElementSetName;
 import de.ingrid.iplug.csw.dsc.cswclient.constants.OutputFormat;
 import de.ingrid.iplug.csw.dsc.cswclient.impl.GenericRecord;
+import de.ingrid.iplug.csw.dsc.tools.SimpleSpringBeanFactory;
 import de.ingrid.utils.PlugDescription;
 
 public class UpdateJobTestLocal extends TestCase {
@@ -22,12 +23,12 @@ public class UpdateJobTestLocal extends TestCase {
 	
 	public void testExecute() throws Exception {
 		
-		PlugDescription desc = TestUtil.getPlugDescription();
-		
-		// get instances from plugdescription
-		CSWFactory factory = (CSWFactory)desc.get(ConfigurationKeys.CSW_FACTORY);
-		factory.setQueryTemplate((CSWQuery)desc.get(ConfigurationKeys.CSW_QUERY_TEMPLATE));
-		Cache cache = (Cache)desc.get(ConfigurationKeys.CSW_CACHE);
+		// get instances from spring configuration
+		SimpleSpringBeanFactory.INSTANCE.setBeanConfig("beans_test.xml");
+
+		CSWFactory factory = SimpleSpringBeanFactory.INSTANCE.getBean(ConfigurationKeys.CSW_FACTORY, CSWFactory.class);
+		factory.setQueryTemplate(SimpleSpringBeanFactory.INSTANCE.getBean(ConfigurationKeys.CSW_QUERY_TEMPLATE, CSWQuery.class));
+		Cache cache = SimpleSpringBeanFactory.INSTANCE.getBean(ConfigurationKeys.CSW_CACHE, Cache.class);
 		cache.configure(factory);
 		if (cache instanceof DefaultFileCache)
 			((DefaultFileCache)cache).setCachePath(cachePath);
@@ -47,7 +48,7 @@ public class UpdateJobTestLocal extends TestCase {
 		
 		// run the update job for all elementset names
 		UpdateJob job = new UpdateJob();
-		job.configure(factory, tmpCache, (String)desc.get(ConfigurationKeys.CSW_HARVEST_FILTER));
+		job.configure(factory, tmpCache, SimpleSpringBeanFactory.INSTANCE.getBean(ConfigurationKeys.CSW_HARVEST_FILTER, String.class));
 		
 		ElementSetName[] names = ElementSetName.values();
 		for (int i=0; i<names.length; i++)
@@ -57,7 +58,7 @@ public class UpdateJobTestLocal extends TestCase {
 		tmpCache.commitTransaction();
 		
 		// check for a cached record
-		String id = "1AFDCB03-3818-40F1-9560-9FB082956357";
+		String id = "10008748-45AB-11D4-BB1D-00104BDCC34C";
 		CSWRecord recordBrief = cache.getRecord(id, ElementSetName.BRIEF);
 		assertTrue("record "+id+" was cached", recordBrief.getId().equals(id));
 		CSWRecord recordSummary = cache.getRecord(id, ElementSetName.SUMMARY);

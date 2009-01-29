@@ -17,6 +17,7 @@ import de.ingrid.iplug.csw.dsc.cswclient.CSWFactory;
 import de.ingrid.iplug.csw.dsc.cswclient.CSWQuery;
 import de.ingrid.iplug.csw.dsc.cswclient.constants.ElementSetName;
 import de.ingrid.iplug.csw.dsc.mapping.DocumentMapper;
+import de.ingrid.iplug.csw.dsc.tools.SimpleSpringBeanFactory;
 import de.ingrid.utils.PlugDescription;
 
 public class IndexingJob implements StatefulJob {
@@ -33,11 +34,11 @@ public class IndexingJob implements StatefulJob {
 			PlugDescription plugDescription = PlugServer.getPlugDescription();
 			File file = plugDescription.getWorkinDirectory();
 
-			// get instances from plugdescription
-			CSWFactory factory = (CSWFactory)plugDescription.get(ConfigurationKeys.CSW_FACTORY);
-			factory.setQueryTemplate((CSWQuery)plugDescription.get(ConfigurationKeys.CSW_QUERY_TEMPLATE));
-			DocumentMapper mapper = (DocumentMapper)plugDescription.get(ConfigurationKeys.CSW_MAPPER);
-			Cache cache = (Cache)plugDescription.get(ConfigurationKeys.CSW_CACHE);
+			// get instances from spring configuration
+			CSWFactory factory = SimpleSpringBeanFactory.INSTANCE.getBean(ConfigurationKeys.CSW_FACTORY, CSWFactory.class);
+			factory.setQueryTemplate(SimpleSpringBeanFactory.INSTANCE.getBean(ConfigurationKeys.CSW_QUERY_TEMPLATE, CSWQuery.class));
+			DocumentMapper mapper = SimpleSpringBeanFactory.INSTANCE.getBean(ConfigurationKeys.CSW_MAPPER, DocumentMapper.class);
+			Cache cache = SimpleSpringBeanFactory.INSTANCE.getBean(ConfigurationKeys.CSW_CACHE, Cache.class);
 			cache.configure(factory);
 
 			
@@ -48,7 +49,7 @@ public class IndexingJob implements StatefulJob {
 
 			// run the update job for all elementset names
 			UpdateJob job = new UpdateJob();
-			job.configure(factory, tmpCache, (String)plugDescription.get(ConfigurationKeys.CSW_HARVEST_FILTER));
+			job.configure(factory, tmpCache, SimpleSpringBeanFactory.INSTANCE.getBean(ConfigurationKeys.CSW_HARVEST_FILTER, String.class));
 			
 			ElementSetName[] names = ElementSetName.values();
 			for (int i=0; i<names.length; i++)

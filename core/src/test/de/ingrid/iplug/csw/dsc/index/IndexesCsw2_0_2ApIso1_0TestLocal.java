@@ -4,8 +4,6 @@ import java.io.File;
 import java.util.HashSet;
 import java.util.List;
 
-import org.hsqldb.lib.Set;
-
 import junit.framework.TestCase;
 import de.ingrid.iplug.csw.dsc.ConfigurationKeys;
 import de.ingrid.iplug.csw.dsc.TestUtil;
@@ -15,6 +13,7 @@ import de.ingrid.iplug.csw.dsc.cswclient.CSWFactory;
 import de.ingrid.iplug.csw.dsc.cswclient.constants.ElementSetName;
 import de.ingrid.iplug.csw.dsc.cswclient.impl.GenericRecord;
 import de.ingrid.iplug.csw.dsc.mapping.DocumentMapper;
+import de.ingrid.iplug.csw.dsc.tools.SimpleSpringBeanFactory;
 import de.ingrid.utils.IngridHits;
 import de.ingrid.utils.PlugDescription;
 import de.ingrid.utils.dsc.Record;
@@ -54,11 +53,13 @@ public class IndexesCsw2_0_2ApIso1_0TestLocal extends TestCase {
 		PlugDescription desc = TestUtil.getPlugDescription();
 		desc.setWorkinDirectory(folder);
 
-		CSWFactory factory = (CSWFactory)desc.get(ConfigurationKeys.CSW_FACTORY);
-		DocumentMapper mapper = (DocumentMapper)desc.get(ConfigurationKeys.CSW_MAPPER);
+		SimpleSpringBeanFactory.INSTANCE.setBeanConfig("beans_test.xml");
+		
+		CSWFactory factory = SimpleSpringBeanFactory.INSTANCE.getBean(ConfigurationKeys.CSW_FACTORY, CSWFactory.class);
+		DocumentMapper mapper = SimpleSpringBeanFactory.INSTANCE.getBean(ConfigurationKeys.CSW_MAPPER, DocumentMapper.class);
 		
 		// prepare the cache
-		Cache cache = (Cache)desc.get(ConfigurationKeys.CSW_CACHE);
+		Cache cache = SimpleSpringBeanFactory.INSTANCE.getBean(ConfigurationKeys.CSW_CACHE, Cache.class);
 		cache.configure(factory);
 		if (cache instanceof DefaultFileCache)
 			((DefaultFileCache)cache).setCachePath(cachePath);

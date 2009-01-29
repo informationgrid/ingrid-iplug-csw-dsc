@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="
+http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-2.5.xsd">
+
+	<bean id="cswFactory" class="de.ingrid.iplug.csw.dsc.cswclient.CSWFactory">
+		<property name="serviceUrl" value="http://www.portalu.de/csw" />
+		<property name="clientImpl"
+			value="de.ingrid.iplug.csw.dsc.cswclient.impl.GenericClient" />
+		<property name="requestImpl"
+			value="de.ingrid.iplug.csw.dsc.cswclient.impl.SoapRequest" />
+		<property name="capabilitiesImpl"
+			value="de.ingrid.iplug.csw.dsc.cswclient.impl.GenericCapabilities" />
+		<property name="recordDescriptionImpl"
+			value="de.ingrid.iplug.csw.dsc.cswclient.impl.GenericRecordDescription" />
+		<property name="queryImpl"
+			value="de.ingrid.iplug.csw.dsc.cswclient.impl.GenericQuery" />
+		<property name="searchResultImpl"
+			value="de.ingrid.iplug.csw.dsc.cswclient.impl.GenericSearchResult" />
+		<property name="recordImpl"
+			value="de.ingrid.iplug.csw.dsc.cswclient.impl.GenericRecord" />
+	</bean>
+
+	<bean id="cswQueryTemplate" class="de.ingrid.iplug.csw.dsc.cswclient.impl.GenericQuery">
+		<property name="schema" value="CSW" />
+		<property name="outputSchema" value="CSW_PROFILE" />
+		<property name="outputFormat" value="TEXT_XML" />
+		<property name="version" value="2.0.0" />
+		<property name="elementSetName" value="BRIEF" />
+		<property name="typeNames">
+			<list>
+				<value type="de.ingrid.iplug.csw.dsc.cswclient.constants.TypeName">DATASET</value>
+			</list>
+		</property>
+		<property name="resultType" value="RESULTS" />
+		<property name="constraintLanguage" value="FILTER" />
+		<property name="constraintLanguageVersion" value="1.0.0" />
+	</bean>
+
+	<bean id="cswCache" class="de.ingrid.iplug.csw.dsc.cache.impl.DefaultFileCache">
+		<property name="cachePath" value="./test_case_updatejob" />
+	</bean>
+
+	<bean id="cswHarvestFilter" class="java.lang.String">
+		<constructor-arg type="java.lang.String">
+			<value>
+				<![CDATA[<ogc:Filter xmlns:ogc="http://www.opengis.net/ogc">
+				<ogc:PropertyIsLike escapeChar="\\" singleChar="?" wildCard="*">
+				<ogc:PropertyName>fileIdentifier</ogc:PropertyName>
+				<ogc:Literal>10*</ogc:Literal>
+				</ogc:PropertyIsLike>
+				</ogc:Filter>]]>
+			</value>
+		</constructor-arg>
+	</bean>
+	
+	<bean id="cswMapper" class="de.ingrid.iplug.csw.dsc.mapping.impl.ScriptMapper">
+		<property name="cswToLuceneMapping" value="conf/csw-2.0.2-AP-ISO-1.0_to_lucene-igc-1.0.3.js" />
+		<property name="cswToIngridMapping" value="conf/csw-2.0.2-AP-ISO-1.0_to_ingrid-igc-1.0.3.js" />
+	</bean>
+	
+
+</beans>

@@ -19,6 +19,7 @@ import de.ingrid.iplug.csw.dsc.cswclient.constants.ElementSetName;
 import de.ingrid.iplug.csw.dsc.cswclient.impl.GenericRecord;
 import de.ingrid.iplug.csw.dsc.mapping.DocumentMapper;
 import de.ingrid.iplug.csw.dsc.mapping.impl.ScriptMapper;
+import de.ingrid.iplug.csw.dsc.tools.SimpleSpringBeanFactory;
 import de.ingrid.utils.IngridHit;
 import de.ingrid.utils.IngridHits;
 import de.ingrid.utils.PlugDescription;
@@ -50,10 +51,9 @@ public class MapperCsw2_0_2ApIso1_0ToInGridTestLocal extends TestCase {
 	 */
 	public void testIndexer() throws Exception {
 
-		// read the PlugDescription
-		PlugDescription desc = TestUtil.getPlugDescription();
+		SimpleSpringBeanFactory.INSTANCE.setBeanConfig("beans_test.xml");
 
-		DocumentMapper mapper = (DocumentMapper)desc.get(ConfigurationKeys.CSW_MAPPER);
+		DocumentMapper mapper = SimpleSpringBeanFactory.INSTANCE.getBean(ConfigurationKeys.CSW_MAPPER, DocumentMapper.class);
 		
 		CSWRecord cswRecord = TestUtil.getRecord("33462e89-e5ab-11c3-737d-b3a61366d028", ElementSetName.FULL, new GenericRecord());
 		Record record = null;
