@@ -92,7 +92,8 @@ public class ScriptMapper implements DocumentMapper, Serializable {
 
 		// execute the mapping
         InputStream st = new FileInputStream(scriptFile);
-    	engine.eval(new InputStreamReader(st));
+    	log.debug("Mapping with script: " + script);
+        engine.eval(new InputStreamReader(st));
 	}
 	
 	/**

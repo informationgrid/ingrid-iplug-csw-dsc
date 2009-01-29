@@ -75,6 +75,6 @@
 	<string>cswMapper</string>
 	<de.ingrid.iplug.csw.dsc.mapping.impl.ScriptMapper>
 		<cswToLuceneMapping>./src/conf/csw-2.0.2-AP-ISO-1.0_to_lucene-igc-1.0.3.js</cswToLuceneMapping>
-		<cswToIngridMapping>./src/conf/csw_to_ingrid.js</cswToIngridMapping>
+		<cswToIngridMapping>./src/conf/csw-2.0.2-AP-ISO-1.0_to_ingrid-igc-1.0.3.js</cswToIngridMapping>
 	</de.ingrid.iplug.csw.dsc.mapping.impl.ScriptMapper>
 </de.ingrid.utils.PlugDescription>

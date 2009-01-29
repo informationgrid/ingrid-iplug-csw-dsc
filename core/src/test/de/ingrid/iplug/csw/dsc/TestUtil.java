@@ -11,11 +11,14 @@ import java.io.OutputStream;
 import java.util.HashSet;
 import java.util.Set;
 
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.w3c.dom.Document;
 import org.w3c.dom.Node;
 
 import de.ingrid.iplug.csw.dsc.cswclient.CSWRecord;
 import de.ingrid.iplug.csw.dsc.cswclient.constants.ElementSetName;
+import de.ingrid.iplug.csw.dsc.mapping.impl.ScriptMapper;
 import de.ingrid.iplug.csw.dsc.tools.StringUtils;
 import de.ingrid.iplug.csw.dsc.tools.XPathUtils;
 import de.ingrid.utils.PlugDescription;
@@ -23,6 +26,8 @@ import de.ingrid.utils.xml.XMLSerializer;
 
 public class TestUtil {
 
+	final protected static Log log = LogFactory.getLog(TestUtil.class);
+	
 	/**
 	 * File related methods
 	 */
@@ -106,6 +111,7 @@ public class TestUtil {
 
 	public static CSWRecord getRecord(String id, ElementSetName elementSetName, CSWRecord record) {
 		try {
+			log.debug("getting Record '"+id+"'");
 			return getRecordNode(id, elementSetName, record);
 		} catch (Exception e) {
 			throw new RuntimeException(e);

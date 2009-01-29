@@ -1,0 +1,103 @@
+package de.ingrid.iplug.csw.dsc.index;
+
+import java.io.File;
+import java.util.HashSet;
+import java.util.List;
+
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
+import org.hsqldb.lib.Set;
+
+import junit.framework.TestCase;
+import de.ingrid.iplug.csw.dsc.ConfigurationKeys;
+import de.ingrid.iplug.csw.dsc.TestUtil;
+import de.ingrid.iplug.csw.dsc.cache.Cache;
+import de.ingrid.iplug.csw.dsc.cache.impl.DefaultFileCache;
+import de.ingrid.iplug.csw.dsc.cswclient.CSWFactory;
+import de.ingrid.iplug.csw.dsc.cswclient.CSWRecord;
+import de.ingrid.iplug.csw.dsc.cswclient.constants.ElementSetName;
+import de.ingrid.iplug.csw.dsc.cswclient.impl.GenericRecord;
+import de.ingrid.iplug.csw.dsc.mapping.DocumentMapper;
+import de.ingrid.iplug.csw.dsc.mapping.impl.ScriptMapper;
+import de.ingrid.utils.IngridHit;
+import de.ingrid.utils.IngridHits;
+import de.ingrid.utils.PlugDescription;
+import de.ingrid.utils.dsc.Record;
+import de.ingrid.utils.queryparser.QueryStringParser;
+
+/**
+ * TODO comment for IndexesTest
+ * 
+ * <p/>created on 30.05.2006
+ * 
+ * @version $Revision: $
+ * @author jz
+ * @author $Author: ${lastedit}
+ * 
+ */
+public class MapperCsw2_0_2ApIso1_0ToInGridTestLocal extends TestCase {
+
+	@Override
+	protected void setUp() throws Exception {
+	}
+
+	@Override
+	protected void tearDown() throws Exception {
+	}
+
+	/**
+	 * @throws Exception
+	 */
+	public void testIndexer() throws Exception {
+
+		// read the PlugDescription
+		PlugDescription desc = TestUtil.getPlugDescription();
+
+		DocumentMapper mapper = (DocumentMapper)desc.get(ConfigurationKeys.CSW_MAPPER);
+		
+		CSWRecord cswRecord = TestUtil.getRecord("33462e89-e5ab-11c3-737d-b3a61366d028", ElementSetName.FULL, new GenericRecord());
+		Record record = null;
+		try {
+			record = mapper.mapCswToIngrid(cswRecord);
+		} catch (Throwable t) {
+			System.out.println(t);
+		}
+		
+		assertTrue("Detail record found.", record != null);
+		assertTrue("Subrecords not null.", record.getSubRecords() != null);
+		assertTrue("Subrecords found.", record.getSubRecords().length > 0);
+
+		
+		cswRecord = TestUtil.getRecord("550e8400-e29b-41d4-a716-446655441234", ElementSetName.FULL, new GenericRecord());
+		record = null;
+		try {
+			record = mapper.mapCswToIngrid(cswRecord);
+		} catch (Throwable t) {
+			System.out.println(t);
+		}
+		
+		assertTrue("Detail record found.", record != null);
+		assertTrue("Subrecords not null.", record.getSubRecords() != null);
+		assertTrue("Subrecords found.", record.getSubRecords().length > 0);
+		
+	}
+	/**
+	 * @throws Exception
+	public void testMapper() throws Exception {
+
+		// read the PlugDescription
+		PlugDescription desc = TestUtil.getPlugDescription();
+
+		DocumentMapper mapper = (DocumentMapper)desc.get(ConfigurationKeys.CSW_MAPPER);
+		
+		CSWRecord cswRecord = TestUtil.getRecord("33462e89-e5ab-11c3-737d-b3a61366d028", ElementSetName.FULL, new GenericRecord());
+		Record record = mapper.mapCswToIngrid(cswRecord);
+		System.out.println(log.isDebugEnabled());
+		log.debug("test");
+		
+		assertTrue("Detail record found.", record != null);
+		assertTrue("Subrecords not null.", record.getSubRecords() != null);
+		assertTrue("Subrecords found.", record.getSubRecords().length > 0);
+	}
+	 */
+}
