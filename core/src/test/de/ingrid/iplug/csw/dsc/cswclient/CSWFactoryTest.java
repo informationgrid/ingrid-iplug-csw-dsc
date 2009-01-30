@@ -12,7 +12,13 @@ public class CSWFactoryTest extends TestCase {
 	public static final String URL_PORTALU = "http://www.portalu.de/csw";
 	public static final String URL_WSVCSW = "http://csw.wsv.de/";
 	public static final String URL_DISY_PRELUDIO = "http://demo.disy.net/preludio2.lubw/ws/csw";
-
+	public static final String URL_BKG = "http://ims3.bkg.bund.de/mdm/CSW2Servlet";
+	public static final String URL_ADV_MIS = "http://gdz-extern.bkg.bund.de/ingeo_csw/ingeo_csw";
+	public static final String URL_GEODATA = "http://www.geodata.gov/Portal/csw202/discovery";
+	public static final String URL_GEODATA_NL = "http://www.geodata.alterra.nl/excat";
+	public static final String URL_UNIFI = "http://apollo.pin.unifi.it:8080/lucansdi-gi-cat-5.1.3/ogc-services";
+	
+	
 	public static final String cswClientImpl = "de.ingrid.iplug.csw.dsc.cswclient.impl.GenericClient";
 	public static final String cswCapabilitiesImpl = "de.ingrid.iplug.csw.dsc.cswclient.impl.GenericCapabilities";
 	public static final String cswRecordDescriptionImpl = "de.ingrid.iplug.csw.dsc.cswclient.impl.GenericRecordDescription";
