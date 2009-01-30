@@ -5,7 +5,9 @@
 http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-2.5.xsd">
 
 	<bean id="cswFactory" class="de.ingrid.iplug.csw.dsc.cswclient.CSWFactory">
-		<property name="serviceUrl" value="http://www.portalu.de/csw" />
+		<property name="serviceUrl" value="http://demo.disy.net/preludio2.lubw/ws/csw" />
+<!--		<property name="serviceUrl" value="http://ims3.bkg.bund.de/mdm/CSW2Servlet" /> -->
+<!--  		<property name="serviceUrl" value="http://gdz-extern.bkg.bund.de/ingeo_csw/ingeo_csw" /> -->
 		<property name="clientImpl"
 			value="de.ingrid.iplug.csw.dsc.cswclient.impl.GenericClient" />
 		<property name="requestImpl"
@@ -25,12 +27,12 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
 	<bean id="cswQueryTemplate" class="de.ingrid.iplug.csw.dsc.cswclient.impl.GenericQuery">
 		<property name="schema" value="CSW" />
 		<property name="outputSchema" value="CSW_PROFILE" />
-		<property name="outputFormat" value="TEXT_XML" />
-		<property name="version" value="2.0.0" />
+		<property name="outputFormat" value="APPLICATION_XML" />
+		<property name="version" value="2.0.2" />
 		<property name="elementSetName" value="BRIEF" />
 		<property name="typeNames">
 			<list>
-				<value type="de.ingrid.iplug.csw.dsc.cswclient.constants.TypeName">DATASET</value>
+				<value type="de.ingrid.iplug.csw.dsc.cswclient.constants.TypeName">RECORD</value>
 			</list>
 		</property>
 		<property name="resultType" value="RESULTS" />
@@ -44,14 +46,7 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
 
 	<bean id="cswHarvestFilter" class="java.lang.String">
 		<constructor-arg type="java.lang.String">
-			<value>
-				<![CDATA[<ogc:Filter xmlns:ogc="http://www.opengis.net/ogc">
-				<ogc:PropertyIsLike escapeChar="\\" singleChar="?" wildCard="*">
-				<ogc:PropertyName>fileIdentifier</ogc:PropertyName>
-				<ogc:Literal>10*</ogc:Literal>
-				</ogc:PropertyIsLike>
-				</ogc:Filter>]]>
-			</value>
+			<value><![CDATA[<ogc:Filter xmlns:ogc="http://www.opengis.net/ogc"><ogc:PropertyIsLike escapeChar="\\" singleChar="?" wildCard="*"><ogc:PropertyName>fileIdentifier</ogc:PropertyName><ogc:Literal>10*</ogc:Literal></ogc:PropertyIsLike></ogc:Filter>]]></value>
 		</constructor-arg>
 	</bean>
 	
