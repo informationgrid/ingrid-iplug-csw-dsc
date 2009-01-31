@@ -28,9 +28,6 @@ import de.ingrid.utils.PlugDescription;
 @SuppressWarnings("unused")
 public class CSWClientTestLocal extends TestCase {
 	
-	private String recordId = null; 
-	
-	
 	public void testGetCapabilitiesKVPGet() throws Exception {
 		
 		// set up factory - KVPGet requests
@@ -119,10 +116,10 @@ public class CSWClientTestLocal extends TestCase {
 				recordCount == result.getNumberOfRecords());
 		
 		// store record id
-		recordId = result.getRecordList().get(0).getId();
+		result.getRecordList().get(0).getId();
 		
-//		assertTrue("First record has id 1AFDCB03-3818-40F1-9560-9FB082956357",
-//				result.getRecordList().get(0).getId().equals("1AFDCB03-3818-40F1-9560-9FB082956357"));
+		assertTrue("First record has id 486d9622-c29d-44e5-b878-44389740011",
+				result.getRecordList().get(0).getId().equals("486d9622-c29d-44e5-b878-44389740011"));
 	}
 	
 	public void testGetRecordByIdSoap() throws Exception {
@@ -139,8 +136,7 @@ public class CSWClientTestLocal extends TestCase {
 		client.configure(f);
 
 		// create the query
-		String recordId1 = recordId;
-		String recordId2 = "1A7EFA6F-FEDF-44D4-B139-6D92FD68CF58";
+		String recordId1 = "486d9622-c29d-44e5-b878-44389740011";
 		//CSWQuery query = createDisyQuery(f.createQuery());
 		CSWQuery query = createCSW2_0_2Query(f.createQuery());
 		
