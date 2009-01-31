@@ -17,6 +17,7 @@ public class CSWFactoryTest extends TestCase {
 	public static final String URL_GEODATA = "http://www.geodata.gov/Portal/csw202/discovery";
 	public static final String URL_GEODATA_NL = "http://www.geodata.alterra.nl/excat";
 	public static final String URL_UNIFI = "http://apollo.pin.unifi.it:8080/lucansdi-gi-cat-5.1.3/ogc-services";
+	public static final String URL_SDISUITE="http://gdi-de.sdisuite.de/soapServices/services/CSWDiscovery";
 	
 	
 	public static final String cswClientImpl = "de.ingrid.iplug.csw.dsc.cswclient.impl.GenericClient";

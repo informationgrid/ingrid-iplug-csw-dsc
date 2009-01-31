@@ -10,6 +10,8 @@ import javax.xml.parsers.DocumentBuilderFactory;
 
 import junit.framework.TestCase;
 
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.w3c.dom.Document;
 import org.xml.sax.InputSource;
 
@@ -20,16 +22,20 @@ import de.ingrid.iplug.csw.dsc.cswclient.constants.OutputFormat;
 import de.ingrid.iplug.csw.dsc.cswclient.constants.ResultType;
 import de.ingrid.iplug.csw.dsc.cswclient.constants.TypeName;
 import de.ingrid.iplug.csw.dsc.cswclient.impl.GenericQuery;
+import de.ingrid.iplug.csw.dsc.index.CSWDocumentReader;
 import de.ingrid.utils.PlugDescription;
 
 @SuppressWarnings("unused")
 public class CSWClientTestLocal extends TestCase {
 	
+	private String recordId = null; 
+	
+	
 	public void testGetCapabilitiesKVPGet() throws Exception {
 		
 		// set up factory - KVPGet requests
 		PlugDescription desc = new PlugDescription();
-		desc.put("serviceUrl", CSWFactoryTest.URL_PORTALU);
+		desc.put("serviceUrl", CSWFactoryTest.URL_SDISUITE);
 		desc.put("CSWRequestImpl", CSWFactoryTest.cswRequestKVPGetImpl);
 		CSWFactory f = CSWFactoryTest.createFactory(desc);
 
@@ -53,7 +59,7 @@ public class CSWClientTestLocal extends TestCase {
 		
 		// set up factory - Soap requests
 		PlugDescription desc = new PlugDescription();
-		desc.put("serviceUrl", CSWFactoryTest.URL_DISY_PRELUDIO);
+		desc.put("serviceUrl", CSWFactoryTest.URL_SDISUITE);
 		desc.put("CSWRequestImpl", CSWFactoryTest.cswRequestSoapImpl);
 		CSWFactory f = CSWFactoryTest.createFactory(desc);
 
@@ -80,7 +86,7 @@ public class CSWClientTestLocal extends TestCase {
 		// set up factory - Soap requests
 		PlugDescription desc = new PlugDescription();
 		//desc.put("serviceUrl", CSWFactoryTest.URL_DISY_PRELUDIO);
-		desc.put("serviceUrl", CSWFactoryTest.URL_PORTALU);
+		desc.put("serviceUrl", CSWFactoryTest.URL_SDISUITE);
 		desc.put("CSWRequestImpl", CSWFactoryTest.cswRequestSoapImpl);
 		CSWFactory f = CSWFactoryTest.createFactory(desc);
 
@@ -92,15 +98,15 @@ public class CSWClientTestLocal extends TestCase {
 		String filterStr = 
 			"<ogc:Filter xmlns:ogc=\"http://www.opengis.net/ogc\">" +
 			"<ogc:PropertyIsLike escapeChar=\"\\\" singleChar=\"?\" wildCard=\"*\">" +
-			"<ogc:PropertyName>fileIdentifier</ogc:PropertyName>" +
-			"<ogc:Literal>1*</ogc:Literal>" +
+			"<ogc:PropertyName>title</ogc:PropertyName>" +
+			"<ogc:Literal>*</ogc:Literal>" +
 			"</ogc:PropertyIsLike>" +
 			"</ogc:Filter>";
 		DocumentBuilderFactory docBuilderFactory = DocumentBuilderFactory.newInstance();
 		DocumentBuilder docBuilder = docBuilderFactory.newDocumentBuilder();
 		Document filter = docBuilder.parse(new InputSource(new StringReader(filterStr)));
 		//CSWQuery query = createDisyQuery(f.createQuery());
-		CSWQuery query = createPortalUQuery(f.createQuery());
+		CSWQuery query = createCSW2_0_2Query(f.createQuery());
 
 		query.setConstraint(filter);
 		query.setMaxRecords(recordCount);
@@ -111,8 +117,12 @@ public class CSWClientTestLocal extends TestCase {
 		// tests
 		assertTrue("Fetched "+recordCount+" records from the server",
 				recordCount == result.getNumberOfRecords());
-		assertTrue("First record has id 1AFDCB03-3818-40F1-9560-9FB082956357",
-				result.getRecordList().get(0).getId().equals("1AFDCB03-3818-40F1-9560-9FB082956357"));
+		
+		// store record id
+		recordId = result.getRecordList().get(0).getId();
+		
+//		assertTrue("First record has id 1AFDCB03-3818-40F1-9560-9FB082956357",
+//				result.getRecordList().get(0).getId().equals("1AFDCB03-3818-40F1-9560-9FB082956357"));
 	}
 	
 	public void testGetRecordByIdSoap() throws Exception {
@@ -120,7 +130,7 @@ public class CSWClientTestLocal extends TestCase {
 		// set up factory - Soap requests
 		PlugDescription desc = new PlugDescription();
 		//desc.put("serviceUrl", CSWFactoryTest.URL_DISY_PRELUDIO);
-		desc.put("serviceUrl", CSWFactoryTest.URL_PORTALU);
+		desc.put("serviceUrl", CSWFactoryTest.URL_SDISUITE);
 		desc.put("CSWRequestImpl", CSWFactoryTest.cswRequestSoapImpl);
 		CSWFactory f = CSWFactoryTest.createFactory(desc);
 
@@ -129,10 +139,10 @@ public class CSWClientTestLocal extends TestCase {
 		client.configure(f);
 
 		// create the query
-		String recordId1 = "1AFDCB03-3818-40F1-9560-9FB082956357";
+		String recordId1 = recordId;
 		String recordId2 = "1A7EFA6F-FEDF-44D4-B139-6D92FD68CF58";
 		//CSWQuery query = createDisyQuery(f.createQuery());
-		CSWQuery query = createPortalUQuery(f.createQuery());
+		CSWQuery query = createCSW2_0_2Query(f.createQuery());
 		
 		query.setId(recordId1);
 
@@ -161,10 +171,23 @@ public class CSWClientTestLocal extends TestCase {
 		query.setOutputSchema(Namespace.CSW_PROFILE);
 		query.setOutputFormat(OutputFormat.TEXT_XML);
 		query.setVersion("2.0.0");
-		query.setTypeNames(new TypeName[] { TypeName.DATASET });
+		query.setTypeNames(new TypeName[] { TypeName.RECORD });
 		query.setResultType(ResultType.RESULTS);
 		query.setElementSetName(ElementSetName.BRIEF);
 		query.setConstraintLanguageVersion("1.0.0");
 		return query;
 	}
+
+	private CSWQuery createCSW2_0_2Query(CSWQuery query) {
+		query.setSchema(Namespace.CSW_2_0_2);
+		query.setOutputSchema(Namespace.CSW_PROFILE);
+		query.setOutputFormat(OutputFormat.TEXT_XML);
+		query.setVersion("2.0.2");
+		query.setTypeNames(new TypeName[] { TypeName.RECORD });
+		query.setResultType(ResultType.RESULTS);
+		query.setElementSetName(ElementSetName.BRIEF);
+		query.setConstraintLanguageVersion("1.0.0");
+		return query;
+	}
+
 }
