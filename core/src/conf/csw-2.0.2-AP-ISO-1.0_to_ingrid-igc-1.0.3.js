@@ -906,7 +906,7 @@ function transformToIgcDomainId(val, codeListId) {
 		if (hasValue(idcCode)) {
 			return idcCode;
 		} else {
-			log.debug("Domain code '" + val + "' unknown in code list " + codeListId + ".");
+			log.info("Domain code '" + val + "' unknown in code list " + codeListId + ".");
 			return -1;
 		}
 	}
