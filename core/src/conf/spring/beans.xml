@@ -5,9 +5,9 @@
 http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-2.5.xsd">
 
 	<bean id="cswFactory" class="de.ingrid.iplug.csw.dsc.cswclient.CSWFactory">
-		<property name="serviceUrl" value="http://demo.disy.net/preludio2.lubw/ws/csw" />
+<!--		<property name="serviceUrl" value="http://demo.disy.net/preludio2.lubw/ws/csw" /> -->
 <!--		<property name="serviceUrl" value="http://ims3.bkg.bund.de/mdm/CSW2Servlet" /> -->
-<!--  		<property name="serviceUrl" value="http://gdz-extern.bkg.bund.de/ingeo_csw/ingeo_csw" /> -->
+  		<property name="serviceUrl" value="http://gdi-de.sdisuite.de/soapServices/services/CSWDiscovery" />
 		<property name="clientImpl"
 			value="de.ingrid.iplug.csw.dsc.cswclient.impl.GenericClient" />
 		<property name="requestImpl"
@@ -46,7 +46,7 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
 
 	<bean id="cswHarvestFilter" class="java.lang.String">
 		<constructor-arg type="java.lang.String">
-			<value><![CDATA[<ogc:Filter xmlns:ogc="http://www.opengis.net/ogc"><ogc:PropertyIsLike escapeChar="\\" singleChar="?" wildCard="*"><ogc:PropertyName>fileIdentifier</ogc:PropertyName><ogc:Literal>10*</ogc:Literal></ogc:PropertyIsLike></ogc:Filter>]]></value>
+			<value><![CDATA[<ogc:Filter xmlns:ogc="http://www.opengis.net/ogc"><ogc:PropertyIsLike escapeChar="\\" singleChar="?" wildCard="*"><ogc:PropertyName>title</ogc:PropertyName><ogc:Literal>A*</ogc:Literal></ogc:PropertyIsLike></ogc:Filter>]]></value>
 		</constructor-arg>
 	</bean>
 	
