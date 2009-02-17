@@ -2,6 +2,7 @@ package de.ingrid.iplug.csw.dsc.index;
 
 import java.io.File;
 import java.util.List;
+import java.util.Set;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -48,8 +49,11 @@ public class IndexingJob implements StatefulJob {
 
 
 			// run the update job for all elementset names
+			@SuppressWarnings({"unchecked"})
+			Set<String> filterSet = (Set<String>)SimpleSpringBeanFactory.INSTANCE.getBean(ConfigurationKeys.CSW_HARVEST_FILTER, Set.class);
+
 			UpdateJob job = new UpdateJob();
-			job.configure(factory, tmpCache, SimpleSpringBeanFactory.INSTANCE.getBean(ConfigurationKeys.CSW_HARVEST_FILTER, String.class));
+			job.configure(factory, tmpCache, filterSet);
 			
 			ElementSetName[] names = ElementSetName.values();
 			for (int i=0; i<names.length; i++)

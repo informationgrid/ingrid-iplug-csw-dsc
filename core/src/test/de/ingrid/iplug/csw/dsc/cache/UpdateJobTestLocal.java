@@ -4,6 +4,8 @@
 
 package de.ingrid.iplug.csw.dsc.cache;
 
+import java.util.Set;
+
 import junit.framework.TestCase;
 import de.ingrid.iplug.csw.dsc.ConfigurationKeys;
 import de.ingrid.iplug.csw.dsc.TestUtil;
@@ -15,7 +17,6 @@ import de.ingrid.iplug.csw.dsc.cswclient.constants.ElementSetName;
 import de.ingrid.iplug.csw.dsc.cswclient.constants.OutputFormat;
 import de.ingrid.iplug.csw.dsc.cswclient.impl.GenericRecord;
 import de.ingrid.iplug.csw.dsc.tools.SimpleSpringBeanFactory;
-import de.ingrid.utils.PlugDescription;
 
 public class UpdateJobTestLocal extends TestCase {
 
@@ -47,8 +48,11 @@ public class UpdateJobTestLocal extends TestCase {
 		tmpCache.removeAllRecords();
 		
 		// run the update job for all elementset names
+		@SuppressWarnings({"unchecked"})
+		Set<String> filterSet = (Set<String>)SimpleSpringBeanFactory.INSTANCE.getBean(ConfigurationKeys.CSW_HARVEST_FILTER, Set.class);
+
 		UpdateJob job = new UpdateJob();
-		job.configure(factory, tmpCache, SimpleSpringBeanFactory.INSTANCE.getBean(ConfigurationKeys.CSW_HARVEST_FILTER, String.class));
+		job.configure(factory, tmpCache, filterSet);
 		
 		ElementSetName[] names = ElementSetName.values();
 		for (int i=0; i<names.length; i++)

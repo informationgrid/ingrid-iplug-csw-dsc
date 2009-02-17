@@ -25,6 +25,7 @@ import de.ingrid.iplug.csw.dsc.cswclient.CSWRecord;
 import de.ingrid.iplug.csw.dsc.cswclient.CSWSearchResult;
 import de.ingrid.iplug.csw.dsc.cswclient.constants.ElementSetName;
 import de.ingrid.iplug.csw.dsc.cswclient.constants.ResultType;
+import de.ingrid.iplug.csw.dsc.tools.StringUtils;
 
 /**
  * The update job.
@@ -36,23 +37,25 @@ public class UpdateJob {
 	
 	protected CSWFactory factory = null;	
 	protected Cache cache = null;
-	protected Document filter = null;
+	protected Set<Document> filterSet = null;
 
 	/**
 	 * Configure the job
 	 * @param factory
 	 * @param cache
-	 * @param filterStr The ogc:Filter string to query the server with
+	 * @param filterStrSet A Set of ogc:Filter strings to query the server with
 	 * @throws Exception 
 	 */
-	public void configure(CSWFactory factory, Cache cache, String filterStr) throws Exception {
+	public void configure(CSWFactory factory, Cache cache, Set<String> filterStrSet) throws Exception {
 		this.factory = factory;
 		this.cache = cache;
 		
 		// create the filter document
 		DocumentBuilderFactory docBuilderFactory = DocumentBuilderFactory.newInstance();
 		DocumentBuilder docBuilder = docBuilderFactory.newDocumentBuilder();
-		this.filter = docBuilder.parse(new InputSource(new StringReader(filterStr)));
+		this.filterSet = new HashSet<Document>();
+		for (String filterStr : filterStrSet)
+			this.filterSet.add(docBuilder.parse(new InputSource(new StringReader(filterStr))));
 	}
 		
 	/**
@@ -64,53 +67,71 @@ public class UpdateJob {
 	 */
 	public void execute(ElementSetName elementSetName, int recordsPerCall, int requestPause) throws Exception {
 		
-		int numTotal = 0;
-		List<String> fetchedRecordIds = new ArrayList<String>();
-		
 		// get cached record ids (for later removal of records that do not exist anymore)
 		Set<String> cachedRecordIds = this.cache.getCachedRecordIds();
 
 		// set up client
 		CSWClient client = (CSWClient)this.factory.createClient();
 		client.configure(this.factory);
-
-		// create the query
-		CSWQuery query = this.factory.createQuery();
-		query.setConstraint(this.filter);
-		query.setResultType(ResultType.RESULTS);
-		query.setElementSetName(elementSetName);
-		query.setMaxRecords(recordsPerCall);
-		query.setStartPosition(1);
 		
-		// do requests
+		// variables for complete fetch process
+		int numTotal = 0;
+		List<String> fetchedRecordIds = new ArrayList<String>();
 		
-		// do first request
-		CSWSearchResult result = client.getRecords(query);
-		numTotal = result.getNumberOfRecordsTotal();
-		if (numTotal > 0) {
+		// iterate over all filters
+		for (Document filter : filterSet) {
+			if (log.isDebugEnabled())
+				log.debug("Processing filter "+StringUtils.nodeToString(filter).replace("\n", "")+".");
 			
-			// process
-			processResult(result, fetchedRecordIds);	
+			// variables for current fetch process (current filter)
+			int numCurrentTotal = 0;
+			List<String> currentFetchedRecordIds = new ArrayList<String>();
+
+			// create the query
+			CSWQuery query = this.factory.createQuery();
+			query.setConstraint(filter);
+			query.setResultType(ResultType.RESULTS);
+			query.setElementSetName(elementSetName);
+			query.setMaxRecords(recordsPerCall);
+			query.setStartPosition(1);
 			
-			while (result.getNumberOfRecords() > 0 && fetchedRecordIds.size() < numTotal) {
-				log.info("Fetched "+fetchedRecordIds.size()+" records of "+numTotal+" for Elementset " + elementSetName + ".");
-
-				Thread.sleep(requestPause);
-
-				// prepare next request
-				query.setStartPosition(query.getStartPosition()+result.getNumberOfRecords());
-
-				// do next request
-				result = client.getRecords(query);
-
+			// do requests
+			
+			// do first request
+			CSWSearchResult result = client.getRecords(query);
+			numCurrentTotal = result.getNumberOfRecordsTotal();
+			if (log.isDebugEnabled())
+				log.debug(numCurrentTotal+" records.");
+			
+			if (numCurrentTotal > 0) {
+				
 				// process
-				processResult(result, fetchedRecordIds);			
+				processResult(result, currentFetchedRecordIds);	
+				
+				while (result.getNumberOfRecords() > 0 && currentFetchedRecordIds.size() < numCurrentTotal) {
+					log.info("Fetched "+currentFetchedRecordIds.size()+" records of "+numCurrentTotal+" for Elementset "+elementSetName+".");
+	
+					Thread.sleep(requestPause);
+	
+					// prepare next request
+					query.setStartPosition(query.getStartPosition()+result.getNumberOfRecords());
+	
+					// do next request
+					result = client.getRecords(query);
+	
+					// process
+					processResult(result, currentFetchedRecordIds);			
+				}
 			}
+			
+			// collect record ids
+			fetchedRecordIds.addAll(currentFetchedRecordIds);
+			numTotal += numCurrentTotal;
 		}
 		
 		// check duplicates
 		int duplicates = fetchedRecordIds.size() - new HashSet<String>(fetchedRecordIds).size();
-		log.info("Fetched "+fetchedRecordIds.size()+" records of "+numTotal+" for Elementset " + elementSetName + ". Duplicates: "+duplicates);
+		log.info("Fetched "+fetchedRecordIds.size()+" records of "+numTotal+" for Elementset "+elementSetName+". Duplicates: "+duplicates);
 		
 		// remove deprecated records
 		for (String cachedRecordId : cachedRecordIds) {

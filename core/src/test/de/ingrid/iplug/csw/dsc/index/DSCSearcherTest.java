@@ -1,9 +1,7 @@
 package de.ingrid.iplug.csw.dsc.index;
 
 import java.io.IOException;
-import java.text.DateFormat;
 import java.text.SimpleDateFormat;
-import java.util.Date;
 
 import junit.framework.TestCase;
 

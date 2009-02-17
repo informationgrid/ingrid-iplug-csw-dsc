@@ -44,10 +44,27 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
 		<property name="cachePath" value="./test_case_updatejob" />
 	</bean>
 
-	<bean id="cswHarvestFilter" class="java.lang.String">
-		<constructor-arg type="java.lang.String">
-			<value><![CDATA[<ogc:Filter xmlns:ogc="http://www.opengis.net/ogc"><ogc:PropertyIsLike escapeChar="\\" singleChar="?" wildCard="*"><ogc:PropertyName>title</ogc:PropertyName><ogc:Literal>A*</ogc:Literal></ogc:PropertyIsLike></ogc:Filter>]]></value>
-		</constructor-arg>
+	<bean id="cswHarvestFilter" class="org.springframework.beans.factory.config.SetFactoryBean">
+		<property name="sourceSet">
+			<set>
+				<value>
+					<![CDATA[<ogc:Filter xmlns:ogc="http://www.opengis.net/ogc">
+					<ogc:PropertyIsLike escapeChar="\\" singleChar="?" wildCard="*">
+					<ogc:PropertyName>fileIdentifier</ogc:PropertyName>
+					<ogc:Literal>10*</ogc:Literal>
+					</ogc:PropertyIsLike>
+					</ogc:Filter>]]>
+				</value>
+				<value>
+					<![CDATA[<ogc:Filter xmlns:ogc="http://www.opengis.net/ogc">
+					<ogc:PropertyIsLike escapeChar="\\" singleChar="?" wildCard="*">
+					<ogc:PropertyName>fileIdentifier</ogc:PropertyName>
+					<ogc:Literal>11*</ogc:Literal>
+					</ogc:PropertyIsLike>
+					</ogc:Filter>]]>
+				</value>
+			</set>
+		</property>
 	</bean>
 	
 	<bean id="cswMapper" class="de.ingrid.iplug.csw.dsc.mapping.impl.ScriptMapper">
