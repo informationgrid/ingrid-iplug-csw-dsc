@@ -17,6 +17,7 @@ import de.ingrid.iplug.csw.dsc.cswclient.CSWRecord;
 import de.ingrid.iplug.csw.dsc.cswclient.CSWRecordDescription;
 import de.ingrid.iplug.csw.dsc.cswclient.CSWSearchResult;
 import de.ingrid.iplug.csw.dsc.cswclient.constants.ElementSetName;
+import de.ingrid.iplug.csw.dsc.cswclient.constants.Operation;
 import de.ingrid.iplug.csw.dsc.cswclient.constants.ResultType;
 
 public class GenericClient implements CSWClient {
@@ -24,6 +25,7 @@ public class GenericClient implements CSWClient {
 	final protected static Log log = LogFactory.getLog(GenericClient.class);
 	
 	protected CSWFactory factory;
+	protected CSWCapabilities capabilities;
 
 	@Override
 	public void configure(CSWFactory factory) {
@@ -32,16 +34,18 @@ public class GenericClient implements CSWClient {
 
 	@Override
 	public CSWCapabilities getCapabilities() throws Exception {
-		if (factory != null) {
-			CSWCapabilities cap = factory.createCapabilities();
-
-			String serviceUrl = factory.getServiceUrl();
-			Document capDoc = factory.createRequest().doGetCapabilitiesRequest(serviceUrl);
-			cap.initialize(capDoc);
-			return cap;
+		if (this.capabilities == null) {
+			if (factory != null) {
+				this.capabilities = factory.createCapabilities();
+	
+				String serviceUrl = factory.getServiceUrl();
+				Document capDoc = factory.createRequest().doGetCapabilitiesRequest(serviceUrl);
+				capabilities.initialize(capDoc);
+			}
+			else
+				throw new RuntimeException("CSWClient is not configured properly. Make sure to call CSWClient.configure.");
 		}
-		else
-			throw new RuntimeException("CSWClient is not configured properly. Make sure to call CSWClient.configure.");
+		return this.capabilities;
 	}
 
 	@Override
@@ -74,8 +78,11 @@ public class GenericClient implements CSWClient {
 	@Override
 	public CSWSearchResult getRecords(CSWQuery query) throws Exception {
 		if (factory != null) {
-			String serviceUrl = factory.getServiceUrl();
-			Document recordDoc = factory.createRequest().doGetRecords(serviceUrl, query);
+			CSWCapabilities cap = this.getCapabilities();
+			String opUrl = cap.getOperationUrl(Operation.GET_RECORDS);
+			if (opUrl == null)
+				opUrl = factory.getServiceUrl();
+			Document recordDoc = factory.createRequest().doGetRecords(opUrl, query);
 
 			CSWSearchResult result = factory.createSearchResult();
 			result.initialize(factory, query, recordDoc);
@@ -88,8 +95,11 @@ public class GenericClient implements CSWClient {
 	@Override
 	public CSWRecord getRecordById(CSWQuery query) throws Exception {
 		if (factory != null) {
-			String serviceUrl = factory.getServiceUrl();
-			Document recordDoc = factory.createRequest().doGetRecordById(serviceUrl, query);
+			CSWCapabilities cap = this.getCapabilities();
+			String opUrl = cap.getOperationUrl(Operation.GET_RECORD_BY_ID);
+			if (opUrl == null)
+				opUrl = factory.getServiceUrl();
+			Document recordDoc = factory.createRequest().doGetRecordById(opUrl, query);
 			
 			CSWRecord record = factory.createRecord();
 			record.initialize(query.getElementSetName(), recordDoc);

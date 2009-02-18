@@ -32,7 +32,7 @@ public class CSWClientTestLocal extends TestCase {
 		
 		// set up factory - KVPGet requests
 		PlugDescription desc = new PlugDescription();
-		desc.put("serviceUrl", CSWFactoryTest.URL_SDISUITE);
+		desc.put("serviceUrl", CSWFactoryTest.URL_SDISUITE_GET);
 		desc.put("CSWRequestImpl", CSWFactoryTest.cswRequestKVPGetImpl);
 		CSWFactory f = CSWFactoryTest.createFactory(desc);
 
@@ -56,7 +56,7 @@ public class CSWClientTestLocal extends TestCase {
 		
 		// set up factory - Soap requests
 		PlugDescription desc = new PlugDescription();
-		desc.put("serviceUrl", CSWFactoryTest.URL_SDISUITE);
+		desc.put("serviceUrl", CSWFactoryTest.URL_SDISUITE_SOAP);
 		desc.put("CSWRequestImpl", CSWFactoryTest.cswRequestSoapImpl);
 		CSWFactory f = CSWFactoryTest.createFactory(desc);
 
@@ -76,6 +76,27 @@ public class CSWClientTestLocal extends TestCase {
 						Operation.GET_RECORD_BY_ID.toString() }));
 	}
 
+	public void testGetOperationUrl() throws Exception {
+		
+		// set up factory - Soap requests
+		PlugDescription desc = new PlugDescription();
+		desc.put("serviceUrl", CSWFactoryTest.URL_SDISUITE_SOAP);
+		desc.put("CSWRequestImpl", CSWFactoryTest.cswRequestSoapImpl);
+		CSWFactory f = CSWFactoryTest.createFactory(desc);
+
+		// set up client
+		CSWClient client = (CSWClient)f.createClient();
+		client.configure(f);
+		
+		// do request
+		CSWCapabilities cap = client.getCapabilities();
+		
+		// tests
+		assertTrue("GetRecords URL is correct",
+				"http://gdi-de.sdisuite.de/soapServices/services/CSWDiscovery".
+				equals(cap.getOperationUrl(Operation.GET_RECORDS)));
+	}
+	
 	public void testGetRecordsSoap() throws Exception {
 		
 		int recordCount = 4;
@@ -83,7 +104,7 @@ public class CSWClientTestLocal extends TestCase {
 		// set up factory - Soap requests
 		PlugDescription desc = new PlugDescription();
 		//desc.put("serviceUrl", CSWFactoryTest.URL_DISY_PRELUDIO);
-		desc.put("serviceUrl", CSWFactoryTest.URL_SDISUITE);
+		desc.put("serviceUrl", CSWFactoryTest.URL_SDISUITE_SOAP);
 		desc.put("CSWRequestImpl", CSWFactoryTest.cswRequestSoapImpl);
 		CSWFactory f = CSWFactoryTest.createFactory(desc);
 
@@ -127,7 +148,7 @@ public class CSWClientTestLocal extends TestCase {
 		// set up factory - Soap requests
 		PlugDescription desc = new PlugDescription();
 		//desc.put("serviceUrl", CSWFactoryTest.URL_DISY_PRELUDIO);
-		desc.put("serviceUrl", CSWFactoryTest.URL_SDISUITE);
+		desc.put("serviceUrl", CSWFactoryTest.URL_SDISUITE_SOAP);
 		desc.put("CSWRequestImpl", CSWFactoryTest.cswRequestSoapImpl);
 		CSWFactory f = CSWFactoryTest.createFactory(desc);
 
