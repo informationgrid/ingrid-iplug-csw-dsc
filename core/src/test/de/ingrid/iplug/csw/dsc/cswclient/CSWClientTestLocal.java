@@ -5,6 +5,9 @@
 package de.ingrid.iplug.csw.dsc.cswclient;
 
 import java.io.StringReader;
+import java.util.Hashtable;
+import java.util.Map;
+
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 
@@ -15,6 +18,7 @@ import org.apache.commons.logging.LogFactory;
 import org.w3c.dom.Document;
 import org.xml.sax.InputSource;
 
+import de.ingrid.iplug.csw.dsc.TestServer;
 import de.ingrid.iplug.csw.dsc.cswclient.constants.ElementSetName;
 import de.ingrid.iplug.csw.dsc.cswclient.constants.Namespace;
 import de.ingrid.iplug.csw.dsc.cswclient.constants.Operation;
@@ -30,10 +34,14 @@ public class CSWClientTestLocal extends TestCase {
 	
 	public void testGetCapabilitiesKVPGet() throws Exception {
 		
+		TestServer server = TestServer.SDISUITE;
+		
 		// set up factory - KVPGet requests
 		PlugDescription desc = new PlugDescription();
-		desc.put("serviceUrl", CSWFactoryTest.URL_SDISUITE_GET);
-		desc.put("CSWRequestImpl", CSWFactoryTest.cswRequestKVPGetImpl);
+		desc.put("serviceUrl", server.getCapUrlGet());
+		Map<String, String> requestImpl = new Hashtable<String, String>();
+		requestImpl.put(Operation.GET_CAPABILITIES.toString(), CSWFactoryTest.cswRequestKVPGetImpl);
+		desc.put("CSWRequestImpl", requestImpl );
 		CSWFactory f = CSWFactoryTest.createFactory(desc);
 
 		// set up client
@@ -54,10 +62,11 @@ public class CSWClientTestLocal extends TestCase {
 	
 	public void testGetCapabilitiesSoap() throws Exception {
 		
+		TestServer server = TestServer.SDISUITE;
+		
 		// set up factory - Soap requests
 		PlugDescription desc = new PlugDescription();
-		desc.put("serviceUrl", CSWFactoryTest.URL_SDISUITE_SOAP);
-		desc.put("CSWRequestImpl", CSWFactoryTest.cswRequestSoapImpl);
+		desc.put("serviceUrl", server.getCapUrlSoap());
 		CSWFactory f = CSWFactoryTest.createFactory(desc);
 
 		// set up client
@@ -78,10 +87,11 @@ public class CSWClientTestLocal extends TestCase {
 
 	public void testGetOperationUrl() throws Exception {
 		
+		TestServer server = TestServer.SDISUITE;
+		
 		// set up factory - Soap requests
 		PlugDescription desc = new PlugDescription();
-		desc.put("serviceUrl", CSWFactoryTest.URL_SDISUITE_SOAP);
-		desc.put("CSWRequestImpl", CSWFactoryTest.cswRequestSoapImpl);
+		desc.put("serviceUrl", server.getCapUrlSoap());
 		CSWFactory f = CSWFactoryTest.createFactory(desc);
 
 		// set up client
@@ -99,13 +109,12 @@ public class CSWClientTestLocal extends TestCase {
 	
 	public void testGetRecordsSoap() throws Exception {
 		
+		TestServer server = TestServer.SDISUITE;
 		int recordCount = 4;
 		
 		// set up factory - Soap requests
 		PlugDescription desc = new PlugDescription();
-		//desc.put("serviceUrl", CSWFactoryTest.URL_DISY_PRELUDIO);
-		desc.put("serviceUrl", CSWFactoryTest.URL_SDISUITE_SOAP);
-		desc.put("CSWRequestImpl", CSWFactoryTest.cswRequestSoapImpl);
+		desc.put("serviceUrl", server.getCapUrlSoap());
 		CSWFactory f = CSWFactoryTest.createFactory(desc);
 
 		// set up client
@@ -123,8 +132,7 @@ public class CSWClientTestLocal extends TestCase {
 		DocumentBuilderFactory docBuilderFactory = DocumentBuilderFactory.newInstance();
 		DocumentBuilder docBuilder = docBuilderFactory.newDocumentBuilder();
 		Document filter = docBuilder.parse(new InputSource(new StringReader(filterStr)));
-		//CSWQuery query = createDisyQuery(f.createQuery());
-		CSWQuery query = createCSW2_0_2Query(f.createQuery());
+		CSWQuery query = server.getQuery(f.createQuery());
 
 		query.setConstraint(filter);
 		query.setMaxRecords(recordCount);
@@ -145,11 +153,11 @@ public class CSWClientTestLocal extends TestCase {
 	
 	public void testGetRecordByIdSoap() throws Exception {
 		
+		TestServer server = TestServer.SDISUITE;
+
 		// set up factory - Soap requests
 		PlugDescription desc = new PlugDescription();
-		//desc.put("serviceUrl", CSWFactoryTest.URL_DISY_PRELUDIO);
-		desc.put("serviceUrl", CSWFactoryTest.URL_SDISUITE_SOAP);
-		desc.put("CSWRequestImpl", CSWFactoryTest.cswRequestSoapImpl);
+		desc.put("serviceUrl", server.getCapUrlSoap());
 		CSWFactory f = CSWFactoryTest.createFactory(desc);
 
 		// set up client
@@ -158,8 +166,7 @@ public class CSWClientTestLocal extends TestCase {
 
 		// create the query
 		String recordId1 = "486d9622-c29d-44e5-b878-44389740011";
-		//CSWQuery query = createDisyQuery(f.createQuery());
-		CSWQuery query = createCSW2_0_2Query(f.createQuery());
+		CSWQuery query = server.getQuery(f.createQuery());
 		
 		query.setId(recordId1);
 
@@ -170,41 +177,4 @@ public class CSWClientTestLocal extends TestCase {
 		assertTrue("Fetched "+recordId1+" from the server",
 				recordId1.equals(result.getId()));
 	}
-	
-	private CSWQuery createDisyQuery(CSWQuery query) {
-		query.setSchema(Namespace.CSW);
-		query.setOutputSchema(Namespace.CSW_PROFILE);
-		query.setOutputFormat(OutputFormat.APPLICATION_XML);
-		query.setVersion("2.0.1");
-		query.setTypeNames(new TypeName[] { TypeName.RECORD });
-		query.setResultType(ResultType.RESULTS);
-		query.setElementSetName(ElementSetName.BRIEF);
-		query.setConstraintLanguageVersion("1.1.0");
-		return query;
-	}
-
-	private CSWQuery createPortalUQuery(CSWQuery query) {
-		query.setSchema(Namespace.CSW);
-		query.setOutputSchema(Namespace.CSW_PROFILE);
-		query.setOutputFormat(OutputFormat.TEXT_XML);
-		query.setVersion("2.0.0");
-		query.setTypeNames(new TypeName[] { TypeName.RECORD });
-		query.setResultType(ResultType.RESULTS);
-		query.setElementSetName(ElementSetName.BRIEF);
-		query.setConstraintLanguageVersion("1.0.0");
-		return query;
-	}
-
-	private CSWQuery createCSW2_0_2Query(CSWQuery query) {
-		query.setSchema(Namespace.CSW_2_0_2);
-		query.setOutputSchema(Namespace.CSW_PROFILE);
-		query.setOutputFormat(OutputFormat.TEXT_XML);
-		query.setVersion("2.0.2");
-		query.setTypeNames(new TypeName[] { TypeName.RECORD });
-		query.setResultType(ResultType.RESULTS);
-		query.setElementSetName(ElementSetName.BRIEF);
-		query.setConstraintLanguageVersion("1.0.0");
-		return query;
-	}
-
 }

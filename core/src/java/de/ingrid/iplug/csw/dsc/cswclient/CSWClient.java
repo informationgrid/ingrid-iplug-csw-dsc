@@ -23,18 +23,23 @@ public interface CSWClient {
 
 	/**
 	 * Do the OGC_Service.GetCapabilities request
+	 * @note The request url is the service url 
 	 * @return A CSWCapabilities instance
 	 */
 	public CSWCapabilities getCapabilities() throws Exception;
 	
 	/**
 	 * Do the CSW-Discovery.DescribeRecord request
+	 * @note The request url is the taken from the capabilities document
+	 * and defaults to service url, if not defined there 
 	 * @return A CSWRecordDescription instance
 	 */
 	public CSWRecordDescription describeRecord() throws Exception;
 
 	/**
 	 * Do the CSW-Discovery.GetDomain request
+	 * @note The request url is the taken from the capabilities document
+	 * and defaults to service url, if not defined there 
 	 * @return A CSWRecordDescription instance
 	 */
 	public CSWDomain getDomain() throws Exception;
@@ -42,6 +47,8 @@ public interface CSWClient {
 	/**
 	 * Do the CSW-Discovery.GetRecords request using the
 	 * CSWQuery implementation provided by CSWFactory
+	 * @note The request url is the taken from the capabilities document
+	 * and defaults to service url, if not defined there 
 	 * @param constraint A OGC filter document
 	 * @param resultType The ResultType
 	 * @param elementSetName The ElementSetName
@@ -55,6 +62,8 @@ public interface CSWClient {
 	/**
 	 * Do the CSW-Discovery.GetRecords request using a
 	 * given CSWQuery implementation
+	 * @note The request url is the taken from the capabilities document
+	 * and defaults to service url, if not defined there 
 	 * @param query
 	 * @return A CSWSearchResult instances
 	 */
@@ -62,6 +71,8 @@ public interface CSWClient {
 
 	/**
 	 * Do the CSW-Discovery.GetRecordById request
+	 * @note The request url is the taken from the capabilities document
+	 * and defaults to service url, if not defined there 
 	 * @param query
 	 * @return A CSWRecord instances
 	 */

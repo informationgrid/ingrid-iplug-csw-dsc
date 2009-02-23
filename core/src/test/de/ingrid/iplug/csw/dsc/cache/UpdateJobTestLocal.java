@@ -14,7 +14,6 @@ import de.ingrid.iplug.csw.dsc.cswclient.CSWFactory;
 import de.ingrid.iplug.csw.dsc.cswclient.CSWQuery;
 import de.ingrid.iplug.csw.dsc.cswclient.CSWRecord;
 import de.ingrid.iplug.csw.dsc.cswclient.constants.ElementSetName;
-import de.ingrid.iplug.csw.dsc.cswclient.constants.OutputFormat;
 import de.ingrid.iplug.csw.dsc.cswclient.impl.GenericRecord;
 import de.ingrid.iplug.csw.dsc.tools.SimpleSpringBeanFactory;
 
@@ -25,7 +24,12 @@ public class UpdateJobTestLocal extends TestCase {
 	public void testExecute() throws Exception {
 		
 		// get instances from spring configuration
-		SimpleSpringBeanFactory.INSTANCE.setBeanConfig("beans_test.xml");
+		SimpleSpringBeanFactory.INSTANCE.setBeanConfig("beans_portalu.xml");
+		String id = "114CAFCF-5665-480A-853F-1F8370D302FE";
+		/*
+		SimpleSpringBeanFactory.INSTANCE.setBeanConfig("beans_sdisuite.xml");
+		String id = "655e5998-a20e-66b5-c888-00005553421";
+		*/
 
 		CSWFactory factory = SimpleSpringBeanFactory.INSTANCE.getBean(ConfigurationKeys.CSW_FACTORY, CSWFactory.class);
 		factory.setQueryTemplate(SimpleSpringBeanFactory.INSTANCE.getBean(ConfigurationKeys.CSW_QUERY_TEMPLATE, CSWQuery.class));
@@ -33,11 +37,6 @@ public class UpdateJobTestLocal extends TestCase {
 		cache.configure(factory);
 		if (cache instanceof DefaultFileCache)
 			((DefaultFileCache)cache).setCachePath(cachePath);
-		
-        // check query configuration
-		CSWQuery q = factory.createQuery();
-		OutputFormat l = OutputFormat.valueOf("TEXT_XML");
-		assertTrue("output format is application/xml", l.equals(q.getOutputFormat()));
 		
 		// put old record into cache
 		String oldRecordId = "A-12345";
@@ -62,7 +61,6 @@ public class UpdateJobTestLocal extends TestCase {
 		tmpCache.commitTransaction();
 		
 		// check for a cached record
-		String id = "10008748-45AB-11D4-BB1D-00104BDCC34C";
 		CSWRecord recordBrief = cache.getRecord(id, ElementSetName.BRIEF);
 		assertTrue("record "+id+" was cached", recordBrief.getId().equals(id));
 		CSWRecord recordSummary = cache.getRecord(id, ElementSetName.SUMMARY);

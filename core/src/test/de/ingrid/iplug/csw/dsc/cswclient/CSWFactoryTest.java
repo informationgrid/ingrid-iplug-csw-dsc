@@ -4,22 +4,14 @@
 
 package de.ingrid.iplug.csw.dsc.cswclient;
 
+import java.util.Hashtable;
+import java.util.Map;
+
 import junit.framework.TestCase;
+import de.ingrid.iplug.csw.dsc.cswclient.constants.Operation;
 import de.ingrid.utils.PlugDescription;
 
 public class CSWFactoryTest extends TestCase {
-
-	public static final String URL_PORTALU = "http://www.portalu.de/csw";
-	public static final String URL_WSVCSW = "http://csw.wsv.de/";
-	public static final String URL_DISY_PRELUDIO = "http://demo.disy.net/preludio2.lubw/ws/csw";
-	public static final String URL_BKG = "http://ims3.bkg.bund.de/mdm/CSW2Servlet";
-	public static final String URL_ADV_MIS = "http://gdz-extern.bkg.bund.de/ingeo_csw/ingeo_csw";
-	public static final String URL_GEODATA = "http://www.geodata.gov/Portal/csw202/discovery";
-	public static final String URL_GEODATA_NL = "http://www.geodata.alterra.nl/excat";
-	public static final String URL_UNIFI = "http://apollo.pin.unifi.it:8080/lucansdi-gi-cat-5.1.3/ogc-services";
-	public static final String URL_SDISUITE_GET = "http://gdi-de.sdisuite.de/soapServices/CSWStartup";
-	public static final String URL_SDISUITE_SOAP = "http://gdi-de.sdisuite.de/soapServices/services/CSWDiscovery";
-	
 	
 	public static final String cswClientImpl = "de.ingrid.iplug.csw.dsc.cswclient.impl.GenericClient";
 	public static final String cswCapabilitiesImpl = "de.ingrid.iplug.csw.dsc.cswclient.impl.GenericCapabilities";
@@ -34,7 +26,8 @@ public class CSWFactoryTest extends TestCase {
      * Sets up the test fixture. 
      * (Called before every test case method.) 
      */ 
-    public static CSWFactory createFactory(PlugDescription desc) { 
+    @SuppressWarnings("unchecked")
+	public static CSWFactory createFactory(PlugDescription desc) { 
 
 		// create the factory
 		CSWFactory f = new CSWFactory();
@@ -59,9 +52,17 @@ public class CSWFactoryTest extends TestCase {
     		f.setRecordDescriptionImpl(desc.get("CSWRecordDescriptionImpl").toString());
 
     	if (!desc.containsKey("CSWRequestImpl"))
-    		f.setRequestImpl(cswRequestKVPGetImpl);
+    	{
+    		Map requestImpl = new Hashtable();
+    		requestImpl.put(Operation.GET_CAPABILITIES.toString(), cswRequestSoapImpl);
+    		requestImpl.put(Operation.DESCRIBE_RECORD.toString(), cswRequestSoapImpl);
+    		requestImpl.put(Operation.GET_DOMAIN.toString(), cswRequestSoapImpl);
+    		requestImpl.put(Operation.GET_RECORDS.toString(), cswRequestSoapImpl);
+    		requestImpl.put(Operation.GET_RECORD_BY_ID.toString(), cswRequestSoapImpl);
+    		f.setRequestImpl(requestImpl);
+    	}
     	else
-    		f.setRequestImpl(desc.get("CSWRequestImpl").toString());
+    		f.setRequestImpl((Map<String, String>)desc.get("CSWRequestImpl"));
 
     	if (!desc.containsKey("CSWQueryImpl"))
     		f.setQueryImpl(cswQueryImpl);
@@ -95,7 +96,7 @@ public class CSWFactoryTest extends TestCase {
 				f.createRecordDescription() instanceof CSWRecordDescription);
 		
 		assertTrue("createRequest returns a CSWRequest implementation",
-				f.createRequest() instanceof CSWRequest);
+				f.createRequest(Operation.GET_CAPABILITIES) instanceof CSWRequest);
 
 		assertTrue("createQuery returns a CSWQuery implementation",
 				f.createQuery() instanceof CSWQuery);

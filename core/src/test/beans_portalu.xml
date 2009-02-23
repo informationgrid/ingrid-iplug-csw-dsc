@@ -5,9 +5,7 @@
 http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-2.5.xsd">
 
 	<bean id="cswFactory" class="de.ingrid.iplug.csw.dsc.cswclient.CSWFactory">
-<!--		<property name="serviceUrl" value="http://demo.disy.net/preludio2.lubw/ws/csw" /> -->
-<!--		<property name="serviceUrl" value="http://ims3.bkg.bund.de/mdm/CSW2Servlet" /> -->
-  		<property name="serviceUrl" value="http://gdi-de.sdisuite.de/soapServices/services/CSWDiscovery" />
+		<property name="serviceUrl" value="http://www.portalu.de/csw" />
 		<property name="clientImpl"
 			value="de.ingrid.iplug.csw.dsc.cswclient.impl.GenericClient" />
 		<property name="requestImpl" ref="cswRequestImpl" />
@@ -26,7 +24,7 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
 	<bean id="cswRequestImpl" class="org.springframework.beans.factory.config.MapFactoryBean">
 	  <property name="sourceMap">
 	      <map>
-	        <entry key="GetCapabilities" value="de.ingrid.iplug.csw.dsc.cswclient.impl.SoapRequest"/>
+	        <entry key="GetCapabilities" value="de.ingrid.iplug.csw.dsc.cswclient.impl.KVPGetRequest"/>
 	        <entry key="DescribeRecord" value="de.ingrid.iplug.csw.dsc.cswclient.impl.SoapRequest"/>
 	        <entry key="GetDomain" value="de.ingrid.iplug.csw.dsc.cswclient.impl.SoapRequest"/>
 	        <entry key="GetRecords" value="de.ingrid.iplug.csw.dsc.cswclient.impl.SoapRequest"/>
@@ -36,14 +34,14 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
 	</bean>	
 
 	<bean id="cswQueryTemplate" class="de.ingrid.iplug.csw.dsc.cswclient.impl.GenericQuery">
-		<property name="schema" value="CSW_2_0_2" />
+		<property name="schema" value="CSW" />
 		<property name="outputSchema" value="CSW_PROFILE" />
-		<property name="outputFormat" value="APPLICATION_XML" />
-		<property name="version" value="2.0.2" />
+		<property name="outputFormat" value="TEXT_XML" />
+		<property name="version" value="2.0.0" />
 		<property name="elementSetName" value="BRIEF" />
 		<property name="typeNames">
 			<list>
-				<value type="de.ingrid.iplug.csw.dsc.cswclient.constants.TypeName">RECORD</value>
+				<value type="de.ingrid.iplug.csw.dsc.cswclient.constants.TypeName">DATASET</value>
 			</list>
 		</property>
 		<property name="resultType" value="RESULTS" />
@@ -79,8 +77,8 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
 	</bean>
 	
 	<bean id="cswMapper" class="de.ingrid.iplug.csw.dsc.mapping.impl.ScriptMapper">
-		<property name="cswToLuceneMapping" value="conf/csw-2.0.2-AP-ISO-1.0_to_lucene-igc-1.0.3.js" />
-		<property name="cswToIngridMapping" value="conf/csw-2.0.2-AP-ISO-1.0_to_ingrid-igc-1.0.3.js" />
+		<property name="cswToLuceneMapping" value="src/conf/csw-2.0.2-AP-ISO-1.0_to_lucene-igc-1.0.3.js" />
+		<property name="cswToIngridMapping" value="src/conf/csw-2.0.2-AP-ISO-1.0_to_ingrid-igc-1.0.3.js" />
 	</bean>
 	
 

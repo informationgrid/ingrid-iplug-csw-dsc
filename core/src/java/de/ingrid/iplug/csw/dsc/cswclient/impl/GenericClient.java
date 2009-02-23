@@ -39,7 +39,7 @@ public class GenericClient implements CSWClient {
 				this.capabilities = factory.createCapabilities();
 	
 				String serviceUrl = factory.getServiceUrl();
-				Document capDoc = factory.createRequest().doGetCapabilitiesRequest(serviceUrl);
+				Document capDoc = factory.createRequest(Operation.GET_CAPABILITIES).doGetCapabilitiesRequest(serviceUrl);
 				capabilities.initialize(capDoc);
 			}
 			else
@@ -82,7 +82,7 @@ public class GenericClient implements CSWClient {
 			String opUrl = cap.getOperationUrl(Operation.GET_RECORDS);
 			if (opUrl == null)
 				opUrl = factory.getServiceUrl();
-			Document recordDoc = factory.createRequest().doGetRecords(opUrl, query);
+			Document recordDoc = factory.createRequest(Operation.GET_RECORDS).doGetRecords(opUrl, query);
 
 			CSWSearchResult result = factory.createSearchResult();
 			result.initialize(factory, query, recordDoc);
@@ -99,7 +99,7 @@ public class GenericClient implements CSWClient {
 			String opUrl = cap.getOperationUrl(Operation.GET_RECORD_BY_ID);
 			if (opUrl == null)
 				opUrl = factory.getServiceUrl();
-			Document recordDoc = factory.createRequest().doGetRecordById(opUrl, query);
+			Document recordDoc = factory.createRequest(Operation.GET_RECORD_BY_ID).doGetRecordById(opUrl, query);
 			
 			CSWRecord record = factory.createRecord();
 			record.initialize(query.getElementSetName(), recordDoc);

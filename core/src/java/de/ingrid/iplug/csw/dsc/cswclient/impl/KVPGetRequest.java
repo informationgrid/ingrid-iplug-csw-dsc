@@ -16,7 +16,6 @@ import de.ingrid.iplug.csw.dsc.cswclient.CSWConstants;
 import de.ingrid.iplug.csw.dsc.cswclient.CSWQuery;
 import de.ingrid.iplug.csw.dsc.cswclient.CSWRequest;
 import de.ingrid.iplug.csw.dsc.cswclient.constants.Operation;
-import de.ingrid.iplug.csw.dsc.cswclient.constants.OutputFormat;
 
 public class KVPGetRequest implements CSWRequest {
 
@@ -34,9 +33,9 @@ public class KVPGetRequest implements CSWRequest {
 		// @note Parameters must be treated in case-insensitive manner on the server side
 		String requestURL = serverURL+
 			"?SERVICE="+CSWConstants.SERVICE_TYPE+
-			"&REQUEST="+Operation.GET_CAPABILITIES+
+			"&REQUEST="+Operation.GET_CAPABILITIES/*+
 			"&OUTPUTFORMAT="+OutputFormat.TEXT_XML+
-			"&ACCEPTVERSION="+CSWConstants.PREFERRED_VERSION;
+			"&ACCEPTVERSION="+CSWConstants.PREFERRED_VERSION*/;
 		
 		Document result = sendRequest(requestURL);
 		return result;
