@@ -35,7 +35,7 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
 
 	<bean id="cswQueryTemplate" class="de.ingrid.iplug.csw.dsc.cswclient.impl.GenericQuery">
 		<property name="schema" value="CSW_2_0_2" />
-		<property name="outputSchema" value="CSW_2_0_2" />
+		<property name="outputSchema" value="GMD" />
 		<property name="outputFormat" value="TEXT_XML" />
 		<property name="version" value="2.0.2" />
 		<property name="elementSetName" value="BRIEF" />
@@ -46,7 +46,7 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
 		</property>
 		<property name="resultType" value="RESULTS" />
 		<property name="constraintLanguage" value="FILTER" />
-		<property name="constraintLanguageVersion" value="1.0.0" />
+		<property name="constraintLanguageVersion" value="1.1.0" />
 	</bean>
 
 	<bean id="cswCache" class="de.ingrid.iplug.csw.dsc.cache.impl.DefaultFileCache">
@@ -59,7 +59,7 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
 				<value>
 					<![CDATA[<ogc:Filter xmlns:ogc="http://www.opengis.net/ogc">
 					<ogc:PropertyIsLike escapeChar="\\" singleChar="?" wildCard="*">
-					<ogc:PropertyName>fileIdentifier</ogc:PropertyName>
+					<ogc:PropertyName>identifier</ogc:PropertyName>
 					<ogc:Literal>10*</ogc:Literal>
 					</ogc:PropertyIsLike>
 					</ogc:Filter>]]>
@@ -67,7 +67,7 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
 				<value>
 					<![CDATA[<ogc:Filter xmlns:ogc="http://www.opengis.net/ogc">
 					<ogc:PropertyIsLike escapeChar="\\" singleChar="?" wildCard="*">
-					<ogc:PropertyName>fileIdentifier</ogc:PropertyName>
+					<ogc:PropertyName>identifier</ogc:PropertyName>
 					<ogc:Literal>11*</ogc:Literal>
 					</ogc:PropertyIsLike>
 					</ogc:Filter>]]>
