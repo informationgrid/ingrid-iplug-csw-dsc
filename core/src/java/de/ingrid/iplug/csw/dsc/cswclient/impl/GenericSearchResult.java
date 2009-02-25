@@ -37,13 +37,14 @@ public class GenericSearchResult implements CSWSearchResult {
 		if (numMatched != null) {
 			this.recordsTotal = numMatched.intValue();
 			
-			NodeList recordNodes = XPathUtils.getNodeList(document, "GetRecordsResponse/SearchResults/child::node()");
+			NodeList recordNodes = XPathUtils.getNodeList(document, "GetRecordsResponse/SearchResults/child::*");
 			if (recordNodes != null) {
 				for (int i=0; i<recordNodes.getLength(); i++) {
 					
 					// make sure to only pass the node (not the whole document)
 					// TODO: check if this can be done better
-					Node node = StringUtils.stringToDocument(StringUtils.nodeToString(recordNodes.item(i)));
+					String nodeStr = StringUtils.nodeToString(recordNodes.item(i));
+					Node node = StringUtils.stringToDocument(nodeStr);
 
 					// create the record
 					CSWRecord record = factory.createRecord();

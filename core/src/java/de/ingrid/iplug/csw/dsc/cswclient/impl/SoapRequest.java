@@ -14,12 +14,10 @@ import org.apache.axiom.om.OMAbstractFactory;
 import org.apache.axiom.om.OMElement;
 import org.apache.axiom.om.OMFactory;
 import org.apache.axiom.om.OMNamespace;
-import org.apache.axiom.soap.SOAP12Constants;
 import org.apache.axis2.AxisFault;
 import org.apache.axis2.addressing.EndpointReference;
 import org.apache.axis2.client.Options;
 import org.apache.axis2.client.ServiceClient;
-import org.apache.axis2.transport.http.HTTPConstants;
 import org.apache.axis2.util.XMLUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -114,7 +112,10 @@ public class SoapRequest implements CSWRequest {
 		
 		QName outputSchemaQN = query.getOutputSchema().getQName();
 		method.declareNamespace(outputSchemaQN.getNamespaceURI(), outputSchemaQN.getPrefix());
-		method.addAttribute("outputSchema", outputSchemaQN.getPrefix()+":"+outputSchemaQN.getLocalPart(), null);
+		if (outputSchemaQN.getLocalPart().length() > 0)
+			method.addAttribute("outputSchema", outputSchemaQN.getPrefix()+":"+outputSchemaQN.getLocalPart(), null);
+		else
+			method.addAttribute("outputSchema", outputSchemaQN.getNamespaceURI(), null);
 
 		// create Query element typename
 		OMElement queryElem = fac.createOMElement("Query", cswNs);
@@ -213,9 +214,14 @@ public class SoapRequest implements CSWRequest {
 
 		Options opts = new Options();
 		opts.setTo(new EndpointReference(serverURL));
-		opts.setProperty(HTTPConstants.CHUNKED, false);
-		//opts.setProperty(HTTPConstants.HTTP_PROTOCOL_VERSION, HTTPConstants.HEADER_PROTOCOL_10);
-		opts.setSoapVersionURI(SOAP12Constants.SOAP_ENVELOPE_NAMESPACE_URI);
+		opts.setProperty(org.apache.axis2.transport.http.HTTPConstants.CHUNKED, false);
+		opts.setProperty(org.apache.axis2.Constants.Configuration.CHARACTER_SET_ENCODING, "UTF-8");
+		/*
+		opts.setProperty(org.apache.axis2.transport.http.HTTPConstants.HTTP_PROTOCOL_VERSION, 
+			org.apache.axis2.transport.http.HTTPConstants.HEADER_PROTOCOL_10);
+		*/
+		opts.setSoapVersionURI(org.apache.axiom.soap.SOAP12Constants.SOAP_ENVELOPE_NAMESPACE_URI);
+		//opts.setSoapVersionURI(org.apache.axiom.soap.SOAP11Constants.SOAP_ENVELOPE_NAMESPACE_URI);
 		opts.setAction("urn:anonOutInOp");
 		serviceClient.setOptions(opts);
 		return serviceClient;

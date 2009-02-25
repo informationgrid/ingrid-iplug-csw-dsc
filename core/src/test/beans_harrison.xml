@@ -5,7 +5,7 @@
 http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-2.5.xsd">
 
 	<bean id="cswFactory" class="de.ingrid.iplug.csw.dsc.cswclient.CSWFactory">
-		<property name="serviceUrl" value="http://gdi-de.sdisuite.de/soapServices/CSWStartup" />
+		<property name="serviceUrl" value="http://harrison.its-technidata.de/csw" />
 		<property name="clientImpl"
 			value="de.ingrid.iplug.csw.dsc.cswclient.impl.GenericClient" />
 		<property name="requestImpl" ref="cswRequestImpl" />
@@ -20,7 +20,7 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
 		<property name="recordImpl"
 			value="de.ingrid.iplug.csw.dsc.cswclient.impl.GenericRecord" />
 	</bean>
-	
+
 	<bean id="cswRequestImpl" class="org.springframework.beans.factory.config.MapFactoryBean">
 	  <property name="sourceMap">
 	      <map>
@@ -35,13 +35,13 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
 
 	<bean id="cswQueryTemplate" class="de.ingrid.iplug.csw.dsc.cswclient.impl.GenericQuery">
 		<property name="schema" value="CSW_2_0_2" />
-		<property name="outputSchema" value="CSW_PROFILE" />
+		<property name="outputSchema" value="CSW_2_0_2" />
 		<property name="outputFormat" value="TEXT_XML" />
 		<property name="version" value="2.0.2" />
 		<property name="elementSetName" value="BRIEF" />
 		<property name="typeNames">
 			<list>
-				<value type="de.ingrid.iplug.csw.dsc.cswclient.constants.TypeName">RECORD</value>
+				<value type="de.ingrid.iplug.csw.dsc.cswclient.constants.TypeName">MD_METADATA</value>
 			</list>
 		</property>
 		<property name="resultType" value="RESULTS" />
@@ -59,32 +59,16 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
 				<value>
 					<![CDATA[<ogc:Filter xmlns:ogc="http://www.opengis.net/ogc">
 					<ogc:PropertyIsLike escapeChar="\\" singleChar="?" wildCard="*">
-					<ogc:PropertyName>title</ogc:PropertyName>
-					<ogc:Literal>A*</ogc:Literal>
+					<ogc:PropertyName>fileIdentifier</ogc:PropertyName>
+					<ogc:Literal>10*</ogc:Literal>
 					</ogc:PropertyIsLike>
 					</ogc:Filter>]]>
 				</value>
 				<value>
 					<![CDATA[<ogc:Filter xmlns:ogc="http://www.opengis.net/ogc">
 					<ogc:PropertyIsLike escapeChar="\\" singleChar="?" wildCard="*">
-					<ogc:PropertyName>title</ogc:PropertyName>
-					<ogc:Literal>B*</ogc:Literal>
-					</ogc:PropertyIsLike>
-					</ogc:Filter>]]>
-				</value>
-				<value>
-					<![CDATA[<ogc:Filter xmlns:ogc="http://www.opengis.net/ogc">
-					<ogc:PropertyIsLike escapeChar="\\" singleChar="?" wildCard="*">
-					<ogc:PropertyName>title</ogc:PropertyName>
-					<ogc:Literal>C*</ogc:Literal>
-					</ogc:PropertyIsLike>
-					</ogc:Filter>]]>
-				</value>
-				<value>
-					<![CDATA[<ogc:Filter xmlns:ogc="http://www.opengis.net/ogc">
-					<ogc:PropertyIsLike escapeChar="\\" singleChar="?" wildCard="*">
-					<ogc:PropertyName>title</ogc:PropertyName>
-					<ogc:Literal>D*</ogc:Literal>
+					<ogc:PropertyName>fileIdentifier</ogc:PropertyName>
+					<ogc:Literal>11*</ogc:Literal>
 					</ogc:PropertyIsLike>
 					</ogc:Filter>]]>
 				</value>

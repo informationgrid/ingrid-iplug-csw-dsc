@@ -24,11 +24,29 @@ public class UpdateJobTestLocal extends TestCase {
 	public void testExecute() throws Exception {
 		
 		// get instances from spring configuration
+		/*
 		SimpleSpringBeanFactory.INSTANCE.setBeanConfig("beans_portalu.xml");
 		String id = "114CAFCF-5665-480A-853F-1F8370D302FE";
-		/*
+		*/
+		//*
 		SimpleSpringBeanFactory.INSTANCE.setBeanConfig("beans_sdisuite.xml");
 		String id = "655e5998-a20e-66b5-c888-00005553421";
+		//*/
+		/*
+		SimpleSpringBeanFactory.INSTANCE.setBeanConfig("beans_ieris.xml");
+		String id = "DGF06323L7_b04";
+		*/
+		/*
+		SimpleSpringBeanFactory.INSTANCE.setBeanConfig("beans_bbsr.xml");
+		String id = "XYZ";
+		*/
+		/*
+		SimpleSpringBeanFactory.INSTANCE.setBeanConfig("beans_egn.xml");
+		String id = "XYZ";
+		*/
+		/*
+		SimpleSpringBeanFactory.INSTANCE.setBeanConfig("beans_harrison.xml");
+		String id = "XYZ";
 		*/
 
 		CSWFactory factory = SimpleSpringBeanFactory.INSTANCE.getBean(ConfigurationKeys.CSW_FACTORY, CSWFactory.class);

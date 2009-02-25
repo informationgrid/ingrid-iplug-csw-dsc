@@ -100,8 +100,8 @@ public class UpdateJob {
 			// do first request
 			CSWSearchResult result = client.getRecords(query);
 			numCurrentTotal = result.getNumberOfRecordsTotal();
-			if (log.isDebugEnabled())
-				log.debug(numCurrentTotal+" records.");
+			if (log.isInfoEnabled())
+				log.info(numCurrentTotal+" records.");
 			
 			if (numCurrentTotal > 0) {
 				
@@ -143,16 +143,16 @@ public class UpdateJob {
 	protected void processResult(CSWSearchResult result, List<String> fetchedRecordIds) throws Exception {
 		for (CSWRecord record : result.getRecordList()) {
 			String id = record.getId();
-			if (log.isDebugEnabled())
-				log.debug("Record: "+id+" "+record.getElementSetName());
+			if (log.isInfoEnabled())
+				log.info("Record: "+id+" "+record.getElementSetName());
 			if (fetchedRecordIds.contains(id)) {
 				log.warn("Duplicated id: "+id+". Overriding previous entry.");
 			}
 			this.cache.putRecord(record);
 			fetchedRecordIds.add(id);
 		}
-		if (log.isDebugEnabled())
-			log.debug("Fetched "+fetchedRecordIds.size()+" of "+result.getNumberOfRecordsTotal()+
+		if (log.isInfoEnabled())
+			log.info("Fetched "+fetchedRecordIds.size()+" of "+result.getNumberOfRecordsTotal()+
 					" [starting from "+result.getQuery().getStartPosition()+"]");		
 	}
 }
