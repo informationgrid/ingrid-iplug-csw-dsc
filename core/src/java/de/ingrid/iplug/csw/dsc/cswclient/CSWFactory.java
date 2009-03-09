@@ -9,6 +9,7 @@ import java.util.Map;
 
 import de.ingrid.iplug.csw.dsc.cswclient.constants.Operation;
 import de.ingrid.iplug.csw.dsc.cswclient.impl.GenericClient;
+import de.ingrid.utils.PlugDescription;
 
 /**
  * This class is used to create all concrete CSW related classes
@@ -20,7 +21,7 @@ public class CSWFactory implements Serializable {
 
 	private static final long serialVersionUID = CSWFactory.class.getName().hashCode();
 	
-	private String serviceUrl;
+	private PlugDescription plugDescription;
 	
 	private String clientImpl;
 	private Map<String, String> requestImpl;
@@ -38,19 +39,35 @@ public class CSWFactory implements Serializable {
 	 * @throws RuntimeException 
 	 */
 	public String getServiceUrl() throws Exception {
-		if (this.serviceUrl != null) {
-			return this.serviceUrl;
+		if (this.plugDescription != null) {
+			if (this.plugDescription.get("serviceUrl") != null) {
+				return (String) this.plugDescription.get("serviceUrl");
+			} else {
+				throw new RuntimeException("CSWFactory is not configured properly. Parameter 'serviceUrl' is missing in PlugDescription.");
+			}
+		} else {
+			throw new RuntimeException("CSWFactory is not configured properly. Parameter 'plugDescription' is missing.");
 		}
-		else
-			throw new RuntimeException("CSWFactory is not configured properly. Parameter 'serviceUrl' is missing.");
 	}
 	
+	
+	
 	/**
-	 * Set the service url
-	 * @param serviceUrl
+	 * Returns the PlugDescription.
+	 * 
+	 * @return The PlugDescription
 	 */
-	public void setServiceUrl(String serviceUrl) {
-		this.serviceUrl = serviceUrl;
+	public PlugDescription getPlugDescription() {
+		return plugDescription;
+	}
+
+
+	/**
+	 * Set the PlugDescription
+	 * @param plugDescription
+	 */
+	public void setPlugDescription(PlugDescription plugDescription) {
+		this.plugDescription = plugDescription;
 	}
 
 	/**

@@ -1,5 +1,5 @@
 <de.ingrid.utils.PlugDescription>
-	<int>21</int>
+	<int>17</int>
 	<string>personPhone</string>
 	<string>0345 5 222 702</string>
 	<string>personName</string>
@@ -34,47 +34,6 @@
 	<string>Anhalt</string>
 	<string>motherIbusUrl</string>
 	<string>j</string>
-	<string>cswFactory</string>
-	<de.ingrid.iplug.csw.dsc.cswclient.CSWFactory>
-		<serviceUrl>http://www.portalu.de/csw</serviceUrl>
-		<clientImpl>de.ingrid.iplug.csw.dsc.cswclient.impl.GenericClient</clientImpl>
-		<requestImpl>de.ingrid.iplug.csw.dsc.cswclient.impl.SoapRequest</requestImpl>
-		<capabilitiesImpl>de.ingrid.iplug.csw.dsc.cswclient.impl.GenericCapabilities</capabilitiesImpl>
-		<recordDescriptionImpl>de.ingrid.iplug.csw.dsc.cswclient.impl.GenericRecordDescription</recordDescriptionImpl>
-		<queryImpl>de.ingrid.iplug.csw.dsc.cswclient.impl.GenericQuery</queryImpl>
-		<searchResultImpl>de.ingrid.iplug.csw.dsc.cswclient.impl.GenericSearchResult</searchResultImpl>
-		<recordImpl>de.ingrid.iplug.csw.dsc.cswclient.impl.GenericRecord</recordImpl>
-	</de.ingrid.iplug.csw.dsc.cswclient.CSWFactory>
-	<string>cswQueryTemplate</string>
-	<de.ingrid.iplug.csw.dsc.cswclient.impl.GenericQuery>
-		<schema>CSW</schema>
-		<outputSchema>CSW_PROFILE</outputSchema>
-		<outputFormat>TEXT_XML</outputFormat>
-		<version>2.0.0</version>
-		<elementSetName>BRIEF</elementSetName>
-		<typeNames>
-			<de.ingrid.iplug.csw.dsc.cswclient.constants.TypeName>DATASET</de.ingrid.iplug.csw.dsc.cswclient.constants.TypeName>
-		</typeNames>
-		<resultType>RESULTS</resultType>
-		<constraintLanguage>FILTER</constraintLanguage>
-		<constraintLanguageVersion>1.0.0</constraintLanguageVersion>	
-	</de.ingrid.iplug.csw.dsc.cswclient.impl.GenericQuery>
-	<string>cswCache</string>
-	<de.ingrid.iplug.csw.dsc.cache.impl.DefaultFileCache>
-		<cachePath>./test_case_updatejob</cachePath>
-	</de.ingrid.iplug.csw.dsc.cache.impl.DefaultFileCache>
-	<string>cswHarvestFilter</string>
-	<string>
-		<![CDATA[<ogc:Filter xmlns:ogc="http://www.opengis.net/ogc">
-			<ogc:PropertyIsLike escapeChar="\\" singleChar="?" wildCard="*">
-			<ogc:PropertyName>fileIdentifier</ogc:PropertyName>
-			<ogc:Literal>1*</ogc:Literal>
-			</ogc:PropertyIsLike>
-		</ogc:Filter>]]>
-	</string>
-	<string>cswMapper</string>
-	<de.ingrid.iplug.csw.dsc.mapping.impl.ScriptMapper>
-		<cswToLuceneMapping>./src/conf/csw-2.0.2-AP-ISO-1.0_to_lucene-igc-1.0.3.js</cswToLuceneMapping>
-		<cswToIngridMapping>./src/conf/csw-2.0.2-AP-ISO-1.0_to_ingrid-igc-1.0.3.js</cswToIngridMapping>
-	</de.ingrid.iplug.csw.dsc.mapping.impl.ScriptMapper>
+	<string>serviceUrl</string>
+	<string>http://www.portalu.de/csw</string>
 </de.ingrid.utils.PlugDescription>

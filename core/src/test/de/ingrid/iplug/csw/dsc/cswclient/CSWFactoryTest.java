@@ -32,9 +32,6 @@ public class CSWFactoryTest extends TestCase {
 		// create the factory
 		CSWFactory f = new CSWFactory();
 		
-		if (desc.containsKey("serviceUrl"))
-			f.setServiceUrl(desc.get("serviceUrl").toString());
-
 		// add default values, if not already defined
     	if (!desc.containsKey("CSWClientImpl"))
     		f.setClientImpl(cswClientImpl);
@@ -79,6 +76,8 @@ public class CSWFactoryTest extends TestCase {
     	else
     		f.setRecordImpl(desc.get("setRecordImpl").toString());
 
+    	f.setPlugDescription(desc);
+    	
 		return f;
     } 
 

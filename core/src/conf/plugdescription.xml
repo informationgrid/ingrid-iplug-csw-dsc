@@ -1,5 +1,5 @@
 <de.ingrid.utils.PlugDescription>
-	<int>23</int>
+	<int>24</int>
 	<string>personPhone</string>
 	<string>0345 5 222 702</string>
 	<string>personName</string>
@@ -310,4 +310,6 @@
 	<list>
 	  <string>score</string> <!-- Liste der Rankingvarianten -->
 	</list>
+	<string>serviceUrl</string>
+	<string>http://gdi-de.sdisuite.de/soapServices/services/CSWDiscovery</string>
 </de.ingrid.utils.PlugDescription>

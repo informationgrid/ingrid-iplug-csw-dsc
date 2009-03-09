@@ -5,7 +5,7 @@
 http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-2.5.xsd">
 
 	<bean id="cswFactory" class="de.ingrid.iplug.csw.dsc.cswclient.CSWFactory">
-		<property name="serviceUrl" value="http://iers1.bkg.bund.de:8080/mdk_csw/mdk_csw" />
+  		<property name="plugDescription" ref="plugDescription" />
 		<property name="clientImpl"
 			value="de.ingrid.iplug.csw.dsc.cswclient.impl.GenericClient" />
 		<property name="requestImpl" ref="cswRequestImpl" />
@@ -73,5 +73,6 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
 		<property name="cswToIngridMapping" value="src/conf/csw-2.0.2-AP-ISO-1.0_to_ingrid-igc-1.0.3.js" />
 	</bean>
 	
+	<bean id="plugDescription" class="de.ingrid.iplug.PlugServer" factory-method="getPlugDescription" />
 
 </beans>
