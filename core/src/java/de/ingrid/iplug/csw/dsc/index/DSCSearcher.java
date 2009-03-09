@@ -24,6 +24,8 @@ import de.ingrid.utils.IngridHits;
 import de.ingrid.utils.IngridHitsEnrichmentFactory;
 import de.ingrid.utils.PlugDescription;
 import de.ingrid.utils.dsc.Record;
+import de.ingrid.utils.processor.ProcessorPipe;
+import de.ingrid.utils.processor.ProcessorPipeFactory;
 import de.ingrid.utils.query.IngridQuery;
 
 /**
@@ -41,6 +43,9 @@ public class DSCSearcher extends AbstractSearcher {
 
 	private DocumentMapper mapper = null;
 	private Cache cache = null;
+	
+	private ProcessorPipe _processorPipe = new ProcessorPipe();
+	
 
 	/**
 	 * Initilaizes the DSC searcher variant.
@@ -68,6 +73,9 @@ public class DSCSearcher extends AbstractSearcher {
 		this.fDetailer = new RecordLoader();
 		this.fScheduler = new SchedulingService(new File(plugDescription
 				.getWorkinDirectory(), "jobstore"));
+		ProcessorPipeFactory processorPipeFactory = new ProcessorPipeFactory(
+				plugDescription);
+		_processorPipe = processorPipeFactory.getProcessorPipe();
 		IngridHitsEnrichmentFactory factory = new IngridHitsEnrichmentFactory();
 		factory.register(new CswDscIdentifierEnrichment());
 		_enrichmentCollection = factory.getIngridHitsEnrichmentCollection();
@@ -91,16 +99,9 @@ public class DSCSearcher extends AbstractSearcher {
 	public IngridHits search(IngridQuery query, int start, int length)
 			throws Exception {
 
+    	_processorPipe.preProcess(query);
 		IngridHits ingridHits = search(query, false, start, length);
-
-		// enrich the hit object, for example set hitId
-		for (IIngridHitEnrichment ingridHitsEnrichment : _enrichmentCollection) {
-			IngridHit[] hits = ingridHits.getHits();
-			for (int i = 0; i < hits.length; i++) {
-				IngridHit ingridHit = hits[i];
-				ingridHitsEnrichment.enrichment(ingridHit);
-			}
-		}
+		_processorPipe.postProcess(query, ingridHits.getHits());
 		return ingridHits;
 	}
 

@@ -276,7 +276,7 @@ public abstract class AbstractSearcher implements IPlug, IRecordLoader {
 				} else {
 					String filteredTerm = filterTerm(term);
 					if (filteredTerm.indexOf(' ') > -1) {
-						addPhraseQuery(booleanQuery, termQuery, term,
+                        addPhraseQuery(booleanQuery, termQuery, filteredTerm,
 								fTitleBoost);
 					} else {
 						if (termQuery.isProhibited() && termQuery.isRequred()) {
