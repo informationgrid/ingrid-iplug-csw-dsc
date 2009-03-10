@@ -1,30 +1,14 @@
 package de.ingrid.iplug.csw.dsc.index;
 
-import java.io.File;
-import java.util.HashSet;
-import java.util.List;
-
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
-import org.hsqldb.lib.Set;
-
 import junit.framework.TestCase;
 import de.ingrid.iplug.csw.dsc.ConfigurationKeys;
 import de.ingrid.iplug.csw.dsc.TestUtil;
-import de.ingrid.iplug.csw.dsc.cache.Cache;
-import de.ingrid.iplug.csw.dsc.cache.impl.DefaultFileCache;
-import de.ingrid.iplug.csw.dsc.cswclient.CSWFactory;
 import de.ingrid.iplug.csw.dsc.cswclient.CSWRecord;
 import de.ingrid.iplug.csw.dsc.cswclient.constants.ElementSetName;
 import de.ingrid.iplug.csw.dsc.cswclient.impl.GenericRecord;
 import de.ingrid.iplug.csw.dsc.mapping.DocumentMapper;
-import de.ingrid.iplug.csw.dsc.mapping.impl.ScriptMapper;
 import de.ingrid.iplug.csw.dsc.tools.SimpleSpringBeanFactory;
-import de.ingrid.utils.IngridHit;
-import de.ingrid.utils.IngridHits;
-import de.ingrid.utils.PlugDescription;
 import de.ingrid.utils.dsc.Record;
-import de.ingrid.utils.queryparser.QueryStringParser;
 
 /**
  * TODO comment for IndexesTest
