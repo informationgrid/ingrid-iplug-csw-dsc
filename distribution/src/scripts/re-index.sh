@@ -70,7 +70,7 @@ done
 unset IFS
 
 
-CLASS=de.ingrid.iplug.dsc.index.Indexer
+CLASS=de.ingrid.iplug.csw.dsc.index.IndexingJob
 
 
 # cygwin path translation
