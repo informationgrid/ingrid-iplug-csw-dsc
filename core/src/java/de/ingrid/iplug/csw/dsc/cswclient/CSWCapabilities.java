@@ -32,7 +32,7 @@ public interface CSWCapabilities {
 	/**
 	 * Check if the CSW server supports iso profiles
 	 * OpenGIS Catalogue Services Specification 2.0.2 - ISO Metadata Application Profile p.62:
-	 * If the ‘operations constraint” ‘IsoProfiles’ (see 7.5) is included in the Capabilities 
+	 * If the 'operations constraint' 'IsoProfiles' (see 7.5) is included in the Capabilities 
 	 * document the CSW server is identified as an ISO profile server.
 	 * @return boolean
 	 */
