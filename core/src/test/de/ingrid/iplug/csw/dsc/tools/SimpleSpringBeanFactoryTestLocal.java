@@ -14,12 +14,13 @@ import de.ingrid.iplug.csw.dsc.mapping.DocumentMapper;
  * @author Administrator
  *
  */
-public class SimpleSpringBeanFactoryTest extends TestCase {
+public class SimpleSpringBeanFactoryTestLocal extends TestCase {
 
 	/**
 	 * Test method for {@link de.ingrid.iplug.csw.dsc.tools.SimpleSpringBeanFactory#getBean(java.lang.String, java.lang.Class)}.
 	 */
 	public void testGetBean() {
+		SimpleSpringBeanFactory.INSTANCE.setBeanConfig("beans_sdisuite.xml");
 		assertNotNull(SimpleSpringBeanFactory.INSTANCE.getBean(ConfigurationKeys.CSW_FACTORY, CSWFactory.class));
 		assertNotNull(SimpleSpringBeanFactory.INSTANCE.getBean(ConfigurationKeys.CSW_QUERY_TEMPLATE, CSWQuery.class));
 		assertNotNull(SimpleSpringBeanFactory.INSTANCE.getBean(ConfigurationKeys.CSW_CACHE, Cache.class));
