@@ -26,7 +26,7 @@
 
 public void savePortalProviders(final BusClient busClient) {
     try {
-    	IBus bus = busClient.getBus();
+    	IBus bus = busClient.getNonCacheableIBus();
 
     	final String query = "datatype:management management_request_type:2";
 		IngridQuery ingridQuery = QueryStringParser.parse(query);
