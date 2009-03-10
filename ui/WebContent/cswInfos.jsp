@@ -6,21 +6,16 @@
 <%
 
 PlugDescription description = (PlugDescription)request.getSession().getAttribute("description");
-String cswServiceUrl = "cswServiceUrl";
-String timeout = "timeout";
-String soapVersion = "soapVersion";
+String cswServiceUrl = "serviceUrl";
 String useIndex = "useIndex";
 
 if(!WebUtil.getParameter(request, cswServiceUrl, "").equals("") && !WebUtil.getParameter(request, timeout, "").equals("") && !WebUtil.getParameter(request, soapVersion, "").equals("")){
 	description.put(cswServiceUrl, request.getParameter(cswServiceUrl));
-	description.put(timeout, request.getParameter(timeout));
-	description.put(soapVersion, request.getParameter(soapVersion));
 	if(!WebUtil.getParameter(request, useIndex, "").equals("")) {
 		description.put(useIndex, "true");
 	}
 	response.sendRedirect(response.encodeRedirectURL("scheduling.jsp"));
 } 
-
 
 
 %>
@@ -48,16 +43,6 @@ Csw Infos <br />
 		<td class="tablecell" width="100">Csw Service Url:</td>
 		<td class="tablecell"><input type="text" name="cswServiceUrl"
 			value="<%=description.get(cswServiceUrl)!=null?description.get(cswServiceUrl):""%>" style="width: 100%" /></td>
-	</tr>
-	<tr>
-		<td class="tablecell" width="100">Timeout:</td>
-		<td class="tablecell"><input type="text" name="timeout"
-			value="<%=description.get(timeout)!=null?description.get(timeout):""%>" style="width: 100%" /></td>
-	</tr>
-	<tr>
-		<td class="tablecell" width="100">Soap Version:</td>
-		<td class="tablecell"><input type="text" name="soapVersion"
-			value="<%=description.get(soapVersion)!=null?description.get(soapVersion):""%>" style="width: 100%" /></td>
 	</tr>
 	<tr>
 		<td class="tablecell" width="100">Index Verwenden:</td>
