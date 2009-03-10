@@ -9,7 +9,7 @@ PlugDescription description = (PlugDescription)request.getSession().getAttribute
 String cswServiceUrl = "serviceUrl";
 String useIndex = "useIndex";
 
-if(!WebUtil.getParameter(request, cswServiceUrl, "").equals("") && !WebUtil.getParameter(request, timeout, "").equals("") && !WebUtil.getParameter(request, soapVersion, "").equals("")){
+if(!WebUtil.getParameter(request, cswServiceUrl, "").equals("")){
 	description.put(cswServiceUrl, request.getParameter(cswServiceUrl));
 	if(!WebUtil.getParameter(request, useIndex, "").equals("")) {
 		description.put(useIndex, "true");
@@ -41,7 +41,7 @@ Csw Infos <br />
 	</tr>
 	<tr>
 		<td class="tablecell" width="100">Csw Service Url:</td>
-		<td class="tablecell"><input type="text" name="cswServiceUrl"
+		<td class="tablecell"><input type="text" name="serviceUrl"
 			value="<%=description.get(cswServiceUrl)!=null?description.get(cswServiceUrl):""%>" style="width: 100%" /></td>
 	</tr>
 	<tr>
