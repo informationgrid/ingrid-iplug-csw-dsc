@@ -7,7 +7,14 @@
 <%@ page import="de.ingrid.iplug.csw.dsc.index.*"%>
 <%@ page import="de.ingrid.iplug.*"%>
 <%@ page import="de.ingrid.utils.PlugDescription"%>
+
+<%@ page import="de.ingrid.utils.xml.*" %>    
+<%@ page import="java.io.*"%>
+<%@ page import="de.ingrid.iplug.util.*"%>
+<%@ page import="de.ingrid.utils.BeanFactory"%>
+
 <%@ include file="timeoutcheck.jsp"%>
+
 <%!
 private static IndexRunner fIndexRunner;
 class IndexRunner extends Thread{
@@ -18,22 +25,9 @@ class IndexRunner extends Thread{
 		fDescription = description;
 	}
 	public void run(){
-		try{
-
-			File indexFolder = new File((String)fDescription.get("workingDirectory"));
-			indexFolder.mkdirs();
-			
-			IIndexer indexer = new Indexer();
-			indexer.open(indexFolder);
-			
-			List collection = DocumentReaderFactory.getDocumentReaderCollection();
-			for(int i=0; i<collection.size(); i++){
-				Object object = collection.get(i);
-				indexer.index((IDocumentReader) object);
-			}
-			
-			indexer.close();
-		
+		try {
+			IndexingJob job = new IndexingJob();
+			job.execute(null);
 		} catch (Exception e ){
 			e.printStackTrace();
 		}
@@ -49,8 +43,18 @@ class IndexRunner extends Thread{
 <%
 if(fIndexRunner == null){
 	PlugDescription   description = (PlugDescription)  request.getSession().getAttribute("description");
-	fIndexRunner = new IndexRunner(description);
-	fIndexRunner.start();
+
+	// save pd first. the indexer job will pick it up from the conf directory
+	BeanFactory beanFactory = (BeanFactory) application.getAttribute("beanFactory");
+	File pd_file = (File) beanFactory.getBean("pd_file");
+	XMLSerializer serializer = new XMLSerializer();
+	if (null == description) {
+		System.out.println("step1/save.jsp: ERROR in step1/save.jsp: current values lost during session timeout, plugdescription from web container was <null> and was not written");
+	} else {
+	    serializer.serialize(description,pd_file);
+		fIndexRunner = new IndexRunner(description);
+		fIndexRunner.start();
+	}
 }
 
 
