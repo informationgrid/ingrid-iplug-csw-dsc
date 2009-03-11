@@ -210,6 +210,10 @@ if (!WebUtil.getParameter(request, "organisationAbbr", "").equals("")
 	// frist we remove the old fields.
 	description.remove("fields");
 	description.addField("incl_meta");	
+	// preset fields to identify this iplug as IGC DB 1.0.3 compatible
+	description.addField("t01_object.obj_id");
+	description.addField("parent.object_node.obj_uuid");
+	description.addField("object_access.terms_of_use");
 	
 	// generate this dynamic
 	description.setPlugId(plugId);
