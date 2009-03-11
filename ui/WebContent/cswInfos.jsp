@@ -7,12 +7,12 @@
 
 PlugDescription description = (PlugDescription)request.getSession().getAttribute("description");
 String cswServiceUrl = "serviceUrl";
-String useIndex = "useIndex";
+String directData = "directData";
 
 if(!WebUtil.getParameter(request, cswServiceUrl, "").equals("")){
 	description.put(cswServiceUrl, request.getParameter(cswServiceUrl));
-	if(!WebUtil.getParameter(request, useIndex, "").equals("")) {
-		description.put(useIndex, "true");
+	if(!WebUtil.getParameter(request, directData, "").equals("")) {
+		description.put(directData, "true");
 	}
 	response.sendRedirect(response.encodeRedirectURL("scheduling.jsp"));
 } 
@@ -47,10 +47,10 @@ Csw Infos <br />
 	<tr>
 		<td class="tablecell" width="100">Index Verwenden:</td>
 		<%
-		String checked = description.get(useIndex)!=null && description.get(useIndex).equals("true") ? "checked=\"checked\"": "";
+		String checked = description.get(directData)!=null && description.get(directData).equals("true") ? "checked=\"checked\"": "";
 		%>
-		<td class="tablecell"><input type="checkbox" name="useIndex"
-			value="Index Verwenden" <%=checked%>
+		<td class="tablecell"><input type="checkbox" name="directData"
+			value="CSW Daten direkt zurückgeben" <%=checked%>
 			style="width: 100%" /></td>
 
 	</tr>
