@@ -15,10 +15,6 @@
         <copy todir="${maven.build.dir}/${pom.artifactId}-${pom.currentVersion}/conf">
 		    <fileset dir="${basedir}/conf" />
   		</copy>
-        <!-- copy the udk_presets -->
-        <copy todir="${maven.build.dir}/${pom.artifactId}-${pom.currentVersion}/udk_presets">
-		    <fileset dir="${basedir}/udk_presets" />
-  		</copy>
   		<!-- copy the dependencies -->
         <deploy:copy-deps todir="${maven.build.dir}/${pom.artifactId}-${pom.currentVersion}/lib" excludes="ingrid-iplug-csw-dsc-ui"/>
         <ant:unzip src="${maven.repo.local}/ingrid/wars/ingrid-iplug-csw-dsc-ui-1.1.0-SNAPSHOT.war" dest="${maven.build.dir}/${pom.artifactId}-${pom.currentVersion}/webapp/step1"/>

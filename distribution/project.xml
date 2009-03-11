@@ -140,6 +140,7 @@
        <type>jar</type>
     </dependency>
 
+    <!-- SOAP AXIS -->
     <dependency>
         <groupId>org.apache.ws.commons.axiom</groupId>
         <artifactId>axiom-api</artifactId>
@@ -188,6 +189,7 @@
         <version>1.4.2</version>
         <type>jar</type>
     </dependency>
+    <!-- / SOAP AXIS -->
 
     <dependency>
    		<groupId>org.springframework</groupId>
