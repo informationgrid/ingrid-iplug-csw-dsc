@@ -117,7 +117,7 @@ startIplug()
   CLASS=de.ingrid.iplug.PlugServer
   
   # run it
-  exec nohup "$JAVA" $JAVA_HEAP_MAX $INGRID_OPTS -classpath "$CLASSPATH" $CLASS --descriptor conf/communication.properties --plugdescription conf/plugdescription.xml > console.log &
+  exec nohup "$JAVA" $JAVA_HEAP_MAX $INGRID_OPTS -classpath "$CLASSPATH" $CLASS --descriptor conf/communication.xml --plugdescription conf/plugdescription.xml > console.log &
   
   echo "ingrid component ($INGRID_HOME) started."
   echo $! > $PID
