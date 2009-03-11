@@ -125,7 +125,6 @@
       <artifactId>commons-logging</artifactId>
       <version>1.0.2</version>
       <type>jar</type>
-      <url>http://jakarta.apache.org/commons/logging/</url>
     </dependency>
     <!-- / jetty -->
 
