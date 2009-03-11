@@ -54,8 +54,8 @@ public class SoapRequest implements CSWRequest {
 
 		// create the request
 		OMFactory fac = OMAbstractFactory.getOMFactory();
-		OMNamespace cswNs = fac.createOMNamespace(Namespace.CSW.getQName().getNamespaceURI(), 
-				Namespace.CSW.getQName().getPrefix());
+		OMNamespace cswNs = fac.createOMNamespace(Namespace.CSW_2_0_2.getQName().getNamespaceURI(), 
+				Namespace.CSW_2_0_2.getQName().getPrefix());
 		OMNamespace owsNs = fac.createOMNamespace(Namespace.OWS.getQName().getNamespaceURI(),
 				Namespace.OWS.getQName().getPrefix());
 
