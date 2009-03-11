@@ -21,7 +21,9 @@ var _store = true;
 var _index = true;
 var _token = true;
 
-log.debug("Mapping csw record "+cswRecord.getId()+" to lucene document");
+if (log.isDebugEnabled()) {
+	log.debug("Mapping csw record "+cswRecord.getId()+" to lucene document");
+}
 
 // get the xml content of the record
 var recordNode = cswRecord.getOriginalResponse();
@@ -416,10 +418,14 @@ for (var i in transformationDescriptions) {
 	
 	// check for execution (special function)
 	if (hasValue(t.execute)) {
-		log.debug("Execute function: " + t.execute.funct.name)
+		if (log.isDebugEnabled()) {
+			log.debug("Execute function: " + t.execute.funct.name)
+		}
 		call_f(t.execute.funct, t.execute.params)
 	} else {
-		log.debug("Working on " + t.indexField)
+		if (log.isDebugEnabled()) {
+			log.debug("Working on " + t.indexField)
+		}
 		var tokenized = true;
 		// iterate over all xpath results
 		var nodeList = XPathUtils.getNodeList(recordNode, t.xpath);
@@ -449,7 +455,9 @@ for (var i in transformationDescriptions) {
 function mapAddresses(recordNode) {
 	var addresses = XPathUtils.getNodeList(recordNode, "//*/CI_ResponsibleParty");
 	if (hasValue(addresses)) {
-		log.debug("number of found addresses:" + addresses.getLength())
+		if (log.isDebugEnabled()) {
+			log.debug("number of found addresses:" + addresses.getLength())
+		}
 		for (i=0; i<addresses.getLength(); i++ ) {
 			var addressRole = XPathUtils.getString(addresses.item(i), "role/CI_RoleCode/@codeListValue");
 			if (hasValue(addressRole)) {
@@ -683,11 +691,20 @@ function transformGeneric(val, mappings, caseSensitive) {
 function transformToIgcDomainId(val, codeListId) {
 	if (hasValue(val)) {
 		// transform to IGC domain id, use english code
-		var idcCode = UtilsUDKCodeLists.getCodeListDomainId(codeListId, val, 94);
+		var idcCode = null;
+		try {
+			idcCode = UtilsUDKCodeLists.getCodeListDomainId(codeListId, val, 94);
+		} catch (e) {
+			if (log.isInfoEnabled()) {
+				log.info("Error tranforming value '" + val + "' with code list " + codeListId + ". Does the codeList exist?");
+			}
+		}
 		if (hasValue(idcCode)) {
 			return idcCode;
 		} else {
-			log.info("Domain code '" + val + "' unknown in code list " + codeListId + ".");
+			if (log.isInfoEnabled()) {
+				log.info("Domain code '" + val + "' unknown in code list " + codeListId + ".");
+			}
 			return -1;
 		}
 	}
@@ -722,7 +739,9 @@ function addResourceMaintenance() {
 			addToDoc("t01_object.time_interval", new TM_PeriodDurationToTimeInterval().parse(periodDuration), false);
 			addToDoc("t01_object.time_alle", new TM_PeriodDurationToTimeAlle().parse(periodDuration), false);
 		} else {
-			log.debug("MD_MaintenanceFrequencyCode '" + maintenanceFrequencyCode + "' unknown.")
+			if (log.isDebugEnabled()) {
+				log.debug("MD_MaintenanceFrequencyCode '" + maintenanceFrequencyCode + "' unknown.")
+			}
 		}
 	}
 }
@@ -775,7 +794,9 @@ function getObjectClassFromHierarchyLevel(val) {
 
 function addToDoc(field, content, tokenized) {
 	if (typeof content != "undefined" && content != null) {
-		log.debug("Add '" + field + "'='" + content + "' to lucene index");
+		if (log.isDebugEnabled()) {
+			log.debug("Add '" + field + "'='" + content + "' to lucene index");
+		}
 		document.add(new Field(field, content, _store, _index, tokenized));
 		document.add(new Field("content", content, !_store, _index, true));
 		document.add(new Field("content", AbstractSearcher.filterTerm(content), !_store, _index, true));
