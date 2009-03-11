@@ -50,7 +50,7 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
 	</bean>
 
 	<bean id="cswCache" class="de.ingrid.iplug.csw.dsc.cache.impl.DefaultFileCache">
-		<property name="cachePath" value="./test_case_updatejob" />
+		<property name="cachePath" value="./csw_cache" />
 	</bean>
 
 	<bean id="cswHarvestFilter" class="org.springframework.beans.factory.config.SetFactoryBean">
