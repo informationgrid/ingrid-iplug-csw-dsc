@@ -36,14 +36,16 @@ public class TestUtil {
 			return true;
 		}
 		File[] files = directory.listFiles();
-		for (File file : files) {
-			if (file.isDirectory()) {
-				if (!deleteDirectory(file)) {
-					return false;
-				}
-			} else {
-				if (!file.delete()) {
-					return false;
+		if (files != null) {
+			for (File file : files) {
+				if (file.isDirectory()) {
+					if (!deleteDirectory(file)) {
+						return false;
+					}
+				} else {
+					if (!file.delete()) {
+						return false;
+					}
 				}
 			}
 		}

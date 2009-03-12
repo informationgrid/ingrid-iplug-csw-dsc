@@ -68,6 +68,17 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
 		</property>
 	</bean>
 	
+	<bean id="cswIncrementalFilterAddition" class="java.lang.String">
+		<constructor-arg type="java.lang.String">
+			<value>
+				<![CDATA[<ogc:PropertyIsGreaterThanOrEqualTo>
+				<ogc:PropertyName>Modified</ogc:PropertyName>
+				<ogc:Literal>LAST_UPDATE_DATE</ogc:Literal>
+				</ogc:PropertyIsGreaterThanOrEqualTo>]]>
+			</value>
+		</constructor-arg>
+	</bean>
+	
 	<bean id="cswMapper" class="de.ingrid.iplug.csw.dsc.mapping.impl.ScriptMapper">
 		<property name="cswToLuceneMapping" value="src/conf/csw-2.0.2-AP-ISO-1.0_to_lucene-igc-1.0.3.js" />
 		<property name="cswToIngridMapping" value="src/conf/csw-2.0.2-AP-ISO-1.0_to_ingrid-igc-1.0.3.js" />

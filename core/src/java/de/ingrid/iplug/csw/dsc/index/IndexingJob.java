@@ -16,7 +16,6 @@ import de.ingrid.iplug.csw.dsc.cache.Cache;
 import de.ingrid.iplug.csw.dsc.cache.UpdateJob;
 import de.ingrid.iplug.csw.dsc.cswclient.CSWFactory;
 import de.ingrid.iplug.csw.dsc.cswclient.CSWQuery;
-import de.ingrid.iplug.csw.dsc.cswclient.constants.ElementSetName;
 import de.ingrid.iplug.csw.dsc.mapping.DocumentMapper;
 import de.ingrid.iplug.csw.dsc.tools.SimpleSpringBeanFactory;
 import de.ingrid.utils.PlugDescription;
@@ -41,23 +40,26 @@ public class IndexingJob implements StatefulJob {
 			DocumentMapper mapper = SimpleSpringBeanFactory.INSTANCE.getBean(ConfigurationKeys.CSW_MAPPER, DocumentMapper.class);
 			Cache cache = SimpleSpringBeanFactory.INSTANCE.getBean(ConfigurationKeys.CSW_CACHE, Cache.class);
 			cache.configure(factory);
-
 			
 			// start transaction
 			tmpCache = cache.startTransaction();
 			tmpCache.removeAllRecords();
 
-
-			// run the update job for all elementset names
+			// run the update job
 			@SuppressWarnings({"unchecked"})
 			Set<String> filterSet = (Set<String>)SimpleSpringBeanFactory.INSTANCE.getBean(ConfigurationKeys.CSW_HARVEST_FILTER, Set.class);
+			boolean isIncrementalUpdate = plugDescription.getBoolean("incrementalUpdate");
 
-			UpdateJob job = new UpdateJob();
-			job.configure(factory, tmpCache, filterSet);
+			// get the incremental filter addition if requested
+			String incrementalFilterAddition = null;
+			if (isIncrementalUpdate) {
+				incrementalFilterAddition = SimpleSpringBeanFactory.INSTANCE.getBean(
+						ConfigurationKeys.CSW_INCREMENTAL_FILTER_ADDITION, String.class);
+			}
 			
-			ElementSetName[] names = ElementSetName.values();
-			for (int i=0; i<names.length; i++)
-				job.execute(names[i], 10, 2000);
+			UpdateJob job = new UpdateJob();
+			job.configure(factory, tmpCache, filterSet, incrementalFilterAddition);
+			job.execute(10, 2000);
 			
 			// start indexing
 			IIndexer indexer = new Indexer();
@@ -67,7 +69,6 @@ public class IndexingJob implements StatefulJob {
 			for (IDocumentReader documentReader : collection) {
 				indexer.index(documentReader);
 			}
-
 			indexer.close();
 			
 			// commit transaction

@@ -20,6 +20,7 @@ import de.ingrid.utils.PlugDescription;
 public class CSWFactory implements Serializable {
 
 	private static final long serialVersionUID = CSWFactory.class.getName().hashCode();
+	private static final String serviceUrlKey = "serviceUrl";
 	
 	private PlugDescription plugDescription;
 	
@@ -40,8 +41,8 @@ public class CSWFactory implements Serializable {
 	 */
 	public String getServiceUrl() throws Exception {
 		if (this.plugDescription != null) {
-			if (this.plugDescription.get("serviceUrl") != null) {
-				return (String) this.plugDescription.get("serviceUrl");
+			if (this.plugDescription.get(serviceUrlKey) != null) {
+				return (String) this.plugDescription.get(serviceUrlKey);
 			} else {
 				throw new RuntimeException("CSWFactory is not configured properly. Parameter 'serviceUrl' is missing in PlugDescription.");
 			}

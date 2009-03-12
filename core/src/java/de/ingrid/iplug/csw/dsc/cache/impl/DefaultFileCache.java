@@ -13,6 +13,7 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.io.Serializable;
 import java.io.Writer;
+import java.util.Date;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -48,6 +49,11 @@ public class DefaultFileCache implements Cache, Serializable {
 	 * The temporary path of the cache, that is used in transaction mode.
 	 */
 	protected String tmpPath = null;
+
+	/**
+	 * The initial cache from which a transaction was started.
+	 */
+	protected Cache initialCache = null;
 	
 	/**
 	 * File name filter for recognizing cached files
@@ -57,6 +63,13 @@ public class DefaultFileCache implements Cache, Serializable {
 	        return !file.isDirectory() && file.getName().endsWith(".xml");
 	    }
 	};
+
+	/**
+	 * Constructor
+	 */
+	public DefaultFileCache() {
+		this.initialCache = this;
+	}
 
 	/**
 	 * Check if the cache is already initialized
@@ -70,21 +83,23 @@ public class DefaultFileCache implements Cache, Serializable {
 	 * Initialize the cache
 	 */
 	protected void initialize() {
-		// check configuration
-		if (this.factory == null)
-			throw new RuntimeException("Cache is not configured properly. The 'factory' property is not set.");
-		
-		// check for original path
-		String originalPath = this.getCachePath();
-		if (originalPath == null)
-			throw new RuntimeException("DefaultFileCache is not configured properly: cachePath not set.");
-
-		// check if the original path exists and create it if not
-		File cacheLocation = new File(originalPath);
-		if (!cacheLocation.exists())
-			cacheLocation.mkdir();
-		
-		this.isInitialized = true;
+		if (!this.isInitialized) {
+			// check configuration
+			if (this.factory == null)
+				throw new RuntimeException("Cache is not configured properly. The 'factory' property is not set.");
+			
+			// check for original path
+			String originalPath = this.getCachePath();
+			if (originalPath == null)
+				throw new RuntimeException("DefaultFileCache is not configured properly: cachePath not set.");
+	
+			// check if the original path exists and create it if not
+			File cacheLocation = new File(originalPath);
+			if (!cacheLocation.exists())
+				cacheLocation.mkdir();
+			
+			this.isInitialized = true;
+		}
 	}
 
 	/**
@@ -224,7 +239,7 @@ public class DefaultFileCache implements Cache, Serializable {
 	
 	@Override
 	public Set<String> getCachedRecordIds() {
-		if (!isInitialized())
+		if (!this.isInitialized())
 			initialize();
 		
 		return getRecordIds(new File(this.getWorkPath()));
@@ -232,7 +247,7 @@ public class DefaultFileCache implements Cache, Serializable {
 
 	@Override
 	public boolean isCached(String id, ElementSetName elementSetName) throws IOException {
-		if (!isInitialized())
+		if (!this.isInitialized())
 			initialize();
 		
 		String filePath = this.getAbsoluteFilename(id, elementSetName);
@@ -242,7 +257,7 @@ public class DefaultFileCache implements Cache, Serializable {
 
 	@Override
 	public CSWRecord getRecord(String id, ElementSetName elementSetName) throws IOException {
-		if (!isInitialized())
+		if (!this.isInitialized())
 			initialize();
 		
 		String filePath = this.getAbsoluteFilename(id, elementSetName);
@@ -279,7 +294,7 @@ public class DefaultFileCache implements Cache, Serializable {
 
 	@Override
 	public void putRecord(CSWRecord record) throws IOException {
-		if (!isInitialized())
+		if (!this.isInitialized())
 			initialize();
 		
 		// ensure that the directory exists
@@ -301,15 +316,17 @@ public class DefaultFileCache implements Cache, Serializable {
 
 	@Override
 	public void removeAllRecords() {
-		if (!isInitialized())
+		if (!this.isInitialized())
 			initialize();
 
-		FileUtils.deleteRecursive(new File(this.getWorkPath()));
+		File workPath = new File(this.getWorkPath());
+		FileUtils.deleteRecursive(workPath);
+		workPath.mkdirs();
 	}
 
 	@Override
 	public void removeRecord(String id) {
-		if (!isInitialized())
+		if (!this.isInitialized())
 			initialize();
 
 		// remove all cached files for this id
@@ -329,7 +346,7 @@ public class DefaultFileCache implements Cache, Serializable {
 	
 	@Override
 	public Cache startTransaction() throws IOException {
-		if (!isInitialized())
+		if (!this.isInitialized())
 			initialize();
 
 		DefaultFileCache cache = new DefaultFileCache();
@@ -338,6 +355,7 @@ public class DefaultFileCache implements Cache, Serializable {
 		// the original content of the new cache instance
 		// is the content of this cache
 		cache.cachePath = this.getWorkPath();
+		cache.initialCache = this;
 		cache.inTransaction = true;
 		
 		// copy content of this instance to the new cache
@@ -349,7 +367,7 @@ public class DefaultFileCache implements Cache, Serializable {
 
 	@Override
 	public void commitTransaction() throws IOException {
-		if (!isInitialized())
+		if (!this.isInitialized())
 			initialize();
 
 		if (this.isInTransaction()) {
@@ -358,7 +376,7 @@ public class DefaultFileCache implements Cache, Serializable {
 			File tmpDir = new File(this.getWorkPath());
 			FileUtils.deleteRecursive(originalDir);
 			tmpDir.renameTo(originalDir);
-				
+			
 			this.inTransaction = false;
 		}
 		else
@@ -367,7 +385,7 @@ public class DefaultFileCache implements Cache, Serializable {
 
 	@Override
 	public void rollbackTransaction() {
-		if (!isInitialized())
+		if (!this.isInitialized())
 			initialize();
 
 		if (this.isInTransaction()) {
@@ -379,5 +397,17 @@ public class DefaultFileCache implements Cache, Serializable {
 		}
 		else
 			throw new RuntimeException("The cache is not in transaction mode.");
+	}
+
+	@Override
+	public Cache getInitialCache() {
+		return this.initialCache;
+	}
+
+	@Override
+	public Date getLastCommitDate() {
+		// return the last modified date of the cache directory
+		File cacheDir = new File(this.getCachePath());
+		return new Date(cacheDir.lastModified());
 	}
 }

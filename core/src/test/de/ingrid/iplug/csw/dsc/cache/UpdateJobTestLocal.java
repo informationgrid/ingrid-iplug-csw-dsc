@@ -16,6 +16,7 @@ import de.ingrid.iplug.csw.dsc.cswclient.CSWRecord;
 import de.ingrid.iplug.csw.dsc.cswclient.constants.ElementSetName;
 import de.ingrid.iplug.csw.dsc.cswclient.impl.GenericRecord;
 import de.ingrid.iplug.csw.dsc.tools.SimpleSpringBeanFactory;
+import de.ingrid.utils.PlugDescription;
 
 public class UpdateJobTestLocal extends TestCase {
 
@@ -28,10 +29,10 @@ public class UpdateJobTestLocal extends TestCase {
 		SimpleSpringBeanFactory.INSTANCE.setBeanConfig("beans_portalu.xml");
 		String id = "114CAFCF-5665-480A-853F-1F8370D302FE";
 		*/
-		/*
+		//*
 		SimpleSpringBeanFactory.INSTANCE.setBeanConfig("beans_sdisuite.xml");
 		String id = "655e5998-a20e-66b5-c888-00005553421";
-		*/
+		//*/
 		/*
 		SimpleSpringBeanFactory.INSTANCE.setBeanConfig("beans_ieris.xml");
 		String id = "DGF06323L7_b04";
@@ -44,10 +45,10 @@ public class UpdateJobTestLocal extends TestCase {
 		SimpleSpringBeanFactory.INSTANCE.setBeanConfig("beans_egn.xml");
 		String id = "XYZ";
 		*/
-		//*
+		/*
 		SimpleSpringBeanFactory.INSTANCE.setBeanConfig("beans_harrison.xml");
 		String id = "1162C06F-7C34-11D6-BD62-0050DA46952F";
-		//*/
+		*/
 
 		CSWFactory factory = SimpleSpringBeanFactory.INSTANCE.getBean(ConfigurationKeys.CSW_FACTORY, CSWFactory.class);
 		factory.setQueryTemplate(SimpleSpringBeanFactory.INSTANCE.getBean(ConfigurationKeys.CSW_QUERY_TEMPLATE, CSWQuery.class));
@@ -55,6 +56,10 @@ public class UpdateJobTestLocal extends TestCase {
 		cache.configure(factory);
 		if (cache instanceof DefaultFileCache)
 			((DefaultFileCache)cache).setCachePath(cachePath);
+		
+		PlugDescription plugDescription = SimpleSpringBeanFactory.INSTANCE.getBean(ConfigurationKeys.PLUGDESCRIPTION, 
+				PlugDescription.class);
+		boolean isIncrementalUpdate = plugDescription.getBoolean("incrementalUpdate");
 		
 		// put old record into cache
 		String oldRecordId = "A-12345";
@@ -64,16 +69,21 @@ public class UpdateJobTestLocal extends TestCase {
 		Cache tmpCache = cache.startTransaction();
 		tmpCache.removeAllRecords();
 		
-		// run the update job for all elementset names
+		// run the update job
 		@SuppressWarnings({"unchecked"})
-		Set<String> filterSet = (Set<String>)SimpleSpringBeanFactory.INSTANCE.getBean(ConfigurationKeys.CSW_HARVEST_FILTER, Set.class);
+		Set<String> filterSet = (Set<String>)SimpleSpringBeanFactory.INSTANCE.getBean(
+				ConfigurationKeys.CSW_HARVEST_FILTER, Set.class);
+		
+		// get the incremental filter addition if requested
+		String incrementalFilterAddition = null;
+		if (isIncrementalUpdate) {
+			incrementalFilterAddition = SimpleSpringBeanFactory.INSTANCE.getBean(
+					ConfigurationKeys.CSW_INCREMENTAL_FILTER_ADDITION, String.class);
+		}
 
 		UpdateJob job = new UpdateJob();
-		job.configure(factory, tmpCache, filterSet);
-		
-		ElementSetName[] names = ElementSetName.values();
-		for (int i=0; i<names.length; i++)
-			job.execute(names[i], 20, 2000);
+		job.configure(factory, tmpCache, filterSet, incrementalFilterAddition);
+		job.execute(20, 2000);
 
 		// commit transaction
 		tmpCache.commitTransaction();
@@ -85,6 +95,14 @@ public class UpdateJobTestLocal extends TestCase {
 		assertTrue("record "+id+" was cached", recordSummary.getId().equals(id));
 		CSWRecord recordFull = cache.getRecord(id, ElementSetName.FULL);
 		assertTrue("record "+id+" was cached", recordFull.getId().equals(id));
+		
+		// check if all records are cached in all elementset names
+		for (String cachedId : cache.getCachedRecordIds()) {
+			assertTrue("all records are cached in all elementset names", 
+					cache.isCached(cachedId, ElementSetName.BRIEF) && 
+					cache.isCached(cachedId, ElementSetName.SUMMARY) &&
+					cache.isCached(cachedId, ElementSetName.FULL));
+		}
 		
 		// check if old record is removed
 		assertTrue("record "+oldRecordId+" is removed", !cache.isCached(oldRecordId, ElementSetName.BRIEF));

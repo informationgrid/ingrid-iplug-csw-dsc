@@ -4,6 +4,8 @@
 	xsi:schemaLocation="
 http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-2.5.xsd">
 
+	<!-- serviceUrl: http://gdi-de.sdisuite.de/soapServices/CSWStartup -->
+
 	<bean id="cswFactory" class="de.ingrid.iplug.csw.dsc.cswclient.CSWFactory">
   		<property name="plugDescription" ref="plugDescription" />
 		<property name="clientImpl"
@@ -90,6 +92,17 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
 				</value>
 			</set>
 		</property>
+	</bean>
+	
+	<bean id="cswIncrementalFilterAddition" class="java.lang.String">
+		<constructor-arg type="java.lang.String">
+			<value>
+				<![CDATA[<ogc:PropertyIsGreaterThanOrEqualTo>
+				<ogc:PropertyName>Modified</ogc:PropertyName>
+				<ogc:Literal>LAST_UPDATE_DATE</ogc:Literal>
+				</ogc:PropertyIsGreaterThanOrEqualTo>]]>
+			</value>
+		</constructor-arg>
 	</bean>
 	
 	<bean id="cswMapper" class="de.ingrid.iplug.csw.dsc.mapping.impl.ScriptMapper">

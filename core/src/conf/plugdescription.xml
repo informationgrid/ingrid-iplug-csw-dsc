@@ -311,5 +311,7 @@
 	  <string>score</string> <!-- Liste der Rankingvarianten -->
 	</list>
 	<string>serviceUrl</string>
-	<string>http://gdi-de.sdisuite.de/soapServices/services/CSWDiscovery</string>
+	<string>http://gdi-de.sdisuite.de/soapServices/CSWStartup</string>
+	<string>incrementalUpdate</string>
+	<boolean>true</boolean>
 </de.ingrid.utils.PlugDescription>

@@ -5,6 +5,8 @@
 package de.ingrid.iplug.csw.dsc.cache;
 
 import java.io.File;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.Set;
 
 import junit.framework.TestCase;
@@ -233,7 +235,7 @@ public class CacheTestLocal extends TestCase {
 		// check if the record is still in the original cache
 		assertTrue("The cached record still exists, since the transaction is not committet.", cache.isCached(id, elementSetName));
 		
-		// commit the transaction
+		// rollback the transaction
 		tmpCache.rollbackTransaction();
 		
 		// check if the original record is deleted after transaction is committed
@@ -242,6 +244,38 @@ public class CacheTestLocal extends TestCase {
 		// check if the cache temporary cache is deleted
 		File tmpPath = new File(((DefaultFileCache)tmpCache).getTempPath());
 		assertTrue("The temporary cache is deleted.", !tmpPath.exists());
+	}
+
+	public void testLastCommitDate() throws Exception {
+
+		Cache cache = this.setupCache();
+		
+		// start transaction
+		Cache tmpCache = cache.startTransaction();
+		
+		// commit the transaction
+		tmpCache.commitTransaction();
+		
+		// check if commit date is today
+		SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd");
+		assertTrue("The comit date is today.", df.format(cache.getLastCommitDate()).equals(df.format(new Date())));
+	}
+
+	public void testInitialCache() throws Exception {
+
+		Cache cache = this.setupCache();
+		
+		// start transaction
+		Cache tmpCache = cache.startTransaction();
+		
+		// check if the tmp cache instance is not the initial cache instance
+		assertTrue("The temp cache is not the initial cache.", tmpCache != cache);
+		
+		// check if the tmp cache's initial instance is the initial cache instance
+		assertTrue("The temp cache's initial instance is the initial cache.", tmpCache.getInitialCache() == cache);
+		
+		// rollback the transaction
+		tmpCache.rollbackTransaction();
 	}
 
 	/**

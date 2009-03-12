@@ -5,6 +5,7 @@
 package de.ingrid.iplug.csw.dsc.cache;
 
 import java.io.IOException;
+import java.util.Date;
 import java.util.Set;
 
 import de.ingrid.iplug.csw.dsc.cswclient.CSWFactory;
@@ -52,7 +53,7 @@ public interface Cache {
 	public CSWRecord getRecord(String id, ElementSetName elementSetName) throws IOException;
 
 	/**
-	 * Store a record.
+	 * Store a record. Overrides the old record with the same id.
 	 * @param record
 	 */
 	public void putRecord(CSWRecord record) throws IOException;
@@ -91,4 +92,16 @@ public interface Cache {
 	 * Rollback the transaction. Discard all changes, that are done since the transaction was opened.
 	 */
 	public void rollbackTransaction();
+
+	/**
+	 * Get the cache from that a transaction was started. If the cache is not in transaction,
+	 * the result is the same instance on which the method is called.
+	 * @param Returns the initial cache instance.
+	 */
+	public Cache getInitialCache();
+
+	/**
+	 * Get the date of the last commit, returns null, if it could not be determined
+	 */
+	public Date getLastCommitDate();
 }
