@@ -207,7 +207,9 @@
         <version>1.1</version>
         <type>jar</type>
     </dependency>
-	
-
   </dependencies>
+  <build>
+  	<sourceDirectory>target/src</sourceDirectory>
+  </build>
+  
 </project>

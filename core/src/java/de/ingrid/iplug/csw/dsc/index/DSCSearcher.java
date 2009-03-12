@@ -6,8 +6,6 @@ package de.ingrid.iplug.csw.dsc.index;
 
 import java.io.File;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
 
 import org.apache.lucene.document.Document;
 import org.apache.lucene.search.IndexSearcher;
@@ -18,7 +16,6 @@ import de.ingrid.iplug.csw.dsc.cswclient.CSWFactory;
 import de.ingrid.iplug.csw.dsc.mapping.DocumentMapper;
 import de.ingrid.iplug.csw.dsc.tools.SimpleSpringBeanFactory;
 import de.ingrid.iplug.scheduler.SchedulingService;
-import de.ingrid.utils.IIngridHitEnrichment;
 import de.ingrid.utils.IngridHit;
 import de.ingrid.utils.IngridHits;
 import de.ingrid.utils.IngridHitsEnrichmentFactory;
@@ -38,8 +35,6 @@ public class DSCSearcher extends AbstractSearcher {
 	private SchedulingService fScheduler;
 
 	private PlugDescription fPlugDescription;
-
-	private List<IIngridHitEnrichment> _enrichmentCollection = new ArrayList<IIngridHitEnrichment>();
 
 	private DocumentMapper mapper = null;
 	private Cache cache = null;
@@ -63,7 +58,6 @@ public class DSCSearcher extends AbstractSearcher {
 		super(file, string);
 	}
 
-	@SuppressWarnings("unchecked")
 	public void configure(PlugDescription plugDescription) throws Exception {
 		this.fPlugDescription = plugDescription;
 		this.fPlugId = plugDescription.getPlugId();
@@ -78,7 +72,6 @@ public class DSCSearcher extends AbstractSearcher {
 		_processorPipe = processorPipeFactory.getProcessorPipe();
 		IngridHitsEnrichmentFactory factory = new IngridHitsEnrichmentFactory();
 		factory.register(new CswDscIdentifierEnrichment());
-		_enrichmentCollection = factory.getIngridHitsEnrichmentCollection();
 		
 		this.mapper = SimpleSpringBeanFactory.INSTANCE.getBean(ConfigurationKeys.CSW_MAPPER, DocumentMapper.class);
 		if (this.mapper == null) {

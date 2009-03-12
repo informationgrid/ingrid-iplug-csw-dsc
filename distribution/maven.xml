@@ -1,6 +1,7 @@
 <project xmlns:deploy="deploy" xmlns:ant="jelly:ant">
     
     <goal name="bundle">
+    	<attainGoal name="configure-metadata" />
 	    <mkdir dir="${maven.build.dir}/${pom.artifactId}-${pom.currentVersion}" />
 		<mkdir dir="${maven.build.dir}/${pom.artifactId}-${pom.currentVersion}/lib" />
 		<mkdir dir="${maven.build.dir}/${pom.artifactId}-${pom.currentVersion}/conf" />
@@ -15,6 +16,9 @@
         <copy todir="${maven.build.dir}/${pom.artifactId}-${pom.currentVersion}/conf">
 		    <fileset dir="${basedir}/conf" />
   		</copy>
+  		<copy todir="${maven.build.dir}/${pom.artifactId}-${pom.currentVersion}/conf">
+		    <fileset dir="${maven.build.dir}/classes" />
+  		</copy>
   		<!-- copy the dependencies -->
         <deploy:copy-deps todir="${maven.build.dir}/${pom.artifactId}-${pom.currentVersion}/lib" excludes="ingrid-iplug-csw-dsc-ui"/>
         <ant:unzip src="${maven.repo.local}/ingrid/wars/ingrid-iplug-csw-dsc-ui-1.1.0-SNAPSHOT.war" dest="${maven.build.dir}/${pom.artifactId}-${pom.currentVersion}/webapp/step1"/>
@@ -27,4 +31,18 @@
     	<copy file="${maven.build.dir}/${pom.artifactId}-${pom.currentVersion}.tar" todir="/srv/www/htdocs/ingrid/maven/ingrid/dist/${pom.currentVersion}"/>
     	<copy file="${basedir}/CHANGES-CSW-DSC.TXT" todir="/srv/www/htdocs/ingrid/maven/ingrid/dist/"/>
     </goal>
+    
+    <goal name="configure-metadata">
+        <tstamp unit="millisecond">
+    		<format property="releaseDate" pattern="yyyy-MM-dd" />
+	    </tstamp>
+    	<mkdir dir="${maven.build.dir}/src/de/ingrid/utils/metadata" />
+    	<ant:echo file="${maven.build.dir}/src/de/ingrid/utils/metadata/package-info.java" >
+@MetadataAnnotation(version ="${pom.currentVersion}", type = IPlugType.IPLUG_CSW_DSC, date = "${releaseDate}")
+package de.ingrid.utils.metadata;
+import de.ingrid.utils.metadata.MetadataAnnotation;
+		</ant:echo>
+    	<attainGoal name="java:compile" />
+    </goal>
+    
 </project>
