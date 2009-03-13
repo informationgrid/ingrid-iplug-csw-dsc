@@ -48,8 +48,11 @@ public class UpdateJob {
 				PlugDescription.class);
 		Map strategies = SimpleSpringBeanFactory.INSTANCE.getBean(ConfigurationKeys.CSW_UPDATE_STRATEGIES, Map.class);
 		String updateStrategy = plugDescription.getString("updateStrategy");
-		UpdateStrategy strategy = SimpleSpringBeanFactory.INSTANCE.getBean((String)strategies.get(updateStrategy), 
-				UpdateStrategy.class);
+		String beanId = (String)strategies.get(updateStrategy);
+		if (beanId == null)
+			throw new RuntimeException("Unknown value for 'updateStrategy' in PlugDescription: "+updateStrategy);
+		
+		UpdateStrategy strategy = SimpleSpringBeanFactory.INSTANCE.getBean(beanId, UpdateStrategy.class);
 
 		this.factory = factory;
 		this.cache = cache;
