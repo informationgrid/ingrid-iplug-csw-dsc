@@ -22,6 +22,12 @@ public interface CSWClient {
 	public void configure(CSWFactory factory);
 
 	/**
+	 * Get the CSWFactory
+	 * @return A CSWFactory instance
+	 */
+	public CSWFactory getFactory();
+	
+	/**
 	 * Do the OGC_Service.GetCapabilities request
 	 * @note The request url is the service url 
 	 * @return A CSWCapabilities instance

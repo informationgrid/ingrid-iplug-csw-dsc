@@ -312,6 +312,6 @@
 	</list>
 	<string>serviceUrl</string>
 	<string>http://gdi-de.sdisuite.de/soapServices/CSWStartup</string>
-	<string>incrementalUpdate</string>
-	<boolean>true</boolean>
+	<string>updateStrategy</string>
+	<string>incremental</string> <!-- default|incremental -->
 </de.ingrid.utils.PlugDescription>

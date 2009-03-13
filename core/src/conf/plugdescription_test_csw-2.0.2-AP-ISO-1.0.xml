@@ -36,4 +36,6 @@
 	<string>j</string>
 	<string>serviceUrl</string>
 	<string>http://www.portalu.de/csw</string>
+	<string>updateStrategy</string>
+	<string>incremental</string> <!-- default|incremental -->
 </de.ingrid.utils.PlugDescription>

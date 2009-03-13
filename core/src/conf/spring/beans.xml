@@ -92,12 +92,22 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
 		</property>
 	</bean>
 	
-	<bean id="cswIncrementalFilterAddition" class="java.lang.String">
+	<bean id="cswUpdateStrategies" class="org.springframework.beans.factory.config.MapFactoryBean">
+		<property name="sourceMap">
+			<map>
+				<entry key="default" value="cswDefaultUpdateStrategy"/>
+				<entry key="incremental" value="cswIncrementalUpdateStrategy"/>
+			</map>
+		</property>
+	</bean>
+
+	<bean id="cswDefaultUpdateStrategy" class="de.ingrid.iplug.csw.dsc.cache.impl.DefaultUpdateStrategy" />
+	<bean id="cswIncrementalUpdateStrategy" class="de.ingrid.iplug.csw.dsc.cache.impl.IncrementalUpdateStrategy">
 		<constructor-arg type="java.lang.String">
 			<value>
 				<![CDATA[<ogc:PropertyIsGreaterThanOrEqualTo>
 				<ogc:PropertyName>Modified</ogc:PropertyName>
-				<ogc:Literal>LAST_UPDATE_DATE</ogc:Literal>
+				<ogc:Literal>{LAST_UPDATE_DATE}</ogc:Literal>
 				</ogc:PropertyIsGreaterThanOrEqualTo>]]>
 			</value>
 		</constructor-arg>

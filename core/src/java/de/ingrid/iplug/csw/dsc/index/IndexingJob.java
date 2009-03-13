@@ -2,7 +2,6 @@ package de.ingrid.iplug.csw.dsc.index;
 
 import java.io.File;
 import java.util.List;
-import java.util.Set;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -46,19 +45,7 @@ public class IndexingJob implements StatefulJob {
 			tmpCache.removeAllRecords();
 
 			// run the update job
-			@SuppressWarnings({"unchecked"})
-			Set<String> filterSet = (Set<String>)SimpleSpringBeanFactory.INSTANCE.getBean(ConfigurationKeys.CSW_HARVEST_FILTER, Set.class);
-			boolean isIncrementalUpdate = plugDescription.getBoolean("incrementalUpdate");
-
-			// get the incremental filter addition if requested
-			String incrementalFilterAddition = null;
-			if (isIncrementalUpdate) {
-				incrementalFilterAddition = SimpleSpringBeanFactory.INSTANCE.getBean(
-						ConfigurationKeys.CSW_INCREMENTAL_FILTER_ADDITION, String.class);
-			}
-			
-			UpdateJob job = new UpdateJob();
-			job.configure(factory, tmpCache, filterSet, incrementalFilterAddition);
+			UpdateJob job = new UpdateJob(factory, tmpCache);
 			job.execute(10, 2000);
 			
 			// start indexing

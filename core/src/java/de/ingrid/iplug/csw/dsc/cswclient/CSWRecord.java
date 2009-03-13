@@ -17,7 +17,7 @@ public interface CSWRecord {
 	/**
 	 * Initialize the record.
 	 * param elementSetName
-	 * param node
+	 * param node The DOM Node describing the record
 	 */
 	public void initialize(ElementSetName elementSetName, Node node) throws Exception;
 	
@@ -34,7 +34,7 @@ public interface CSWRecord {
 	public ElementSetName getElementSetName();
 
 	/**
-	 * Get the original response document
+	 * Get the original DOM Node describing the record
 	 * @return Node
 	 */
 	public Node getOriginalResponse();	

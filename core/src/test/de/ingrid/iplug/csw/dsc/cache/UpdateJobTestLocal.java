@@ -4,8 +4,6 @@
 
 package de.ingrid.iplug.csw.dsc.cache;
 
-import java.util.Set;
-
 import junit.framework.TestCase;
 import de.ingrid.iplug.csw.dsc.ConfigurationKeys;
 import de.ingrid.iplug.csw.dsc.TestUtil;
@@ -16,7 +14,6 @@ import de.ingrid.iplug.csw.dsc.cswclient.CSWRecord;
 import de.ingrid.iplug.csw.dsc.cswclient.constants.ElementSetName;
 import de.ingrid.iplug.csw.dsc.cswclient.impl.GenericRecord;
 import de.ingrid.iplug.csw.dsc.tools.SimpleSpringBeanFactory;
-import de.ingrid.utils.PlugDescription;
 
 public class UpdateJobTestLocal extends TestCase {
 
@@ -57,10 +54,6 @@ public class UpdateJobTestLocal extends TestCase {
 		if (cache instanceof DefaultFileCache)
 			((DefaultFileCache)cache).setCachePath(cachePath);
 		
-		PlugDescription plugDescription = SimpleSpringBeanFactory.INSTANCE.getBean(ConfigurationKeys.PLUGDESCRIPTION, 
-				PlugDescription.class);
-		boolean isIncrementalUpdate = plugDescription.getBoolean("incrementalUpdate");
-		
 		// put old record into cache
 		String oldRecordId = "A-12345";
 		cache.putRecord(TestUtil.getRecord(oldRecordId, ElementSetName.BRIEF, new GenericRecord()));
@@ -70,19 +63,7 @@ public class UpdateJobTestLocal extends TestCase {
 		tmpCache.removeAllRecords();
 		
 		// run the update job
-		@SuppressWarnings({"unchecked"})
-		Set<String> filterSet = (Set<String>)SimpleSpringBeanFactory.INSTANCE.getBean(
-				ConfigurationKeys.CSW_HARVEST_FILTER, Set.class);
-		
-		// get the incremental filter addition if requested
-		String incrementalFilterAddition = null;
-		if (isIncrementalUpdate) {
-			incrementalFilterAddition = SimpleSpringBeanFactory.INSTANCE.getBean(
-					ConfigurationKeys.CSW_INCREMENTAL_FILTER_ADDITION, String.class);
-		}
-
-		UpdateJob job = new UpdateJob();
-		job.configure(factory, tmpCache, filterSet, incrementalFilterAddition);
+		UpdateJob job = new UpdateJob(factory, tmpCache);
 		job.execute(20, 2000);
 
 		// commit transaction

@@ -10,6 +10,7 @@ import java.util.UUID;
 
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
+import javax.xml.transform.OutputKeys;
 import javax.xml.transform.Result;
 import javax.xml.transform.Source;
 import javax.xml.transform.Transformer;
@@ -42,6 +43,8 @@ public class StringUtils {
 			Result result = new StreamResult(stringWriter);
 			TransformerFactory factory = TransformerFactory.newInstance();
 			Transformer transformer = factory.newTransformer();
+			// just set this to get literally equal results
+			transformer.setOutputProperty(OutputKeys.STANDALONE, "no");
 			transformer.transform(source, result);
 			return stringWriter.getBuffer().toString();
 		} catch (Exception e) {
@@ -54,7 +57,8 @@ public class StringUtils {
         DocumentBuilder builder = domFactory.newDocumentBuilder();
 	    InputSource inStream = new InputSource();
 	    inStream.setCharacterStream(new StringReader(string));
-	    return builder.parse(inStream);		
+	    Document doc = builder.parse(inStream);
+	    return doc;		
 	}
 	
     public static String generateUuid() { 

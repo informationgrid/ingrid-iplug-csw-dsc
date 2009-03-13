@@ -13,7 +13,7 @@ public class ConfigurationKeys {
 	public final static String CSW_QUERY_TEMPLATE 				= "cswQueryTemplate";
 	public final static String CSW_CACHE 						= "cswCache";
 	public final static String CSW_HARVEST_FILTER 				= "cswHarvestFilter";
-	public final static String CSW_INCREMENTAL_FILTER_ADDITION	= "cswIncrementalFilterAddition";
+	public final static String CSW_UPDATE_STRATEGIES			= "cswUpdateStrategies";
 	public final static String CSW_MAPPER		 				= "cswMapper";
 
 	public final static String PLUGDESCRIPTION					= "plugDescription";

@@ -7,6 +7,7 @@ package de.ingrid.iplug.csw.dsc.cswclient.impl;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.w3c.dom.Document;
+import org.w3c.dom.Node;
 
 import de.ingrid.iplug.csw.dsc.cswclient.CSWCapabilities;
 import de.ingrid.iplug.csw.dsc.cswclient.CSWClient;
@@ -19,6 +20,7 @@ import de.ingrid.iplug.csw.dsc.cswclient.CSWSearchResult;
 import de.ingrid.iplug.csw.dsc.cswclient.constants.ElementSetName;
 import de.ingrid.iplug.csw.dsc.cswclient.constants.Operation;
 import de.ingrid.iplug.csw.dsc.cswclient.constants.ResultType;
+import de.ingrid.iplug.csw.dsc.tools.XPathUtils;
 
 public class GenericClient implements CSWClient {
 
@@ -30,6 +32,11 @@ public class GenericClient implements CSWClient {
 	@Override
 	public void configure(CSWFactory factory) {
 		this.factory = factory;
+	}
+
+	@Override
+	public CSWFactory getFactory() {
+		return factory;
 	}
 
 	@Override
@@ -82,10 +89,10 @@ public class GenericClient implements CSWClient {
 			String opUrl = cap.getOperationUrl(Operation.GET_RECORDS);
 			if (opUrl == null)
 				opUrl = factory.getServiceUrl();
-			Document recordDoc = factory.createRequest(Operation.GET_RECORDS).doGetRecords(opUrl, query);
+			Document responseDoc = factory.createRequest(Operation.GET_RECORDS).doGetRecords(opUrl, query);
 
 			CSWSearchResult result = factory.createSearchResult();
-			result.initialize(factory, query, recordDoc);
+			result.initialize(factory, query, responseDoc);
 			return result;
 		}
 		else
@@ -99,10 +106,13 @@ public class GenericClient implements CSWClient {
 			String opUrl = cap.getOperationUrl(Operation.GET_RECORD_BY_ID);
 			if (opUrl == null)
 				opUrl = factory.getServiceUrl();
-			Document recordDoc = factory.createRequest(Operation.GET_RECORD_BY_ID).doGetRecordById(opUrl, query);
+			Document responseDoc = factory.createRequest(Operation.GET_RECORD_BY_ID).doGetRecordById(opUrl, query);
+			
+			// extract the record from the response
+			Node recordNode = XPathUtils.getNode(responseDoc, "GetRecordByIdResponse/child::*");
 			
 			CSWRecord record = factory.createRecord();
-			record.initialize(query.getElementSetName(), recordDoc);
+			record.initialize(query.getElementSetName(), recordNode);
 			return record;
 		}
 		else

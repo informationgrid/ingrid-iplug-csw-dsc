@@ -39,7 +39,7 @@ public class GenericRecord implements CSWRecord {
 			return this.id;
 		}
 		else
-			throw new RuntimeException("CSWRecord is not initialized properly. Make sure to call CSWRecord.configure.");
+			throw new RuntimeException("CSWRecord is not initialized properly. Make sure to call CSWRecord.initialize.");
 	}
 
 	@Override
@@ -48,7 +48,7 @@ public class GenericRecord implements CSWRecord {
 			return this.elementSetName;
 		}
 		else
-			throw new RuntimeException("CSWRecord is not initialized properly. Make sure to call CSWRecord.configure.");
+			throw new RuntimeException("CSWRecord is not initialized properly. Make sure to call CSWRecord.initialize.");
 	}
 
 	@Override
@@ -57,6 +57,6 @@ public class GenericRecord implements CSWRecord {
 			return this.node;
 		}
 		else
-			throw new RuntimeException("CSWRecord is not initialized properly. Make sure to call CSWRecord.configure.");
+			throw new RuntimeException("CSWRecord is not initialized properly. Make sure to call CSWRecord.initialize.");
 	}
 }
