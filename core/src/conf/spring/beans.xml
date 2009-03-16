@@ -4,6 +4,10 @@
 	xsi:schemaLocation="
 http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-2.5.xsd">
 
+	<import resource="metadata-injectors.xml" />
+	<import resource="pre-post-processors.xml" />
+
+
 	<bean id="cswFactory" class="de.ingrid.iplug.csw.dsc.cswclient.CSWFactory">
   		<property name="plugDescription" ref="plugDescription" />
 		<property name="clientImpl"
@@ -41,16 +45,16 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
 		<property name="elementSetName" value="BRIEF" />
 		<property name="typeNames">
 			<list>
-				<value type="de.ingrid.iplug.csw.dsc.cswclient.constants.TypeName">RECORD</value>
+				<value type="de.ingrid.iplug.csw.dsc.cswclient.constants.TypeName">MD_METADATA</value>
 			</list>
 		</property>
 		<property name="resultType" value="RESULTS" />
 		<property name="constraintLanguage" value="FILTER" />
-		<property name="constraintLanguageVersion" value="1.0.0" />
+		<property name="constraintLanguageVersion" value="1.1.0" />
 	</bean>
 
 	<bean id="cswCache" class="de.ingrid.iplug.csw.dsc.cache.impl.DefaultFileCache">
-		<property name="cachePath" value="./test_case_updatejob" />
+		<property name="cachePath" value="./csw_cache" />
 	</bean>
 
 	<bean id="cswHarvestFilter" class="org.springframework.beans.factory.config.SetFactoryBean">
@@ -59,32 +63,128 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
 				<value>
 					<![CDATA[<ogc:Filter xmlns:ogc="http://www.opengis.net/ogc">
 					<ogc:PropertyIsLike escapeChar="\\" singleChar="?" wildCard="*">
-					<ogc:PropertyName>title</ogc:PropertyName>
-					<ogc:Literal>A*</ogc:Literal>
+					<ogc:PropertyName>Identifier</ogc:PropertyName>
+					<ogc:Literal>0*</ogc:Literal>
 					</ogc:PropertyIsLike>
 					</ogc:Filter>]]>
 				</value>
 				<value>
 					<![CDATA[<ogc:Filter xmlns:ogc="http://www.opengis.net/ogc">
 					<ogc:PropertyIsLike escapeChar="\\" singleChar="?" wildCard="*">
-					<ogc:PropertyName>title</ogc:PropertyName>
-					<ogc:Literal>B*</ogc:Literal>
+					<ogc:PropertyName>Identifier</ogc:PropertyName>
+					<ogc:Literal>1*</ogc:Literal>
 					</ogc:PropertyIsLike>
 					</ogc:Filter>]]>
 				</value>
 				<value>
 					<![CDATA[<ogc:Filter xmlns:ogc="http://www.opengis.net/ogc">
 					<ogc:PropertyIsLike escapeChar="\\" singleChar="?" wildCard="*">
-					<ogc:PropertyName>title</ogc:PropertyName>
-					<ogc:Literal>C*</ogc:Literal>
+					<ogc:PropertyName>Identifier</ogc:PropertyName>
+					<ogc:Literal>2*</ogc:Literal>
 					</ogc:PropertyIsLike>
 					</ogc:Filter>]]>
 				</value>
 				<value>
 					<![CDATA[<ogc:Filter xmlns:ogc="http://www.opengis.net/ogc">
 					<ogc:PropertyIsLike escapeChar="\\" singleChar="?" wildCard="*">
-					<ogc:PropertyName>title</ogc:PropertyName>
-					<ogc:Literal>D*</ogc:Literal>
+					<ogc:PropertyName>Identifier</ogc:PropertyName>
+					<ogc:Literal>3*</ogc:Literal>
+					</ogc:PropertyIsLike>
+					</ogc:Filter>]]>
+				</value>
+				<value>
+					<![CDATA[<ogc:Filter xmlns:ogc="http://www.opengis.net/ogc">
+					<ogc:PropertyIsLike escapeChar="\\" singleChar="?" wildCard="*">
+					<ogc:PropertyName>Identifier</ogc:PropertyName>
+					<ogc:Literal>4*</ogc:Literal>
+					</ogc:PropertyIsLike>
+					</ogc:Filter>]]>
+				</value>
+				<value>
+					<![CDATA[<ogc:Filter xmlns:ogc="http://www.opengis.net/ogc">
+					<ogc:PropertyIsLike escapeChar="\\" singleChar="?" wildCard="*">
+					<ogc:PropertyName>Identifier</ogc:PropertyName>
+					<ogc:Literal>5*</ogc:Literal>
+					</ogc:PropertyIsLike>
+					</ogc:Filter>]]>
+				</value>
+				<value>
+					<![CDATA[<ogc:Filter xmlns:ogc="http://www.opengis.net/ogc">
+					<ogc:PropertyIsLike escapeChar="\\" singleChar="?" wildCard="*">
+					<ogc:PropertyName>Identifier</ogc:PropertyName>
+					<ogc:Literal>6*</ogc:Literal>
+					</ogc:PropertyIsLike>
+					</ogc:Filter>]]>
+				</value>
+				<value>
+					<![CDATA[<ogc:Filter xmlns:ogc="http://www.opengis.net/ogc">
+					<ogc:PropertyIsLike escapeChar="\\" singleChar="?" wildCard="*">
+					<ogc:PropertyName>Identifier</ogc:PropertyName>
+					<ogc:Literal>7*</ogc:Literal>
+					</ogc:PropertyIsLike>
+					</ogc:Filter>]]>
+				</value>
+				<value>
+					<![CDATA[<ogc:Filter xmlns:ogc="http://www.opengis.net/ogc">
+					<ogc:PropertyIsLike escapeChar="\\" singleChar="?" wildCard="*">
+					<ogc:PropertyName>Identifier</ogc:PropertyName>
+					<ogc:Literal>8*</ogc:Literal>
+					</ogc:PropertyIsLike>
+					</ogc:Filter>]]>
+				</value>
+				<value>
+					<![CDATA[<ogc:Filter xmlns:ogc="http://www.opengis.net/ogc">
+					<ogc:PropertyIsLike escapeChar="\\" singleChar="?" wildCard="*">
+					<ogc:PropertyName>Identifier</ogc:PropertyName>
+					<ogc:Literal>9*</ogc:Literal>
+					</ogc:PropertyIsLike>
+					</ogc:Filter>]]>
+				</value>
+				<value>
+					<![CDATA[<ogc:Filter xmlns:ogc="http://www.opengis.net/ogc">
+					<ogc:PropertyIsLike escapeChar="\\" singleChar="?" wildCard="*">
+					<ogc:PropertyName>Identifier</ogc:PropertyName>
+					<ogc:Literal>a*</ogc:Literal>
+					</ogc:PropertyIsLike>
+					</ogc:Filter>]]>
+				</value>
+				<value>
+					<![CDATA[<ogc:Filter xmlns:ogc="http://www.opengis.net/ogc">
+					<ogc:PropertyIsLike escapeChar="\\" singleChar="?" wildCard="*">
+					<ogc:PropertyName>Identifier</ogc:PropertyName>
+					<ogc:Literal>b*</ogc:Literal>
+					</ogc:PropertyIsLike>
+					</ogc:Filter>]]>
+				</value>
+				<value>
+					<![CDATA[<ogc:Filter xmlns:ogc="http://www.opengis.net/ogc">
+					<ogc:PropertyIsLike escapeChar="\\" singleChar="?" wildCard="*">
+					<ogc:PropertyName>Identifier</ogc:PropertyName>
+					<ogc:Literal>c*</ogc:Literal>
+					</ogc:PropertyIsLike>
+					</ogc:Filter>]]>
+				</value>
+				<value>
+					<![CDATA[<ogc:Filter xmlns:ogc="http://www.opengis.net/ogc">
+					<ogc:PropertyIsLike escapeChar="\\" singleChar="?" wildCard="*">
+					<ogc:PropertyName>Identifier</ogc:PropertyName>
+					<ogc:Literal>d*</ogc:Literal>
+					</ogc:PropertyIsLike>
+					</ogc:Filter>]]>
+				</value>
+				<value>
+					<![CDATA[<ogc:Filter xmlns:ogc="http://www.opengis.net/ogc">
+					<ogc:PropertyIsLike escapeChar="\\" singleChar="?" wildCard="*">
+					<ogc:PropertyName>Identifier</ogc:PropertyName>
+					<ogc:Literal>e*</ogc:Literal>
+					</ogc:PropertyIsLike>
+					</ogc:Filter>]]>
+				</value>
+				<value>
+					<![CDATA[<ogc:Filter xmlns:ogc="http://www.opengis.net/ogc">
+					<ogc:PropertyIsLike escapeChar="\\" singleChar="?" wildCard="*">
+					<ogc:PropertyName>Identifier</ogc:PropertyName>
+					<ogc:Literal>f*</ogc:Literal>
 					</ogc:PropertyIsLike>
 					</ogc:Filter>]]>
 				</value>
