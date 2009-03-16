@@ -1,5 +1,5 @@
 <de.ingrid.utils.PlugDescription>
-	<int>25</int>
+	<int>26</int>
 	<string>personPhone</string>
 	<string>0345 5 222 702</string>
 	<string>personName</string>
@@ -314,4 +314,6 @@
 	<string>http://harrison.its-technidata.de/csw</string>
 	<string>updateStrategy</string>
 	<string>incremental</string> <!-- default|incremental -->
+	<string>directData</string>
+	<boolean>true</boolean>
 </de.ingrid.utils.PlugDescription>

@@ -89,6 +89,6 @@ public class UpdateJob {
 		Date end = new Date();
 		long diff = end.getTime()-start.getTime();
 		log.info("Fetched "+allRecordIds.size()+" records of "+allRecordIds.size()+". Duplicates: "+duplicates);
-		log.info("Job executed in "+diff+" milliseconds.");
+		log.info("Job executed within "+diff+" ms.");
 	}
 }

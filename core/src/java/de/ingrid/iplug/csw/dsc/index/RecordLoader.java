@@ -36,9 +36,34 @@ public class RecordLoader {
 	 */
 	public Record getDetails(Document document, DocumentMapper mapper, Cache cache) throws RuntimeException {
 
+		// fetch the record from the cache
+		ElementSetName elementSetName = ElementSetName.FULL;
+		CSWRecord cswRecord = this.getRecord(document, elementSetName, cache);
+		
+		// do the mapping from CSWRecord to Record
+		Record ingridRecord = null;
+		try {
+			ingridRecord = mapper.mapCswToIngrid(cswRecord);
+		} catch (Exception e) {
+			throw new RuntimeException("Could not map record "+cswRecord.getId()+" ["+elementSetName+"]", e);
+		}
+		
+		return ingridRecord;
+	}
+
+	/**
+	 * Get the CSWRecord for a licene Document
+	 * @param document
+	 * @param elementSetName
+	 * @param cache
+	 * @return CSWRecord
+	 * @throws RuntimeException
+	 */
+	public CSWRecord getRecord(Document document, ElementSetName elementSetName, 
+			Cache cache) throws RuntimeException {
+
 		// get the id of the CSW record from the document
 		String recordId = document.get("t01_object.obj_id");
-		ElementSetName elementSetName = ElementSetName.FULL;
 		
 		// fetch the record from the cache
 		CSWRecord cswRecord;
@@ -48,15 +73,7 @@ public class RecordLoader {
 			throw new RuntimeException("Could not fetch cached record "+recordId+" ["+elementSetName+"]", e);
 		}
 		
-		// do the mapping from CSWRecord to Record
-		Record ingridRecord = null;
-		try {
-			ingridRecord = mapper.mapCswToIngrid(cswRecord);
-		} catch (Exception e) {
-			throw new RuntimeException("Could not map record "+recordId+" ["+elementSetName+"]", e);
-		}
-		
-		return ingridRecord;
+		return cswRecord;
 	}
 
 	public void close() throws Exception {
