@@ -12,7 +12,7 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.w3c.dom.Document;
 
-import de.ingrid.iplug.csw.dsc.cache.Cache;
+import de.ingrid.iplug.csw.dsc.cache.ExecutionContext;
 import de.ingrid.iplug.csw.dsc.cswclient.CSWClient;
 import de.ingrid.iplug.csw.dsc.cswclient.CSWFactory;
 import de.ingrid.iplug.csw.dsc.cswclient.constants.ElementSetName;
@@ -25,17 +25,19 @@ public class DefaultUpdateStrategy extends AbstractUpdateStrategy {
 
 	final protected static Log log = LogFactory.getLog(DefaultUpdateStrategy.class);
 	
-	protected Cache cache = null;
+	protected ExecutionContext context = null;
 
 	@Override
-	public List<String> execute(CSWFactory factory, Cache cache, Set<String> filterStrSet,
-			int recordsPerCall, int requestPause) throws Exception {
+	public List<String> execute(ExecutionContext context) throws Exception {
 
-		this.cache = cache;
+		this.context = context;
+		CSWFactory factory = context.getFactory();
+		int recordsPerCall = context.getRecordsPerCall();
+		int requestPause = context.getRequestPause();
 		
 		// prepare the filter set
 		Set<Document> filterSet = new HashSet<Document>();
-		for (String filterStr : filterStrSet) {
+		for (String filterStr : context.getFilterStrSet()) {
 			Document filterDoc = createFilterDocument(filterStr);
 			filterSet.add(filterDoc);
 		}
@@ -67,8 +69,8 @@ public class DefaultUpdateStrategy extends AbstractUpdateStrategy {
 	}
 
 	@Override
-	public Cache getCache() {
-		return this.cache;
+	public ExecutionContext getExecutionContext() {
+		return this.context;
 	}
 
 	@Override

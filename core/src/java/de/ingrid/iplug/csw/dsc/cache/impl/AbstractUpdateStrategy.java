@@ -21,6 +21,7 @@ import org.w3c.dom.Document;
 import org.xml.sax.InputSource;
 
 import de.ingrid.iplug.csw.dsc.cache.Cache;
+import de.ingrid.iplug.csw.dsc.cache.ExecutionContext;
 import de.ingrid.iplug.csw.dsc.cache.UpdateStrategy;
 import de.ingrid.iplug.csw.dsc.cswclient.CSWClient;
 import de.ingrid.iplug.csw.dsc.cswclient.CSWFactory;
@@ -44,7 +45,7 @@ public abstract class AbstractUpdateStrategy implements UpdateStrategy {
 	 */
 	protected Document createFilterDocument(String filterStr) throws Exception {
 
-		Cache cache = this.getCache();
+		ExecutionContext context = this.getExecutionContext();
 
 		if (this.docBuilder == null) {
 			DocumentBuilderFactory docBuilderFactory = DocumentBuilderFactory.newInstance();
@@ -55,7 +56,7 @@ public abstract class AbstractUpdateStrategy implements UpdateStrategy {
 		Pattern lastUpdateDatePattern = Pattern.compile("\\{LAST_UPDATE_DATE\\}", Pattern.MULTILINE);
 		Matcher matcher = lastUpdateDatePattern.matcher(filterStr);
 		if (matcher.find()) {
-			Date lastUpdateDate = cache.getLastCommitDate();
+			Date lastUpdateDate = context.getLastExecutionDate();
 			SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd");
 			filterStr = matcher.replaceAll(df.format(lastUpdateDate));
 		}
@@ -150,7 +151,7 @@ public abstract class AbstractUpdateStrategy implements UpdateStrategy {
 			int requestPause) throws Exception {
 
 		CSWFactory factory = client.getFactory();
-		Cache cache = this.getCache();
+		Cache cache = this.getExecutionContext().getCache();
 		Log log = this.getLog();
 
 		CSWQuery query = factory.createQuery();
@@ -175,7 +176,7 @@ public abstract class AbstractUpdateStrategy implements UpdateStrategy {
 	 */
 	private List<String> processResult(CSWSearchResult result, boolean doCache) throws Exception {
 
-		Cache cache = this.getCache();
+		Cache cache = this.getExecutionContext().getCache();
 		Log log = this.getLog();
 		
 		List<String> fetchedRecordIds = new ArrayList<String>();

@@ -15,6 +15,7 @@ import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 
 import de.ingrid.iplug.csw.dsc.cache.Cache;
+import de.ingrid.iplug.csw.dsc.cache.ExecutionContext;
 import de.ingrid.iplug.csw.dsc.cswclient.CSWClient;
 import de.ingrid.iplug.csw.dsc.cswclient.CSWFactory;
 import de.ingrid.iplug.csw.dsc.cswclient.CSWQuery;
@@ -30,7 +31,7 @@ public class IncrementalUpdateStrategy extends AbstractUpdateStrategy {
 
 	final protected static Log log = LogFactory.getLog(IncrementalUpdateStrategy.class);
 	
-	protected Cache cache = null;
+	protected ExecutionContext context = null;
 	private String incrementalFilterAddition;
 
 	/**
@@ -42,10 +43,12 @@ public class IncrementalUpdateStrategy extends AbstractUpdateStrategy {
 	}
 
 	@Override
-	public List<String> execute(CSWFactory factory, Cache cache, Set<String> filterStrSet,
-			int recordsPerCall, int requestPause) throws Exception {
+	public List<String> execute(ExecutionContext context) throws Exception {
 
-		this.cache = cache;
+		this.context = context;
+		CSWFactory factory = context.getFactory();
+		int recordsPerCall = context.getRecordsPerCall();
+		int requestPause = context.getRequestPause();
 		
 		// create the incremental filter addition document
 		Set<Document> filterSetModifiedOnly = new HashSet<Document>();
@@ -56,7 +59,7 @@ public class IncrementalUpdateStrategy extends AbstractUpdateStrategy {
 
 		// prepare the filter set
 		Set<Document> filterSet = new HashSet<Document>();
-		for (String filterStr : filterStrSet) {
+		for (String filterStr : context.getFilterStrSet()) {
 
 			Document filterDoc = createFilterDocument(filterStr);
 			filterSet.add(filterDoc);
@@ -106,8 +109,8 @@ public class IncrementalUpdateStrategy extends AbstractUpdateStrategy {
 	}
 	
 	@Override
-	public Cache getCache() {
-		return this.cache;
+	public ExecutionContext getExecutionContext() {
+		return this.context;
 	}
 
 	@Override
@@ -127,10 +130,11 @@ public class IncrementalUpdateStrategy extends AbstractUpdateStrategy {
 			String recordId) throws Exception {
 
 		CSWRecord record = null;
+		Cache cache = this.context.getCache();
 		
 		// check if the record exists in the initial cache already
 		// if yes, take it from there
-		Cache initialCache = this.cache.getInitialCache();
+		Cache initialCache = cache.getInitialCache();
 		if (initialCache.isCached(recordId, elementSetName)) {
 			record = initialCache.getRecord(recordId, elementSetName);
 			if (log.isInfoEnabled())
@@ -149,7 +153,7 @@ public class IncrementalUpdateStrategy extends AbstractUpdateStrategy {
 		
 		// store the record in the cache
 		if (record != null)
-			this.cache.putRecord(record);
+			cache.putRecord(record);
 	}
 		
 	/**

@@ -4,6 +4,9 @@
 
 package de.ingrid.iplug.csw.dsc.cache;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
+
 import junit.framework.TestCase;
 import de.ingrid.iplug.csw.dsc.ConfigurationKeys;
 import de.ingrid.iplug.csw.dsc.TestUtil;
@@ -63,12 +66,19 @@ public class UpdateJobTestLocal extends TestCase {
 		tmpCache.removeAllRecords();
 		
 		// run the update job
+		Date startDate = new Date();
 		UpdateJob job = new UpdateJob(factory, tmpCache);
 		job.execute(20, 2000);
+		Date lastExecutionDate = job.getLastExecutionDate();
 
 		// commit transaction
 		tmpCache.commitTransaction();
 		
+		// check for a cached record
+		SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+		long diff = lastExecutionDate.getTime()-df.parse(df.format(startDate)).getTime();
+		assertTrue("last execution date is equal to start date", diff == 0);
+
 		// check for a cached record
 		CSWRecord recordBrief = cache.getRecord(id, ElementSetName.BRIEF);
 		assertTrue("record "+id+" was cached", recordBrief.getId().equals(id));
@@ -84,6 +94,7 @@ public class UpdateJobTestLocal extends TestCase {
 					cache.isCached(cachedId, ElementSetName.SUMMARY) &&
 					cache.isCached(cachedId, ElementSetName.FULL));
 		}
+		
 		
 		// check if old record is removed
 		assertTrue("record "+oldRecordId+" is removed", !cache.isCached(oldRecordId, ElementSetName.BRIEF));
