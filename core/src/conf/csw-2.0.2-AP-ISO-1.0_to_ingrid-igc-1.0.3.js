@@ -130,7 +130,7 @@ var mappingDescription =
 					"xpath":"//identificationInfo//EX_Extent/verticalElement/EX_VerticalExtent/verticalCRS/VerticalCRS/verticalDatum/VerticalDatum/identifier",
 					"transform":{
 						"funct":transformToIgcDomainId,
-						"params":[101]
+						"params":[101, true]
 					}
 				},
 				{
@@ -139,7 +139,7 @@ var mappingDescription =
 				},
 				{
 					"field":"mod_time",
-					"xpath":"//dateStamp/DateTime",
+					"xpath":"//dateStamp/DateTime | //dateStamp/Date[not(../DateTime)]",
 					"transform":{
 						"funct":UtilsCSWDate.mapDateFromIso8601ToIndex
 					}
@@ -153,8 +153,12 @@ var mappingDescription =
 					"execute":{
 						"funct":mapGeographicElements // map also to spatial_ref_value
 					}
+		    	},
+				{
+					"execute":{
+						"funct":mapAddressInformation
+					}
 		    	}
-				
 			],
 			"subrecords":[
 				{
@@ -647,6 +651,97 @@ function mapToRecord(mapping, document, refNode) {
 	return document;
 }
 
+function mapAddressInformation(document, refNode) {
+	var ciResponsibleParties = XPathUtils.getNodeList(refNode, "//*/CI_ResponsibleParty");
+	log.debug("Found " + ciResponsibleParties.getLength() + " CI_ResponsibleParty records.");
+	if (hasValue(ciResponsibleParties)) {
+		var lineCounter = 1;
+		for (var i=0; i<ciResponsibleParties.getLength(); i++ ) {
+			var role = XPathUtils.getString(ciResponsibleParties.item(i), "role/CI_RoleCode/@codeListValue");
+			log.debug("rp role " + role);
+			if (hasValue(role)) {
+				var t012ObjAddrRecord = new Record();
+				t012ObjAddrRecord.addColumn(createColumn("t012_obj_adr", "line", "t012_obj_adr.line"), (lineCounter))
+				t012ObjAddrRecord.addColumn(createColumn("t012_obj_adr", "adr_uuid", "t012_obj_adr.adr_id"), "undefined")
+				var roleId = transformToIgcDomainId(role, 505);
+				if (roleId != -1) {
+					t012ObjAddrRecord.addColumn(createColumn("t012_obj_adr", "type", "t012_obj_adr.typ"), (roleId))
+					t012ObjAddrRecord.addColumn(createColumn("t012_obj_adr", "special_ref", "t012_obj_adr.special_ref"), 0)
+					t012ObjAddrRecord.addColumn(createColumn("t012_obj_adr", "special_name", "t012_obj_adr.special_name"), role)
+				} else {
+					t012ObjAddrRecord.addColumn(createColumn("t012_obj_adr", "type", "t012_obj_adr.typ"), -1)
+					t012ObjAddrRecord.addColumn(createColumn("t012_obj_adr", "special_ref", "t012_obj_adr.special_ref"), 0)
+					t012ObjAddrRecord.addColumn(createColumn("t012_obj_adr", "special_name", "t012_obj_adr.special_name"), role)
+				}
+				var addressNodeRecord = new Record();
+				addressNodeRecord.addColumn(createColumn("address_node", "fk_addr_uuid", "parent.address_node.addr_uuid"), "undefined")
+				var t02AddressRecord = new Record();
+				t02AddressRecord.addColumn(createColumn("t02_address", "adr_uuid", "t02_address.adr_id"), "undefined")
+				t02AddressRecord.addColumn(createColumn("t02_address", "adr_type", "t02_address.typ"), 3); // freie Adresse
+				t02AddressRecord.addColumn(createColumn("t02_address", "institution", "t02_address.institution"), XPathUtils.getString(ciResponsibleParties.item(i), "organisationName/CharacterString"));
+				t02AddressRecord.addColumn(createColumn("t02_address", "lastname", "t02_address.lastname"), XPathUtils.getString(ciResponsibleParties.item(i), "individualName/CharacterString"));
+				t02AddressRecord.addColumn(createColumn("t02_address", "street", "t02_address.street"), XPathUtils.getString(ciResponsibleParties.item(i), "contactInfo/CI_Contact/address/CI_Address/deliveryPoint/CharacterString"));
+				t02AddressRecord.addColumn(createColumn("t02_address", "postcode", "t02_address.postcode"), XPathUtils.getString(ciResponsibleParties.item(i), "contactInfo/CI_Contact/address/CI_Address/postalCode/CharacterString"));
+				t02AddressRecord.addColumn(createColumn("t02_address", "city", "t02_address.city"), XPathUtils.getString(ciResponsibleParties.item(i), "contactInfo/CI_Contact/address/CI_Address/city/CharacterString"));
+				t02AddressRecord.addColumn(createColumn("t02_address", "country_code", "t02_address.country_code"), XPathUtils.getString(ciResponsibleParties.item(i), "contactInfo/CI_Contact/address/CI_Address/country/CharacterString"));
+				t02AddressRecord.addColumn(createColumn("t02_address", "job", "t02_address.job"), XPathUtils.getString(ciResponsibleParties.item(i), "positionName/CharacterString"));
+				t02AddressRecord.addColumn(createColumn("t02_address", "descr", "t02_address.descr"), XPathUtils.getString(ciResponsibleParties.item(i), "contactInfo/CI_Contact/contactInstructions/CharacterString"));
+				
+				var communicationLine = 1;
+				// phone
+				var commValue = XPathUtils.getString(ciResponsibleParties.item(i), "contactInfo/CI_Contact/phone/CI_Telephone/voice/CharacterString")
+				if (hasValue(commValue)) {
+					var t012CommunicationRecord = new Record();
+					t012CommunicationRecord.addColumn(createColumn("t021_communication", "line", "t021_communication.line"), (communicationLine))
+					t012CommunicationRecord.addColumn(createColumn("t021_communication", "commtype_key", "t021_communication.commtype_key"), 1)
+					t012CommunicationRecord.addColumn(createColumn("t021_communication", "commtype_value", "t021_communication.comm_type"), "Telefon")
+					t012CommunicationRecord.addColumn(createColumn("t021_communication", "comm_value", "t021_communication.comm_value"), commValue)
+					t02AddressRecord.addSubRecord(t012CommunicationRecord)
+					communicationLine++;
+				}
+				// fax
+				commValue = XPathUtils.getString(ciResponsibleParties.item(i), "contactInfo/CI_Contact/phone/CI_Telephone/facsimile/CharacterString")
+				if (hasValue(commValue)) {
+					var t012CommunicationRecord = new Record();
+					t012CommunicationRecord.addColumn(createColumn("t021_communication", "line", "t021_communication.line"), (communicationLine))
+					t012CommunicationRecord.addColumn(createColumn("t021_communication", "commtype_key", "t021_communication.commtype_key"), 2)
+					t012CommunicationRecord.addColumn(createColumn("t021_communication", "commtype_value", "t021_communication.comm_type"), "Fax")
+					t012CommunicationRecord.addColumn(createColumn("t021_communication", "comm_value", "t021_communication.comm_value"), commValue)
+					t02AddressRecord.addSubRecord(t012CommunicationRecord)
+					communicationLine++;
+				}
+				// email
+				commValue = XPathUtils.getString(ciResponsibleParties.item(i), "contactInfo/CI_Contact/address/CI_Address/electronicMailAddress/CharacterString")
+				if (hasValue(commValue)) {
+					var t012CommunicationRecord = new Record();
+					t012CommunicationRecord.addColumn(createColumn("t021_communication", "line", "t021_communication.line"), (communicationLine))
+					t012CommunicationRecord.addColumn(createColumn("t021_communication", "commtype_key", "t021_communication.commtype_key"), 3)
+					t012CommunicationRecord.addColumn(createColumn("t021_communication", "commtype_value", "t021_communication.comm_type"), "Email")
+					t012CommunicationRecord.addColumn(createColumn("t021_communication", "comm_value", "t021_communication.comm_value"), commValue)
+					t02AddressRecord.addSubRecord(t012CommunicationRecord)
+					communicationLine++;
+				}
+				// URL
+				commValue = XPathUtils.getString(ciResponsibleParties.item(i), "contactInfo/CI_Contact/onlineResource/CI_OnlineResource/linkage/URL")
+				if (hasValue(commValue)) {
+					var t012CommunicationRecord = new Record();
+					t012CommunicationRecord.addColumn(createColumn("t021_communication", "line", "t021_communication.line"), (communicationLine))
+					t012CommunicationRecord.addColumn(createColumn("t021_communication", "commtype_key", "t021_communication.commtype_key"), 4)
+					t012CommunicationRecord.addColumn(createColumn("t021_communication", "commtype_value", "t021_communication.comm_type"), "URL")
+					t012CommunicationRecord.addColumn(createColumn("t021_communication", "comm_value", "t021_communication.comm_value"), commValue)
+					t02AddressRecord.addSubRecord(t012CommunicationRecord)
+					communicationLine++;
+				}
+				
+				addressNodeRecord.addSubRecord(t02AddressRecord)
+				t012ObjAddrRecord.addSubRecord(addressNodeRecord);
+				document.addSubRecord(t012ObjAddrRecord);
+			}
+		}
+	}
+}
+
+
 function mapGeographicElements(document, refNode) {
 	var geographicElements = XPathUtils.getNodeList(refNode, "//identificationInfo//extent/EX_Extent/geographicElement");
 	if (hasValue(geographicElements)) {
@@ -899,12 +994,14 @@ function transformGeneric(val, mappings, caseSensitive) {
 }
 
 
-function transformToIgcDomainId(val, codeListId) {
+function transformToIgcDomainId(val, codeListId, doReturnValueIfNotFound) {
 	if (hasValue(val)) {
 		// transform to IGC domain id, use english code
 		var idcCode = UtilsUDKCodeLists.getCodeListDomainId(codeListId, val, 94);
 		if (hasValue(idcCode)) {
 			return idcCode;
+		} else if (doReturnValueIfNotFound) {
+			return val;
 		} else {
 			log.info("Domain code '" + val + "' unknown in code list " + codeListId + ".");
 			return -1;

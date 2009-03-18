@@ -58,7 +58,7 @@ public class UtilsCSWDate {
 		if (dateIso8601 != null && dateIso8601.length() > 0) {
 			String srcPattern = UtilsCSWDate.getDatePattern(dateIso8601);
 			if (srcPattern != null && srcPattern.length() > 0) {
-				result = UtilsDate.convertDateString(dateIso8601, srcPattern, "yyyyMMddHHmmss");
+				result = UtilsDate.convertDateString(dateIso8601, srcPattern, "yyyyMMddHHmmssSSS");
 			} else {
 				if (log.isDebugEnabled()) {
 					log.debug("Error converting date '" + dateIso8601 + "'. Does it conform to the ISO 8601 format?");

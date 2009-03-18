@@ -22,6 +22,7 @@ import org.apache.lucene.document.Document;
 
 import de.ingrid.iplug.csw.dsc.cswclient.CSWRecord;
 import de.ingrid.iplug.csw.dsc.mapping.DocumentMapper;
+import de.ingrid.iplug.csw.dsc.tools.StringUtils;
 import de.ingrid.utils.dsc.Record;
 
 /**
@@ -119,6 +120,10 @@ public class ScriptMapper implements DocumentMapper, Serializable {
         Map<String, Object> parameters = new Hashtable<String, Object>();
         parameters.put("cswRecord", record);
         parameters.put("document", document);
+        
+        if (log.isDebugEnabled()) {
+        	log.debug("Map document: " + StringUtils.nodeToString(record.getOriginalResponse()));
+        }
         
         this.doMap(this.cswToIngridMapping, parameters);
 		return document;
