@@ -50,7 +50,7 @@ public class GenericQuery implements Serializable, CSWQuery {
     	// set defaults according to
     	// OpenGIS Catalogue Services Specification 2.0.2 - ISO Metadata Application Profile 8.2.2.1.1
     	this.schema = Namespace.CSW_2_0_2;
-    	this.outputSchema = Namespace.CSW_2_0_2;
+    	this.outputSchema = Namespace.GMD;
     	this.outputFormat = OutputFormat.APPLICATION_XML;
     	this.version = CSWConstants.VERSION_2_0_2;
     	this.elementSetName = ElementSetName.SUMMARY;

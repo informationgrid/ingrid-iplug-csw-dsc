@@ -178,7 +178,10 @@ public class SoapRequest implements CSWRequest {
 		
 		QName outputSchemaQN = query.getOutputSchema().getQName();
 		method.declareNamespace(outputSchemaQN.getNamespaceURI(), outputSchemaQN.getPrefix());
-		method.addAttribute("outputSchema", outputSchemaQN.getPrefix()+":"+outputSchemaQN.getLocalPart(), null);
+		if (outputSchemaQN.getLocalPart().length() > 0)
+			method.addAttribute("outputSchema", outputSchemaQN.getPrefix()+":"+outputSchemaQN.getLocalPart(), null);
+		else
+			method.addAttribute("outputSchema", outputSchemaQN.getNamespaceURI(), null);
 
 		// create Id
 		OMElement idNode = fac.createOMElement("Id", cswNs);
