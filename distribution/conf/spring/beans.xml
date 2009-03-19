@@ -39,7 +39,7 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
 
 	<bean id="cswQueryTemplate" class="de.ingrid.iplug.csw.dsc.cswclient.impl.GenericQuery">
 		<property name="schema" value="CSW_2_0_2" />
-		<property name="outputSchema" value="CSW_PROFILE" />
+		<property name="outputSchema" value="GMD" />
 		<property name="outputFormat" value="APPLICATION_XML" />
 		<property name="version" value="2.0.2" />
 		<property name="elementSetName" value="BRIEF" />
