@@ -158,6 +158,11 @@ var mappingDescription =
 					"execute":{
 						"funct":mapAddressInformation
 					}
+		    	},
+				{
+					"execute":{
+						"funct":mapTimeConstraints
+					}
 		    	}
 			],
 			"subrecords":[
@@ -561,15 +566,38 @@ var mappingDescription =
 					]
 				}, // END object_references
 				{
-					"table":"spatial_reference",
+					"table":"t0112_media_option",
+					"xpath":"//distributionInfo/MD_Distribution/transferOptions/MD_DigitalTransferOptions/offLine/MD_Medium",
+					"line":true,
 					"fieldMappings":[
-					    {
-							"execute":{
-								"funct":mapGeographicElements // map also to spatial_ref_value
-					    	}
-					    }
-					]
-				} // END spatial_reference
+		    	  		{
+	    					"field":"medium_note",
+	    					"xpath":"mediumNote/CharacterString"
+		    			},
+		    	  		{
+	    					"field":"medium_name",
+	    					"xpath":"name/MD_MediumNameCode/@codeListValue",
+							"transform":{
+								"funct":transformToIgcDomainId,
+								"params":[520]
+							}
+		    			},
+		    	  		{
+	    					"field":"transfer_size",
+	    					"xpath":"../../transferSize/CharacterString"
+		    			}
+		    	  	]
+				}, // END t0112_media_option
+				{
+					"table":"object_node",
+					"fieldMappings":[
+		    	  		{
+	    					"field":"fk_obj_uuid",
+	    					"indexName":"parent.object_node.obj_uuid",
+	    					"xpath":"//parentIdentifier/gco:CharacterString"
+		    			}
+		    	  	]
+				} // END object_node.parent.object_node.obj_uuid
 			] 
   		} // END t01_object
 
@@ -650,6 +678,44 @@ function mapToRecord(mapping, document, refNode) {
 		
 	return document;
 }
+
+function mapTimeConstraints(document, refNode) {
+	var timePeriods = XPathUtils.getNodeList(refNode, "//EX_Extent/temporalElement/EX_TemporalExtent/extent/TimePeriod");
+	log.debug("Found " + timePeriods.getLength() + " TimePeriod records.");
+	if (hasValue(timePeriods)) {
+		var beginPosition = XPathUtils.getString(timePeriods.item(0), "beginPosition");
+		var endPosition = XPathUtils.getString(timePeriods.item(0), "endPosition");
+		if (hasValue(beginPosition) && hasValue(endPosition)) {
+			if (beginPosition.equals(endPosition)) {
+				var t01ObjectRecord = new Record();
+				t01ObjectRecord.addColumn(createColumn("t01_object", "id", "t01_object.id"), "undefined"); // needed for finding the subrecords in portal
+				t01ObjectRecord.addColumn(createColumn("t01_object", "time_type", "t01_object.time_type"), "am");
+				t01ObjectRecord.addColumn(createColumn("t01_object", "time_from", "t0"), UtilsCSWDate.mapDateFromIso8601ToIndex(beginPosition));
+				document.addSubRecord(t01ObjectRecord);
+			} else {
+				var t01ObjectRecord = new Record();
+				t01ObjectRecord.addColumn(createColumn("t01_object", "id", "t01_object.id"), "undefined"); // needed for finding the subrecords in portal
+				t01ObjectRecord.addColumn(createColumn("t01_object", "time_type", "t01_object.time_type"), "von");
+				t01ObjectRecord.addColumn(createColumn("t01_object", "time_from", "t1"),  UtilsCSWDate.mapDateFromIso8601ToIndex(beginPosition));
+				t01ObjectRecord.addColumn(createColumn("t01_object", "time_to", "t2"),  UtilsCSWDate.mapDateFromIso8601ToIndex(endPosition));
+				document.addSubRecord(t01ObjectRecord);
+			}
+		} else if (hasValue(beginPosition)) {
+			var t01ObjectRecord = new Record();
+			t01ObjectRecord.addColumn(createColumn("t01_object", "id", "t01_object.id"), "undefined"); // needed for finding the subrecords in portal
+			t01ObjectRecord.addColumn(createColumn("t01_object", "time_type", "t01_object.time_type"), "seit");
+			t01ObjectRecord.addColumn(createColumn("t01_object", "time_from", "t1"),  UtilsCSWDate.mapDateFromIso8601ToIndex(beginPosition));
+			document.addSubRecord(t01ObjectRecord);
+		} else if (hasValue(endPosition)) {
+			var t01ObjectRecord = new Record();
+			t01ObjectRecord.addColumn(createColumn("t01_object", "id", "t01_object.id"), "undefined"); // needed for finding the subrecords in portal
+			t01ObjectRecord.addColumn(createColumn("t01_object", "time_type", "t01_object.time_type"), "bis");
+			t01ObjectRecord.addColumn(createColumn("t01_object", "time_from", "t2"), UtilsCSWDate.mapDateFromIso8601ToIndex(endPosition));
+			document.addSubRecord(t01ObjectRecord);
+		}
+	}
+}
+
 
 function mapAddressInformation(document, refNode) {
 	var ciResponsibleParties = XPathUtils.getNodeList(refNode, "//*/CI_ResponsibleParty");
