@@ -99,6 +99,8 @@ public class SoapRequest implements CSWRequest {
 		
 		// create method
 		OMElement method = fac.createOMElement(Operation.GET_RECORDS.toString(), cswNs);
+		method.declareNamespace(Namespace.ISO.getQName().getNamespaceURI(), Namespace.ISO.getQName().getPrefix());
+		method.declareNamespace(Namespace.GML.getQName().getNamespaceURI(), Namespace.GML.getQName().getPrefix());
 
 		// add the default parameters
 		method.addAttribute("service", CSWConstants.SERVICE_TYPE, null);
