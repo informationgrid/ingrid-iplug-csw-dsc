@@ -45,7 +45,7 @@ Csw Infos <br />
 			value="<%=description.get(cswServiceUrl)!=null?description.get(cswServiceUrl):""%>" style="width: 100%" /></td>
 	</tr>
 	<tr>
-		<td class="tablecell" width="100">Index Verwenden:</td>
+		<td class="tablecell" width="100">CSW Daten direkt zurückgeben:</td>
 		<%
 		String checked = description.get(directData)!=null && description.get(directData).equals("true") ? "checked=\"checked\"": "";
 		%>
