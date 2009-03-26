@@ -19,6 +19,14 @@ public class GenericRecord implements CSWRecord {
 	protected ElementSetName elementSetName = null;
 	protected Node node = null;
 	
+	/**
+	 * Initializes the record. The node will be detached (cloned) from it's owner document. 
+	 * 
+	 * @param elementSetName The {@link ElementSetName} of this record.
+	 * @param node The DOM Node describing the record. The node will be detached (cloned).
+	 * 
+	 * @see de.ingrid.iplug.csw.dsc.cswclient.CSWRecord#initialize(de.ingrid.iplug.csw.dsc.cswclient.constants.ElementSetName, org.w3c.dom.Node)
+	 */
 	@Override
 	public void initialize(ElementSetName elementSetName, Node node) throws Exception {
 		// detach node from whole document inkl. all namespace definitions
