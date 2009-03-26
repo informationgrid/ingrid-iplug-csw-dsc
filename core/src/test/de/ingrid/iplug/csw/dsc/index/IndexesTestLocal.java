@@ -103,27 +103,27 @@ public class IndexesTestLocal extends TestCase {
 		assertTrue("Detail record found.", record != null);
 		
 		// test direct response
-		if (desc.getBoolean("directData") == Boolean.TRUE) {
+		if (desc.getBoolean(ConfigurationKeys.PLUGDESCRIPTION_KEY_DIRECT_DATA) == Boolean.TRUE) {
 			IngridQuery query = QueryStringParser.parse("1");
-			query.put("cswDirectResponse", ElementSetName.FULL.toString());
+			query.put(ConfigurationKeys.REQUEST_KEY_CSW_DIRECT_RESPONSE, ElementSetName.FULL.toString());
 
 			// getDetails
 			hits = searcher.search(query, 0, 100);
 			IngridHitDetail[] details = searcher.getDetails(hits.getHits(), query, new String[]{});
 			for (IngridHitDetail detail : details) {
-				assertTrue("Detail has original response", detail.containsKey("cswData"));
-				assertTrue("Response string length > 0", StringUtils.nodeToString((Node)detail.get("cswData")).length() > 0);
+				assertTrue("Detail has original response", detail.containsKey(ConfigurationKeys.RESPONSE_KEY_CSW_DATA));
+				assertTrue("Response string length > 0", StringUtils.nodeToString((Node)detail.get(ConfigurationKeys.RESPONSE_KEY_CSW_DATA)).length() > 0);
 			}
 
 			// getDetail
 			IngridHitDetail detail = searcher.getDetail(hits.getHits()[0], query, new String[]{});
-			assertTrue("Detail has original response", detail.containsKey("cswData"));
-			assertTrue("Response string length > 0", StringUtils.nodeToString((Node)detail.get("cswData")).length() > 0);
+			assertTrue("Detail has original response", detail.containsKey(ConfigurationKeys.RESPONSE_KEY_CSW_DATA));
+			assertTrue("Response string length > 0", StringUtils.nodeToString((Node)detail.get(ConfigurationKeys.RESPONSE_KEY_CSW_DATA)).length() > 0);
 			
 			// getRecord
 			record = searcher.getRecord(hits.getHits()[0]);
-			assertTrue("Detail has original response", record.containsKey("cswData"));
-			assertTrue("Response string length > 0", StringUtils.nodeToString((Node)record.get("cswData")).length() > 0);
+			assertTrue("Detail has original response", record.containsKey(ConfigurationKeys.RESPONSE_KEY_CSW_DATA));
+			assertTrue("Response string length > 0", StringUtils.nodeToString((Node)record.get(ConfigurationKeys.RESPONSE_KEY_CSW_DATA)).length() > 0);
 		}
 	}
 }

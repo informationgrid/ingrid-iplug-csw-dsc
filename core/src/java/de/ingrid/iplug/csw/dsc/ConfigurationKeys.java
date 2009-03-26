@@ -17,4 +17,9 @@ public class ConfigurationKeys {
 	public final static String CSW_MAPPER		 				= "cswMapper";
 
 	public final static String PLUGDESCRIPTION					= "plugDescription";
+	
+	public final static String PLUGDESCRIPTION_KEY_DIRECT_DATA		= "directData";
+	public static final String REQUEST_KEY_CSW_DIRECT_RESPONSE = "cswDirectResponse";
+	public static final String RESPONSE_KEY_CSW_DATA = "cswData";
+	
 }

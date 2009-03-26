@@ -153,7 +153,7 @@ public class DSCSearcher extends AbstractSearcher {
 	 */
 	protected boolean supportsDirectData() {
 		if (this.fPlugDescription != null)
-			return this.fPlugDescription.getBoolean("directData") == Boolean.TRUE;
+			return this.fPlugDescription.getBoolean(ConfigurationKeys.PLUGDESCRIPTION_KEY_DIRECT_DATA) == Boolean.TRUE;
 		else
 			return false;
 	}
@@ -164,9 +164,9 @@ public class DSCSearcher extends AbstractSearcher {
 	 * @return The ElementSetName or null
 	 */
 	protected ElementSetName getDirectDataElementSetName(IngridDocument document) {
-		if (document.containsKey("cswDirectResponse")) {
+		if (document.containsKey(ConfigurationKeys.REQUEST_KEY_CSW_DIRECT_RESPONSE)) {
 			for (ElementSetName name : ElementSetName.values()) {
-				if (name.toString().equals(document.getString("cswDirectResponse")))
+				if (name.toString().equals(document.getString(ConfigurationKeys.REQUEST_KEY_CSW_DIRECT_RESPONSE)))
 					return name;
 			}
 		}
@@ -180,7 +180,7 @@ public class DSCSearcher extends AbstractSearcher {
 	 * @return The ElementSetName or null
 	 */
 	protected void setDirectDataElementSetName(IngridDocument document, ElementSetName elementSetName) {
-		document.put("cswDirectResponse", elementSetName.toString());
+		document.put(ConfigurationKeys.REQUEST_KEY_CSW_DIRECT_RESPONSE, elementSetName.toString());
 	}
 
 	/**
@@ -192,7 +192,7 @@ public class DSCSearcher extends AbstractSearcher {
 	protected void setDirectData(IngridDocument document, ElementSetName elementSetName) throws IOException {
 		Document luceneDoc = this.fSearcher.doc(document.getInt(IngridDocument.DOCUMENT_ID));
 		CSWRecord record = this.fDetailer.getRecord(luceneDoc, elementSetName, this.cache);
-		document.put("cswData", record.getOriginalResponse());
+		document.put(ConfigurationKeys.RESPONSE_KEY_CSW_DATA, record.getOriginalResponse());
 	}
 
 	@Override
