@@ -142,8 +142,8 @@ public class TestUtil {
 			input.close();
 			input = null;
 			
-			Document node = StringUtils.stringToDocument(content.toString());
-			record.initialize(elementSetName, node);
+			Document document = StringUtils.stringToDocument(content.toString());
+			record.initialize(elementSetName, document.getFirstChild());
 			return record;
 		}
 		finally {

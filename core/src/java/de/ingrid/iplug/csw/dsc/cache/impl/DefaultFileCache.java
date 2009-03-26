@@ -275,9 +275,9 @@ public class DefaultFileCache implements Cache, Serializable {
 				input.close();
 				input = null;
 				
-				Document node = StringUtils.stringToDocument(content.toString());
+				Document document = StringUtils.stringToDocument(content.toString());
 				CSWRecord record = this.factory.createRecord();
-				record.initialize(elementSetName, node);
+				record.initialize(elementSetName, document.getFirstChild());
 				return record;
 			}
 			catch (Exception e) {

@@ -9,6 +9,7 @@ import org.w3c.dom.NodeList;
 
 import de.ingrid.iplug.csw.dsc.cswclient.CSWRecord;
 import de.ingrid.iplug.csw.dsc.cswclient.constants.ElementSetName;
+import de.ingrid.iplug.csw.dsc.tools.NodeUtils;
 import de.ingrid.iplug.csw.dsc.tools.StringUtils;
 import de.ingrid.iplug.csw.dsc.tools.XPathUtils;
 
@@ -19,8 +20,9 @@ public class GenericRecord implements CSWRecord {
 	protected Node node = null;
 	
 	@Override
-	public void initialize(ElementSetName elementSetName, Node node) throws Exception{
-		this.node = node;
+	public void initialize(ElementSetName elementSetName, Node node) throws Exception {
+		// detach node from whole document inkl. all namespace definitions
+		this.node = NodeUtils.detachWithNameSpaces(node);
 		this.elementSetName = elementSetName;
 
 		// get the record id
