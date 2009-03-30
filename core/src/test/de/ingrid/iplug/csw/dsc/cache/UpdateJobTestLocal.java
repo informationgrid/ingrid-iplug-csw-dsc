@@ -68,7 +68,7 @@ public class UpdateJobTestLocal extends TestCase {
 		// run the update job
 		Date startDate = new Date();
 		UpdateJob job = new UpdateJob(factory, tmpCache);
-		job.execute(20, 2000);
+		job.execute();
 		Date lastExecutionDate = job.getLastExecutionDate();
 
 		// commit transaction
