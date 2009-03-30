@@ -188,7 +188,7 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
 					</ogc:PropertyIsLike>
 					</ogc:Filter>]]>
 				</value>
- <!-- 
+<!--
  -->
 			</set>
 		</property>
@@ -203,7 +203,10 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
 		</property>
 	</bean>
 
-	<bean id="cswDefaultUpdateStrategy" class="de.ingrid.iplug.csw.dsc.cache.impl.DefaultUpdateStrategy" />
+	<bean id="cswDefaultUpdateStrategy" class="de.ingrid.iplug.csw.dsc.cache.impl.DefaultUpdateStrategy">
+		<property name="requestPause" value="1000" />
+		<property name="recordsPerCall" value="10" />
+	</bean>
 	<bean id="cswIncrementalUpdateStrategy" class="de.ingrid.iplug.csw.dsc.cache.impl.IncrementalUpdateStrategy">
 		<constructor-arg type="java.lang.String">
 			<value>
@@ -213,6 +216,8 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
 				</ogc:PropertyIsGreaterThanOrEqualTo>]]>
 			</value>
 		</constructor-arg>
+		<property name="requestPause" value="1000" />
+		<property name="recordsPerCall" value="10" />
 	</bean>
 	
 	<bean id="cswMapper" class="de.ingrid.iplug.csw.dsc.mapping.impl.ScriptMapper">

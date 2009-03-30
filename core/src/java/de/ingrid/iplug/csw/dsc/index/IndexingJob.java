@@ -46,7 +46,7 @@ public class IndexingJob implements StatefulJob {
 
 			// run the update job
 			UpdateJob job = new UpdateJob(factory, tmpCache);
-			job.execute(10, 2000);
+			job.execute();
 			
 			// start indexing
 			IIndexer indexer = new Indexer();

@@ -47,8 +47,6 @@ public class IncrementalUpdateStrategy extends AbstractUpdateStrategy {
 
 		this.context = context;
 		CSWFactory factory = context.getFactory();
-		int recordsPerCall = context.getRecordsPerCall();
-		int requestPause = context.getRequestPause();
 		
 		// create the incremental filter addition document
 		Set<Document> filterSetModifiedOnly = new HashSet<Document>();
@@ -76,13 +74,13 @@ public class IncrementalUpdateStrategy extends AbstractUpdateStrategy {
 		if (log.isInfoEnabled())
 			log.info("Fetching BRIEF records...");
 		List<String> allRecordIds = fetchRecords(client, ElementSetName.BRIEF,
-				filterSet, recordsPerCall, requestPause, false);
+				filterSet, false);
 
 		// fetch the modified BRIEF records
 		if (log.isInfoEnabled())
 			log.info("Fetching modified BRIEF records...");
 		List<String> modifiedRecordIds = fetchRecords(client, ElementSetName.BRIEF,
-				filterSetModifiedOnly, recordsPerCall, requestPause, true);
+				filterSetModifiedOnly, true);
 		
 		// incremental update only fetches modified records in SUMMARY and FULL flavour
 		List<String> recordIdsToUpdate = modifiedRecordIds;			

@@ -32,8 +32,6 @@ public class DefaultUpdateStrategy extends AbstractUpdateStrategy {
 
 		this.context = context;
 		CSWFactory factory = context.getFactory();
-		int recordsPerCall = context.getRecordsPerCall();
-		int requestPause = context.getRequestPause();
 		
 		// prepare the filter set
 		Set<Document> filterSet = new HashSet<Document>();
@@ -50,7 +48,7 @@ public class DefaultUpdateStrategy extends AbstractUpdateStrategy {
 		if (log.isInfoEnabled())
 			log.info("Fetching BRIEF records...");
 		List<String> allRecordIds = fetchRecords(client, ElementSetName.BRIEF,
-				filterSet, recordsPerCall, requestPause, true);
+				filterSet, true);
 
 		// default update fetches all records in SUMMARY and FULL flavour
 		List<String> recordIdsToUpdate = allRecordIds;

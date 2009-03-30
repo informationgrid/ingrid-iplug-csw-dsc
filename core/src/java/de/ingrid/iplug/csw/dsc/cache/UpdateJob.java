@@ -71,11 +71,9 @@ public class UpdateJob {
 	
 	/**
 	 * Execute the update job.
-	 * @param recordsPerCall The maximum number of records to fetch with each server call
-	 * @param requestPause The time between two requests in milliseconds
 	 * @throws Exception
 	 */
-	public void execute(int recordsPerCall, int requestPause) throws Exception {
+	public void execute() throws Exception {
 		Date start = new Date();
 
 		// get cached record ids (for later removal of records that do not exist anymore)
@@ -91,8 +89,6 @@ public class UpdateJob {
 		ctx.setCache(this.cache);
 		ctx.setFilterStrSet(this.filterStrSet);
 		ctx.setLastExecutionDate(lastExecutionDate);
-		ctx.setRecordsPerCall(recordsPerCall);
-		ctx.setRequestPause(requestPause);
 		
 		// delegate execution to the strategy
 		List<String> allRecordIds = updateStrategy.execute(ctx);
