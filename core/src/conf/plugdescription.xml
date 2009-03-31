@@ -52,7 +52,9 @@
   <string>dataSourceName</string>
   <string>wemove CSW-DSC Test iPlug</string>
   <string>serviceUrl</string>
-  <string>http://gdi-de.sdisuite.de/soapServices/services/CSWDiscovery</string>
+<!-- <string><![CDATA[http://gdi-de.sdisuite.de/soapServices/services/CSWDiscovery]]></string> -->  
+<!-- <string><![CDATA[http://demo.disy.net/preludio2.lubw/servants/de/disy/preludio2/service/cat/csw/v_2_0_2/GetCapabilitiesServant$Get?REQUEST=GetCapabilities&SERVICE=CSW&VERSION=2.0.2]]></string>  -->  
+<string><![CDATA[http://ripsmdk.lubw.baden-wuerttemberg.de/lubw/servants/de/disy/preludio2/service/cat/csw/v_2_0_2/GetCapabilitiesServant$Get?REQUEST=GetCapabilities&version=2.0.2&service=CSW&outputFormat=text/xml]]></string>  
   <string>personSureName</string>
   <string>Mueller</string>
   <string>dataType</string>
@@ -72,7 +74,7 @@
     <string>score</string>
   </list>
 	<string>updateStrategy</string>
-	<string>incremental</string> <!-- default|incremental -->
+	<string>incremental-optimized</string> <!-- default|incremental|incremental-optimized -->
 	<string>directData</string>
-	<boolean>true</boolean>
+	<boolean>false</boolean>
 </de.ingrid.utils.PlugDescription>

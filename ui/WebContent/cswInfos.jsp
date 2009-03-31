@@ -14,6 +14,8 @@ if(!WebUtil.getParameter(request, cswServiceUrl, "").equals("")){
 	if(!WebUtil.getParameter(request, directData, "").equals("")) {
 		description.put(directData, "true");
 	}
+	description.put("updateStrategy", "incremental-optimized");
+	
 	response.sendRedirect(response.encodeRedirectURL("scheduling.jsp"));
 } 
 

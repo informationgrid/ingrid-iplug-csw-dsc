@@ -206,6 +206,7 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
 			<map>
 				<entry key="default" value="cswDefaultUpdateStrategy"/>
 				<entry key="incremental" value="cswIncrementalUpdateStrategy"/>
+				<entry key="incremental-optimized" value="cswIncrementalUpdateOptimizedStrategy"/>
 			</map>
 		</property>
 	</bean>
@@ -223,6 +224,10 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
 				</ogc:PropertyIsGreaterThanOrEqualTo>]]>
 			</value>
 		</constructor-arg>
+		<property name="requestPause" value="1000" />
+		<property name="recordsPerCall" value="10" />
+	</bean>
+	<bean id="cswIncrementalUpdateOptimizedStrategy" class="de.ingrid.iplug.csw.dsc.cache.impl.IncrementalUpdateOptimizedStrategy">
 		<property name="requestPause" value="1000" />
 		<property name="recordsPerCall" value="10" />
 	</bean>
