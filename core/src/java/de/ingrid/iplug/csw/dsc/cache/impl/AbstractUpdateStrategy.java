@@ -8,6 +8,7 @@ import java.io.StringReader;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 import java.util.regex.Matcher;
@@ -76,14 +77,12 @@ public abstract class AbstractUpdateStrategy implements UpdateStrategy {
 		ExecutionContext context = this.getExecutionContext();
 
 		if (this.docBuilder == null) {
-			DocumentBuilderFactory docBuilderFactory = DocumentBuilderFactory
-					.newInstance();
+			DocumentBuilderFactory docBuilderFactory = DocumentBuilderFactory.newInstance();
 			docBuilder = docBuilderFactory.newDocumentBuilder();
 		}
 
 		// replace last update date variable
-		Pattern lastUpdateDatePattern = Pattern.compile(
-				"\\{LAST_UPDATE_DATE\\}", Pattern.MULTILINE);
+		Pattern lastUpdateDatePattern = Pattern.compile("\\{LAST_UPDATE_DATE\\}", Pattern.MULTILINE);
 		Matcher matcher = lastUpdateDatePattern.matcher(filterStr);
 		if (matcher.find()) {
 			Date lastUpdateDate = context.getLastExecutionDate();
@@ -97,26 +96,30 @@ public abstract class AbstractUpdateStrategy implements UpdateStrategy {
 	/**
 	 * Fetch all records that satisfy the given filter using the GetRecords and
 	 * return the ids and put them into the cache
+	 * @note This method guarantees to query the server without a constraint, if the
+	 * provided filter set is empty 
 	 * 
-	 * @param client
-	 *            The CSWClient to use
-	 * @param elementSetName
-	 *            The ElementSetName of the records to fetch
-	 * @param filterSet
-	 *            The filter set used to select the records
-	 * @param doCache
-	 *            Determines wether to cache the record or not
+	 * @param client The CSWClient to use
+	 * @param elementSetName The ElementSetName of the records to fetch
+	 * @param filterSet The filter set used to select the records
+	 * @param doCache Determines wether to cache the record or not
 	 * @return A list of ids of the fetched records
 	 * @throws Exception
 	 */
-	protected List<String> fetchRecords(CSWClient client,
-			ElementSetName elementSetName, Set<Document> filterSet,
-			boolean doCache)
-			throws Exception {
+	protected List<String> fetchRecords(CSWClient client, ElementSetName elementSetName, 
+			Set<Document> filterSet, boolean doCache) throws Exception {
 
 		CSWFactory factory = client.getFactory();
 		Log log = this.getLog();
 
+		// if the filter set is empty, we add a null a least
+		// this causes execution of the iteration below, but
+		// but will not add a constraint definition to the request
+		if (filterSet == null)
+			filterSet = new HashSet<Document>();
+		if (filterSet.size() == 0)
+			filterSet.add(null);
+				
 		// variables for complete fetch process
 		int numTotal = 0;
 		List<String> fetchedRecordIds = new ArrayList<String>();
@@ -125,9 +128,8 @@ public abstract class AbstractUpdateStrategy implements UpdateStrategy {
 		int filterIndex = 1;
 		for (Document filter : filterSet) {
 			if (log.isDebugEnabled())
-				log.debug("Processing filter " + filterIndex + ": "
-						+ StringUtils.nodeToString(filter).replace("\n", "")
-						+ ".");
+				log.debug("Processing filter "+filterIndex+": "+
+						StringUtils.nodeToString(filter).replace("\n", "")+".");
 
 			// variables for current fetch process (current filter)
 			int numCurrentTotal = 0;
@@ -147,16 +149,15 @@ public abstract class AbstractUpdateStrategy implements UpdateStrategy {
 			CSWSearchResult result = client.getRecords(query);
 			numCurrentTotal = result.getNumberOfRecordsTotal();
 			if (log.isInfoEnabled())
-				log.info(numCurrentTotal + " record(s) from filter "
-						+ filterIndex + ":");
+				log.info(numCurrentTotal+" record(s) from filter "+filterIndex+":");
 
 			if (numCurrentTotal > 0) {
 
 				// process
 				currentFetchedRecordIds.addAll(processResult(result, doCache));
 
-				while (result.getNumberOfRecords() > 0
-						&& currentFetchedRecordIds.size() < numCurrentTotal) {
+				while (result.getNumberOfRecords() > 0 && 
+						currentFetchedRecordIds.size() < numCurrentTotal) {
 					Thread.sleep(this.requestPause);
 
 					// prepare next request
@@ -167,8 +168,7 @@ public abstract class AbstractUpdateStrategy implements UpdateStrategy {
 					result = client.getRecords(query);
 
 					// process
-					currentFetchedRecordIds.addAll(processResult(result,
-							doCache));
+					currentFetchedRecordIds.addAll(processResult(result, doCache));
 				}
 			}
 
@@ -181,22 +181,16 @@ public abstract class AbstractUpdateStrategy implements UpdateStrategy {
 	}
 
 	/**
-	 * Fetch all records from a id list using the GetRecordById and put them in
-	 * the cache
+	 * Fetch all records from a id list using the GetRecordById and put them in the cache
 	 * 
-	 * @param client
-	 *            The CSWClient to use
-	 * @param elementSetName
-	 *            The ElementSetName of the records to fetch
-	 * @param recordIds
-	 *            The list of ids
-	 * @param requestPause
-	 *            The time between two requests in milliseconds
+	 * @param client The CSWClient to use
+	 * @param elementSetName The ElementSetName of the records to fetch
+	 * @param recordIds The list of ids
+	 * @param requestPause The time between two requests in milliseconds
 	 * @throws Exception
 	 */
-	protected void fetchRecords(CSWClient client,
-			ElementSetName elementSetName, List<String> recordIds,
-			int requestPause) throws Exception {
+	protected void fetchRecords(CSWClient client, ElementSetName elementSetName, 
+			List<String> recordIds, int requestPause) throws Exception {
 
 		CSWFactory factory = client.getFactory();
 		Cache cache = this.getExecutionContext().getCache();
@@ -209,8 +203,7 @@ public abstract class AbstractUpdateStrategy implements UpdateStrategy {
 			query.setId(id);
 			CSWRecord record = client.getRecordById(query);
 			if (log.isInfoEnabled())
-				log.info("Fetched record: " + id + " "
-						+ record.getElementSetName());
+				log.info("Fetched record: "+id+" "+record.getElementSetName());
 			cache.putRecord(record);
 			Thread.sleep(requestPause);
 		}
@@ -219,10 +212,8 @@ public abstract class AbstractUpdateStrategy implements UpdateStrategy {
 	/**
 	 * Process a fetched search result (collect ids and cache records)
 	 * 
-	 * @param result
-	 *            The search result
-	 * @param doCache
-	 *            Determines wether to cache the record or not
+	 * @param result The search result
+	 * @param doCache Determines wether to cache the record or not
 	 * @return The list of ids of the fetched records
 	 * @throws Exception
 	 */
@@ -237,11 +228,9 @@ public abstract class AbstractUpdateStrategy implements UpdateStrategy {
 			String id = record.getId();
 
 			if (log.isInfoEnabled())
-				log.info("Fetched record: " + id + " "
-						+ record.getElementSetName());
+				log.info("Fetched record: "+id+" "+record.getElementSetName());
 			if (fetchedRecordIds.contains(id)) {
-				log.warn("Duplicated id: " + id
-						+ ". Overriding previous entry.");
+				log.warn("Duplicated id: "+id+". Overriding previous entry.");
 			}
 			fetchedRecordIds.add(id);
 
@@ -250,9 +239,8 @@ public abstract class AbstractUpdateStrategy implements UpdateStrategy {
 				cache.putRecord(record);
 		}
 		if (log.isInfoEnabled())
-			log.info("Fetched " + fetchedRecordIds.size() + " of "
-					+ result.getNumberOfRecordsTotal() + " [starting from "
-					+ result.getQuery().getStartPosition() + "]");
+			log.info("Fetched "+fetchedRecordIds.size()+" of "+result.getNumberOfRecordsTotal()+
+					" [starting from "+result.getQuery().getStartPosition() + "]");
 		return fetchedRecordIds;
 	}
 }

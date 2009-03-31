@@ -12,6 +12,8 @@ public interface UpdateStrategy {
 
 	/**
 	 * Execute the update strategy.
+	 * @note If the filter set provided by the ExecutionContext is empty, 
+	 * this method must query the server without a constraint
 	 * @param context The ExecutionContext
 	 * @return The list of ids that exist on the server
 	 * @throws Exception
