@@ -57,6 +57,13 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
 		<property name="cachePath" value="./csw_cache" />
 	</bean>
 
+	<!--
+		Define the CSW filter queries to query the CSW data source. Duplicates resulting from
+		the queries will be detected based on the Identifier and be removed.
+		
+		To produce one CSW Query without a Constraint element, please remove any <value> elements.
+		Many systems support this to get all results from the CSW data source.
+	 -->
 	<bean id="cswHarvestFilter" class="org.springframework.beans.factory.config.SetFactoryBean">
 		<property name="sourceSet">
 			<set>
@@ -191,6 +198,37 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
 
 			</set>
 		</property>
+	</bean>
+	
+	<bean id="cswUpdateStrategies" class="org.springframework.beans.factory.config.MapFactoryBean">
+		<property name="sourceMap">
+			<map>
+				<entry key="default" value="cswDefaultUpdateStrategy"/>
+				<entry key="incremental" value="cswIncrementalUpdateStrategy"/>
+				<entry key="incremental-optimized" value="cswIncrementalUpdateOptimizedStrategy"/>
+			</map>
+		</property>
+	</bean>
+
+	<bean id="cswDefaultUpdateStrategy" class="de.ingrid.iplug.csw.dsc.cache.impl.DefaultUpdateStrategy">
+		<property name="requestPause" value="1000" />
+		<property name="recordsPerCall" value="10" />
+	</bean>
+	<bean id="cswIncrementalUpdateStrategy" class="de.ingrid.iplug.csw.dsc.cache.impl.IncrementalUpdateStrategy">
+		<constructor-arg type="java.lang.String">
+			<value>
+				<![CDATA[<ogc:PropertyIsGreaterThanOrEqualTo>
+				<ogc:PropertyName>Modified</ogc:PropertyName>
+				<ogc:Literal>{LAST_UPDATE_DATE}</ogc:Literal>
+				</ogc:PropertyIsGreaterThanOrEqualTo>]]>
+			</value>
+		</constructor-arg>
+		<property name="requestPause" value="1000" />
+		<property name="recordsPerCall" value="10" />
+	</bean>
+	<bean id="cswIncrementalUpdateOptimizedStrategy" class="de.ingrid.iplug.csw.dsc.cache.impl.IncrementalUpdateOptimizedStrategy">
+		<property name="requestPause" value="1000" />
+		<property name="recordsPerCall" value="10" />
 	</bean>
 	
 	<bean id="cswMapper" class="de.ingrid.iplug.csw.dsc.mapping.impl.ScriptMapper">
