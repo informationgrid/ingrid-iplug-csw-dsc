@@ -136,13 +136,15 @@ public class SoapRequest implements CSWRequest {
 		elementSetName.setText(query.getElementSetName().toString());
 		queryElem.addChild(elementSetName);
 
-		// create Constraint
-		OMElement constraint = fac.createOMElement("Constraint", cswNs);
-		constraint.addAttribute("version", query.getConstraintLanguageVersion(), null);
-		queryElem.addChild(constraint);
 		
 		// add the Filter
 		if (query.getConstraint() != null) {
+			// create Constraint
+			// make sure the constraint element is only created when
+			// we have a filter.
+			OMElement constraint = fac.createOMElement("Constraint", cswNs);
+			constraint.addAttribute("version", query.getConstraintLanguageVersion(), null);
+			queryElem.addChild(constraint);
 			OMElement filter = XMLUtils.toOM(query.getConstraint().getDocumentElement());
 			constraint.addChild(filter);
 		}
@@ -229,6 +231,7 @@ public class SoapRequest implements CSWRequest {
 		//opts.setSoapVersionURI(org.apache.axiom.soap.SOAP11Constants.SOAP_ENVELOPE_NAMESPACE_URI);
 		opts.setAction("urn:anonOutInOp");
 		serviceClient.setOptions(opts);
+		
 		return serviceClient;
 	}
 
