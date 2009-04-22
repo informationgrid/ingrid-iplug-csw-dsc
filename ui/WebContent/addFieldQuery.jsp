@@ -1,6 +1,8 @@
 <%@ page language="java" contentType="text/html; charset=utf-8" pageEncoding="utf-8"%>
 <%@ page import="de.ingrid.utils.PlugDescription"%>
 <%@ page import="de.ingrid.iplug.util.*"%>
+<%@ page import="java.util.regex.Pattern"%>
+
 <%@ include file="timeoutcheck.jsp"%>
 <%
 String error = "";
@@ -11,6 +13,7 @@ PlugDescription  description = (PlugDescription) request.getSession().getAttribu
 if("addfieldquery".equals(action)) {
 	String key = WebUtil.getParameter(request, "key", "");
 	String value = WebUtil.getParameter(request, "value", "");
+	String regex = WebUtil.getParameter(request, "regex", ".*");
 	boolean prohibited  = WebUtil.getParameter(request, "prohibited", null) != null;
 	boolean required  = WebUtil.getParameter(request, "required", null) != null;
 	FieldQuery fieldQuery = new FieldQuery(required, prohibited, key, value);
@@ -23,6 +26,8 @@ if("addfieldquery".equals(action)) {
 	if(queryExtension == null) {
 		queryExtension = new QueryExtension();
 		queryExtension.setBusUrl(iBusUrl);
+		Pattern pattern = Pattern.compile(regex);
+		queryExtension.setPattern(pattern);
 		container.addQueryExtension(queryExtension);
 	}
 	queryExtension.addFieldQuery(fieldQuery);
@@ -63,12 +68,14 @@ if("addfieldquery".equals(action)) {
 		<table class="table" width="400" align="center">
 			<tr>
 				<td class="tableHead">Bus-Url</td>
+				<td class="tableHead">Regex</td>
 				<td class="tableHead">Index Feld Name</td>
 				<td class="tableHead">Index Feld Wert</td>
 				<td class="tableHead">Verboten</td>
 				<td class="tableHead">Erforderlich</td>
 				<td class="tableHead">Hinzuf&#x00FC;gen</td>
 				<td class="tableHead">Reset</td>
+				<td class="tableHead">Hinzugefuegter Regex</td>
 				<td class="tableHead">Hinzugefuegte Query Erweiterung</td>
 			</tr>
 			<%
@@ -81,6 +88,7 @@ if("addfieldquery".equals(action)) {
 				<input type="hidden" name="action" value="addfieldquery"/>
 				<input type="hidden" name="busUrl" value="<%=busUrls[i]%>"/>
 				<td class="tableCell"><%=busUrls[i]%></td>
+				<td class="tableCell"><input type="text" name="regex" value="" /></td>
 				<td class="tableCell"><input type="text" name="key" value="" /></td>
 				<td class="tableCell"><input type="text" name="value" value="" /></td>
 				<td class="tableCell"><input type="checkbox" name="prohibited"></td>
@@ -96,6 +104,20 @@ if("addfieldquery".equals(action)) {
 				<td class="tableCell">
 				<%
 				QueryExtensionContainer container = (QueryExtensionContainer) description.get("QUERY_EXTENSION");
+				if(container != null) {
+					QueryExtension queryExtension = container.getQueryExtension(busUrls[i]);
+					if(queryExtension != null) {
+							%>
+							<%=queryExtension.getPattern()!=null?queryExtension.getPattern().pattern():""%><br>
+							<%
+					}
+				}
+				%>
+				</td>
+
+				<td class="tableCell">
+				<%
+				container = (QueryExtensionContainer) description.get("QUERY_EXTENSION");
 				if(container != null) {
 					QueryExtension queryExtension = container.getQueryExtension(busUrls[i]);
 					if(queryExtension != null) {
