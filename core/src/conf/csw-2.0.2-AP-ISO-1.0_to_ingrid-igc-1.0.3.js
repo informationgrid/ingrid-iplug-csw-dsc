@@ -1062,8 +1062,8 @@ function transformGeneric(val, mappings, caseSensitive) {
 
 function transformToIgcDomainId(val, codeListId, doReturnValueIfNotFound) {
 	if (hasValue(val)) {
-		// transform to IGC domain id, use english code
-		var idcCode = UtilsUDKCodeLists.getCodeListDomainId(codeListId, val, 94);
+		// transform to IGC domain id
+		var idcCode = UtilsUDKCodeLists.getIgcIdFromIsoCodeListEntry(codeListId, val);
 		if (hasValue(idcCode)) {
 			return idcCode;
 		} else if (doReturnValueIfNotFound) {
