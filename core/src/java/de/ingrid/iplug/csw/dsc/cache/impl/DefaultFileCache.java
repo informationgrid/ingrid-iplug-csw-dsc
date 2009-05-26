@@ -124,7 +124,7 @@ public class DefaultFileCache implements Cache, Serializable {
 	protected String getIdFromFilename(String filename) {
 		File file = new File(filename);
 		String basename = file.getName();
-		return basename.substring(0, basename.lastIndexOf("_"));
+		return FileUtils.decodeFileName(basename.substring(0, basename.lastIndexOf("_")));
 	}
 
 	/**
@@ -134,7 +134,7 @@ public class DefaultFileCache implements Cache, Serializable {
 	 * @return String
 	 */
 	protected String getFilename(String id, ElementSetName elementSetName) {
-		return id+"_"+elementSetName.toString()+".xml";
+		return FileUtils.encodeFileName(id)+"_"+elementSetName.toString()+".xml";
 	}
 	
 	/**
@@ -156,7 +156,7 @@ public class DefaultFileCache implements Cache, Serializable {
 	protected String getAbsolutePath(String id, ElementSetName elementSetName) {
 		StringBuffer buf = new StringBuffer();
 		buf.append(this.getWorkPath()).append(File.separatorChar).
-			append(this.getRelativePath(id, elementSetName));
+			append(FileUtils.encodeFileName(this.getRelativePath(id, elementSetName)));
 		return new File(buf.toString()).getAbsolutePath();
 	}
 	
@@ -223,7 +223,7 @@ public class DefaultFileCache implements Cache, Serializable {
 	 */
 	public String getAbsoluteFilename(String id, ElementSetName elementSetName) {
 		StringBuffer buf = new StringBuffer();
-		buf.append(this.getAbsolutePath(id, elementSetName)).append(File.separatorChar).
+		buf.append(FileUtils.encodeFileName(this.getAbsolutePath(id, elementSetName))).append(File.separatorChar).
 			append(this.getFilename(id, elementSetName));
 		return new File(buf.toString()).getAbsolutePath();
 	}

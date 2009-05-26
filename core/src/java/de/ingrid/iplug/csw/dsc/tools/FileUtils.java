@@ -8,9 +8,17 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.UnsupportedEncodingException;
+import java.net.URLDecoder;
+import java.net.URLEncoder;
+
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 
 public class FileUtils {
-	
+
+	final protected static Log log = LogFactory.getLog(FileUtils.class);
+
 	/**
 	 * Remove all files from a directory and all sub directories
 	 * @param src The start directory
@@ -92,6 +100,37 @@ public class FileUtils {
 				if (fin != null) { fin.close(); }
 				if (fout != null) { fin.close(); }
 			}
+		}
+	}
+	
+	/**
+	 * Encode Filename to prevent invalid characters in file name. The encoding
+	 * is reversible (url encoding (UTF-8) is used).
+	 * 
+	 * @param s
+	 * @return
+	 */
+	public static String encodeFileName(String s) {
+		try {
+			return URLEncoder.encode(s, "UTF-8");
+		} catch (UnsupportedEncodingException e) {
+			log.error("Unable to encode using UTF-8.", e);
+			return s;
+		}
+	}
+	
+	/**
+	 * Decode Filename coded with <code>encodeFileName</code>.
+	 * 
+	 * @param s
+	 * @return
+	 */
+	public static String decodeFileName(String s) {
+		try {
+			return URLDecoder.decode(s, "UTF-8");
+		} catch (UnsupportedEncodingException e) {
+			log.error("Unable to decode using UTF-8.", e);
+			return s;
 		}
 	}
 }
