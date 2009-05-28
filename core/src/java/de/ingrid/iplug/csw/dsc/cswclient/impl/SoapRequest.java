@@ -18,6 +18,8 @@ import org.apache.axis2.AxisFault;
 import org.apache.axis2.addressing.EndpointReference;
 import org.apache.axis2.client.Options;
 import org.apache.axis2.client.ServiceClient;
+import org.apache.axis2.context.ConfigurationContext;
+import org.apache.axis2.context.ConfigurationContextFactory;
 import org.apache.axis2.util.XMLUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -217,7 +219,9 @@ public class SoapRequest implements CSWRequest {
 	 */
 	protected ServiceClient createClient(String serverURL) throws AxisFault {
 		// set up the client
-		ServiceClient serviceClient = new ServiceClient();
+		ConfigurationContext configContext = 
+			ConfigurationContextFactory.createConfigurationContextFromFileSystem("conf", null);
+		ServiceClient serviceClient = new ServiceClient(configContext, null);
 
 		Options opts = new Options();
 		opts.setTo(new EndpointReference(serverURL));
