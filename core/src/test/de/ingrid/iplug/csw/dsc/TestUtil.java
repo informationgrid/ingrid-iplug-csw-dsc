@@ -18,6 +18,7 @@ import org.w3c.dom.Node;
 
 import de.ingrid.iplug.csw.dsc.cswclient.CSWRecord;
 import de.ingrid.iplug.csw.dsc.cswclient.constants.ElementSetName;
+import de.ingrid.iplug.csw.dsc.tools.FileUtils;
 import de.ingrid.iplug.csw.dsc.tools.StringUtils;
 import de.ingrid.iplug.csw.dsc.tools.XPathUtils;
 import de.ingrid.utils.PlugDescription;
@@ -130,7 +131,7 @@ public class TestUtil {
 
 	private static CSWRecord getRecordNode(String id, ElementSetName elementSetName, CSWRecord record) throws Exception {
 		
-		File file = new File(dataFolder+"/"+id+"_"+elementSetName.toString()+".xml");
+		File file = new File(dataFolder+"/"+FileUtils.encodeFileName(id)+"_"+elementSetName.toString()+".xml");
 		StringBuilder content = new StringBuilder();
 		BufferedReader input =  new BufferedReader(new FileReader(file));
 		try {

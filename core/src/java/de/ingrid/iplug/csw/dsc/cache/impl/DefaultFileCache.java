@@ -117,6 +117,22 @@ public class DefaultFileCache implements Cache, Serializable {
 	}
 
 	/**
+	 * Encode an id to be used in a filename. 
+	 * @return String
+	 */
+	protected String encodeId(String id) {
+		return FileUtils.encodeFileName(id);
+	}
+
+	/**
+	 * Decode an id that was used in a filename. 
+	 * @return String
+	 */
+	protected String decodeId(String id) {
+		return FileUtils.decodeFileName(id);
+	}
+
+	/**
 	 * Get the record id from a cache filename
 	 * @param filename The filename without the path
 	 * @return String
@@ -124,7 +140,8 @@ public class DefaultFileCache implements Cache, Serializable {
 	protected String getIdFromFilename(String filename) {
 		File file = new File(filename);
 		String basename = file.getName();
-		return FileUtils.decodeFileName(basename.substring(0, basename.lastIndexOf("_")));
+		String id = this.decodeId(basename.substring(0, basename.lastIndexOf("_")));
+		return id;
 	}
 
 	/**
@@ -134,7 +151,7 @@ public class DefaultFileCache implements Cache, Serializable {
 	 * @return String
 	 */
 	protected String getFilename(String id, ElementSetName elementSetName) {
-		return FileUtils.encodeFileName(id)+"_"+elementSetName.toString()+".xml";
+		return this.encodeId(id)+"_"+elementSetName.toString()+".xml";
 	}
 	
 	/**
@@ -144,7 +161,7 @@ public class DefaultFileCache implements Cache, Serializable {
 	 * @return String
 	 */
 	protected String getRelativePath(String id, ElementSetName elementSetName) {
-		return id.substring(0, 1);
+		return this.encodeId(id).substring(0, 1);
 	}
 	
 	/**
@@ -156,7 +173,7 @@ public class DefaultFileCache implements Cache, Serializable {
 	protected String getAbsolutePath(String id, ElementSetName elementSetName) {
 		StringBuffer buf = new StringBuffer();
 		buf.append(this.getWorkPath()).append(File.separatorChar).
-			append(FileUtils.encodeFileName(this.getRelativePath(id, elementSetName)));
+			append(this.getRelativePath(id, elementSetName));
 		return new File(buf.toString()).getAbsolutePath();
 	}
 	
@@ -223,7 +240,7 @@ public class DefaultFileCache implements Cache, Serializable {
 	 */
 	public String getAbsoluteFilename(String id, ElementSetName elementSetName) {
 		StringBuffer buf = new StringBuffer();
-		buf.append(FileUtils.encodeFileName(this.getAbsolutePath(id, elementSetName))).append(File.separatorChar).
+		buf.append(this.getAbsolutePath(id, elementSetName)).append(File.separatorChar).
 			append(this.getFilename(id, elementSetName));
 		return new File(buf.toString()).getAbsolutePath();
 	}

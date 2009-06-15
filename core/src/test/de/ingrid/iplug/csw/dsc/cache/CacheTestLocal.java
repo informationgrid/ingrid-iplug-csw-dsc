@@ -60,7 +60,7 @@ public class CacheTestLocal extends TestCase {
 
 	public void testGetIds() throws Exception {
 
-		String[] ids = new String[]{
+		String[] ids = new String[] {
 				"1A0D667F-56E7-4EA7-9893-248F1658E0BF",
 				"1A1CBD95-23BB-47D6-90D2-8DBCFBA07E32"
 		};
@@ -92,11 +92,37 @@ public class CacheTestLocal extends TestCase {
 		assertTrue("The second record is removed.", !cachedIds.contains(ids[1]));
 	}
 
+	public void testEncoding() throws Exception {
+		
+		String id = "AAM 2005";
+		ElementSetName elementSetName = ElementSetName.BRIEF;
+		
+		this.putRecord(id, elementSetName);
+		
+		DefaultFileCache cache = (DefaultFileCache)this.setupCache();
+		File file = new File(cache.getAbsoluteFilename(id, elementSetName));
+		assertTrue("The record exists in the filesystem.", file.exists());
+		assertTrue("The record exists in the cache.", cache.isCached(id, elementSetName));
+		
+		// test get
+		CSWRecord record = cache.getRecord(id, elementSetName);
+		assertTrue("The cached record has the requested id.", id.equals(record.getId()));		
+
+		// test get ids
+		Set<String> cachedIds = cache.getCachedRecordIds();
+		assertTrue("The record is cached.", cachedIds.contains(id));
+		
+		// test remove
+		cache.removeRecord(id);
+		assertTrue("The record is removed from the cache.", !cache.isCached(id, elementSetName));
+	}
+
 	public void testRemoveAllRecords() throws Exception {
 
 		String[] ids = new String[]{
 				"1A0D667F-56E7-4EA7-9893-248F1658E0BF",
-				"1A1CBD95-23BB-47D6-90D2-8DBCFBA07E32"
+				"1A1CBD95-23BB-47D6-90D2-8DBCFBA07E32",
+				"AAM 2005"
 		};
 		
 		this.putRecord(ids[0], ElementSetName.BRIEF);
