@@ -671,16 +671,14 @@ function mapReferenceSystemInfo() {
 
 
 function transformGeneric(val, mappings, caseSensitive) {
-	for (var t in mappings) {
-		for (var key in t) {
-			if (caseSensitive) {
-				if (key == val) {
-					return t[key];
-				}
-			} else {
-				if (key.toLowerCase() == val.toLowerCase()) {
-					return t[key];
-				}
+	for (var key in mappings) {
+		if (caseSensitive) {
+			if (key == val) {
+				return mappings[key];
+			}
+		} else {
+			if (key.toLowerCase() == val.toLowerCase()) {
+				return mappings[key];
 			}
 		}
 	}
