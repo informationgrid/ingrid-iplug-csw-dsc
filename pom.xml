@@ -33,16 +33,12 @@
   <!-- ==================== DEPENDENCIES ==================== -->
   <dependencies>
     <dependency>
+      <groupId>junit</groupId>
+      <artifactId>junit</artifactId>
+    </dependency>
+    <dependency>
       <groupId>log4j</groupId>
       <artifactId>log4j</artifactId>
-    </dependency>
-    <dependency>
-      <groupId>de.ingrid</groupId>
-      <artifactId>ingrid-utils</artifactId>
-    </dependency>
-    <dependency>
-      <groupId>de.ingrid</groupId>
-      <artifactId>ingrid-iplug</artifactId>
     </dependency>
     <dependency>
       <groupId>quartz</groupId>
