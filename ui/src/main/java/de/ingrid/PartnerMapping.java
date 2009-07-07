@@ -36,7 +36,7 @@ public class PartnerMapping {
         fPartnersByInitials.put("bund", "Bund");
         fPartnersByInitials.put("bb", "Brandenburg");
         fPartnersByInitials.put("be", "Berlin");
-        fPartnersByInitials.put("bw", "Baden-Württemberg");
+        fPartnersByInitials.put("bw", "Baden-WÃ¼rttemberg");
         fPartnersByInitials.put("by", "Bayern");
         fPartnersByInitials.put("hb", "Bremen");
         fPartnersByInitials.put("he", "Hessen");
@@ -49,7 +49,7 @@ public class PartnerMapping {
         fPartnersByInitials.put("sl", "Saarland");
         fPartnersByInitials.put("sn", "Sachsen");
         fPartnersByInitials.put("st", "Sachsen-Anhalt");
-        fPartnersByInitials.put("th", "Thüringen");
+        fPartnersByInitials.put("th", "ThÃ¼ringen");
     }
     
     /**
