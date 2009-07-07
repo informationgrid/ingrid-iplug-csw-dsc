@@ -174,8 +174,8 @@
 		</dependency>
     </dependencies>
     <build>
-        <sourceDirectory>src/java</sourceDirectory>
-        <unitTestSourceDirectory>src/test</unitTestSourceDirectory>
+        <sourceDirectory>src/main/java</sourceDirectory>
+        <unitTestSourceDirectory>src/test/java</unitTestSourceDirectory>
         <unitTest>
             <includes>
                 <include>**/*Test.java</include>
@@ -183,7 +183,7 @@
         </unitTest>
         <resources>
             <resource>
-                <directory>src/conf</directory>
+                <directory>src/test/resources</directory>
                 <filtering>false</filtering>
             </resource>
         </resources>
