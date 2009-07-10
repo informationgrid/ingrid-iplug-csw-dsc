@@ -1,0 +1,44 @@
+<project name="PortalU Installation">
+    <description>
+        InGrid iPlug CSW-DSC Installation Script
+    </description>
+	<!-- set global properties for this build -->
+	<property name="componentName" 			value="${project.artifactId}-${project.version}"/>
+	<property name="xml-communication" 	value="${installDir}/conf/communication.xml"/>
+	
+	<target name="extract" description="Extract all files to the installation directory.">
+		<unzip src="${antinstaller.jar}" dest="${installDir}">
+			<patternset>
+				<include name="${componentName}/**/*.*"/>
+			</patternset>
+		</unzip>
+		
+		<move toDir="${installDir}">
+			<fileset dir="${installDir}/${componentName}"/>
+		</move>
+	</target>
+	
+	<target name="ibus" description="Set configuration correctly for the iBus.">
+		<echo>Schreibe iBus Konfiguration in communication.xml</echo>
+		<xmlproperty file="${xml-communication}" prefix="plugXML"/>
+		<replace file="${xml-communication}" token="${plugXML.communication.client(name)}" 								            value="${clientName}"/>
+		<replace file="${xml-communication}" token="${plugXML.communication.client.connections.server(name)}" 			  value="${serverName}"/>
+		<replace file="${xml-communication}" token="${plugXML.communication.client.connections.server.socket(ip)}" 	  value="${serverIp}"/>
+		<replace file="${xml-communication}" token="${plugXML.communication.client.connections.server.socket(port)}" 	value="${serverPort}"/>
+	</target>
+
+	<target name="startComponent">
+		<echo>
+=================
+Weiteres Vorgehen
+=================
+
+		</echo>
+		<echo>
+Gehen Sie ins Verzeichnis: ${installDir} und
+rufen sie von der Kommandozeile folgendes auf
+"sh start.sh start", um das iPlug zu starten.
+		</echo>
+	</target>
+	
+</project>

@@ -1,5 +1,0 @@
-1) create a file with name "build.properties" in your root-directory of this project.
-	this file must contains:
-		APACHE.USER=XXX
-		APACHE.PASSWORD=XXX
-2) type: maven run
