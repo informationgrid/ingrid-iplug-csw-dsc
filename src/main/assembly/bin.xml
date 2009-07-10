@@ -1,21 +1,47 @@
 <?xml version="1.0" encoding="utf-8"?>
 <assembly>
-  <id>bin</id>
+  <id>installer</id>
   <formats>
-    <format>tar.gz</format>
+    <format>jar</format>
   </formats>
   <includeBaseDirectory>false</includeBaseDirectory>
+  <fileSets>
+    <fileSet>
+      <directory>core/src/main/release/conf</directory>
+      <outputDirectory>${project.artifactId}-${project.version}/conf</outputDirectory>
+    </fileSet>
+    <fileSet>
+      <directory>core/src/main/release/scripts</directory>
+      <outputDirectory>${project.artifactId}-${project.version}/</outputDirectory>
+    </fileSet>
+    <fileSet>
+      <directory>src/main/release/ant-installer</directory>
+      <outputDirectory>/</outputDirectory>
+      <filtered>true</filtered>
+    </fileSet>
+    <fileSet>
+      <directory>target/installer</directory>
+      <outputDirectory>/</outputDirectory>
+    </fileSet>
+    <fileSet>
+      <directory>target/site</directory>
+      <outputDirectory>${project.artifactId}-${project.version}/doc</outputDirectory>
+    </fileSet>
+  </fileSets>
   <moduleSets>
     <moduleSet>
       <includes>
         <include>de.ingrid:ingrid-iplug-csw-dsc</include>
       </includes>
       <binaries>
-        <outputDirectory>lib</outputDirectory>
+        <outputDirectory>${project.artifactId}-${project.version}/lib</outputDirectory>
         <unpack>false</unpack>
         <dependencySets>
           <dependencySet>
             <scope>runtime</scope>
+            <excludes>
+              <exclude>de.ingrid:ingrid-installer</exclude>
+            </excludes>
           </dependencySet>
         </dependencySets>
       </binaries>
@@ -25,7 +51,7 @@
         <include>de.ingrid:ingrid-iplug-csw-dsc-ui</include>
       </includes>
       <binaries>
-        <outputDirectory>webapp/step1</outputDirectory>
+        <outputDirectory>${project.artifactId}-${project.version}/webapp/step1</outputDirectory>
         <unpack>true</unpack>
         <includes>
           <include>target/*.war</include>
@@ -33,14 +59,4 @@
       </binaries>
     </moduleSet>
   </moduleSets>
-  <fileSets>
-    <fileSet>
-      <directory>core/src/main/release/conf</directory>
-      <outputDirectory>conf</outputDirectory>
-    </fileSet>
-    <fileSet>
-      <directory>core/src/main/release/scripts</directory>
-      <outputDirectory>/</outputDirectory>
-    </fileSet>
-  </fileSets>
 </assembly>
