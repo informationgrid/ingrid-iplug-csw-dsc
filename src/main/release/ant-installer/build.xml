@@ -37,7 +37,16 @@ Weiteres Vorgehen
 		<echo>
 Gehen Sie ins Verzeichnis: ${installDir} und
 rufen sie von der Kommandozeile folgendes auf
-"sh start.sh start", um das iPlug zu starten.
+"sh admin.sh". Sie können dann mit dem Browser
+unter "http://localhost:8082/step1" die plugdescription
+konfigurieren.
+
+Nach Erstellung der plugdescription starten Sie 
+das iPlug mit "sh start.sh start".
+
+Weitere Informationen entnehmen Sie bitte dem
+Online-Handbuch unter 
+http://www.kst.portalu.de/wiki/index.php/InGrid_Installation.
 		</echo>
 	</target>
 	
