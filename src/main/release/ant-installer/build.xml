@@ -37,12 +37,16 @@ Weiteres Vorgehen
 		<echo>
 Gehen Sie ins Verzeichnis: ${installDir} und
 rufen sie von der Kommandozeile folgendes auf
-"sh admin.sh". Sie können dann mit dem Browser
-unter "http://localhost:8082/step1" die plugdescription
-konfigurieren.
+"sh admin.sh", um im Webbrowser das iPlug unter
+der folgenden Adresse "http://localhost:8082/step1"
+zu konfigurieren. Anstelle von localhost koennen Sie
+auch die IP-Adresse des Computers eingeben!
 
-Nach Erstellung der plugdescription starten Sie 
-das iPlug mit "sh start.sh start".
+Danach beenden Sie den Prozess wieder (Strg+C) und
+rufen "sh start.sh start" auf, um das iPlug zu starten.
+
+Bevor das iPlug benutzt werden kann, muss es in der iBus-
+Administration (im Portal) eingeschaltet werden.
 
 Weitere Informationen entnehmen Sie bitte dem
 Online-Handbuch unter 
