@@ -63,6 +63,10 @@
       <artifactId>lucene</artifactId>
     </dependency>
     <dependency>
+          <groupId>commons-el</groupId>
+          <artifactId>commons-el</artifactId>
+    </dependency>
+    <dependency>
       <groupId>org.apache.axis2</groupId>
       <artifactId>axis2-kernel</artifactId>
       <exclusions>
