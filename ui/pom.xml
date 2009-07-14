@@ -30,6 +30,10 @@
           <groupId>lucene</groupId>
           <artifactId>lucene</artifactId>
         </exclusion>
+        <exclusion>
+          <groupId>commons-el</groupId>
+          <artifactId>commons-el</artifactId>
+        </exclusion>
       </exclusions>
     </dependency>
     <dependency>
@@ -115,6 +119,14 @@
         <exclusion>
           <groupId>uba</groupId>
           <artifactId>xtmStubs</artifactId>
+        </exclusion>
+        <exclusion>
+          <groupId>ant</groupId>
+          <artifactId>ant</artifactId>
+        </exclusion>
+        <exclusion>
+          <groupId>net.sf.ehcache</groupId>
+          <artifactId>ehcache</artifactId>
         </exclusion>
       </exclusions>
     </dependency>
