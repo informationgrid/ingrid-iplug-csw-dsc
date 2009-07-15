@@ -34,7 +34,7 @@ public class GenericRecord implements CSWRecord {
 		this.elementSetName = elementSetName;
 
 		// get the record id
-		NodeList idNodes = XPathUtils.getNodeList(this.node, "//fileIdentifier/CharacterString");
+		NodeList idNodes = XPathUtils.getNodeList(this.node, "//gmd:fileIdentifier/gco:CharacterString");
 		if (idNodes == null || idNodes.item(0) == null)
 			throw new RuntimeException("CSWRecord does not contain an id (looking for //fileIdentifier/CharacterString):\n"+StringUtils.nodeToString(this.node));
 		if (idNodes.getLength() > 1)

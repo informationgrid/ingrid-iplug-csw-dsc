@@ -25,14 +25,14 @@ public class GenericCapabilities implements CSWCapabilities {
 	public void initialize(Document capDoc) {
 		
 		// check if capDoc is a valid capabilities document
-		Node rootNode = XPathUtils.getNode(capDoc, "Capabilities");
+		Node rootNode = XPathUtils.getNode(capDoc, "//csw:Capabilities");
 		if (rootNode != null) {
 			this.capDoc = capDoc;
 		}
 		else {
 			// check if capDoc is an ExceptionReport 
-			String exStr = "The returned document is not a Capabilities document";
-			Node exNode = XPathUtils.getNode(capDoc, "ExceptionReport/Exception/ExceptionText");
+			String exStr = "The returned document is not a Capabilities document. Node 'Capabilities' could not be found.";
+			Node exNode = XPathUtils.getNode(capDoc, "ows:ExceptionReport/ows:Exception/ows:ExceptionText");
 			if (exNode != null) {
 				exStr += ": "+exNode.getTextContent();
 			}
@@ -45,7 +45,7 @@ public class GenericCapabilities implements CSWCapabilities {
 
 		int supportingOperations = 0;
 		
-		NodeList operationNodes = XPathUtils.getNodeList(capDoc, "Capabilities/OperationsMetadata/Operation[@name]");
+		NodeList operationNodes = XPathUtils.getNodeList(capDoc, "//csw:Capabilities/ows:OperationsMetadata/ows:Operation[@name]");
 		// compare supported operations with requested
 		if (operationNodes != null) {
 			Collection<String> requestedOperations = Arrays.asList(operations);
@@ -60,7 +60,7 @@ public class GenericCapabilities implements CSWCapabilities {
 
 	@Override
 	public boolean isSupportingIsoProfiles() {
-		NodeList constraintNodes = XPathUtils.getNodeList(capDoc, "Capabilities/OperationsMetadata/Operation/Constraint[@name='IsoProfiles']");
+		NodeList constraintNodes = XPathUtils.getNodeList(capDoc, "//csw:Capabilities/ows:OperationsMetadata/ows:Operation/ows:Constraint[@name='IsoProfiles']");
 		return constraintNodes.getLength() > 0;
 	}
 
@@ -68,12 +68,12 @@ public class GenericCapabilities implements CSWCapabilities {
 	public String getOperationUrl(Operation op) {
 		
 		// extract the operation url from the OperationsMetadata element
-		NodeList postNodes = XPathUtils.getNodeList(capDoc, "Capabilities/OperationsMetadata/Operation[@name='"+op+"']/DCP/HTTP/Post");
+		NodeList postNodes = XPathUtils.getNodeList(capDoc, "//csw:Capabilities/ows:OperationsMetadata/ows:Operation[@name='"+op+"']/ows:DCP/ows:HTTP/ows:Post");
 		
 		// if there are multiple POST nodes, we choose the one with the SOAP PostEncoding constraint
 		Node postNode = null;
 		if (postNodes.getLength() > 1) {
-			postNode = XPathUtils.getNode(capDoc, "Capabilities/OperationsMetadata/Operation[@name='"+op+"']/DCP/HTTP/Post[Constraint[@name='PostEncoding']/Value='SOAP']");
+			postNode = XPathUtils.getNode(capDoc, "//csw:Capabilities/ows:OperationsMetadata/ows:Operation[@name='"+op+"']/ows:DCP/ows:HTTP/ows:Post[ows:Constraint[@name='PostEncoding']/ows:Value='SOAP']");
 		}
 
 		if (postNode != null) {

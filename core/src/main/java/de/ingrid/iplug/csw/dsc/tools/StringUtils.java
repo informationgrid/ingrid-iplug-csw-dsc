@@ -54,6 +54,7 @@ public class StringUtils {
 	
 	public static Document stringToDocument(String string) throws Exception {
         DocumentBuilderFactory domFactory = DocumentBuilderFactory.newInstance();
+        domFactory.setNamespaceAware(true);
         DocumentBuilder builder = domFactory.newDocumentBuilder();
 	    InputSource inStream = new InputSource();
 	    inStream.setCharacterStream(new StringReader(string));

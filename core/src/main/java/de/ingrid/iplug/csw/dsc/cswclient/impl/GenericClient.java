@@ -109,7 +109,7 @@ public class GenericClient implements CSWClient {
 			Document responseDoc = factory.createRequest(Operation.GET_RECORD_BY_ID).doGetRecordById(opUrl, query);
 			
 			// extract the record from the response
-			Node recordNode = XPathUtils.getNode(responseDoc, "GetRecordByIdResponse/child::*");
+			Node recordNode = XPathUtils.getNode(responseDoc, "//csw:GetRecordByIdResponse/child::*");
 			
 			CSWRecord record = factory.createRecord();
 			record.initialize(query.getElementSetName(), recordNode);

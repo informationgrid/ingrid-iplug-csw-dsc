@@ -31,11 +31,11 @@ public class GenericSearchResult implements CSWSearchResult {
 		this.records = new ArrayList<CSWRecord>();
 		
 		// parse the document and create the record list
-		Integer numMatched = XPathUtils.getInt(document, "GetRecordsResponse/SearchResults/@numberOfRecordsMatched");
+		Integer numMatched = XPathUtils.getInt(document, "//csw:GetRecordsResponse/csw:SearchResults/@numberOfRecordsMatched");
 		if (numMatched != null) {
 			this.recordsTotal = numMatched.intValue();
 			
-			NodeList recordNodes = XPathUtils.getNodeList(document, "GetRecordsResponse/SearchResults/child::*");
+			NodeList recordNodes = XPathUtils.getNodeList(document, "//csw:GetRecordsResponse/csw:SearchResults/child::*");
 			if (recordNodes != null) {
 				for (int i=0; i<recordNodes.getLength(); i++) {
 					// create the record

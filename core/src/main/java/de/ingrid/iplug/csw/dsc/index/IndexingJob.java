@@ -1,7 +1,9 @@
 package de.ingrid.iplug.csw.dsc.index;
 
 import java.io.File;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -22,6 +24,8 @@ import de.ingrid.utils.PlugDescription;
 public class IndexingJob implements StatefulJob {
 
 	private static Log LOGGER = LogFactory.getLog(IndexingJob.class);
+	
+	private String pdPath = null;
 
 	public void execute(JobExecutionContext context)
 			throws JobExecutionException {
@@ -30,7 +34,12 @@ public class IndexingJob implements StatefulJob {
 		
 		Cache tmpCache = null;
 		try {
-			PlugDescription plugDescription = PlugServer.getPlugDescription();
+			PlugDescription plugDescription = null;
+			if (pdPath == null) {
+				plugDescription = PlugServer.getPlugDescription();
+			} else {
+				plugDescription = PlugServer.getPlugDescription(pdPath);
+			}
 			File file = plugDescription.getWorkinDirectory();
 
 			// get instances from spring configuration
@@ -76,9 +85,25 @@ public class IndexingJob implements StatefulJob {
      * @throws Exception
      */
     public static void main(String[] args) throws Exception {
-        
+        Map arguments = readParameters(args);
     	IndexingJob job = new IndexingJob();
+        if (arguments.containsKey("--plugdescription")) {
+        	job.pdPath = (String) arguments.get("--plugdescription");
+        }
     	job.execute(null);
     }	
+    
+    private static Map readParameters(String[] args) {
+        Map argumentMap = new HashMap();
+        // convert and validate the supplied arguments
+        if (2 != args.length && 4 != args.length) {
+            System.exit(1);
+        }
+        for (int i = 0; i < args.length; i = i + 2) {
+            argumentMap.put(args[i], args[i + 1]);
+        }
+        return argumentMap;
+    }
+
 	
 }

@@ -1,5 +1,6 @@
 package de.ingrid.iplug.csw.dsc.tools;
 
+import javax.xml.namespace.NamespaceContext;
 import javax.xml.xpath.XPath;
 import javax.xml.xpath.XPathConstants;
 import javax.xml.xpath.XPathExpressionException;
@@ -15,12 +16,16 @@ public class XPathUtils {
 	final protected static Log log = LogFactory.getLog(XPathUtils.class);
 
 	private static XPath xpath = null;
+	
+	private static NamespaceContext nsContext = new Csw202NamespaceContext();
 
-	private XPathUtils() {}
-
+	private XPathUtils() {
+	}
+	
 	public static XPath getXPathInstance() {
 		if (xpath == null) {
 			xpath = createNewXPathInstance();
+			xpath.setNamespaceContext(nsContext);
 		}
 
 		return xpath;
