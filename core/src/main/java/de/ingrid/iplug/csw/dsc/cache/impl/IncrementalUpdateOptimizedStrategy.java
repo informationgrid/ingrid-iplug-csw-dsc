@@ -25,8 +25,8 @@ import de.ingrid.iplug.csw.dsc.cswclient.CSWQuery;
 import de.ingrid.iplug.csw.dsc.cswclient.CSWRecord;
 import de.ingrid.iplug.csw.dsc.cswclient.constants.ElementSetName;
 import de.ingrid.iplug.csw.dsc.tools.StringUtils;
-import de.ingrid.iplug.csw.dsc.tools.UtilsCSWDate;
 import de.ingrid.iplug.csw.dsc.tools.XPathUtils;
+import de.ingrid.utils.udk.UtilsCSWDate;
 import de.ingrid.utils.udk.UtilsDate;
 
 /**

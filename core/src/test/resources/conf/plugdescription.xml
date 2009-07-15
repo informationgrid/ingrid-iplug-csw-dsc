@@ -54,9 +54,11 @@
   <string>serviceUrl</string>
 <!-- <string><![CDATA[http://gdi-de.sdisuite.de/soapServices/services/CSWDiscovery]]></string> -->  
 <!-- <string><![CDATA[http://demo.disy.net/preludio2.lubw/servants/de/disy/preludio2/service/cat/csw/v_2_0_2/GetCapabilitiesServant$Get?REQUEST=GetCapabilities&SERVICE=CSW&VERSION=2.0.2]]></string>  -->  
-<!-- <string><![CDATA[http://ripsmdk.lubw.baden-wuerttemberg.de/lubw/servants/de/disy/preludio2/service/cat/csw/v_2_0_2/GetCapabilitiesServant$Get?REQUEST=GetCapabilities&version=2.0.2&service=CSW&outputFormat=text/xml]]></string>
-<string><![CDATA[http://ripsmdk.lubw.baden-wuerttemberg.de/lubw/servants/de/disy/preludio2/service/cat/csw/v_2_0_2/GetCapabilitiesServant$Get?REQUEST=GetCapabilities&version=2.0.2&service=CSW&outputFormat=text/xml]]></string>  -->
-  <string><![CDATA[http://uok-test.bayern.de/fsystem/open/csw202/Inspire?REQUEST=GetCapabilities&SERVICE=CSW&VERSION=2.0.2]]></string>  
+<!-- <string><![CDATA[http://ripsmdk.lubw.baden-wuerttemberg.de/lubw/servants/de/disy/preludio2/service/cat/csw/v_2_0_2/GetCapabilitiesServant$Get?REQUEST=GetCapabilities&version=2.0.2&service=CSW&outputFormat=text/xml]]></string> -->
+<!-- <string><![CDATA[http://ripsmdk.lubw.baden-wuerttemberg.de/lubw/servants/de/disy/preludio2/service/cat/csw/v_2_0_2/GetCapabilitiesServant$Get?REQUEST=GetCapabilities&version=2.0.2&service=CSW&outputFormat=text/xml]]></string> -->  
+<!-- <string><![CDATA[http://uok-test.bayern.de/fsystem/open/csw202/Inspire?REQUEST=GetCapabilities&SERVICE=CSW&VERSION=2.0.2]]></string>  -->
+<string><![CDATA[http://iers1.bkg.bund.de:8080/mdk_csw/mdk_csw?REQUEST=GetCapabilities]]></string>  
+    
   <string>personSureName</string>
   <string>Mueller</string>
   <string>dataType</string>
