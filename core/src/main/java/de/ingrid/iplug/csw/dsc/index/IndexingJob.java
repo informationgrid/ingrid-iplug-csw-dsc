@@ -95,10 +95,6 @@ public class IndexingJob implements StatefulJob {
     
     private static Map readParameters(String[] args) {
         Map argumentMap = new HashMap();
-        // convert and validate the supplied arguments
-        if (2 != args.length && 4 != args.length) {
-            System.exit(1);
-        }
         for (int i = 0; i < args.length; i = i + 2) {
             argumentMap.put(args[i], args[i + 1]);
         }
