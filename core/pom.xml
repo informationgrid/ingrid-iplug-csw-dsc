@@ -68,16 +68,6 @@
     </dependency>
     <dependency>
       <groupId>org.apache.axis2</groupId>
-      <artifactId>axis2-jaxws-api</artifactId>
-      <version>1.4.1</version>
-    </dependency>
-    <dependency>
-      <groupId>org.apache.axis2</groupId>
-      <artifactId>axis2-jaxws</artifactId>
-      <version>1.4.1</version>
-    </dependency>
-    <dependency>
-      <groupId>org.apache.axis2</groupId>
       <artifactId>axis2-kernel</artifactId>
       <exclusions>
         <exclusion>
@@ -95,10 +85,6 @@
         <exclusion>
           <groupId>org.apache.ws.commons.axiom</groupId>
           <artifactId>axiom-dom</artifactId>
-        </exclusion>
-        <exclusion>
-          <groupId>commons-fileupload</groupId>
-          <artifactId>commons-fileupload</artifactId>
         </exclusion>
         <exclusion>
           <groupId>commons-io</groupId>
@@ -171,6 +157,65 @@
         <exclusion>
           <groupId>xml-apis</groupId>
           <artifactId>xml-apis</artifactId>
+        </exclusion>
+      </exclusions>
+    </dependency>
+    <dependency>
+      <groupId>org.apache.axis2</groupId>
+      <artifactId>axis2-jaxws-api</artifactId>
+      <version>1.4.1</version>
+      <exclusions>
+        <exclusion>
+          <groupId>commons-io</groupId>
+          <artifactId>commons-io</artifactId>
+        </exclusion>
+        <exclusion>
+          <groupId>commons-logging</groupId>
+          <artifactId>commons-logging</artifactId>
+        </exclusion>
+        <exclusion>
+          <groupId>org.apache.ws.commons.axiom</groupId>
+          <artifactId>axiom-api</artifactId>
+        </exclusion>
+        <exclusion>
+          <groupId>org.apache.ws.commons.axiom</groupId>
+          <artifactId>axiom-impl</artifactId>
+        </exclusion>
+        <exclusion>
+          <groupId>org.apache.ws.commons.axiom</groupId>
+          <artifactId>axiom-dom</artifactId>
+        </exclusion>
+        <exclusion>
+          <groupId>xerces</groupId>
+          <artifactId>xercesImpl</artifactId>
+        </exclusion>
+        <exclusion>
+          <groupId>javax.mail</groupId>
+          <artifactId>mail</artifactId>
+        </exclusion>
+        <exclusion>
+          <groupId>org.codehaus.woodstox</groupId>
+          <artifactId>wstx-asl</artifactId>
+        </exclusion>
+        <exclusion>
+          <groupId>xalan</groupId>
+          <artifactId>xalan</artifactId>
+        </exclusion>
+        <exclusion>
+          <groupId>org.apache.geronimo.specs</groupId>
+          <artifactId>geronimo-stax-api_1.0_spec</artifactId>
+        </exclusion>
+        <exclusion>
+          <groupId>org.apache.axis2</groupId>
+          <artifactId>axis2-saaj-api</artifactId>
+        </exclusion>
+        <exclusion>
+          <groupId>jaxen</groupId>
+          <artifactId>jaxen</artifactId>
+        </exclusion>
+        <exclusion>
+          <groupId>javax.xml.bind</groupId>
+          <artifactId>jaxb-api</artifactId>
         </exclusion>
       </exclusions>
     </dependency>
