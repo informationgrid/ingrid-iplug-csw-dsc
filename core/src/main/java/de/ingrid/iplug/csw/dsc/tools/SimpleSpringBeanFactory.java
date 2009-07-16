@@ -18,7 +18,7 @@ public enum SimpleSpringBeanFactory {
 	
 	public <T> T getBean(String beanName, Class<T> clazz) {
 		if (util == null) {
-			util = new SpringUtil("spring/beans.xml");
+			util = new SpringUtil("spring/spring.xml");
 		}
 		return util.getBean(beanName, clazz);
     }
