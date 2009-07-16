@@ -140,7 +140,7 @@ var transformationDescriptions = [
 			"xpath":"//gmd:distributionInfo/gmd:MD_Distribution/gmd:distributor/gmd:MD_Distributor/gmd:distributionOrderProcess/gmd:MD_StandardOrderProcess/gmd:orderingInstructions/gco:CharacterString"
 		},
 		{	"indexField":"t01_object.mod_time",
-			"xpath":"//gmd:dateStamp/gco:DateTime",
+			"xpath":"//gmd:dateStamp/gco:DateTime | //gmd:dateStamp/gco:Date[not(../gco:DateTime)]",
 			"transform":{
 				"funct":UtilsCSWDate.mapDateFromIso8601ToIndex
 			}
@@ -269,10 +269,10 @@ var transformationDescriptions = [
 			}
 		},
 		{	"indexField":"t011_obj_geo.rec_exact",
-			"xpath":"//gmd:dataQualityInfo/gmd:DQ_DataQuality/report/gmd:DQ_RelativeInternalPositionalAccuracy/gmd:DQ_QuantitativeResult/gmd:value/gmd:Record"
+			"xpath":"//gmd:dataQualityInfo/gmd:DQ_DataQuality/report/gmd:DQ_RelativeInternalPositionalAccuracy/gmd:DQ_QuantitativeResult/gmd:value/gco:Record"
 		},
 		{	"indexField":"t011_obj_geo.rec_grade",
-			"xpath":"//gmd:dataQualityInfo/gmd:DQ_DataQuality/report/DQ_CompletenessCommission/gmd:DQ_QuantitativeResult/gmd:value/gmd:Record"
+			"xpath":"//gmd:dataQualityInfo/gmd:DQ_DataQuality/report/DQ_CompletenessCommission/gmd:DQ_QuantitativeResult/gmd:value/gco:Record"
 		},
 		{	"indexField":"t011_obj_geo.hierarchy_level",
 			"xpath":"//gmd:hierarchyLevel/gmd:MD_ScopeCode/@codeListValue",

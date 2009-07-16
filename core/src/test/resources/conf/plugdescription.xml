@@ -1,30 +1,30 @@
 <de.ingrid.utils.PlugDescription>
-  <int>28</int>
+  <int>27</int>
   <string>cronPattern_time</string>
-  <string>0 0 18</string>
+  <string>never</string>
+  <string>directData</string>
+  <string>false</string>
   <string>IPLUG_ADMIN_GUI_PORT</string>
-  <int>8184</int>
+  <int>8089</int>
   <string>busUrls</string>
   <list>
     <string>/torwald-group:torwald-ibus</string>
   </list>
   <string>organisationAbbr</string>
-  <string>bu_kug</string>
+  <string>rp_luwg</string>
   <string>dataSourceDescription</string>
-  <string>CSW DSC Test iPlug, connected to http://gdi-de.sdisuite.de/soapServices/services/CSWDiscovery&#x0D;
-&#x0D;
-</string>
+  <string></string>
   <string>personName</string>
   <string>Joachim</string>
   <string>md5Hash</string>
-  <string>/torwald-group:csw-dsc-jm_</string>
+  <string>/ingrid-group:iplug-csw-dsc-jmjm</string>
   <string>personMail</string>
   <string>joachim@wemove.com</string>
   <string>personPhone</string>
-  <string>069-759003-0</string>
+  <string>0345 5 222 702</string>
   <string>partner</string>
   <list>
-    <string>bund</string>
+    <string>sl</string>
   </list>
   <string>fields</string>
   <list>
@@ -34,51 +34,41 @@
     <string>object_access.terms_of_use</string>
   </list>
   <string>IPLUG_ADMIN_GUI_URL</string>
-  <string>http://harrison.its-technidata.de/csw-dsc-harrison-sdi-suite/step1</string>
+  <string>http://localhost/</string>
   <string>workingDirectory</string>
-  <string>./</string>
+  <string>c:\ingrid-iplug-csw-dsc-1.1.0-SNAPSHOT\.</string>
   <string>proxyServiceUrl</string>
-  <string>/torwald-group:csw-dsc-jm_</string>
-  <string>useIndex</string>
-  <string>true</string>
+  <string>/ingrid-group:iplug-csw-dsc-jmjm</string>
   <string>cronPattern_day</string>
-  <string>* * ?</string>
+  <string>never</string>
   <string>organisation</string>
-  <string>Koordinierungsstelle PortalU</string>
+  <string>Landesamt f�r Umwelt, Wasserwirtschaft und Gewerbeaufsicht Rheinland-Pfalz</string>
   <string>provider</string>
   <list>
-    <string>bu_kug</string>
+    <string>rp_luwg</string>
   </list>
   <string>dataSourceName</string>
-  <string>wemove CSW-DSC Test iPlug</string>
+  <string>csw dsc joachims test</string>
   <string>serviceUrl</string>
-<!-- <string><![CDATA[http://gdi-de.sdisuite.de/soapServices/services/CSWDiscovery]]></string> -->  
-<!-- <string><![CDATA[http://demo.disy.net/preludio2.lubw/servants/de/disy/preludio2/service/cat/csw/v_2_0_2/GetCapabilitiesServant$Get?REQUEST=GetCapabilities&SERVICE=CSW&VERSION=2.0.2]]></string>  -->  
-<!-- <string><![CDATA[http://ripsmdk.lubw.baden-wuerttemberg.de/lubw/servants/de/disy/preludio2/service/cat/csw/v_2_0_2/GetCapabilitiesServant$Get?REQUEST=GetCapabilities&version=2.0.2&service=CSW&outputFormat=text/xml]]></string> -->
-<!-- <string><![CDATA[http://ripsmdk.lubw.baden-wuerttemberg.de/lubw/servants/de/disy/preludio2/service/cat/csw/v_2_0_2/GetCapabilitiesServant$Get?REQUEST=GetCapabilities&version=2.0.2&service=CSW&outputFormat=text/xml]]></string> -->  
-<!-- <string><![CDATA[http://uok-test.bayern.de/fsystem/open/csw202/Inspire?REQUEST=GetCapabilities&SERVICE=CSW&VERSION=2.0.2]]></string>  -->
-<string><![CDATA[http://iers1.bkg.bund.de:8080/mdk_csw/mdk_csw?REQUEST=GetCapabilities]]></string>  
-    
-  <string>personSureName</string>
-  <string>Mueller</string>
+  <string>http://uok-test.bayern.de/fsystem/open/csw202/Inspire?REQUEST=GetCapabilities&amp;SERVICE=CSW&amp;VERSION=2.0.2</string>
   <string>dataType</string>
   <list>
     <string>dsc_ecs</string>
     <string>default</string>
     <string>metadata</string>
   </list>
+  <string>personSureName</string>
+  <string>Mueller</string>
   <string>personTitle</string>
   <string></string>
   <string>iPlugClass</string>
   <string>de.ingrid.iplug.csw.dsc.index.DSCSearcher</string>
-  <string>IPLUG_ADMIN_PASSWORD</string>
-  <string>admin</string>
+  <string>updateStrategy</string>
+  <string>incremental-optimized</string>
   <string>ranking</string>
   <list>
     <string>score</string>
   </list>
-	<string>updateStrategy</string>
-	<string>incremental-optimized</string> <!-- default|incremental|incremental-optimized -->
-	<string>directData</string>
-	<boolean>false</boolean>
+  <string>IPLUG_ADMIN_PASSWORD</string>
+  <string>admin</string>
 </de.ingrid.utils.PlugDescription>

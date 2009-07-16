@@ -162,7 +162,7 @@
     </dependency>
     <dependency>
       <groupId>org.apache.axis2</groupId>
-      <artifactId>axis2-jaxws-api</artifactId>
+      <artifactId>axis2-jaxws</artifactId>
       <version>1.4.1</version>
       <exclusions>
         <exclusion>
@@ -206,8 +206,24 @@
           <artifactId>geronimo-stax-api_1.0_spec</artifactId>
         </exclusion>
         <exclusion>
+          <groupId>org.apache.geronimo.specs</groupId>
+          <artifactId>geronimo-annotation_1.0_spec</artifactId>
+        </exclusion>
+        <exclusion>
           <groupId>org.apache.axis2</groupId>
           <artifactId>axis2-saaj-api</artifactId>
+        </exclusion>
+        <exclusion>
+          <groupId>org.apache.axis2</groupId>
+          <artifactId>axis2-saaj</artifactId>
+        </exclusion>
+        <exclusion>
+          <groupId>org.apache.axis2</groupId>
+          <artifactId>axis2-metadata</artifactId>
+        </exclusion>
+        <exclusion>
+          <groupId>org.apache.axis2</groupId>
+          <artifactId>axis2-jaxws-api</artifactId>
         </exclusion>
         <exclusion>
           <groupId>jaxen</groupId>
@@ -216,6 +232,22 @@
         <exclusion>
           <groupId>javax.xml.bind</groupId>
           <artifactId>jaxb-api</artifactId>
+        </exclusion>
+        <exclusion>
+          <groupId>com.sun.xml.bind</groupId>
+          <artifactId>jaxb-impl</artifactId>
+        </exclusion>
+        <exclusion>
+          <groupId>com.sun.xml.bind</groupId>
+          <artifactId>jaxb-xjc</artifactId>
+        </exclusion>
+        <exclusion>
+          <groupId>javax.servlet</groupId>
+          <artifactId>servlet-api</artifactId>
+        </exclusion>
+        <exclusion>
+          <groupId>xml-resolver</groupId>
+          <artifactId>xml-resolver</artifactId>
         </exclusion>
       </exclusions>
     </dependency>

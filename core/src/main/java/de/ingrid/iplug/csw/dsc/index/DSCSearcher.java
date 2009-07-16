@@ -152,10 +152,12 @@ public class DSCSearcher extends AbstractSearcher {
 	 * @return boolean
 	 */
 	protected boolean supportsDirectData() {
-		if (this.fPlugDescription != null)
-			return this.fPlugDescription.getBoolean(ConfigurationKeys.PLUGDESCRIPTION_KEY_DIRECT_DATA) == Boolean.TRUE;
-		else
+		if (this.fPlugDescription != null) {
+			String directData = this.fPlugDescription.getString(ConfigurationKeys.PLUGDESCRIPTION_KEY_DIRECT_DATA);
+			return directData != null && directData.equalsIgnoreCase("true");
+		} else {
 			return false;
+		}
 	}
 
 	/**

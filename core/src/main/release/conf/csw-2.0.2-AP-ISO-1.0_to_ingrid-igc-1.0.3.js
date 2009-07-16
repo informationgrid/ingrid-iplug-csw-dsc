@@ -24,37 +24,37 @@ var mappingDescription =
 	  			{
 					"field":"obj_uuid",
 					"indexName":"t01_object.obj_id",
-					"xpath":"//fileIdentifier/CharacterString"
+					"xpath":"//gmd:fileIdentifier/gco:CharacterString"
 				},
 				{
 					"field":"obj_name",
 					"indexName":"title",
-					"xpath":"//identificationInfo//citation/CI_Citation/title/CharacterString"
+					"xpath":"//gmd:identificationInfo//gmd:citation/gmd:CI_Citation/gmd:title/gco:CharacterString"
 				},
 				{
 					"field":"org_obj_id",
-					"xpath":"//fileIdentifier/CharacterString"
+					"xpath":"//gmd:fileIdentifier/gco:CharacterString"
 				},
 				{
 					"field":"obj_descr",
 					"indexName":"summary",
-					"xpath":"//identificationInfo//abstract/CharacterString"
+					"xpath":"//gmd:identificationInfo//gmd:abstract/gco:CharacterString"
 				},
 				{
 					"field":"info_note",
-					"xpath":"//identificationInfo//purpose/CharacterString"
+					"xpath":"//gmd:identificationInfo//gmd:purpose/gco:CharacterString"
 				},
 				{
 					"field":"loc_descr",
-					"xpath":"//identificationInfo//EX_Extent/description/CharacterString"
+					"xpath":"//gmd:identificationInfo//gmd:EX_Extent/gmd:description/gco:CharacterString"
 				},
 				{
 					"field":"dataset_alternate_name",
-					"xpath":"//identificationInfo//citation/CI_Citation/alternateTitle/CharacterString"
+					"xpath":"//gmd:identificationInfo//gmd:citation/gmd:CI_Citation/gmd:alternateTitle/gco:CharacterString"
 				},
 				{
 					"field":"time_status",
-					"xpath":"//identificationInfo//status/MD_ProgressCode/@codeListValue",
+					"xpath":"//gmd:identificationInfo//gmd:status/gmd:MD_ProgressCode/@codeListValue",
 					"transform":{
 						"funct":transformToIgcDomainId,
 						"params":[523]
@@ -62,14 +62,14 @@ var mappingDescription =
 				},
 				{
 					"field":"obj_class",
-					"xpath":"//hierarchyLevel/MD_ScopeCode/@codeListValue",
+					"xpath":"//gmd:hierarchyLevel/gmd:MD_ScopeCode/@codeListValue",
 					"transform":{
 						"funct":getObjectClassFromHierarchyLevel
 					}
 				},
 				{
 					"field":"dataset_character_set",
-					"xpath":"//identificationInfo//characterSet/MD_CharacterSetCode/@codeListValue",
+					"xpath":"//gmd:identificationInfo//gmd:characterSet/gmd:MD_CharacterSetCode/@codeListValue",
 					"transform":{
 						"funct":transformToIgcDomainId,
 						"params":[510]
@@ -77,18 +77,18 @@ var mappingDescription =
 				},
 				{
 					"field":"dataset_usage",
-					"xpath":"//identificationInfo//resourceSpecificUsage/MD_Usage/specificUsage/CharacterString"
+					"xpath":"//gmd:identificationInfo//gmd:resourceSpecificUsage/gmd:MD_Usage/gmd:specificUsage/gco:CharacterString"
 				},
 				{
 					"field":"data_language_code",
-					"xpath":"//identificationInfo//language/CharacterString",
+					"xpath":"//gmd:identificationInfo//gmd:language/gco:CharacterString",
 					"transform":{
 						"funct":transformISO639_2ToISO639_1
 					}
 				},
 				{
 					"field":"metadata_character_set",
-					"xpath":"//characterSet/MD_CharacterSetCode/@codeListValue",
+					"xpath":"//gmd:characterSet/gmd:MD_CharacterSetCode/@codeListValue",
 					"transform":{
 						"funct":transformToIgcDomainId,
 						"params":[510]
@@ -96,30 +96,30 @@ var mappingDescription =
 				},
 				{
 					"field":"metadata_standard_name",
-					"xpath":"//metadataStandardName/CharacterString"
+					"xpath":"//gmd:metadataStandardName/gco:CharacterString"
 				},
 				{
 					"field":"metadata_standard_version",
-					"xpath":"//metadataStandardVersion/CharacterString"
+					"xpath":"//gmd:metadataStandardVersion/gco:CharacterString"
 				},
 				{
 					"field":"metadata_language_code",
-					"xpath":"MD_Metadata/language/CharacterString",
+					"xpath":"gmd:MD_Metadata/gmd:language/gco:CharacterString",
 					"transform":{
 						"funct":transformISO639_2ToISO639_1
 					}
 				},
 				{
 					"field":"vertical_extent_minimum",
-					"xpath":"//identificationInfo//extent/EX_Extent/verticalElement/EX_VerticalExtent/minimumValue/Real"
+					"xpath":"//gmd:identificationInfo//gmd:extent/gmd:EX_Extent/gmd:verticalElement/gmd:EX_VerticalExtent/gmd:minimumValue/gco:Real"
 				},
 				{
 					"field":"vertical_extent_maximum",
-					"xpath":"//identificationInfo//extent/EX_Extent/verticalElement/EX_VerticalExtent/maximumValue/Real"
+					"xpath":"//gmd:identificationInfo//gmd:extent/gmd:EX_Extent/gmd:verticalElement/gmd:EX_VerticalExtent/gmd:maximumValue/gco:Real"
 				},
 				{
 					"field":"vertical_extent_unit",
-					"xpath":"//identificationInfo//EX_Extent/verticalElement/EX_VerticalExtent/verticalCRS/VerticalCRS/verticalCS/VerticalCS/axis/CoordinateSystemAxis/@uom",
+					"xpath":"//gmd:identificationInfo//gmd:EX_Extent/gmd:verticalElement/gmd:EX_VerticalExtent/gmd:verticalCRS/gmd:VerticalCRS/gmd:verticalCS/gml:VerticalCS/gml:axis/gml:CoordinateSystemAxis/@uom",
 					"transform":{
 						"funct":transformToIgcDomainId,
 						"params":[102]
@@ -127,7 +127,7 @@ var mappingDescription =
 				},
 				{
 					"field":"vertical_extent_vdatum",
-					"xpath":"//identificationInfo//EX_Extent/verticalElement/EX_VerticalExtent/verticalCRS/VerticalCRS/verticalDatum/VerticalDatum/identifier",
+					"xpath":"//gmd:identificationInfo//gmd:EX_Extent/gmd:verticalElement/gmd:EX_VerticalExtent/gmd:verticalCRS/gml:VerticalCRS/gml:verticalDatum/gml:VerticalDatum/gml:identifier",
 					"transform":{
 						"funct":transformToIgcDomainId,
 						"params":[101, true]
@@ -135,11 +135,11 @@ var mappingDescription =
 				},
 				{
 					"field":"ordering_instructions",
-					"xpath":"//distributionInfo/MD_Distribution/distributor/MD_Distributor/distributionOrderProcess/MD_StandardOrderProcess/orderingInstructions/CharacterString"
+					"xpath":"//gmd:distributionInfo/gmd:MD_Distribution/gmd:distributor/gmd:MD_Distributor/gmd:distributionOrderProcess/gmd:MD_StandardOrderProcess/gmd:orderingInstructions/gco:CharacterString"
 				},
 				{
 					"field":"mod_time",
-					"xpath":"//dateStamp/DateTime | //dateStamp/Date[not(../DateTime)]",
+					"xpath":"//gmd:dateStamp/gco:DateTime | //gmd:dateStamp/gco:Date[not(../gco:DateTime)]",
 					"transform":{
 						"funct":UtilsCSWDate.mapDateFromIso8601ToIndex
 					}
@@ -168,12 +168,12 @@ var mappingDescription =
 			"subrecords":[
 				{
 			    "table":"object_access",
-			    "xpath":"//identificationInfo//resourceConstraints",
+			    "xpath":"//gmd:identificationInfo//gmd:resourceConstraints",
 				"line":true,
 			    "fieldMappings":[
 	    	  		{
     					"field":"restriction_key",
-    					"xpath":"//otherConstraints/CharacterString",
+    					"xpath":"//gmd:otherConstraints/gco:CharacterString",
     					"transform":{
     						"funct":transformToIgcDomainId,
     						"params":[6010]
@@ -181,54 +181,54 @@ var mappingDescription =
 	    			},
 	    	  		{
     					"field":"restriction_value",
-    					"xpath":"//otherConstraints/CharacterString"
+    					"xpath":"//gmd:otherConstraints/gco:CharacterString"
 	    			},
 	    	  		{
     					"field":"terms_of_use",
-    					"xpath":"//useLimitation/CharacterString"
+    					"xpath":"//gmd:useLimitation/gco:CharacterString"
 	    			}
 	    	  	]
 				}, // END object_access
 			    {
 			    "table":"t0110_avail_format",
-			    "xpath":"//distributionInfo/MD_Distribution/distributionFormat/MD_Format",
+			    "xpath":"//gmd:distributionInfo/gmd:MD_Distribution/gmd:distributionFormat/gmd:MD_Format",
 				"line":true,
 			    "fieldMappings":[
 	    	  		{
     					"field":"format_value",
     					"indexName":"t0110_avail_format.name",
-    					"xpath":"name/CharacterString"
+    					"xpath":"gmd:name/gco:CharacterString"
 	    			},
 	    	  		{
     					"field":"ver",
     					"indexName":"t0110_avail_format.version",
-    					"xpath":"version/CharacterString"
+    					"xpath":"gmd:version/gco:CharacterString"
 	    			},
 	    	  		{
     					"field":"file_decompression_technique",
-    					"xpath":"fileDecompressionTechnique/CharacterString"
+    					"xpath":"gmd:fileDecompressionTechnique/gco:CharacterString"
 	    			},
 	    	  		{
     					"field":"specification",
-    					"xpath":"specification/CharacterString"
+    					"xpath":"gmd:specification/gco:CharacterString"
 	    			}
 	    		]
 				}, // END t0110_avail_format
 				{
 				    "table":"t0113_dataset_reference",
-				    "xpath":"//identificationInfo//citation/CI_Citation/date/CI_Date",
+				    "xpath":"//gmd:identificationInfo//gmd:citation/gmd:CI_Citation/gmd:date/gmd:CI_Date",
 					"line":true,
 				    "fieldMappings":[
 		    	  		{
 	    					"field":"reference_date",
-	    					"xpath":"date/Date",
+	    					"xpath":"gmd:date/gco:Date",
 	    					"transform":{
 		    	  				"funct":UtilsCSWDate.mapDateFromIso8601ToIndex
 		    	  			}
 		    			},
 		    	  		{
 	    					"field":"type",
-	    					"xpath":"dateType/CI_DateTypeCode/@codeListValue",
+	    					"xpath":"gmd:dateType/gmd:CI_DateTypeCode/@codeListValue",
 	    					"transform":{
 	    						"funct":transformToIgcDomainId,
 	    						"params":[502]
@@ -242,58 +242,58 @@ var mappingDescription =
 		    	  		{
 	    					"field":"type_value",
 	    					"indexName":"t011_obj_serv.type",
-	    					"xpath":"//identificationInfo//serviceType/LocalName"
+	    					"xpath":"//gmd:identificationInfo//srv:serviceType/gco:LocalName"
 		    			},
 		    	  		{
 	    					"field":"history",
-	    					"xpath":"//dataQualityInfo/DQ_DataQuality/lineage/LI_Lineage/processStep/LI_ProcessStep/description/CharacterString"
+	    					"xpath":"//gmd:dataQualityInfo/gmd:DQ_DataQuality/gmd:lineage/gmd:LI_Lineage/gmd:processStep/gmd:LI_ProcessStep/gmd:description/gco:CharacterString"
 		    			},
 		    	  		{
 	    					"field":"base",
-	    					"xpath":"//dataQualityInfo/DQ_DataQuality/lineage/LI_Lineage/processStep/LI_ProcessStep/description/CharacterString"
+	    					"xpath":"//gmd:dataQualityInfo/gmd:DQ_DataQuality/gmd:lineage/gmd:LI_Lineage/gmd:processStep/gmd:LI_ProcessStep/gmd:description/gco:CharacterString"
 		    			}
 		    		],
 		    		"subrecords":[
 						{
 							"table":"t011_obj_serv_operation",
-							"xpath":"//identificationInfo//containsOperations/SV_OperationMetadata",
+							"xpath":"//gmd:identificationInfo//srv:containsOperations/srv:SV_OperationMetadata",
 							"line":true,
 							"fieldMappings":[
 				    	  		{
 			    					"field":"name_value",
 			    					"indexName":"t011_obj_serv_operation.name",
-			    					"xpath":"operationName/CharacterString"
+			    					"xpath":"srv:operationName/gco:CharacterString"
 				    			},
 				    	  		{
 			    					"field":"descr",
-			    					"xpath":"operationDescription/CharacterString"
+			    					"xpath":"srv:operationDescription/gco:CharacterString"
 				    			},
 				    	  		{
 			    					"field":"invocation_name",
-			    					"xpath":"invocationName/CharacterString"
+			    					"xpath":"srv:invocationName/gco:CharacterString"
 				    			}
 							],
 							"subrecords":[
 								{
 									"table":"t011_obj_serv_op_para",
-									"xpath":"parameter/SV_Parameter",
+									"xpath":"srv:parameter/srv:SV_Parameter",
 									"line":true,
 									"fieldMappings":[
 						    	  		{
 					    					"field":"name",
-					    					"xpath":"name"
+					    					"xpath":"srv:name"
 						    			},
 						    	  		{
 					    					"field":"direction",
-					    					"xpath":"direction/SV_ParameterDirection"
+					    					"xpath":"srv:direction/srv:SV_ParameterDirection"
 						    			},
 						    	  		{
 					    					"field":"descr",
-					    					"xpath":"description/CharacterString"
+					    					"xpath":"srv:description/gco:CharacterString"
 						    			},
 						    	  		{
 					    					"field":"optional",
-					    					"xpath":"optionality/CharacterString",
+					    					"xpath":"srv:optionality/gco:CharacterString",
 					    					"transform":{
 							    				"funct":transformGeneric,
 							    				"params":[{"optional":"1", "mandatory":"0"}, false]
@@ -301,7 +301,7 @@ var mappingDescription =
 						    			},
 						    	  		{
 					    					"field":"repeatability",
-					    					"xpath":"repeatability/Boolean",
+					    					"xpath":"srv:repeatability/gco:Boolean",
 					    					"transform":{
 							    				"funct":transformGeneric,
 							    				"params":[{"true":"1", "false":"0"}, false]
@@ -315,7 +315,7 @@ var mappingDescription =
 									"fieldMappings":[
 						    	  		{
 					    					"field":"connect_point",
-					    					"xpath":"connectPoint/CI_OnlineResource/linkage/URL"
+					    					"xpath":"srv:connectPoint/gmd:CI_OnlineResource/gmd:linkage/gmd:URL"
 						    			}
 									]
 								}, // END t011_obj_serv_op_connpoint
@@ -325,7 +325,7 @@ var mappingDescription =
 									"fieldMappings":[
 						    	  		{
 					    					"field":"depends_on",
-					    					"xpath":"dependsOn/SV_OperationMetadata/operationName/CharacterString"
+					    					"xpath":"srv:dependsOn/srv:SV_OperationMetadata/srv:operationName/gco:CharacterString"
 						    			}
 									]
 								}, // END t011_obj_serv_op_depends
@@ -335,7 +335,7 @@ var mappingDescription =
 									"fieldMappings":[
 						    	  		{
 					    					"field":"platform",
-					    					"xpath":"DCP/DCPList/@codeListValue"
+					    					"xpath":"srv:DCP/srv:DCPList/@codeListValue"
 						    			}
 									]
 								} // END t011_obj_serv_op_platform
@@ -347,7 +347,7 @@ var mappingDescription =
 							"fieldMappings":[
 				    	  		{
 			    					"field":"serv_version",
-			    					"xpath":"//identificationInfo//serviceTypeVersion/CharacterString"
+			    					"xpath":"//gmd:identificationInfo//srv:serviceTypeVersion/gco:CharacterString"
 				    			}
 							]
 						} // END t011_obj_serv_version
@@ -355,12 +355,12 @@ var mappingDescription =
 				}, // END t011_obj_serv
 				{
 					"table":"t011_obj_topic_cat",
-					"xpath":"//identificationInfo//topicCategory",
+					"xpath":"//gmd:identificationInfo//gmd:topicCategory",
 					"line":true,
 					"fieldMappings":[
 		    	  		{
 	    					"field":"topic_category",
-	    					"xpath":"MD_TopicCategoryCode",
+	    					"xpath":"gmd:MD_TopicCategoryCode",
 	    					"transform":{
 	    						"funct":transformToIgcDomainId,
 	    						"params":[527]
@@ -373,15 +373,15 @@ var mappingDescription =
 					"fieldMappings":[
 		    	  		{
 	    					"field":"special_base",
-	    					"xpath":"//dataQualityInfo/DQ_DataQuality/lineage/LI_Lineage/statement/CharacterString"
+	    					"xpath":"//gmd:dataQualityInfo/gmd:DQ_DataQuality/gmd:lineage/gmd:LI_Lineage/gmd:statement/gco:CharacterString"
 		    			},
 		    	  		{
 	    					"field":"data_base",
-	    					"xpath":"//dataQualityInfo/DQ_DataQuality/lineage/LI_Lineage/source/LI_Source/description/CharacterString"
+	    					"xpath":"//gmd:dataQualityInfo/gmd:DQ_DataQuality/gmd:lineage/gmd:LI_Lineage/gmd:source/gmd:LI_Source/gmd:description/gco:CharacterString"
 		    			},
 		    	  		{
 	    					"field":"method",
-	    					"xpath":"//dataQualityInfo/DQ_DataQuality/lineage/LI_Lineage/processStep/LI_ProcessStep/description/CharacterString"
+	    					"xpath":"//gmd:dataQualityInfo/gmd:DQ_DataQuality/gmd:lineage/gmd:LI_Lineage/gmd:processStep/gmd:LI_ProcessStep/gmd:description/gco:CharacterString"
 		    	  		},
 		    	  		{
 		    	  			"execute":{
@@ -389,30 +389,30 @@ var mappingDescription =
 		    	  			}
 		    			},
 		    			{	"field":"rec_exact",
-		    				"xpath":"//dataQualityInfo/DQ_DataQuality/report/DQ_RelativeInternalPositionalAccuracy/DQ_QuantitativeResult/value/Record"
+		    				"xpath":"//gmd:dataQualityInfo/gmd:DQ_DataQuality/gmd:report/gmd:DQ_RelativeInternalPositionalAccuracy/gmd:DQ_QuantitativeResult/gmd:value/gco:Record"
 		    			},
 		    			{	"field":"rec_grade",
-		    				"xpath":"//dataQualityInfo/DQ_DataQuality/report/DQ_CompletenessCommission/DQ_QuantitativeResult/value/Record"
+		    				"xpath":"//gmd:dataQualityInfo/gmd:DQ_DataQuality/gmd:report/gmd:DQ_CompletenessCommission/gmd:DQ_QuantitativeResult/gmd:value/gco:Record"
 		    			},
 		    			{	"field":"hierarchy_level",
-		    				"xpath":"//hierarchyLevel/MD_ScopeCode/@codeListValue",
+		    				"xpath":"//gmd:hierarchyLevel/gmd:MD_ScopeCode/@codeListValue",
 							"transform":{
 								"funct":transformGeneric,
 								"params":[{"dataset":"5", "series":"6"}, false]
 							}
 		    			},
 		    			{	"field":"vector_topology_level",
-		    				"xpath":"//spatialRepresentationInfo/MD_VectorSpatialRepresentation/topologyLevel/MD_TopologyLevelCode/@codeListValue",
+		    				"xpath":"//gmd:spatialRepresentationInfo/gmd:MD_VectorSpatialRepresentation/gmd:topologyLevel/gmd:MD_TopologyLevelCode/@codeListValue",
 							"transform":{
 								"funct":transformToIgcDomainId,
 								"params":[528]
 							}
 		    			},
 		    			{	"field":"pos_accuracy_vertical",
-		    				"xpath":"//dataQualityInfo/DQ_DataQuality/report/DQ_RelativeInternalPositionalAccuracy[measureDescription/CharacterString='vertical']/DQ_QuantitativeResult/value/Record"
+		    				"xpath":"//gmd:dataQualityInfo/gmd:DQ_DataQuality/gmd:report/gmd:DQ_RelativeInternalPositionalAccuracy[gmd:measureDescription/gco:CharacterString='vertical']/gmd:DQ_QuantitativeResult/gmd:value/gco:Record"
 		    			},
 		    			{	"field":"keyc_incl_w_dataset",
-		    				"xpath":"//contentInfo/MD_FeatureCatalogueDescription/includedWithDataset/Boolean",
+		    				"xpath":"//gmd:contentInfo/gmd:MD_FeatureCatalogueDescription/gmd:includedWithDataset/gco:Boolean",
 							"transform":{
 								"funct":transformGeneric,
 								"params":[{"true":"1", "false":"0"}, false]
@@ -420,60 +420,60 @@ var mappingDescription =
 		    			},
 		    			{	"field":"datasource_uuid",
 		    				// accept RS_Indentifier and MD_Identifier with xpath: "...identifier//code..."
-		    				"xpath":"//identificationInfo/MD_DataIdentification/citation/CI_Citation/identifier//code/CharacterString"
+		    				"xpath":"//gmd:identificationInfo/gmd:MD_DataIdentification/gmd:citation/gmd:CI_Citation/gmd:identifier//gmd:code/gco:CharacterString"
 				    	}
 		    	  	],
 		    	  	"subrecords":[
 						{
 							"table":"t011_obj_geo_keyc",
-							"xpath":"//contentInfo/MD_FeatureCatalogueDescription/featureCatalogueCitation/CI_Citation",
+							"xpath":"//gmd:contentInfo/gmd:MD_FeatureCatalogueDescription/gmd:featureCatalogueCitation/gmd:CI_Citation",
 							"line":true,
 							"fieldMappings":[
 				    	  		{
 			    					"field":"keyc_value",
 			    					"indexName":"t011_obj_geo_keyc.subject_cat",
-			    					"xpath":"title/CharacterString"
+			    					"xpath":"gmd:title/gco:CharacterString"
 				    			},
 				    			{
 			    					"field":"key_date",
-			    					"xpath":"date/CI_Date/date/Date",
+			    					"xpath":"gmd:date/gmd:CI_Date/gmd:date/gco:Date",
 			    					"transform":{
 			    						"funct":UtilsCSWDate.mapDateFromIso8601ToIndex
 			    					}
 				    			},
 				    			{
 			    					"field":"edition",
-			    					"xpath":"edition/CharacterString"
+			    					"xpath":"gmd:edition/gco:CharacterString"
 				    			}
 				    	  	]
 						}, // END t011_obj_geo_keyc
 						{
 							"table":"t011_obj_geo_scale",
-							"xpath":"//identificationInfo/MD_DataIdentification",
+							"xpath":"//gmd:identificationInfo/gmd:MD_DataIdentification",
 							"line":true,
 							"fieldMappings":[
 				    	  		{
 			    					"field":"scale",
-			    					"xpath":"spatialResolution/MD_Resolution/equivalentScale/MD_RepresentativeFraction/denominator/Integer"
+			    					"xpath":"gmd:spatialResolution/gmd:MD_Resolution/gmd:equivalentScale/gmd:MD_RepresentativeFraction/gmd:denominator/gco:Integer"
 				    			},
 				    			{
 			    					"field":"resolution_ground",
-			    					"xpath":"spatialResolution/MD_Resolution/distance/Distance[@uom='meter']"
+			    					"xpath":"gmd:spatialResolution/gmd:MD_Resolution/gmd:distance/gmd:Distance[@uom='meter']"
 				    			},
 				    			{
 			    					"field":"resolution_scan",
-			    					"xpath":"spatialResolution/MD_Resolution/distance/Distance[@uom='dpi']"
+			    					"xpath":"gmd:spatialResolution/gmd:MD_Resolution/gmd:distance/gmd:Distance[@uom='dpi']"
 				    			}
 				    	  	]
 						}, // END t011_obj_geo_scale
 						{
 							"table":"t011_obj_geo_spatial_rep",
-							"xpath":"//identificationInfo/MD_DataIdentification/spatialRepresentationType",
+							"xpath":"//gmd:identificationInfo/gmd:MD_DataIdentification/gmd:spatialRepresentationType",
 							"line":true,
 							"fieldMappings":[
 				    	  		{
 			    					"field":"type",
-			    					"xpath":"MD_SpatialRepresentationTypeCode/@codeListValue",
+			    					"xpath":"gmd:MD_SpatialRepresentationTypeCode/@codeListValue",
 			    					"transform":{
 			    						"funct":transformToIgcDomainId,
 			    						"params":[526]
@@ -483,7 +483,7 @@ var mappingDescription =
 						}, // END t011_obj_geo_spatial_rep
 						{
 							"table":"t011_obj_geo_supplinfo",
-							"xpath":"//contentInfo/MD_FeatureCatalogueDescription/featureTypes",
+							"xpath":"//gmd:contentInfo/gmd:MD_FeatureCatalogueDescription/gmd:featureTypes",
 							"line":true,
 							"fieldMappings":[
 				    	  		{
@@ -494,35 +494,35 @@ var mappingDescription =
 						}, // END t011_obj_geo_supplinfo
 						{
 							"table":"t011_obj_geo_symc",
-							"xpath":"//portrayalCatalogueInfo/MD_PortrayalCatalogueReference/portrayalCatalogueCitation",
+							"xpath":"//gmd:portrayalCatalogueInfo/gmd:MD_PortrayalCatalogueReference/gmd:portrayalCatalogueCitation",
 							"line":true,
 							"fieldMappings":[
 				    	  		{
 			    					"field":"symbol_cat_value",
 			    					"indexName":"t011_obj_geo_symc.symbol_cat",
-			    					"xpath":"CI_Citation/title/CharacterString"
+			    					"xpath":"gmd:CI_Citation/gmd:title/gco:CharacterString"
 				    			},
 				    	  		{
 			    					"field":"symbol_date",
-			    					"xpath":"CI_Citation/date/CI_Date/date/Date",
+			    					"xpath":"gmd:CI_Citation/gmd:date/gmd:CI_Date/gmd:date/gco:Date",
 									"transform":{
 										"funct":UtilsCSWDate.mapDateFromIso8601ToIndex
 									}
 				    			},
 				    	  		{
 			    					"field":"edition",
-			    					"xpath":"CI_Citation/edition/CharacterString"
+			    					"xpath":"gmd:CI_Citation/gmd:edition/gco:CharacterString"
 				    			}
 				    	  	]
 						}, // END t011_obj_geo_symc
 						{
 							"table":"t011_obj_geo_vector",
-							"xpath":"//spatialRepresentationInfo/MD_VectorSpatialRepresentation/geometricObjects",
+							"xpath":"//gmd:spatialRepresentationInfo/gmd:MD_VectorSpatialRepresentation/gmd:geometricObjects",
 							"line":true,
 							"fieldMappings":[
 				    	  		{
 			    					"field":"geometric_object_type",
-			    					"xpath":"MD_GeometricObjects/geometricObjectType/MD_GeometricObjectTypeCode/@codeListValue",
+			    					"xpath":"gmd:MD_GeometricObjects/gmd:geometricObjectType/gmd:MD_GeometricObjectTypeCode/@codeListValue",
 									"transform":{
 										"funct":transformToIgcDomainId,
 										"params":[515]
@@ -530,7 +530,7 @@ var mappingDescription =
 				    			},
 				    	  		{
 			    					"field":"geometric_object_count",
-			    					"xpath":"MD_GeometricObjects/geometricObjectCount/Integer"
+			    					"xpath":"gmd:MD_GeometricObjects/gmd:geometricObjectCount/gco:Integer"
 				    			}
 				    	  	]
 						} // END t011_obj_geo_vector
@@ -538,20 +538,20 @@ var mappingDescription =
 				}, // END t011_obj_geo
 				{
 					"table":"t017_url_ref",
-					"xpath":"//distributionInfo/MD_Distribution/transferOptions/MD_DigitalTransferOptions/onLine/CI_OnlineResource",
+					"xpath":"//gmd:distributionInfo/gmd:MD_Distribution/gmd:transferOptions/gmd:MD_DigitalTransferOptions/gmd:onLine/gmd:CI_OnlineResource",
 					"line":true,
 					"fieldMappings":[
 		    	  		{
 	    					"field":"url_link",
-	    					"xpath":"linkage/URL"
+	    					"xpath":"gmd:linkage/gmd:URL"
 		    			},
 		    	  		{
 	    					"field":"content",
-	    					"xpath":"name/CharacterString"
+	    					"xpath":"gmd:name/gco:CharacterString"
 		    			},
 		    	  		{
 	    					"field":"descr",
-	    					"xpath":"description/CharacterString"
+	    					"xpath":"gmd:description/gco:CharacterString"
 		    			}
 		    	  	]
 				}, // END t017_url_ref
@@ -567,16 +567,16 @@ var mappingDescription =
 				}, // END object_references
 				{
 					"table":"t0112_media_option",
-					"xpath":"//distributionInfo/MD_Distribution/transferOptions/MD_DigitalTransferOptions/offLine/MD_Medium",
+					"xpath":"//gmd:distributionInfo/gmd:MD_Distribution/gmd:transferOptions/gmd:MD_DigitalTransferOptions/gmd:offLine/gmd:MD_Medium",
 					"line":true,
 					"fieldMappings":[
 		    	  		{
 	    					"field":"medium_note",
-	    					"xpath":"mediumNote/CharacterString"
+	    					"xpath":"gmd:mediumNote/gco:CharacterString"
 		    			},
 		    	  		{
 	    					"field":"medium_name",
-	    					"xpath":"name/MD_MediumNameCode/@codeListValue",
+	    					"xpath":"gmd:name/gmd:MD_MediumNameCode/@codeListValue",
 							"transform":{
 								"funct":transformToIgcDomainId,
 								"params":[520]
@@ -584,7 +584,7 @@ var mappingDescription =
 		    			},
 		    	  		{
 	    					"field":"transfer_size",
-	    					"xpath":"../../transferSize/CharacterString"
+	    					"xpath":"../../gmd:transferSize/gco:CharacterString"
 		    			}
 		    	  	]
 				}, // END t0112_media_option
@@ -594,7 +594,7 @@ var mappingDescription =
 		    	  		{
 	    					"field":"fk_obj_uuid",
 	    					"indexName":"parent.object_node.obj_uuid",
-	    					"xpath":"//parentIdentifier/gco:CharacterString"
+	    					"xpath":"//gmd:parentIdentifier/gco:CharacterString"
 		    			}
 		    	  	]
 				} // END object_node.parent.object_node.obj_uuid
@@ -680,11 +680,11 @@ function mapToRecord(mapping, document, refNode) {
 }
 
 function mapTimeConstraints(document, refNode) {
-	var timePeriods = XPathUtils.getNodeList(refNode, "//EX_Extent/temporalElement/EX_TemporalExtent/extent/TimePeriod");
+	var timePeriods = XPathUtils.getNodeList(refNode, "//gmd:EX_Extent/gmd:temporalElement/gmd:EX_TemporalExtent/gmd:extent/gmd:TimePeriod");
 	log.debug("Found " + timePeriods.getLength() + " TimePeriod records.");
 	if (hasValue(timePeriods)) {
-		var beginPosition = XPathUtils.getString(timePeriods.item(0), "beginPosition");
-		var endPosition = XPathUtils.getString(timePeriods.item(0), "endPosition");
+		var beginPosition = XPathUtils.getString(timePeriods.item(0), "gmd:beginPosition");
+		var endPosition = XPathUtils.getString(timePeriods.item(0), "gmd:endPosition");
 		if (hasValue(beginPosition) && hasValue(endPosition)) {
 			if (beginPosition.equals(endPosition)) {
 				var t01ObjectRecord = new Record();
@@ -718,12 +718,12 @@ function mapTimeConstraints(document, refNode) {
 
 
 function mapAddressInformation(document, refNode) {
-	var ciResponsibleParties = XPathUtils.getNodeList(refNode, "//*/CI_ResponsibleParty");
+	var ciResponsibleParties = XPathUtils.getNodeList(refNode, "//*/gmd:CI_ResponsibleParty");
 	log.debug("Found " + ciResponsibleParties.getLength() + " CI_ResponsibleParty records.");
 	if (hasValue(ciResponsibleParties)) {
 		var lineCounter = 1;
 		for (var i=0; i<ciResponsibleParties.getLength(); i++ ) {
-			var role = XPathUtils.getString(ciResponsibleParties.item(i), "role/CI_RoleCode/@codeListValue");
+			var role = XPathUtils.getString(ciResponsibleParties.item(i), "gmd:role/gmd:CI_RoleCode/@codeListValue");
 			log.debug("rp role " + role);
 			if (hasValue(role)) {
 				var t012ObjAddrRecord = new Record();
@@ -744,18 +744,18 @@ function mapAddressInformation(document, refNode) {
 				var t02AddressRecord = new Record();
 				t02AddressRecord.addColumn(createColumn("t02_address", "adr_uuid", "t02_address.adr_id"), "undefined")
 				t02AddressRecord.addColumn(createColumn("t02_address", "adr_type", "t02_address.typ"), 3); // freie Adresse
-				t02AddressRecord.addColumn(createColumn("t02_address", "institution", "t02_address.institution"), XPathUtils.getString(ciResponsibleParties.item(i), "organisationName/CharacterString"));
-				t02AddressRecord.addColumn(createColumn("t02_address", "lastname", "t02_address.lastname"), XPathUtils.getString(ciResponsibleParties.item(i), "individualName/CharacterString"));
-				t02AddressRecord.addColumn(createColumn("t02_address", "street", "t02_address.street"), XPathUtils.getString(ciResponsibleParties.item(i), "contactInfo/CI_Contact/address/CI_Address/deliveryPoint/CharacterString"));
-				t02AddressRecord.addColumn(createColumn("t02_address", "postcode", "t02_address.postcode"), XPathUtils.getString(ciResponsibleParties.item(i), "contactInfo/CI_Contact/address/CI_Address/postalCode/CharacterString"));
-				t02AddressRecord.addColumn(createColumn("t02_address", "city", "t02_address.city"), XPathUtils.getString(ciResponsibleParties.item(i), "contactInfo/CI_Contact/address/CI_Address/city/CharacterString"));
-				t02AddressRecord.addColumn(createColumn("t02_address", "country_code", "t02_address.country_code"), XPathUtils.getString(ciResponsibleParties.item(i), "contactInfo/CI_Contact/address/CI_Address/country/CharacterString"));
-				t02AddressRecord.addColumn(createColumn("t02_address", "job", "t02_address.job"), XPathUtils.getString(ciResponsibleParties.item(i), "positionName/CharacterString"));
-				t02AddressRecord.addColumn(createColumn("t02_address", "descr", "t02_address.descr"), XPathUtils.getString(ciResponsibleParties.item(i), "contactInfo/CI_Contact/contactInstructions/CharacterString"));
+				t02AddressRecord.addColumn(createColumn("t02_address", "institution", "t02_address.institution"), XPathUtils.getString(ciResponsibleParties.item(i), "gmd:organisationName/gco:CharacterString"));
+				t02AddressRecord.addColumn(createColumn("t02_address", "lastname", "t02_address.lastname"), XPathUtils.getString(ciResponsibleParties.item(i), "gmd:individualName/gco:CharacterString"));
+				t02AddressRecord.addColumn(createColumn("t02_address", "street", "t02_address.street"), XPathUtils.getString(ciResponsibleParties.item(i), "gmd:contactInfo/gmd:CI_Contact/gmd:address/gmd:CI_Address/gmd:deliveryPoint/gco:CharacterString"));
+				t02AddressRecord.addColumn(createColumn("t02_address", "postcode", "t02_address.postcode"), XPathUtils.getString(ciResponsibleParties.item(i), "gmd:contactInfo/gmd:CI_Contact/gmd:address/gmd:CI_Address/gmd:postalCode/gco:CharacterString"));
+				t02AddressRecord.addColumn(createColumn("t02_address", "city", "t02_address.city"), XPathUtils.getString(ciResponsibleParties.item(i), "gmd:contactInfo/gmd:CI_Contact/gmd:address/gmd:CI_Address/gmd:city/gco:CharacterString"));
+				t02AddressRecord.addColumn(createColumn("t02_address", "country_code", "t02_address.country_code"), XPathUtils.getString(ciResponsibleParties.item(i), "gmd:contactInfo/gmd:CI_Contact/gmd:address/gmd:CI_Address/gmd:country/gco:CharacterString"));
+				t02AddressRecord.addColumn(createColumn("t02_address", "job", "t02_address.job"), XPathUtils.getString(ciResponsibleParties.item(i), "gmd:positionName/gco:CharacterString"));
+				t02AddressRecord.addColumn(createColumn("t02_address", "descr", "t02_address.descr"), XPathUtils.getString(ciResponsibleParties.item(i), "gmd:contactInfo/gmd:CI_Contact/gmd:contactInstructions/gco:CharacterString"));
 				
 				var communicationLine = 1;
 				// phone
-				var commValue = XPathUtils.getString(ciResponsibleParties.item(i), "contactInfo/CI_Contact/phone/CI_Telephone/voice/CharacterString")
+				var commValue = XPathUtils.getString(ciResponsibleParties.item(i), "gmd:contactInfo/gmd:CI_Contact/gmd:phone/gmd:CI_Telephone/gmd:voice/gco:CharacterString")
 				if (hasValue(commValue)) {
 					var t012CommunicationRecord = new Record();
 					t012CommunicationRecord.addColumn(createColumn("t021_communication", "line", "t021_communication.line"), (communicationLine))
@@ -766,7 +766,7 @@ function mapAddressInformation(document, refNode) {
 					communicationLine++;
 				}
 				// fax
-				commValue = XPathUtils.getString(ciResponsibleParties.item(i), "contactInfo/CI_Contact/phone/CI_Telephone/facsimile/CharacterString")
+				commValue = XPathUtils.getString(ciResponsibleParties.item(i), "gmd:contactInfo/gmd:CI_Contact/gmd:phone/gmd:CI_Telephone/gmd:facsimile/gco:CharacterString")
 				if (hasValue(commValue)) {
 					var t012CommunicationRecord = new Record();
 					t012CommunicationRecord.addColumn(createColumn("t021_communication", "line", "t021_communication.line"), (communicationLine))
@@ -777,7 +777,7 @@ function mapAddressInformation(document, refNode) {
 					communicationLine++;
 				}
 				// email
-				commValue = XPathUtils.getString(ciResponsibleParties.item(i), "contactInfo/CI_Contact/address/CI_Address/electronicMailAddress/CharacterString")
+				commValue = XPathUtils.getString(ciResponsibleParties.item(i), "gmd:contactInfo/gmd:CI_Contact/gmd:address/gmd:CI_Address/gmd:electronicMailAddress/gco:CharacterString")
 				if (hasValue(commValue)) {
 					var t012CommunicationRecord = new Record();
 					t012CommunicationRecord.addColumn(createColumn("t021_communication", "line", "t021_communication.line"), (communicationLine))
@@ -788,7 +788,7 @@ function mapAddressInformation(document, refNode) {
 					communicationLine++;
 				}
 				// URL
-				commValue = XPathUtils.getString(ciResponsibleParties.item(i), "contactInfo/CI_Contact/onlineResource/CI_OnlineResource/linkage/URL")
+				commValue = XPathUtils.getString(ciResponsibleParties.item(i), "gmd:contactInfo/gmd:CI_Contact/gmd:onlineResource/gmd:CI_OnlineResource/gmd:linkage/gmd:URL")
 				if (hasValue(commValue)) {
 					var t012CommunicationRecord = new Record();
 					t012CommunicationRecord.addColumn(createColumn("t021_communication", "line", "t021_communication.line"), (communicationLine))
@@ -809,11 +809,11 @@ function mapAddressInformation(document, refNode) {
 
 
 function mapGeographicElements(document, refNode) {
-	var geographicElements = XPathUtils.getNodeList(refNode, "//identificationInfo//extent/EX_Extent/geographicElement");
+	var geographicElements = XPathUtils.getNodeList(refNode, "//gmd:identificationInfo//gmd:extent/gmd:EX_Extent/gmd:geographicElement");
 	if (hasValue(geographicElements)) {
 		var lineCounter = 1;
 		for (var i=0; i<geographicElements.getLength(); i++ ) {
-			var value = XPathUtils.getString(geographicElements.item(i), "EX_GeographicDescription/geographicIdentifier/MD_Identifier/code/CharacterString");
+			var value = XPathUtils.getString(geographicElements.item(i), "gmd:EX_GeographicDescription/gmd:geographicIdentifier/gmd:MD_Identifier/gmd:code/gco:CharacterString");
 			if (hasValue(value)) {
 				var spatialReferenceRecord = new Record();
 				log.debug("adding 'spatial_reference.line" + "' = '" + (lineCounter) + "' to ingrid document.");
@@ -833,9 +833,9 @@ function mapGeographicElements(document, refNode) {
 				spatialRefValueRecord.addColumn(createColumn("spatial_ref_value", "y2", "y2"), "")
 				spatialReferenceRecord.addSubRecord(spatialRefValueRecord);
 			}
-			var boundingBoxes = XPathUtils.getNodeList(geographicElements.item(i), "EX_GeographicBoundingBox");
+			var boundingBoxes = XPathUtils.getNodeList(geographicElements.item(i), "gmd:EX_GeographicBoundingBox");
 			for (j=0; j<boundingBoxes.getLength(); j++ ) {
-				if (hasValue(boundingBoxes.item(j)) && hasValue(XPathUtils.getString(boundingBoxes.item(j), "westBoundLongitude/Decimal"))) {
+				if (hasValue(boundingBoxes.item(j)) && hasValue(XPathUtils.getString(boundingBoxes.item(j), "gmd:westBoundLongitude/gco:Decimal"))) {
 					var spatialReferenceRecord = new Record();
 					log.debug("adding 'spatial_reference.line" + "' = '" + (lineCounter) + "' to ingrid document.");
 					spatialReferenceRecord.addColumn(createColumn("spatial_reference", "line", "spatial_reference.line"), (lineCounter))
@@ -844,14 +844,14 @@ function mapGeographicElements(document, refNode) {
 					var spatialRefValueRecord = new Record();
 					log.debug("adding 'spatial_ref_value.name_value" + "' = '' to ingrid document.");
 					spatialRefValueRecord.addColumn(createColumn("spatial_ref_value", "name_value", "spatial_ref_value.name_value"), "")
-					log.debug("adding 'spatial_ref_value.x1" + "' = '" + XPathUtils.getString(boundingBoxes.item(j), "westBoundLongitude/Decimal") + "' to ingrid document.");
-					spatialRefValueRecord.addColumn(createColumn("spatial_ref_value", "x1", "x1"), XPathUtils.getString(boundingBoxes.item(j), "westBoundLongitude/Decimal"))
-					log.debug("adding 'spatial_ref_value.x2" + "' = '" + XPathUtils.getString(boundingBoxes.item(j), "eastBoundLongitude/Decimal") + "' to ingrid document.");
-					spatialRefValueRecord.addColumn(createColumn("spatial_ref_value", "x2", "x2"), XPathUtils.getString(boundingBoxes.item(j), "eastBoundLongitude/Decimal"))
-					log.debug("adding 'spatial_ref_value.y1" + "' = '" + XPathUtils.getString(boundingBoxes.item(j), "southBoundLatitude/Decimal") + "' to ingrid document.");
-					spatialRefValueRecord.addColumn(createColumn("spatial_ref_value", "y1", "y1"), XPathUtils.getString(boundingBoxes.item(j), "southBoundLatitude/Decimal"))
-					log.debug("adding 'spatial_ref_value.y2" + "' = '" + XPathUtils.getString(boundingBoxes.item(j), "northBoundLatitude/Decimal") + "' to ingrid document.");
-					spatialRefValueRecord.addColumn(createColumn("spatial_ref_value", "y2", "y2"), XPathUtils.getString(boundingBoxes.item(j), "northBoundLatitude/Decimal"))
+					log.debug("adding 'spatial_ref_value.x1" + "' = '" + XPathUtils.getString(boundingBoxes.item(j), "gmd:westBoundLongitude/gco:Decimal") + "' to ingrid document.");
+					spatialRefValueRecord.addColumn(createColumn("spatial_ref_value", "x1", "x1"), XPathUtils.getString(boundingBoxes.item(j), "gmd:westBoundLongitude/gco:Decimal"))
+					log.debug("adding 'spatial_ref_value.x2" + "' = '" + XPathUtils.getString(boundingBoxes.item(j), "gmd:eastBoundLongitude/gco:Decimal") + "' to ingrid document.");
+					spatialRefValueRecord.addColumn(createColumn("spatial_ref_value", "x2", "x2"), XPathUtils.getString(boundingBoxes.item(j), "gmd:eastBoundLongitude/gco:Decimal"))
+					log.debug("adding 'spatial_ref_value.y1" + "' = '" + XPathUtils.getString(boundingBoxes.item(j), "gmd:southBoundLatitude/gco:Decimal") + "' to ingrid document.");
+					spatialRefValueRecord.addColumn(createColumn("spatial_ref_value", "y1", "y1"), XPathUtils.getString(boundingBoxes.item(j), "gmd:southBoundLatitude/gco:Decimal"))
+					log.debug("adding 'spatial_ref_value.y2" + "' = '" + XPathUtils.getString(boundingBoxes.item(j), "gmd:northBoundLatitude/gco:Decimal") + "' to ingrid document.");
+					spatialRefValueRecord.addColumn(createColumn("spatial_ref_value", "y2", "y2"), XPathUtils.getString(boundingBoxes.item(j), "gmd:northBoundLatitude/gco:Decimal"))
 					spatialReferenceRecord.addSubRecord(spatialRefValueRecord);
 				}
 			}
@@ -864,7 +864,7 @@ function mapKeywords(document, refNode) {
 	var usedKeywords = "";
 	var lineCounter = 1;
 	// check for INSPIRE themes
-	var keywords = XPathUtils.getNodeList(refNode, "//identificationInfo//descriptiveKeywords/MD_Keywords[thesaurusName/CI_Citation/title/CharacterString='GEMET - INSPIRE themes, version 1.0']/keyword/CharacterString");
+	var keywords = XPathUtils.getNodeList(refNode, "//gmd:identificationInfo//gmd:descriptiveKeywords/gmd:MD_Keywords[gmd:thesaurusName/gmd:CI_Citation/gmd:title/gco:CharacterString='GEMET - INSPIRE themes, version 1.0']/gmd:keyword/gco:CharacterString");
 	if (hasValue(keywords)) {
 		for (var i=0; i<keywords.getLength(); i++ ) {
 			log.debug("keywords:" + keywords.nodeName)
@@ -886,7 +886,7 @@ function mapKeywords(document, refNode) {
 		}
 	}
 	// check for GEMET keywords
-	var keywords = XPathUtils.getNodeList(refNode, "//identificationInfo//descriptiveKeywords/MD_Keywords[thesaurusName/CI_Citation/title/CharacterString='GEMET - Concepts, version 2.1']/keyword/CharacterString");
+	var keywords = XPathUtils.getNodeList(refNode, "//gmd:identificationInfo//gmd:descriptiveKeywords/gmd:MD_Keywords[gmd:thesaurusName/gmd:CI_Citation/gmd:title/gco:CharacterString='GEMET - Concepts, version 2.1']/gmd:keyword/gco:CharacterString");
 	if (hasValue(keywords)) {
 		for (i=0; i<keywords.getLength(); i++ ) {
 			var value = keywords.item(i).getTextContent().trim()
@@ -907,7 +907,7 @@ function mapKeywords(document, refNode) {
 		}
 	}
 	// check for UMTHES keywords
-	var keywords = XPathUtils.getNodeList(refNode, "//identificationInfo//descriptiveKeywords/MD_Keywords[thesaurusName/CI_Citation/title/CharacterString='UMTHES Thesaurus']/keyword/CharacterString");
+	var keywords = XPathUtils.getNodeList(refNode, "//gmd:identificationInfo//gmd:descriptiveKeywords/gmd:MD_Keywords[gmd:thesaurusName/gmd:CI_Citation/gmd:title/gco:CharacterString='UMTHES Thesaurus']/gmd:keyword/gco:CharacterString");
 	if (hasValue(keywords)) {
 		for (i=0; i<keywords.getLength(); i++ ) {
 			var value = keywords.item(i).getTextContent().trim()
@@ -928,7 +928,7 @@ function mapKeywords(document, refNode) {
 		}
 	}
 	// check for other keywords
-	var keywords = XPathUtils.getNodeList(refNode, "//identificationInfo//descriptiveKeywords/MD_Keywords/keyword/CharacterString");
+	var keywords = XPathUtils.getNodeList(refNode, "//gmd:identificationInfo//gmd:descriptiveKeywords/gmd:MD_Keywords/gmd:keyword/gco:CharacterString");
 	if (hasValue(keywords)) {
 		for (i=0; i<keywords.getLength(); i++ ) {
 			var value = keywords.item(i).getTextContent().trim();
@@ -955,7 +955,7 @@ function mapReferences(document, refNode) {
 	// check for coupled resources, bound to a specific operation in services
 	var usedUuids="";
 	var lineCounter = 1;
-	var coupledResources = XPathUtils.getNodeList(refNode, "//identificationInfo/SV_ServiceIdentification/coupledResource/SV_CoupledResource/identifier/CharacterString");
+	var coupledResources = XPathUtils.getNodeList(refNode, "//gmd:identificationInfo/srv:SV_ServiceIdentification/srv:coupledResource/srv:SV_CoupledResource/srv:identifier/gco:CharacterString");
 	if (hasValue(coupledResources)) {
 		for (i=0; i<coupledResources.getLength(); i++ ) {
 			var value = coupledResources.item(i).getTextContent()
@@ -972,7 +972,7 @@ function mapReferences(document, refNode) {
 		}
 	}
 	// check for coupled resources (operatedOn)
-	var operatesOn = XPathUtils.getNodeList(refNode, "//identificationInfo/SV_ServiceIdentification/operatesOn/@uuidref");
+	var operatesOn = XPathUtils.getNodeList(refNode, "//gmd:identificationInfo/srv:SV_ServiceIdentification/srv:operatesOn/@uuidref");
 	if (hasValue(operatesOn)) {
 		for (i=0; i<operatesOn.getLength(); i++ ) {
 			var value = operatesOn.item(i).getTextContent()
@@ -989,7 +989,7 @@ function mapReferences(document, refNode) {
 		}
 	}
 	// check for content info references (Schlüsselkatalog)
-	var operatesOn = XPathUtils.getNodeList(refNode, "//contentInfo/@uuidref");
+	var operatesOn = XPathUtils.getNodeList(refNode, "//gmd:contentInfo/@uuidref");
 	if (hasValue(operatesOn)) {
 		for (i=0; i<operatesOn.getLength(); i++ ) {
 			var value = operatesOn.item(i).getTextContent()
@@ -1006,7 +1006,7 @@ function mapReferences(document, refNode) {
 		}
 	}
 	// check for portrayalCatalogue info references (Symbolkatalog)
-	var operatesOn = XPathUtils.getNodeList(refNode, "//contentInfo/@uuidref");
+	var operatesOn = XPathUtils.getNodeList(refNode, "//gmd:contentInfo/@uuidref");
 	if (hasValue(operatesOn)) {
 		for (i=0; i<operatesOn.getLength(); i++ ) {
 			var value = operatesOn.item(i).getTextContent()
@@ -1026,11 +1026,11 @@ function mapReferences(document, refNode) {
 
 
 function mapReferenceSystemInfo(document, refNode) {
-	var rsIdentifiers = XPathUtils.getNodeList(refNode, "//referenceSystemInfo/MD_ReferenceSystem/referenceSystemIdentifier/RS_Identifier");
+	var rsIdentifiers = XPathUtils.getNodeList(refNode, "//gmd:referenceSystemInfo/gmd:MD_ReferenceSystem/gmd:referenceSystemIdentifier/gmd:RS_Identifier");
 	if (hasValue(rsIdentifiers)) {
 		for (i=0; i<rsIdentifiers.getLength(); i++ ) {
-			var code = XPathUtils.getString(rsIdentifiers.item(i), "code/CharacterString");
-			var codeSpace = XPathUtils.getString(rsIdentifiers.item(i), "codeSpace/CharacterString");
+			var code = XPathUtils.getString(rsIdentifiers.item(i), "gmd:code/gco:CharacterString");
+			var codeSpace = XPathUtils.getString(rsIdentifiers.item(i), "gmd:codeSpace/gco:CharacterString");
 			if (hasValue(codeSpace) && hasValue(code)) {
 				log.debug("adding '" + "t011_obj_geo.referencesystem_id" + "' = '" + codeSpace+":"+code + "' to ingrid document.");
 				document.addColumn(createColumn("t011_obj_geo", "referencesystem_value", "t011_obj_geo.referencesystem_id"), codeSpace+":"+code)
