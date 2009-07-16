@@ -41,6 +41,9 @@ public class IndexingJob implements StatefulJob {
 				plugDescription = PlugServer.getPlugDescription(pdPath);
 			}
 			File file = plugDescription.getWorkinDirectory();
+			if (LOGGER.isDebugEnabled()) {
+				LOGGER.debug("Working directory set to: " + file.getAbsolutePath());
+			}
 
 			// get instances from spring configuration
 			CSWFactory factory = SimpleSpringBeanFactory.INSTANCE.getBean(ConfigurationKeys.CSW_FACTORY, CSWFactory.class);

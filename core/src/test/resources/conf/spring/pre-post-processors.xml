@@ -16,7 +16,7 @@
 		class="org.springframework.beans.factory.config.ListFactoryBean">
 		<property name="sourceList">
 			<list>
-				<ref bean="hitIdPostProcessor" />
+<!-- 				<ref bean="hitIdPostProcessor" />  -->
 			</list>
 		</property>
 	</bean>
