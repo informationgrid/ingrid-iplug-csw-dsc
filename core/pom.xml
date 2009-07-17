@@ -19,7 +19,7 @@
     <dependency>
       <groupId>de.ingrid</groupId>
       <artifactId>ingrid-iplug</artifactId>
-      <exclusions>
+      <!--<exclusions>
         <exclusion>
           <groupId>de.ingrid</groupId>
           <artifactId>ingrid-ibus</artifactId>
@@ -52,7 +52,7 @@
           <groupId>xerces</groupId>
           <artifactId>xercesImpl</artifactId>
         </exclusion>
-      </exclusions>
+      </exclusions>-->
     </dependency>
     <dependency>
       <groupId>ant</groupId>
@@ -63,13 +63,13 @@
       <artifactId>lucene</artifactId>
     </dependency>
     <dependency>
-          <groupId>commons-el</groupId>
-          <artifactId>commons-el</artifactId>
+      <groupId>commons-el</groupId>
+      <artifactId>commons-el</artifactId>
     </dependency>
     <dependency>
       <groupId>org.apache.axis2</groupId>
       <artifactId>axis2-kernel</artifactId>
-      <exclusions>
+      <!--<exclusions>
         <exclusion>
           <groupId>javax.activation</groupId>
           <artifactId>activation</artifactId>
@@ -158,7 +158,7 @@
           <groupId>xml-apis</groupId>
           <artifactId>xml-apis</artifactId>
         </exclusion>
-      </exclusions>
+      </exclusions>-->
     </dependency>
     <dependency>
       <groupId>org.apache.axis2</groupId>
