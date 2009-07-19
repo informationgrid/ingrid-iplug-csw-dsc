@@ -8,11 +8,12 @@
   <modelVersion>4.0.0</modelVersion>
   <groupId>de.ingrid</groupId>
   <artifactId>ingrid-iplug-csw-dsc</artifactId>
-  <version>1.1.0-SNAPSHOT</version>
+  <version>1.1.0</version>
   <packaging>jar</packaging>
   <name>ingrid-iplug-csw-dsc:jar (core)</name>
   <scm>
-    <connection>${scmConnectionBase}/ingrid-iplug-csw-dsc/trunk/core</connection>
+    <connection>scm:svn:https://harrison.its-technidata.de:444/svn/ingrid/ingrid-iplug-csw-dsc/tags/ingrid-iplug-csw-dsc-1.1.0</connection>
+    <developerConnection>scm:svn:https://harrison.its-technidata.de:444/svn/ingrid/ingrid-base-pom/tags/ingrid-iplug-csw-dsc-1.1.0</developerConnection>
   </scm>
   <!-- ==================== DEPENDENCIES ==================== -->
   <dependencies>
