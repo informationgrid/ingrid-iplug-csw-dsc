@@ -6,14 +6,11 @@
     <version>1.0.1</version>
   </parent>
   <modelVersion>4.0.0</modelVersion>
-  <properties>
-    <ingrid-iplug-csw-dsc.finalNameTop>ingrid-iplug-csw-dsc</ingrid-iplug-csw-dsc.finalNameTop>
-  </properties>
   <groupId>de.ingrid</groupId>
-  <artifactId>ingrid-iplug-csw-dsc-base</artifactId>
-  <version>1.1.1-SNAPSHOT</version>
+  <artifactId>ingrid-iplug-csw-dsc</artifactId>
+  <version>1.1.0-SNAPSHOT</version>
   <packaging>pom</packaging>
-  <name>ingrid-iplug-csw-dsc-base:pom</name>
+  <name>ingrid-iplug-csw-dsc:pom</name>
   <modules>
     <module>core</module>
     <module>ui</module>
@@ -50,7 +47,7 @@
     </dependency>
   </dependencies>
   <build>
-    <finalName>${ingrid-iplug-csw-dsc.finalNameTop}-${version}</finalName>
+    <finalName>${artifactId}-${version}</finalName>
     <plugins>
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
