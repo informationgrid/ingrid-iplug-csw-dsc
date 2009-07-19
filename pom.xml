@@ -8,7 +8,7 @@
   <modelVersion>4.0.0</modelVersion>
   <groupId>de.ingrid</groupId>
   <artifactId>ingrid-iplug-csw-dsc</artifactId>
-  <version>1.1.0-SNAPSHOT</version>
+  <version>1.1.0</version>
   <packaging>pom</packaging>
   <name>ingrid-iplug-csw-dsc:pom</name>
   <modules>
@@ -16,8 +16,8 @@
     <module>ui</module>
   </modules>
   <scm>
-    <connection>scm:svn:https://harrison.its-technidata.de:444/svn/ingrid/ingrid-iplug-csw-dsc/trunk</connection>
-    <developerConnection>scm:svn:https://harrison.its-technidata.de:444/svn/ingrid/ingrid-iplug-csw-dsc/trunk</developerConnection>
+    <connection>scm:svn:https://harrison.its-technidata.de:444/svn/ingrid/ingrid-iplug-csw-dsc/tags/ingrid-iplug-csw-dsc-1.1.0</connection>
+    <developerConnection>scm:svn:https://harrison.its-technidata.de:444/svn/ingrid/ingrid-iplug-csw-dsc/tags/ingrid-iplug-csw-dsc-1.1.0</developerConnection>
   </scm>
   <repositories>
     <!-- Repo of parent pom needed, parent pom may not be installed locally yet -->
