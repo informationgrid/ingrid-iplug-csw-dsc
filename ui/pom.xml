@@ -2,16 +2,17 @@
   <parent>
     <groupId>de.ingrid</groupId>
     <artifactId>ingrid-iplug-csw-dsc-base</artifactId>
-    <version>1.1.0-SNAPSHOT</version>
+    <version>1.1.0</version>
   </parent>
   <modelVersion>4.0.0</modelVersion>
   <groupId>de.ingrid</groupId>
   <artifactId>ingrid-iplug-csw-dsc-ui</artifactId>
-  <version>1.1.0-SNAPSHOT</version>
+  <version>1.1.0</version>
   <packaging>war</packaging>
   <name>ingrid-iplug-csw-dsc-ui:war (ui)</name>
   <scm>
-    <connection>${scmConnectionBase}/ingrid-iplug-csw-dsc/trunk/ui</connection>
+    <connection>scm:svn:https://harrison.its-technidata.de:444/svn/ingrid/ingrid-iplug-csw-dsc/tags/ingrid-iplug-csw-dsc-base-1.1.0/ui</connection>
+    <developerConnection>scm:svn:https://harrison.its-technidata.de:444/svn/ingrid/ingrid-releases-pom/tags/ingrid-iplug-csw-dsc-base-1.1.0/ingrid-iplug-csw-dsc-ui</developerConnection>
   </scm>
   <dependencies>
     <dependency>
