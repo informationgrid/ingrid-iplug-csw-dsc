@@ -31,7 +31,7 @@
   <moduleSets>
     <moduleSet>
       <includes>
-        <include>de.ingrid:ingrid-iplug-csw-dsc</include>
+        <include>de.ingrid:ingrid-iplug-csw-dsc-core</include>
       </includes>
       <binaries>
         <outputDirectory>${project.build.finalName}/lib</outputDirectory>

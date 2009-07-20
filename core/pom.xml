@@ -20,7 +20,13 @@
     <dependency>
       <groupId>de.ingrid</groupId>
       <artifactId>ingrid-iplug</artifactId>
-      <!--<exclusions>
+      <exclusions>
+        <exclusion>
+          <groupId>ant</groupId>
+          <artifactId>ant</artifactId>
+        </exclusion>
+      </exclusions>
+      <!--
         <exclusion>
           <groupId>de.ingrid</groupId>
           <artifactId>ingrid-ibus</artifactId>
@@ -56,10 +62,6 @@
       </exclusions>-->
     </dependency>
     <dependency>
-      <groupId>ant</groupId>
-      <artifactId>ant</artifactId>
-    </dependency>
-    <dependency>
       <groupId>lucene</groupId>
       <artifactId>lucene</artifactId>
     </dependency>
@@ -70,7 +72,13 @@
     <dependency>
       <groupId>org.apache.axis2</groupId>
       <artifactId>axis2-kernel</artifactId>
-      <!--<exclusions>
+      <exclusions>
+        <exclusion>
+          <groupId>javax.servlet</groupId>
+          <artifactId>servlet-api</artifactId>
+        </exclusion>
+      </exclusions>
+        <!--
         <exclusion>
           <groupId>javax.activation</groupId>
           <artifactId>activation</artifactId>
@@ -122,10 +130,6 @@
         <exclusion>
           <groupId>javax.mail</groupId>
           <artifactId>mail</artifactId>
-        </exclusion>
-        <exclusion>
-          <groupId>javax.servlet</groupId>
-          <artifactId>servlet-api</artifactId>
         </exclusion>
         <exclusion>
           <groupId>org.apache.woden</groupId>
