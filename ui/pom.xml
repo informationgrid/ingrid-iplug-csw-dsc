@@ -3,17 +3,15 @@
   <parent>
     <groupId>de.ingrid</groupId>
     <artifactId>ingrid-iplug-csw-dsc</artifactId>
-    <version>1.1.0</version>
+    <version>1.1.0-SNAPSHOT</version>
   </parent>
   <modelVersion>4.0.0</modelVersion>
-  <groupId>de.ingrid</groupId>
   <artifactId>ingrid-iplug-csw-dsc-ui</artifactId>
-  <version>1.1.0</version>
   <packaging>war</packaging>
   <name>ingrid-iplug-csw-dsc-ui:war (ui)</name>
   <scm>
-    <connection>scm:svn:https://harrison.its-technidata.de:444/svn/ingrid/ingrid-iplug-csw-dsc/tags/ingrid-iplug-csw-dsc-1.1.0/ui</connection>
-    <developerConnection>scm:svn:https://harrison.its-technidata.de:444/svn/ingrid/ingrid-iplug-csw-dsc/tags/ingrid-iplug-csw-dsc-1.1.0/ui</developerConnection>
+    <connection>scm:svn:https://harrison.its-technidata.de:444/svn/ingrid/ingrid-iplug-csw-dsc/trunk</connection>
+    <developerConnection>scm:svn:https://harrison.its-technidata.de:444/svn/ingrid/ingrid-iplug-csw-dsc/trunk</developerConnection>
   </scm>
   <dependencies>
     <dependency>
