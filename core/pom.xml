@@ -3,17 +3,17 @@
   <parent>
     <groupId>de.ingrid</groupId>
     <artifactId>ingrid-iplug-csw-dsc</artifactId>
-    <version>1.1.1-SNAPSHOT</version>
+    <version>1.1.0</version>
   </parent>
   <modelVersion>4.0.0</modelVersion>
   <groupId>de.ingrid</groupId>
   <artifactId>ingrid-iplug-csw-dsc-core</artifactId>
-  <version>1.1.1-SNAPSHOT</version>
+  <version>1.1.0-SNAPSHOT</version>
   <packaging>jar</packaging>
   <name>ingrid-iplug-csw-dsc-core:jar (core)</name>
   <scm>
-    <connection>scm:svn:https://harrison.its-technidata.de:444/svn/ingrid/ingrid-iplug-csw-dsc/trunk/core</connection>
-    <developerConnection>scm:svn:https://harrison.its-technidata.de:444/svn/ingrid/ingrid-iplug-csw-dsc/trunk/core</developerConnection>
+    <connection>scm:svn:https://harrison.its-technidata.de:444/svn/ingrid/ingrid-iplug-csw-dsc/tags/ingrid-iplug-csw-dsc-1.1.0/core</connection>
+    <developerConnection>scm:svn:https://harrison.its-technidata.de:444/svn/ingrid/ingrid-iplug-csw-dsc/tags/ingrid-iplug-csw-dsc-1.1.0/core</developerConnection>
   </scm>
   <!-- ==================== DEPENDENCIES ==================== -->
   <dependencies>
@@ -260,6 +260,14 @@
   <build>
     <finalName>${artifactId}-${version}</finalName>
     <plugins>
+      <plugin>
+        <groupId>org.codehaus.mojo</groupId>
+        <artifactId>wagon-maven-plugin</artifactId>
+        <configuration>
+          <fromDir>NOT_EXISITING_DIRECTORY</fromDir>
+          <url>/dev/null</url>
+        </configuration>
+      </plugin>
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-surefire-plugin</artifactId>
