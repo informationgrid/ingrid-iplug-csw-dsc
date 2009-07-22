@@ -123,6 +123,10 @@ public abstract class AbstractSearcher implements IPlug, IRecordLoader {
 	 *             If something goes wrong.
 	 */
 	public AbstractSearcher(File indexFolder, String plugId) throws IOException {
+		if (log.isDebugEnabled()) {
+			log.debug("Use search index in: " + indexFolder.getAbsolutePath());
+		}
+		
 		this.fSearcher = new IndexSearcher(indexFolder.getAbsolutePath());
 		this.fPlugId = plugId;
 		AbstractSearcher.fInstance = this;

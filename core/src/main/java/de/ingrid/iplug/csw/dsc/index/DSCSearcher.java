@@ -66,6 +66,10 @@ public class DSCSearcher extends AbstractSearcher {
 		this.fPlugDescription = plugDescription;
 		this.fPlugId = plugDescription.getPlugId();
 		this.fUrl = (String) plugDescription.get("detailUrl");
+		if (log.isDebugEnabled()) {
+			log.debug("Use search index in: " + new File(plugDescription
+					.getWorkinDirectory(), "index").getAbsolutePath());
+		}
 		this.fSearcher = new IndexSearcher(new File(plugDescription
 				.getWorkinDirectory(), "index").getAbsolutePath());
 		this.fDetailer = new RecordLoader();

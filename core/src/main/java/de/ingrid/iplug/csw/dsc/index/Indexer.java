@@ -45,8 +45,14 @@ public class Indexer implements IIndexer {
 	}
 
 	public void open(File file) throws IOException {
+		if (LOG.isDebugEnabled()) {
+			LOG.debug("Use '" + file.getAbsolutePath() + "' as base for the index.");
+		}
 		_targetFolder = file;
 		_indexFolder = new File(_targetFolder, "newIndex");
+		if (LOG.isDebugEnabled()) {
+			LOG.debug("Created '" + _indexFolder.getAbsolutePath() + "' for creating a new index.");
+		}
 		_indexWriter = new IndexWriter(_indexFolder, new StandardAnalyzer(
 				new String[0]), true);
 	}
