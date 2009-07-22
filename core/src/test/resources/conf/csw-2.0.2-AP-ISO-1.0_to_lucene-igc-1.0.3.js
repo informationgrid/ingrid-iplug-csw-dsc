@@ -48,6 +48,12 @@ var recordNode = cswRecord.getOriginalResponse();
 var transformationDescriptions = [
 		{	"indexField":"t01_object.obj_id",
 			"xpath":"//gmd:fileIdentifier/gco:CharacterString"
+		},
+		{	"indexField":"t01_object.id",
+			"xpath":"//gmd:fileIdentifier/gco:CharacterString",
+			"transform":{
+				"funct":createHashCode
+			}
 		}, 
 		{	"indexField":"title",
 			"tokenized":false,
@@ -725,6 +731,13 @@ function transformISO639_2ToISO639_1(val) {
 	}
 	
 } 
+
+function createHashCode(val) {
+	if (log.isDebugEnabled()) {
+		log.debug("Create hash code from '" + val + "' = " + val.hashCode());
+	}
+	return val.hashCode();
+}
 
 
 function addResourceMaintenance() {
