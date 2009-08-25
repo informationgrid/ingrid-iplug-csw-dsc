@@ -1,15 +1,16 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE installer PUBLIC "-//tp23 //DTD Ant Installer Config//EN" "http://antinstaller.sf.net/dtd/antinstall-config-0.8.dtd">
 <installer
-			ui			="swing,text"
-			verbose		="true"
-			debug		="true"
-			lookAndFeel	="org.tp23.jgoodies.plaf.plastic.PlasticXPLookAndFeel"
-			name		="InGrid iPlug CSW-DSC Installation"
-			windowIcon	="/resources/icons/logoIcon.gif"
+			ui			            ="swing,text,swing-auto,text-auto"
+      loadDefaults        ="prompt"
+			verbose		          ="true"
+			debug		            ="true"
+			lookAndFeel	        ="org.tp23.jgoodies.plaf.plastic.PlasticXPLookAndFeel"
+			name		            ="InGrid iPlug CSW-DSC Installation"
+			windowIcon	        ="/resources/icons/logoIcon.gif"
 			defaultImageResource="/resources/makewavesdawn.png"
-			minJavaVersion		="1.6"
-			>
+			minJavaVersion		  ="1.6"
+      version             ="1.0">
 			
 	<!--  The target "extract" must be called first, so it is defined on the first page -->
 	<page
