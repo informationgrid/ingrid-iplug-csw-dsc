@@ -53,6 +53,10 @@ var mappingDescription =
 					"xpath":"//gmd:identificationInfo//gmd:citation/gmd:CI_Citation/gmd:alternateTitle/gco:CharacterString"
 				},
 				{
+					"field":"time_descr",
+					"xpath":"//gmd:identificationInfo//gmd:resourceMaintenance/gmd:MD_MaintenanceInformation/gmd:maintenanceNote/gco:CharacterString"
+				},
+				{
 					"field":"time_status",
 					"xpath":"//gmd:identificationInfo//gmd:status/gmd:MD_ProgressCode/@codeListValue",
 					"transform":{
@@ -81,7 +85,7 @@ var mappingDescription =
 				},
 				{
 					"field":"data_language_code",
-					"xpath":"//gmd:identificationInfo//gmd:language/gco:CharacterString",
+					"xpath":"//gmd:identificationInfo//gmd:language/gmd:LanguageCode/@codeListValue",
 					"transform":{
 						"funct":transformISO639_2ToISO639_1
 					}
@@ -104,7 +108,7 @@ var mappingDescription =
 				},
 				{
 					"field":"metadata_language_code",
-					"xpath":"gmd:MD_Metadata/gmd:language/gco:CharacterString",
+					"xpath":"gmd:MD_Metadata/gmd:language/gmd:LanguageCode/@codeListValue",
 					"transform":{
 						"funct":transformISO639_2ToISO639_1
 					}
@@ -163,6 +167,11 @@ var mappingDescription =
 					"execute":{
 						"funct":mapTimeConstraints
 					}
+		    	},
+		    	{
+					"execute":{
+						"funct":addResourceMaintenance
+		    		}
 		    	}
 			],
 			"subrecords":[
@@ -488,7 +497,7 @@ var mappingDescription =
 							"fieldMappings":[
 				    	  		{
 			    					"field":"feature_type",
-			    					"xpath":"LocalName"
+			    					"xpath":"gco:LocalName"
 				    			}
 				    	  	]
 						}, // END t011_obj_geo_supplinfo
@@ -715,6 +724,25 @@ function mapTimeConstraints(document, refNode) {
 		}
 	}
 }
+
+function addResourceMaintenance(document, refNode) {
+	var maintenanceFrequencyCode = XPathUtils.getString(refNode, "//gmd:identificationInfo//gmd:resourceMaintenance/gmd:MD_MaintenanceInformation/gmd:maintenanceAndUpdateFrequency/gmd:MD_MaintenanceFrequencyCode/@codeListValue")
+	if (hasValue(maintenanceFrequencyCode)) {
+		// transform to IGC domain id
+		var idcCode = UtilsUDKCodeLists.getIgcIdFromIsoCodeListEntry(518, maintenanceFrequencyCode);
+		if (hasValue(idcCode)) {
+			document.addColumn(createColumn("t01_object", "time_period", "t01_object.time_period"), idcCode));
+			var periodDuration = XPathUtils.getString(recordNode, "//gmd:identificationInfo//gmd:resourceMaintenance/gmd:MD_MaintenanceInformation/gmd:userDefinedMaintenanceFrequency/gmd:TM_PeriodDuration");
+			document.addColumn(createColumn("t01_object", "time_interval", "t01_object.time_interval"), new TM_PeriodDurationToTimeInterval().parse(periodDuration)));
+			document.addColumn(createColumn("t01_object", "time_alle", "t01_object.time_alle"), new TM_PeriodDurationToTimeAlle().parse(periodDuration)));
+		} else {
+			if (log.isDebugEnabled()) {
+				log.debug("MD_MaintenanceFrequencyCode '" + maintenanceFrequencyCode + "' unknown.")
+			}
+		}
+	}
+}
+
 
 
 function mapAddressInformation(document, refNode) {
