@@ -5,138 +5,14 @@
     <author email="joachim@wemove.com">Joachim Müller</author>
   </properties>
   <body>
-    <release version="1.3.1" date="2009-07-10" description="Umstellung">
-      <action type="update">
-        Umstellung auf Maven 2
+    <release version="1.1.1-SNAPSHOT" date="2009-xx-xx" description="Release">
+      <action type="fix">
+        Verschiedene Fehler beim Mapping auf IGC Format behoben
       </action>
     </release>
-    
-    <release version="1.2" date="2008-05-08" description="Release">
+    <release version="1.1.0" date="2009-07-10" description="Release">
       <action type="add">
-        Neue plugdescription presets fuer IDC 1.0.5 DB (Länder- und Sprachlisten)
-      </action>
-      <action type="add">
-        Neue plugdescription presets fuer IDC 1.0.4 DB (INSPIRE Verschlagwortung)
-      </action>
-      <action type="fix">
-        Mapping des Datums der Konformität korrigiert
-      </action>
-      <action type="add" issue="INGRID-1606">
-        Verbindung korrespondierender iPlugs über Admin-Ui
-      </action>
-      <action type="add" issue="INGRID-1607">
-        iPlug sendet Version und Release Datum an iBus. Diese wird in der iBus Admin UI dargestellt.
-      </action>
-      <action type="add" issue="INGRID-1590">
-        Caching der Suchergebnisse 
-      </action>
-    </release>
-      
-    <release version="1.1.8" date="2008-11-05" description="Release">
-      <action type="fix">
-        fix bug with '/' in query terms
-      </action>
-      <action type="update">
-        change communication MessageHandleTimeout from 10 to 120 sec
-      </action>
-      <action type="fix">
-        fix address plugdescription presets for IDC 1.0.3 and IDC 1.0.2 (work version was indexed as well)
-      </action>
-      <action type="update">
-        add plugdescription presets for IDC 1.0.3 DB (INSPIRE)
-      </action>
-    </release>
-    
-    <release version="1.1.7" date="2008-08-06" description="Fix-Release">
-      <action type="fix">
-        fix handling of double values in connection with IDC 1.0.2 DB
-      </action>
-      <action type="add">
-        add plugdescription presets for IDC 1.0.2 DB
-      </action>
-      <action type="add">
-        add plugdescription presets for intranet usage ("publish_id less than 3")
-      </action>
-      <action type="fix">
-        fix npe while indexing and index searcher restart
-      </action>
-    </release>
-    
-    <release version="1.1.6" date="2008-05-26" description="Fix-Release">
-      <action type="fix">
-        fix Oracle SQL bug thanks to Thomas Sattler in "udk_oracle.sql"
-      </action>
-      <action type="add">
-        add ingrid-authentication to dependencies
-      </action>
-      <action type="fix" issue="Ingrid-1505">
-        Fehlender Datatype bei UDK Address iPlug generierung
-      </action>
-    </release>
-    
-    <release version="1.1.5" date="2008-03-17" description="Release">
-      <action type="add">
-        Version 1.1.5-alpha akzeptiert
-      </action>
-      <action type="fix">
-        Re-Indexieren über Admin UI gefixt
-      </action>
-    </release>
-    
-    <release version="1.1.5-alpha" date="2008-03-06" description="Release">
-      <action type="fix">
-        Provider werden jetzt in der Adminoberfläche aktualisiert und korrekt angezeigt
-      </action>
-      <action type="add">
-        Datatypes werden aus Property File geladen
-      </action>
-      <action type="add">
-        Rechtsvorschriften (datatype law) werden eingebunden
-      </action>
-    </release>
-    
-    <release version="1.1.4" date="2008-01-03" description="Release">
-      <action type="add">
-        Unterstützung MS-SQL-Server Version 2005
-      </action>
-      <action type="update">
-        Erhöhung der Zuverlässigkeit bei Reconnects
-      </action>
-      <action type="update">
-        Mapping Änderung für Adressbestimmung
-      </action>
-    </release>
-    
-    <release version="1.1.3" date="2007-11-25" description="Release">
-      <action type="update">
-        Gruppierung nach Domäne
-      </action>
-    </release>
-    
-    <release version="1.1.2" date="2007-10-10" description="Release">
-      <action type="fix">
-        Beachte Proxies, die kein EOF senden
-      </action>
-      <action type="fix">
-        Behebe erneute Anmeldung nach Herunterfahren
-      </action>
-    </release>
-    
-    <release version="1.1.1" date="2007-08-31" description="Release">
-      <action type="update">
-        Verbesserung der Kommunikationskomponente. 
-      </action>
-      <action type="update">
-        ProxyUser und ProxyPassword werden jetzt über Konfigurationsdatei gesetzt.
-      </action>
-      <action type="update">
-        Eine Http-Proxy Verbindung kann auch ohne Username und Password aufgebaut werden.
-      </action>
-    </release>
-    
-    <release version="1.1.0" date="2007-08-01" description="Fix-Release">
-      <action type="update">
-        Austausch JXTA-Kommunikation gegen TCP/IP-Kommunikation
+        Initiales Release
       </action>
     </release>
   </body>
