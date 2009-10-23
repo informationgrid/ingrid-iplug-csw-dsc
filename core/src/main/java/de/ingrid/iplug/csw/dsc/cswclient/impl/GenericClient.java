@@ -20,7 +20,7 @@ import de.ingrid.iplug.csw.dsc.cswclient.CSWSearchResult;
 import de.ingrid.iplug.csw.dsc.cswclient.constants.ElementSetName;
 import de.ingrid.iplug.csw.dsc.cswclient.constants.Operation;
 import de.ingrid.iplug.csw.dsc.cswclient.constants.ResultType;
-import de.ingrid.iplug.csw.dsc.tools.XPathUtils;
+import de.ingrid.utils.xml.XPathUtils;
 
 public class GenericClient implements CSWClient {
 

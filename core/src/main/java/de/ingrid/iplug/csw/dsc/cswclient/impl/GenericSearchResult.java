@@ -14,7 +14,7 @@ import de.ingrid.iplug.csw.dsc.cswclient.CSWFactory;
 import de.ingrid.iplug.csw.dsc.cswclient.CSWQuery;
 import de.ingrid.iplug.csw.dsc.cswclient.CSWRecord;
 import de.ingrid.iplug.csw.dsc.cswclient.CSWSearchResult;
-import de.ingrid.iplug.csw.dsc.tools.XPathUtils;
+import de.ingrid.utils.xml.XPathUtils;
 
 public class GenericSearchResult implements CSWSearchResult {
 

@@ -15,7 +15,7 @@ import org.w3c.dom.NodeList;
 import de.ingrid.iplug.csw.dsc.cswclient.CSWCapabilities;
 import de.ingrid.iplug.csw.dsc.cswclient.constants.Operation;
 import de.ingrid.iplug.csw.dsc.tools.StringUtils;
-import de.ingrid.iplug.csw.dsc.tools.XPathUtils;
+import de.ingrid.utils.xml.XPathUtils;
 
 public class GenericCapabilities implements CSWCapabilities {
 	

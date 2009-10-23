@@ -11,7 +11,7 @@ import de.ingrid.iplug.csw.dsc.cswclient.CSWRecord;
 import de.ingrid.iplug.csw.dsc.cswclient.constants.ElementSetName;
 import de.ingrid.iplug.csw.dsc.tools.NodeUtils;
 import de.ingrid.iplug.csw.dsc.tools.StringUtils;
-import de.ingrid.iplug.csw.dsc.tools.XPathUtils;
+import de.ingrid.utils.xml.XPathUtils;
 
 public class GenericRecord implements CSWRecord {
 

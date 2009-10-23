@@ -25,9 +25,9 @@ import de.ingrid.iplug.csw.dsc.cswclient.CSWQuery;
 import de.ingrid.iplug.csw.dsc.cswclient.CSWRecord;
 import de.ingrid.iplug.csw.dsc.cswclient.constants.ElementSetName;
 import de.ingrid.iplug.csw.dsc.tools.StringUtils;
-import de.ingrid.iplug.csw.dsc.tools.XPathUtils;
 import de.ingrid.utils.udk.UtilsCSWDate;
 import de.ingrid.utils.udk.UtilsDate;
+import de.ingrid.utils.xml.XPathUtils;
 
 /**
  * The optimized incremental update job. It differs from the incremental 
@@ -194,7 +194,7 @@ public class IncrementalUpdateOptimizedStrategy extends AbstractUpdateStrategy {
 		for (String recordId : allRecordIds) {
 			record = cache.getRecord(recordId, ElementSetName.BRIEF);
 			// get the record modified date
-			NodeList idNodes = XPathUtils.getNodeList(record.getOriginalResponse(), "//*/dateStamp");
+			NodeList idNodes = XPathUtils.getNodeList(record.getOriginalResponse(), "//*/gmd:dateStamp");
 			if (idNodes == null || idNodes.item(0) == null) {
 				log.debug("CSWRecord '" + recordId + "' does not contain a dateStamp/Date element. Record marked for refetching.");
 				resultList.add(recordId);
