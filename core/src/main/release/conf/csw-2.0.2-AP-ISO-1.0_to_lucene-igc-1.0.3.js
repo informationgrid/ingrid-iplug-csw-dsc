@@ -13,6 +13,7 @@ importPackage(Packages.org.apache.lucene.document);
 importPackage(Packages.de.ingrid.iplug.csw.dsc.tools);
 importPackage(Packages.de.ingrid.iplug.csw.dsc.index);
 importPackage(Packages.de.ingrid.utils.udk);
+importPackage(Packages.de.ingrid.utils.xml);
 importPackage(Packages.org.w3c.dom);
 
 
@@ -77,6 +78,7 @@ var transformationDescriptions = [
 		},
 		{	"indexField":"t01_object.obj_class",
 			"xpath":"//gmd:hierarchyLevel/gmd:MD_ScopeCode/@codeListValue",
+			"defaultValue":"dataset",
 			"transform":{
 				"funct":getObjectClassFromHierarchyLevel
 			}
@@ -371,6 +373,13 @@ var transformationDescriptions = [
 		{	"indexField":"t017_url_ref.descr",
 			"xpath":"//gmd:distributionInfo/gmd:MD_Distribution/gmd:transferOptions/gmd:MD_DigitalTransferOptions/gmd:onLine/gmd:CI_OnlineResource/gmd:description/gco:CharacterString"
 		},
+		// add MD_BrowseGraphic as link (t017_url_ref)
+		{	"indexField":"t017_url_ref.url_link",
+			"xpath":"//gmd:identificationInfo//gmd:graphicOverview/gmd:MD_BrowseGraphic/gmd:fileName/gco:CharacterString"
+		},
+		{	"indexField":"t017_url_ref.content",
+			"xpath":"//gmd:identificationInfo//gmd:graphicOverview/gmd:MD_BrowseGraphic/gmd:fileDescription/gco:CharacterString"
+		},
 		// object_references
 		{	"execute":{
 				"funct":mapReferences,
@@ -429,24 +438,48 @@ for (var i in transformationDescriptions) {
 		var tokenized = true;
 		// iterate over all xpath results
 		var nodeList = XPathUtils.getNodeList(recordNode, t.xpath);
-		for (j=0; j<nodeList.getLength(); j++ ) {
-			value = nodeList.item(j).getTextContent()
-			// check for transformation
-			if (hasValue(t.transform)) {
-				var args = new Array(value);
-				if (hasValue(t.transform.params)) {
-					args = args.concat(t.transform.params);
+		if (nodeList && nodeList.getLength() > 0) {
+			for (j=0; j<nodeList.getLength(); j++ ) {
+				value = nodeList.item(j).getTextContent()
+				// check for transformation
+				if (hasValue(t.transform)) {
+					var args = new Array(value);
+					if (hasValue(t.transform.params)) {
+						args = args.concat(t.transform.params);
+					}
+					value = call_f(t.transform.funct,args);
 				}
-				value = call_f(t.transform.funct,args);
-			}
-			// check for NOT tokenized
-			if (hasValue(t.tokenized)) {
-				if (!t.tokenized) {
-					tokenized = false;
+				// check for NOT tokenized
+				if (hasValue(t.tokenized)) {
+					if (!t.tokenized) {
+						tokenized = false;
+					}
+				}
+				if (hasValue(value)) {
+					addToDoc(t.indexField, value, tokenized);
 				}
 			}
-			if (hasValue(value)) {
-				addToDoc(t.indexField, value, tokenized);
+		} else {
+			// no node found for this xpath
+			if (t.defaultValue) {
+				value = t.defaultValue;
+				// check for transformation
+				if (hasValue(t.transform)) {
+					var args = new Array(value);
+					if (hasValue(t.transform.params)) {
+						args = args.concat(t.transform.params);
+					}
+					value = call_f(t.transform.funct,args);
+				}
+				// check for NOT tokenized
+				if (hasValue(t.tokenized)) {
+					if (!t.tokenized) {
+						tokenized = false;
+					}
+				}
+				if (hasValue(value)) {
+					addToDoc(t.indexField, value, tokenized);
+				}
 			}
 		}
 	}
@@ -627,7 +660,7 @@ function mapReferences(recordNode) {
 			}
 		}
 	}
-	// check for content info references (Schlüsselkatalog)
+	// check for content info references (Schluesselkatalog)
 	var operatesOn = XPathUtils.getNodeList(recordNode, "//gmd:contentInfo/@uuidref");
 	if (hasValue(operatesOn)) {
 		for (i=0; i<operatesOn.getLength(); i++ ) {

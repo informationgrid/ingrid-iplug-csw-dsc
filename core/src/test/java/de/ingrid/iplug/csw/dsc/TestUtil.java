@@ -91,7 +91,7 @@ public class TestUtil {
 	 * Record related methods
 	 */
 
-    private final static String dataFolder = "./resources/test_records";
+    private final static String dataFolder = "./src/test/resources/test_records";
 
 	public static Set<String> getRecordIds() {
 		Set<String> recordIds = new HashSet<String>();

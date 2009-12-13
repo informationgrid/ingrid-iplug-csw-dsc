@@ -12,6 +12,7 @@
 importPackage(Packages.de.ingrid.iplug.csw.dsc.tools);
 importPackage(Packages.de.ingrid.utils.dsc);
 importPackage(Packages.de.ingrid.utils.udk);
+importPackage(Packages.de.ingrid.utils.xml);
 
 log.debug("Mapping csw record "+cswRecord.getId()+" to ingrid document");
 
@@ -67,6 +68,7 @@ var mappingDescription =
 				{
 					"field":"obj_class",
 					"xpath":"//gmd:hierarchyLevel/gmd:MD_ScopeCode/@codeListValue",
+					"defaultValue":"dataset",
 					"transform":{
 						"funct":getObjectClassFromHierarchyLevel
 					}
@@ -564,6 +566,21 @@ var mappingDescription =
 		    			}
 		    	  	]
 				}, // END t017_url_ref
+				{
+					"table":"t017_url_ref",
+					"xpath":"//gmd:identificationInfo//gmd:graphicOverview/gmd:MD_BrowseGraphic",
+					"line":false,
+					"fieldMappings":[
+		    	  		{
+	    					"field":"url_link",
+	    					"xpath":"gmd:fileName/gco:CharacterString"
+		    			},
+		    	  		{
+	    					"field":"content",
+	    					"xpath":"gmd:fileDescription/gco:CharacterString"
+		    			}
+		    	  	]
+				}, // END t017_url_ref, MD_BrowseGraphic
 				{	
 					"table":"object_references",
 					"fieldMappings":[
@@ -634,25 +651,50 @@ function mapToRecord(mapping, document, refNode) {
 				log.debug("Working on " + mapping.table + "." + fm.field + " with xpath:'" + fm.xpath + "' from parent node '" + refNode.nodeName + "'")
 				// iterate over all xpath results
 				var nodeList = XPathUtils.getNodeList(baseNode, fm.xpath);
-				for (k=0; k<nodeList.getLength(); k++ ) {
-					var value = nodeList.item(k).getTextContent()
-					// check for transformation
-					if (hasValue(fm.transform)) {
-						var args = new Array(value);
-						if (hasValue(fm.transform.params)) {
-							args = args.concat(fm.transform.params);
+				if (nodeList && nodeList.getLength() > 0) {
+					for (k=0; k<nodeList.getLength(); k++ ) {
+						var value = nodeList.item(k).getTextContent()
+						// check for transformation
+						if (hasValue(fm.transform)) {
+							var args = new Array(value);
+							if (hasValue(fm.transform.params)) {
+								args = args.concat(fm.transform.params);
+							}
+							value = call_f(fm.transform.funct,args);
 						}
-						value = call_f(fm.transform.funct,args);
+						var indexFieldName;
+						if (hasValue(fm.indexName)) {
+							indexFieldName = fm.indexName;
+						} else {
+							indexFieldName = mapping.table + "." + fm.field;
+						}
+						if (hasValue(value)) {
+							log.debug("adding '" + indexFieldName + "' = '" + value + "' to ingrid document.");
+							document.addColumn(createColumn(mapping.table, fm.field, indexFieldName), value)
+						}
 					}
-					var indexFieldName;
-					if (hasValue(fm.indexName)) {
-						indexFieldName = fm.indexName;
-					} else {
-						indexFieldName = mapping.table + "." + fm.field;
-					}
-					if (hasValue(value)) {
-						log.debug("adding '" + indexFieldName + "' = '" + value + "' to ingrid document.");
-						document.addColumn(createColumn(mapping.table, fm.field, indexFieldName), value)
+				} else {
+					// no node found for this xpath
+					if (fm.defaultValue) {
+						value = fm.defaultValue;
+						// check for transformation
+						if (hasValue(fm.transform)) {
+							var args = new Array(value);
+							if (hasValue(fm.transform.params)) {
+								args = args.concat(fm.transform.params);
+							}
+							value = call_f(fm.transform.funct,args);
+						}
+						var indexFieldName;
+						if (hasValue(fm.indexName)) {
+							indexFieldName = fm.indexName;
+						} else {
+							indexFieldName = mapping.table + "." + fm.field;
+						}
+						if (hasValue(value)) {
+							log.debug("adding '" + indexFieldName + "' = '" + value + "' to ingrid document.");
+							document.addColumn(createColumn(mapping.table, fm.field, indexFieldName), value)
+						}
 					}
 				}
 			}
@@ -692,8 +734,8 @@ function mapTimeConstraints(document, refNode) {
 	var timePeriods = XPathUtils.getNodeList(refNode, "//gmd:EX_Extent/gmd:temporalElement/gmd:EX_TemporalExtent/gmd:extent/gmd:TimePeriod");
 	log.debug("Found " + timePeriods.getLength() + " TimePeriod records.");
 	if (hasValue(timePeriods)) {
-		var beginPosition = XPathUtils.getString(timePeriods.item(0), "gmd:beginPosition");
-		var endPosition = XPathUtils.getString(timePeriods.item(0), "gmd:endPosition");
+		var beginPosition = getXPathValue(timePeriods.item(0), "gmd:beginPosition");
+		var endPosition = getXPathValue(timePeriods.item(0), "gmd:endPosition");
 		if (hasValue(beginPosition) && hasValue(endPosition)) {
 			if (beginPosition.equals(endPosition)) {
 				var t01ObjectRecord = new Record();
@@ -726,15 +768,15 @@ function mapTimeConstraints(document, refNode) {
 }
 
 function addResourceMaintenance(document, refNode) {
-	var maintenanceFrequencyCode = XPathUtils.getString(refNode, "//gmd:identificationInfo//gmd:resourceMaintenance/gmd:MD_MaintenanceInformation/gmd:maintenanceAndUpdateFrequency/gmd:MD_MaintenanceFrequencyCode/@codeListValue")
+	var maintenanceFrequencyCode = getXPathValue(refNode, "//gmd:identificationInfo//gmd:resourceMaintenance/gmd:MD_MaintenanceInformation/gmd:maintenanceAndUpdateFrequency/gmd:MD_MaintenanceFrequencyCode/@codeListValue");
 	if (hasValue(maintenanceFrequencyCode)) {
 		// transform to IGC domain id
 		var idcCode = UtilsUDKCodeLists.getIgcIdFromIsoCodeListEntry(518, maintenanceFrequencyCode);
 		if (hasValue(idcCode)) {
-			document.addColumn(createColumn("t01_object", "time_period", "t01_object.time_period"), idcCode));
-			var periodDuration = XPathUtils.getString(recordNode, "//gmd:identificationInfo//gmd:resourceMaintenance/gmd:MD_MaintenanceInformation/gmd:userDefinedMaintenanceFrequency/gmd:TM_PeriodDuration");
-			document.addColumn(createColumn("t01_object", "time_interval", "t01_object.time_interval"), new TM_PeriodDurationToTimeInterval().parse(periodDuration)));
-			document.addColumn(createColumn("t01_object", "time_alle", "t01_object.time_alle"), new TM_PeriodDurationToTimeAlle().parse(periodDuration)));
+			document.addColumn(createColumn("t01_object", "time_period", "t01_object.time_period"), idcCode);
+			var periodDuration = getXPathValue(recordNode, "//gmd:identificationInfo//gmd:resourceMaintenance/gmd:MD_MaintenanceInformation/gmd:userDefinedMaintenanceFrequency/gmd:TM_PeriodDuration");
+			document.addColumn(createColumn("t01_object", "time_interval", "t01_object.time_interval"), new TM_PeriodDurationToTimeInterval().parse(periodDuration));
+			document.addColumn(createColumn("t01_object", "time_alle", "t01_object.time_alle"), new TM_PeriodDurationToTimeAlle().parse(periodDuration));
 		} else {
 			if (log.isDebugEnabled()) {
 				log.debug("MD_MaintenanceFrequencyCode '" + maintenanceFrequencyCode + "' unknown.")
@@ -751,7 +793,7 @@ function mapAddressInformation(document, refNode) {
 	if (hasValue(ciResponsibleParties)) {
 		var lineCounter = 1;
 		for (var i=0; i<ciResponsibleParties.getLength(); i++ ) {
-			var role = XPathUtils.getString(ciResponsibleParties.item(i), "gmd:role/gmd:CI_RoleCode/@codeListValue");
+			var role = getXPathValue(ciResponsibleParties.item(i), "gmd:role/gmd:CI_RoleCode/@codeListValue");
 			log.debug("rp role " + role);
 			if (hasValue(role)) {
 				var t012ObjAddrRecord = new Record();
@@ -772,18 +814,18 @@ function mapAddressInformation(document, refNode) {
 				var t02AddressRecord = new Record();
 				t02AddressRecord.addColumn(createColumn("t02_address", "adr_uuid", "t02_address.adr_id"), "undefined")
 				t02AddressRecord.addColumn(createColumn("t02_address", "adr_type", "t02_address.typ"), 3); // freie Adresse
-				t02AddressRecord.addColumn(createColumn("t02_address", "institution", "t02_address.institution"), XPathUtils.getString(ciResponsibleParties.item(i), "gmd:organisationName/gco:CharacterString"));
-				t02AddressRecord.addColumn(createColumn("t02_address", "lastname", "t02_address.lastname"), XPathUtils.getString(ciResponsibleParties.item(i), "gmd:individualName/gco:CharacterString"));
-				t02AddressRecord.addColumn(createColumn("t02_address", "street", "t02_address.street"), XPathUtils.getString(ciResponsibleParties.item(i), "gmd:contactInfo/gmd:CI_Contact/gmd:address/gmd:CI_Address/gmd:deliveryPoint/gco:CharacterString"));
-				t02AddressRecord.addColumn(createColumn("t02_address", "postcode", "t02_address.postcode"), XPathUtils.getString(ciResponsibleParties.item(i), "gmd:contactInfo/gmd:CI_Contact/gmd:address/gmd:CI_Address/gmd:postalCode/gco:CharacterString"));
-				t02AddressRecord.addColumn(createColumn("t02_address", "city", "t02_address.city"), XPathUtils.getString(ciResponsibleParties.item(i), "gmd:contactInfo/gmd:CI_Contact/gmd:address/gmd:CI_Address/gmd:city/gco:CharacterString"));
-				t02AddressRecord.addColumn(createColumn("t02_address", "country_code", "t02_address.country_code"), XPathUtils.getString(ciResponsibleParties.item(i), "gmd:contactInfo/gmd:CI_Contact/gmd:address/gmd:CI_Address/gmd:country/gco:CharacterString"));
-				t02AddressRecord.addColumn(createColumn("t02_address", "job", "t02_address.job"), XPathUtils.getString(ciResponsibleParties.item(i), "gmd:positionName/gco:CharacterString"));
-				t02AddressRecord.addColumn(createColumn("t02_address", "descr", "t02_address.descr"), XPathUtils.getString(ciResponsibleParties.item(i), "gmd:contactInfo/gmd:CI_Contact/gmd:contactInstructions/gco:CharacterString"));
+				t02AddressRecord.addColumn(createColumn("t02_address", "institution", "t02_address.institution"), getXPathValue(ciResponsibleParties.item(i), "gmd:organisationName/gco:CharacterString"));
+				t02AddressRecord.addColumn(createColumn("t02_address", "lastname", "t02_address.lastname"), getXPathValue(ciResponsibleParties.item(i), "gmd:individualName/gco:CharacterString"));
+				t02AddressRecord.addColumn(createColumn("t02_address", "street", "t02_address.street"), getXPathValue(ciResponsibleParties.item(i), "gmd:contactInfo/gmd:CI_Contact/gmd:address/gmd:CI_Address/gmd:deliveryPoint/gco:CharacterString"));
+				t02AddressRecord.addColumn(createColumn("t02_address", "postcode", "t02_address.postcode"), getXPathValue(ciResponsibleParties.item(i), "gmd:contactInfo/gmd:CI_Contact/gmd:address/gmd:CI_Address/gmd:postalCode/gco:CharacterString"));
+				t02AddressRecord.addColumn(createColumn("t02_address", "city", "t02_address.city"), getXPathValue(ciResponsibleParties.item(i), "gmd:contactInfo/gmd:CI_Contact/gmd:address/gmd:CI_Address/gmd:city/gco:CharacterString"));
+				t02AddressRecord.addColumn(createColumn("t02_address", "country_code", "t02_address.country_code"), getXPathValue(ciResponsibleParties.item(i), "gmd:contactInfo/gmd:CI_Contact/gmd:address/gmd:CI_Address/gmd:country/gco:CharacterString"));
+				t02AddressRecord.addColumn(createColumn("t02_address", "job", "t02_address.job"), getXPathValue(ciResponsibleParties.item(i), "gmd:positionName/gco:CharacterString"));
+				t02AddressRecord.addColumn(createColumn("t02_address", "descr", "t02_address.descr"), getXPathValue(ciResponsibleParties.item(i), "gmd:contactInfo/gmd:CI_Contact/gmd:contactInstructions/gco:CharacterString"));
 				
 				var communicationLine = 1;
 				// phone
-				var commValue = XPathUtils.getString(ciResponsibleParties.item(i), "gmd:contactInfo/gmd:CI_Contact/gmd:phone/gmd:CI_Telephone/gmd:voice/gco:CharacterString")
+				var commValue = getXPathValue(ciResponsibleParties.item(i), "gmd:contactInfo/gmd:CI_Contact/gmd:phone/gmd:CI_Telephone/gmd:voice/gco:CharacterString")
 				if (hasValue(commValue)) {
 					var t012CommunicationRecord = new Record();
 					t012CommunicationRecord.addColumn(createColumn("t021_communication", "line", "t021_communication.line"), (communicationLine))
@@ -794,7 +836,7 @@ function mapAddressInformation(document, refNode) {
 					communicationLine++;
 				}
 				// fax
-				commValue = XPathUtils.getString(ciResponsibleParties.item(i), "gmd:contactInfo/gmd:CI_Contact/gmd:phone/gmd:CI_Telephone/gmd:facsimile/gco:CharacterString")
+				commValue = getXPathValue(ciResponsibleParties.item(i), "gmd:contactInfo/gmd:CI_Contact/gmd:phone/gmd:CI_Telephone/gmd:facsimile/gco:CharacterString")
 				if (hasValue(commValue)) {
 					var t012CommunicationRecord = new Record();
 					t012CommunicationRecord.addColumn(createColumn("t021_communication", "line", "t021_communication.line"), (communicationLine))
@@ -805,7 +847,7 @@ function mapAddressInformation(document, refNode) {
 					communicationLine++;
 				}
 				// email
-				commValue = XPathUtils.getString(ciResponsibleParties.item(i), "gmd:contactInfo/gmd:CI_Contact/gmd:address/gmd:CI_Address/gmd:electronicMailAddress/gco:CharacterString")
+				commValue = getXPathValue(ciResponsibleParties.item(i), "gmd:contactInfo/gmd:CI_Contact/gmd:address/gmd:CI_Address/gmd:electronicMailAddress/gco:CharacterString")
 				if (hasValue(commValue)) {
 					var t012CommunicationRecord = new Record();
 					t012CommunicationRecord.addColumn(createColumn("t021_communication", "line", "t021_communication.line"), (communicationLine))
@@ -816,7 +858,7 @@ function mapAddressInformation(document, refNode) {
 					communicationLine++;
 				}
 				// URL
-				commValue = XPathUtils.getString(ciResponsibleParties.item(i), "gmd:contactInfo/gmd:CI_Contact/gmd:onlineResource/gmd:CI_OnlineResource/gmd:linkage/gmd:URL")
+				commValue = getXPathValue(ciResponsibleParties.item(i), "gmd:contactInfo/gmd:CI_Contact/gmd:onlineResource/gmd:CI_OnlineResource/gmd:linkage/gmd:URL")
 				if (hasValue(commValue)) {
 					var t012CommunicationRecord = new Record();
 					t012CommunicationRecord.addColumn(createColumn("t021_communication", "line", "t021_communication.line"), (communicationLine))
@@ -841,7 +883,7 @@ function mapGeographicElements(document, refNode) {
 	if (hasValue(geographicElements)) {
 		var lineCounter = 1;
 		for (var i=0; i<geographicElements.getLength(); i++ ) {
-			var value = XPathUtils.getString(geographicElements.item(i), "gmd:EX_GeographicDescription/gmd:geographicIdentifier/gmd:MD_Identifier/gmd:code/gco:CharacterString");
+			var value = getXPathValue(geographicElements.item(i), "gmd:EX_GeographicDescription/gmd:geographicIdentifier/gmd:MD_Identifier/gmd:code/gco:CharacterString");
 			if (hasValue(value)) {
 				var spatialReferenceRecord = new Record();
 				log.debug("adding 'spatial_reference.line" + "' = '" + (lineCounter) + "' to ingrid document.");
@@ -863,7 +905,7 @@ function mapGeographicElements(document, refNode) {
 			}
 			var boundingBoxes = XPathUtils.getNodeList(geographicElements.item(i), "gmd:EX_GeographicBoundingBox");
 			for (j=0; j<boundingBoxes.getLength(); j++ ) {
-				if (hasValue(boundingBoxes.item(j)) && hasValue(XPathUtils.getString(boundingBoxes.item(j), "gmd:westBoundLongitude/gco:Decimal"))) {
+				if (hasValue(boundingBoxes.item(j)) && hasValue(getXPathValue(boundingBoxes.item(j), "gmd:westBoundLongitude/gco:Decimal"))) {
 					var spatialReferenceRecord = new Record();
 					log.debug("adding 'spatial_reference.line" + "' = '" + (lineCounter) + "' to ingrid document.");
 					spatialReferenceRecord.addColumn(createColumn("spatial_reference", "line", "spatial_reference.line"), (lineCounter))
@@ -872,14 +914,14 @@ function mapGeographicElements(document, refNode) {
 					var spatialRefValueRecord = new Record();
 					log.debug("adding 'spatial_ref_value.name_value" + "' = '' to ingrid document.");
 					spatialRefValueRecord.addColumn(createColumn("spatial_ref_value", "name_value", "spatial_ref_value.name_value"), "")
-					log.debug("adding 'spatial_ref_value.x1" + "' = '" + XPathUtils.getString(boundingBoxes.item(j), "gmd:westBoundLongitude/gco:Decimal") + "' to ingrid document.");
-					spatialRefValueRecord.addColumn(createColumn("spatial_ref_value", "x1", "x1"), XPathUtils.getString(boundingBoxes.item(j), "gmd:westBoundLongitude/gco:Decimal"))
-					log.debug("adding 'spatial_ref_value.x2" + "' = '" + XPathUtils.getString(boundingBoxes.item(j), "gmd:eastBoundLongitude/gco:Decimal") + "' to ingrid document.");
-					spatialRefValueRecord.addColumn(createColumn("spatial_ref_value", "x2", "x2"), XPathUtils.getString(boundingBoxes.item(j), "gmd:eastBoundLongitude/gco:Decimal"))
-					log.debug("adding 'spatial_ref_value.y1" + "' = '" + XPathUtils.getString(boundingBoxes.item(j), "gmd:southBoundLatitude/gco:Decimal") + "' to ingrid document.");
-					spatialRefValueRecord.addColumn(createColumn("spatial_ref_value", "y1", "y1"), XPathUtils.getString(boundingBoxes.item(j), "gmd:southBoundLatitude/gco:Decimal"))
-					log.debug("adding 'spatial_ref_value.y2" + "' = '" + XPathUtils.getString(boundingBoxes.item(j), "gmd:northBoundLatitude/gco:Decimal") + "' to ingrid document.");
-					spatialRefValueRecord.addColumn(createColumn("spatial_ref_value", "y2", "y2"), XPathUtils.getString(boundingBoxes.item(j), "gmd:northBoundLatitude/gco:Decimal"))
+					log.debug("adding 'spatial_ref_value.x1" + "' = '" + getXPathValue(boundingBoxes.item(j), "gmd:westBoundLongitude/gco:Decimal") + "' to ingrid document.");
+					spatialRefValueRecord.addColumn(createColumn("spatial_ref_value", "x1", "x1"), getXPathValue(boundingBoxes.item(j), "gmd:westBoundLongitude/gco:Decimal"))
+					log.debug("adding 'spatial_ref_value.x2" + "' = '" + getXPathValue(boundingBoxes.item(j), "gmd:eastBoundLongitude/gco:Decimal") + "' to ingrid document.");
+					spatialRefValueRecord.addColumn(createColumn("spatial_ref_value", "x2", "x2"), getXPathValue(boundingBoxes.item(j), "gmd:eastBoundLongitude/gco:Decimal"))
+					log.debug("adding 'spatial_ref_value.y1" + "' = '" + getXPathValue(boundingBoxes.item(j), "gmd:southBoundLatitude/gco:Decimal") + "' to ingrid document.");
+					spatialRefValueRecord.addColumn(createColumn("spatial_ref_value", "y1", "y1"), getXPathValue(boundingBoxes.item(j), "gmd:southBoundLatitude/gco:Decimal"))
+					log.debug("adding 'spatial_ref_value.y2" + "' = '" + getXPathValue(boundingBoxes.item(j), "gmd:northBoundLatitude/gco:Decimal") + "' to ingrid document.");
+					spatialRefValueRecord.addColumn(createColumn("spatial_ref_value", "y2", "y2"), getXPathValue(boundingBoxes.item(j), "gmd:northBoundLatitude/gco:Decimal"))
 					spatialReferenceRecord.addSubRecord(spatialRefValueRecord);
 				}
 			}
@@ -1016,7 +1058,7 @@ function mapReferences(document, refNode) {
 			}
 		}
 	}
-	// check for content info references (Schl�sselkatalog)
+	// check for content info references (Schlï¿½sselkatalog)
 	var operatesOn = XPathUtils.getNodeList(refNode, "//gmd:contentInfo/@uuidref");
 	if (hasValue(operatesOn)) {
 		for (i=0; i<operatesOn.getLength(); i++ ) {
@@ -1057,8 +1099,8 @@ function mapReferenceSystemInfo(document, refNode) {
 	var rsIdentifiers = XPathUtils.getNodeList(refNode, "//gmd:referenceSystemInfo/gmd:MD_ReferenceSystem/gmd:referenceSystemIdentifier/gmd:RS_Identifier");
 	if (hasValue(rsIdentifiers)) {
 		for (i=0; i<rsIdentifiers.getLength(); i++ ) {
-			var code = XPathUtils.getString(rsIdentifiers.item(i), "gmd:code/gco:CharacterString");
-			var codeSpace = XPathUtils.getString(rsIdentifiers.item(i), "gmd:codeSpace/gco:CharacterString");
+			var code = getXPathValue(rsIdentifiers.item(i), "gmd:code/gco:CharacterString");
+			var codeSpace = getXPathValue(rsIdentifiers.item(i), "gmd:codeSpace/gco:CharacterString");
 			if (hasValue(codeSpace) && hasValue(code)) {
 				log.debug("adding '" + "t011_obj_geo.referencesystem_id" + "' = '" + codeSpace+":"+code + "' to ingrid document.");
 				document.addColumn(createColumn("t011_obj_geo", "referencesystem_value", "t011_obj_geo.referencesystem_id"), codeSpace+":"+code)
@@ -1132,6 +1174,15 @@ function transformISO639_2ToISO639_1(val) {
 
 function createColumn(table, field, idxName) {
 	return MapperUtils.createColumn(table, field, idxName, Column.TEXT, true)
+}
+
+function getXPathValue(node, xpath) {
+	var s = XPathUtils.getString(node, xpath);
+	if (s == null) {
+		return "";
+	} else {
+		return s;
+	}
 }
 
 function hasValue(val) {

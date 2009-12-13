@@ -33,9 +33,9 @@ public class MapperCsw2_0_2ApIso1_0ToInGridTestLocal extends TestCase {
 	/**
 	 * @throws Exception
 	 */
-	public void testIndexer() throws Exception {
+	public void testMapper() throws Exception {
 
-		SimpleSpringBeanFactory.INSTANCE.setBeanConfig("beans_test.xml");
+		SimpleSpringBeanFactory.INSTANCE.setBeanConfig("beans_sdisuite.xml");
 
 		DocumentMapper mapper = SimpleSpringBeanFactory.INSTANCE.getBean(ConfigurationKeys.CSW_MAPPER, DocumentMapper.class);
 		
@@ -63,25 +63,19 @@ public class MapperCsw2_0_2ApIso1_0ToInGridTestLocal extends TestCase {
 		assertTrue("Detail record found.", record != null);
 		assertTrue("Subrecords not null.", record.getSubRecords() != null);
 		assertTrue("Subrecords found.", record.getSubRecords().length > 0);
-		
-	}
-	/**
-	 * @throws Exception
-	public void testMapper() throws Exception {
 
-		// read the PlugDescription
-		PlugDescription desc = TestUtil.getPlugDescription();
-
-		DocumentMapper mapper = (DocumentMapper)desc.get(ConfigurationKeys.CSW_MAPPER);
-		
-		CSWRecord cswRecord = TestUtil.getRecord("33462e89-e5ab-11c3-737d-b3a61366d028", ElementSetName.FULL, new GenericRecord());
-		Record record = mapper.mapCswToIngrid(cswRecord);
-		System.out.println(log.isDebugEnabled());
-		log.debug("test");
+		cswRecord = TestUtil.getRecord("10453eff-59fa-42e9-a3e1-6e3cd99e2a05", ElementSetName.FULL, new GenericRecord());
+		record = null;
+		try {
+			record = mapper.mapCswToIngrid(cswRecord);
+		} catch (Throwable t) {
+			System.out.println(t);
+		}
 		
 		assertTrue("Detail record found.", record != null);
 		assertTrue("Subrecords not null.", record.getSubRecords() != null);
 		assertTrue("Subrecords found.", record.getSubRecords().length > 0);
+		
+		
 	}
-	 */
 }

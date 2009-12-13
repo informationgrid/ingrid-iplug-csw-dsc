@@ -4,6 +4,7 @@
 
 package de.ingrid.iplug.csw.dsc.cswclient.impl;
 
+import org.w3c.dom.Comment;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 
@@ -30,6 +31,9 @@ public class GenericRecord implements CSWRecord {
 	@Override
 	public void initialize(ElementSetName elementSetName, Node node) throws Exception {
 		// detach node from whole document inkl. all namespace definitions
+		while (node instanceof Comment) {
+			node = node.getNextSibling();
+		}
 		this.node = NodeUtils.detachWithNameSpaces(node);
 		this.elementSetName = elementSetName;
 
