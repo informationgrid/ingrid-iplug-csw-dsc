@@ -12,7 +12,7 @@ public class AllTests {
 	public static Test suite() {
 		TestSuite suite = new TestSuite("Test for de.ingrid.iplug.csw.dsc.cache");
 		//$JUnit-BEGIN$
-		suite.addTestSuite(CacheTestLocal.class);
+		suite.addTestSuite(CacheTest.class);
 		suite.addTestSuite(UpdateJobTestLocal.class);
 		//$JUnit-END$
 		return suite;

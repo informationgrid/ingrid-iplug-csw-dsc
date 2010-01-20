@@ -182,7 +182,7 @@ var transformationDescriptions = [
 			}
 		},
 		{	"indexField":"t0113_dataset_reference.type",
-			"xpath":"//gmd:identificationInfo//gmd:citation/gmd:CI_Citation/gmd:date/gmd:CI_Date/gmd:dateType/CI_DateTypeCode/@codeListValue",
+			"xpath":"//gmd:identificationInfo//gmd:citation/gmd:CI_Citation/gmd:date/gmd:CI_Date/gmd:dateType/gmd:CI_DateTypeCode/@codeListValue",
 			"transform":{
 				"funct":transformToIgcDomainId,
 				"params":[502]

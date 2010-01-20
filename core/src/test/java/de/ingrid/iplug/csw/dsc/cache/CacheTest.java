@@ -16,15 +16,16 @@ import de.ingrid.iplug.csw.dsc.cswclient.CSWFactory;
 import de.ingrid.iplug.csw.dsc.cswclient.CSWRecord;
 import de.ingrid.iplug.csw.dsc.cswclient.constants.ElementSetName;
 import de.ingrid.iplug.csw.dsc.cswclient.impl.GenericRecord;
+import de.ingrid.iplug.csw.dsc.tools.StringUtils;
 
-public class CacheTestLocal extends TestCase {
+public class CacheTest extends TestCase {
 	
 	private final String cachePath = "./test_case_cache";
 	private Cache cache = null;
 
 	public void testPut() throws Exception {
 		
-		String id = "A-12345";
+		String id = "10453eff-59fa-42e9-a3e1-6e3cd99e2a05";
 		ElementSetName elementSetName = ElementSetName.BRIEF;
 		
 		this.putRecord(id, elementSetName);
@@ -36,7 +37,7 @@ public class CacheTestLocal extends TestCase {
 
 	public void testExists() throws Exception {
 
-		String id = "1A0D667F-56E7-4EA7-9893-248F1658E0BF";
+		String id = "10453eff-59fa-42e9-a3e1-6e3cd99e2a05";
 		ElementSetName elementSetName = ElementSetName.BRIEF;
 		
 		this.putRecord(id, elementSetName);
@@ -48,7 +49,7 @@ public class CacheTestLocal extends TestCase {
 
 	public void testGet() throws Exception {
 
-		String id = "1A0D667F-56E7-4EA7-9893-248F1658E0BF";
+		String id = "10453eff-59fa-42e9-a3e1-6e3cd99e2a05";
 		ElementSetName elementSetName = ElementSetName.BRIEF;
 		
 		this.putRecord(id, elementSetName);
@@ -61,12 +62,12 @@ public class CacheTestLocal extends TestCase {
 	public void testGetIds() throws Exception {
 
 		String[] ids = new String[] {
-				"1A0D667F-56E7-4EA7-9893-248F1658E0BF",
-				"1A1CBD95-23BB-47D6-90D2-8DBCFBA07E32"
+				"10453eff-59fa-42e9-a3e1-6e3cd99e2a05",
+				"33462e89-e5ab-11c3-737d-b3a61366d028"
 		};
 		
 		this.putRecord(ids[0], ElementSetName.BRIEF);
-		this.putRecord(ids[1], ElementSetName.SUMMARY);
+		this.putRecord(ids[1], ElementSetName.FULL);
 		
 		Cache cache = this.setupCache();
 		Set<String> cachedIds = cache.getCachedRecordIds();
@@ -78,12 +79,12 @@ public class CacheTestLocal extends TestCase {
 	public void testRemoveRecord() throws Exception {
 
 		String[] ids = new String[]{
-				"1A0D667F-56E7-4EA7-9893-248F1658E0BF",
-				"1A1CBD95-23BB-47D6-90D2-8DBCFBA07E32"
+				"10453eff-59fa-42e9-a3e1-6e3cd99e2a05",
+				"33462e89-e5ab-11c3-737d-b3a61366d028"
 		};
 		
 		this.putRecord(ids[0], ElementSetName.BRIEF);
-		this.putRecord(ids[1], ElementSetName.BRIEF);
+		this.putRecord(ids[1], ElementSetName.FULL);
 		
 		Cache cache = this.setupCache();
 		cache.removeRecord(ids[1]);
@@ -94,8 +95,8 @@ public class CacheTestLocal extends TestCase {
 
 	public void testEncoding() throws Exception {
 		
-		String id = "AAM 2005";
-		ElementSetName elementSetName = ElementSetName.BRIEF;
+		String id = "33462e89-e5ab-11c3-737d-b3a61366d028";
+		ElementSetName elementSetName = ElementSetName.FULL;
 		
 		this.putRecord(id, elementSetName);
 		
@@ -120,12 +121,11 @@ public class CacheTestLocal extends TestCase {
 	public void testRemoveAllRecords() throws Exception {
 
 		String[] ids = new String[]{
-				"1A0D667F-56E7-4EA7-9893-248F1658E0BF",
-				"1A1CBD95-23BB-47D6-90D2-8DBCFBA07E32",
-				"AAM 2005"
+				"33462e89-e5ab-11c3-737d-b3a61366d028",
+				"10453eff-59fa-42e9-a3e1-6e3cd99e2a05"
 		};
 		
-		this.putRecord(ids[0], ElementSetName.BRIEF);
+		this.putRecord(ids[0], ElementSetName.FULL);
 		this.putRecord(ids[1], ElementSetName.BRIEF);
 		
 		Cache cache = this.setupCache();
@@ -136,7 +136,7 @@ public class CacheTestLocal extends TestCase {
 
 	public void testTransactionModifyWithCommit() throws Exception {
 
-		String id = "1A0D667F-56E7-4EA7-9893-248F1658E0BF";
+		String id = "10453eff-59fa-42e9-a3e1-6e3cd99e2a05";
 		ElementSetName elementSetName = ElementSetName.BRIEF;
 
 		Cache cache = this.setupCache();
@@ -173,7 +173,7 @@ public class CacheTestLocal extends TestCase {
 
 	public void testTransactionModifyWithRollback() throws Exception {
 
-		String id = "1A0D667F-56E7-4EA7-9893-248F1658E0BF";
+		String id = "10453eff-59fa-42e9-a3e1-6e3cd99e2a05";
 		ElementSetName elementSetName = ElementSetName.BRIEF;
 
 		Cache cache = this.setupCache();
@@ -210,7 +210,7 @@ public class CacheTestLocal extends TestCase {
 
 	public void testTransactionRemoveWithCommit() throws Exception {
 
-		String id = "1A0D667F-56E7-4EA7-9893-248F1658E0BF";
+		String id = "10453eff-59fa-42e9-a3e1-6e3cd99e2a05";
 		ElementSetName elementSetName = ElementSetName.BRIEF;
 
 		Cache cache = this.setupCache();
@@ -242,7 +242,7 @@ public class CacheTestLocal extends TestCase {
 
 	public void testTransactionRemoveWithRollback() throws Exception {
 
-		String id = "1A0D667F-56E7-4EA7-9893-248F1658E0BF";
+		String id = "10453eff-59fa-42e9-a3e1-6e3cd99e2a05";
 		ElementSetName elementSetName = ElementSetName.BRIEF;
 
 		Cache cache = this.setupCache();
@@ -302,6 +302,17 @@ public class CacheTestLocal extends TestCase {
 		
 		// rollback the transaction
 		tmpCache.rollbackTransaction();
+	}
+	
+	public void testGetOriginalResponse() throws Exception {
+		String id = "10453eff-59fa-42e9-a3e1-6e3cd99e2a05";
+		ElementSetName elementSetName = ElementSetName.BRIEF;
+
+		// create original set
+		CSWRecord originalRecord = TestUtil.getRecord(id, elementSetName, new GenericRecord());
+		String xml = StringUtils.nodeToString(originalRecord.getOriginalResponse());
+		assertTrue("The String 'Hydrological basins in Europe' is in the transformed original response string.", xml.indexOf("Hydrological basins in Europe") > -1);
+		
 	}
 
 	/**

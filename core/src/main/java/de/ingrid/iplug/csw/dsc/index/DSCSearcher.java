@@ -17,6 +17,7 @@ import de.ingrid.iplug.csw.dsc.cswclient.CSWRecord;
 import de.ingrid.iplug.csw.dsc.cswclient.constants.ElementSetName;
 import de.ingrid.iplug.csw.dsc.mapping.DocumentMapper;
 import de.ingrid.iplug.csw.dsc.tools.SimpleSpringBeanFactory;
+import de.ingrid.iplug.csw.dsc.tools.StringUtils;
 import de.ingrid.iplug.scheduler.SchedulingService;
 import de.ingrid.utils.IngridDocument;
 import de.ingrid.utils.IngridHit;
@@ -198,7 +199,7 @@ public class DSCSearcher extends AbstractSearcher {
 	protected void setDirectData(IngridDocument document, ElementSetName elementSetName) throws IOException {
 		Document luceneDoc = this.fSearcher.doc(document.getInt(IngridDocument.DOCUMENT_ID));
 		CSWRecord record = this.fDetailer.getRecord(luceneDoc, elementSetName, this.cache);
-		document.put(ConfigurationKeys.RESPONSE_KEY_CSW_DATA, record.getOriginalResponse());
+		document.put(ConfigurationKeys.RESPONSE_KEY_CSW_DATA, StringUtils.nodeToString(record.getOriginalResponse()));
 	}
 
 	@Override

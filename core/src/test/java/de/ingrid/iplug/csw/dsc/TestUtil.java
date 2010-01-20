@@ -121,11 +121,11 @@ public class TestUtil {
 	}
 
 	public static String getRecordTitle(CSWRecord record) {
-		return XPathUtils.getString(record.getOriginalResponse(), "//title/CharacterString");
+		return XPathUtils.getString(record.getOriginalResponse(), "//gmd:title/gco:CharacterString");
 	}
 
 	public static void setRecordTitle(CSWRecord record, String title) {
-		Node titleNode = XPathUtils.getNode(record.getOriginalResponse(), "//title/CharacterString");
+		Node titleNode = XPathUtils.getNode(record.getOriginalResponse(), "//gmd:title/gco:CharacterString");
 		titleNode.setTextContent(title);
 	}
 
