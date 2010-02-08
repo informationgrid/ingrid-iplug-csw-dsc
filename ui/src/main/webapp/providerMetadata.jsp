@@ -122,6 +122,7 @@ String iplugAdminGuiPassword = "";
 String proxyServiceUrl = "/kug-group:<eindeutiger IPlug Name>";
 String plugId = "";
 String error = "";
+String forceRankingOff = "";
 
 BeanFactory beanFactory = (BeanFactory) application.getAttribute("beanFactory");
 BusClient busClient = (BusClient) beanFactory.getBean("busClient");
@@ -145,6 +146,7 @@ if(submitted){
 	proxyServiceUrl = WebUtil.getParameter(request, "proxyServiceUrl", "/kug-group:<eindeutiger IPlug Name>");
 	plugId = myIp +"-" +System.currentTimeMillis();
 	error = WebUtil.getParameter(request, "error", "");
+  forceRankingOff = WebUtil.getParameter(request, "forceRankingOff", "");
 	datatypes = WebUtil.getParameters(request, "datatype", new String[]{});
 }else if(!submitted && description.getOrganisation() != null){
 	// we load an existing plugdescription
@@ -164,6 +166,11 @@ if(submitted){
 	iplugAdminGuiPassword = description.getIplugAdminPassword();
 	proxyServiceUrl = description.getProxyServiceURL();
 	error = WebUtil.getParameter(request, "error", "");
+  if (description.containsKey("forceAddRankingOff")) {
+        if (description.getBoolean("forceAddRankingOff")) {
+            forceRankingOff = "checked=\"checked\"";
+        }
+	}
 }
 
 if (!WebUtil.getParameter(request, "organisationAbbr", "").equals("")
@@ -193,7 +200,13 @@ if (!WebUtil.getParameter(request, "organisationAbbr", "").equals("")
 
 
 	description.remove("ranking");
-	description.setRankinTypes(true, false, false);
+  if (forceRankingOff.isEmpty()) {
+	    description.setRankinTypes(true, false, false);
+	    description.putBoolean("forceAddRankingOff", false);
+	} else {
+	    description.setRankinTypes(true, false, true);
+	    description.putBoolean("forceAddRankingOff", true);
+	}
 	description.remove("dataType"); // removing old datatypes.
 	IDataTypeProvider datatypeProvider = (IDataTypeProvider) beanFactory.getBean("dataTypeProvider");
 	for(int i = 0; i < datatypes.length; i++) {
@@ -362,7 +375,13 @@ if (!WebUtil.getParameter(request, "organisationAbbr", "").equals("")
 					}
 				%>
 				</td>
-			</tr>			
+			</tr>
+      <tr>
+          <td class="tablecell" width="100">Als Nebenergebnis anzeigen:</td>
+          <td class="tablecell">
+              <input type="checkbox" name="forceRankingOff" value="checked" <%=forceRankingOff%> /> <br />
+          </td>
+      </tr>
 			<tr>
 				<td colspan="2" class="tablehead">iPlug</td>
 			</tr>
