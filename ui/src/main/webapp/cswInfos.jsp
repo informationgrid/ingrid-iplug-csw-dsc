@@ -13,6 +13,8 @@ if(!WebUtil.getParameter(request, cswServiceUrl, "").equals("")){
 	description.put(cswServiceUrl, request.getParameter(cswServiceUrl));
 	if(!WebUtil.getParameter(request, directData, "").equals("")) {
 		description.put(directData, "true");
+	} else {
+		description.put(directData, "false");
 	}
 	description.put("updateStrategy", "incremental-optimized");
 	

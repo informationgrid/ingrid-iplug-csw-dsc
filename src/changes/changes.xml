@@ -5,6 +5,11 @@
     <author email="joachim@wemove.com">Joachim Müller</author>
   </properties>
   <body>
+    <release version="1.1.2-SNAPSHOT" date="2010-xx-xx" description="Release">
+      <action type="add">
+        Einführung des Index-Feldes 'location'.
+      </action>
+    </release>
     <release version="1.1.1" date="2009-12-12" description="Release">
       <action type="add">
         Abbildung von gmd:MD_BrowseGraphic auf IGC Verweis ergaenzt.

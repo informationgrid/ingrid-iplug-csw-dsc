@@ -32,11 +32,12 @@
     <string>t01_object.obj_id</string>
     <string>parent.object_node.obj_uuid</string>
     <string>object_access.terms_of_use</string>
+    <string>location</string>
   </list>
   <string>IPLUG_ADMIN_GUI_URL</string>
   <string>http://localhost/</string>
   <string>workingDirectory</string>
-  <string>c:\ingrid-iplug-csw-dsc-1.1.0-SNAPSHOT\.</string>
+  <string>./</string>
   <string>proxyServiceUrl</string>
   <string>/ingrid-group:iplug-csw-dsc-jmjm</string>
   <string>cronPattern_day</string>

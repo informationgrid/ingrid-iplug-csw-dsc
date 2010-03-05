@@ -892,7 +892,7 @@ function mapGeographicElements(document, refNode) {
 				document.addSubRecord(spatialReferenceRecord);
 				var spatialRefValueRecord = new Record();
 				log.debug("adding 'spatial_ref_value.name_value" + "' = '" + value + "' to ingrid document.");
-				spatialRefValueRecord.addColumn(createColumn("spatial_ref_value", "name_value", "spatial_ref_value.name_value"), value)
+				spatialRefValueRecord.addColumn(createColumn("spatial_ref_value", "name_value", "location"), value)
 				log.debug("adding 'spatial_ref_value.x1" + "' = '' to ingrid document.");
 				spatialRefValueRecord.addColumn(createColumn("spatial_ref_value", "x1", "x1"), "")
 				log.debug("adding 'spatial_ref_value.x2" + "' = '' to ingrid document.");
@@ -913,7 +913,7 @@ function mapGeographicElements(document, refNode) {
 					document.addSubRecord(spatialReferenceRecord);
 					var spatialRefValueRecord = new Record();
 					log.debug("adding 'spatial_ref_value.name_value" + "' = '' to ingrid document.");
-					spatialRefValueRecord.addColumn(createColumn("spatial_ref_value", "name_value", "spatial_ref_value.name_value"), "")
+					spatialRefValueRecord.addColumn(createColumn("spatial_ref_value", "name_value", "location"), "")
 					log.debug("adding 'spatial_ref_value.x1" + "' = '" + getXPathValue(boundingBoxes.item(j), "gmd:westBoundLongitude/gco:Decimal") + "' to ingrid document.");
 					spatialRefValueRecord.addColumn(createColumn("spatial_ref_value", "x1", "x1"), getXPathValue(boundingBoxes.item(j), "gmd:westBoundLongitude/gco:Decimal"))
 					log.debug("adding 'spatial_ref_value.x2" + "' = '" + getXPathValue(boundingBoxes.item(j), "gmd:eastBoundLongitude/gco:Decimal") + "' to ingrid document.");

@@ -560,7 +560,7 @@ function mapGeographicElements(recordNode) {
 		for (i=0; i<geographicElements.getLength(); i++ ) {
 			var value = XPathUtils.getString(geographicElements.item(i), "gmd:EX_GeographicDescription/gmd:geographicIdentifier/gmd:MD_Identifier/gmd:code/gco:CharacterString");
 			if (hasValue(value)) {
-				addToDoc("spatial_ref_value.name_value", value, true);
+				addToDoc("location", value, true);
 				addToDoc("x1", "", false);
 				addToDoc("x2", "", false);
 				addToDoc("y1", "", false);
@@ -569,7 +569,7 @@ function mapGeographicElements(recordNode) {
 			var boundingBoxes = XPathUtils.getNodeList(geographicElements.item(i), "gmd:EX_GeographicBoundingBox");
 			for (j=0; j<boundingBoxes.getLength(); j++ ) {
 				if (hasValue(boundingBoxes.item(j)) && hasValue(XPathUtils.getString(boundingBoxes.item(j), "gmd:westBoundLongitude/gco:Decimal"))) {
-					addToDoc("spatial_ref_value.name_value", "", true);
+					addToDoc("location", "", true);
 					addToDoc("x1", XPathUtils.getString(boundingBoxes.item(j), "gmd:westBoundLongitude/gco:Decimal"), false);
 					addToDoc("x2", XPathUtils.getString(boundingBoxes.item(j), "gmd:eastBoundLongitude/gco:Decimal"), false);
 					addToDoc("y1", XPathUtils.getString(boundingBoxes.item(j), "gmd:southBoundLatitude/gco:Decimal"), false);
