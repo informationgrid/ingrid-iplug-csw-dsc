@@ -232,7 +232,7 @@ var mappingDescription =
 				    "fieldMappings":[
 		    	  		{
 	    					"field":"reference_date",
-	    					"xpath":"gmd:date/gco:Date",
+	    					"xpath":"//gmd:date/gco:DateTime | //gmd:date/gco:Date[not(../gco:DateTime)]",
 	    					"transform":{
 		    	  				"funct":UtilsCSWDate.mapDateFromIso8601ToIndex
 		    	  			}
@@ -893,6 +893,8 @@ function mapGeographicElements(document, refNode) {
 				var spatialRefValueRecord = new Record();
 				log.debug("adding 'spatial_ref_value.name_value" + "' = '" + value + "' to ingrid document.");
 				spatialRefValueRecord.addColumn(createColumn("spatial_ref_value", "name_value", "location"), value)
+				log.debug("adding 'spatial_ref_value.type" + "' = 'F' to ingrid document.");
+				spatialRefValueRecord.addColumn(createColumn("spatial_ref_value", "type", "spatial_ref_value.type"), "F")
 				log.debug("adding 'spatial_ref_value.x1" + "' = '' to ingrid document.");
 				spatialRefValueRecord.addColumn(createColumn("spatial_ref_value", "x1", "x1"), "")
 				log.debug("adding 'spatial_ref_value.x2" + "' = '' to ingrid document.");
@@ -914,6 +916,8 @@ function mapGeographicElements(document, refNode) {
 					var spatialRefValueRecord = new Record();
 					log.debug("adding 'spatial_ref_value.name_value" + "' = '' to ingrid document.");
 					spatialRefValueRecord.addColumn(createColumn("spatial_ref_value", "name_value", "location"), "")
+					log.debug("adding 'spatial_ref_value.type" + "' = 'F' to ingrid document.");
+					spatialRefValueRecord.addColumn(createColumn("spatial_ref_value", "type", "spatial_ref_value.type"), "F")
 					log.debug("adding 'spatial_ref_value.x1" + "' = '" + getXPathValue(boundingBoxes.item(j), "gmd:westBoundLongitude/gco:Decimal") + "' to ingrid document.");
 					spatialRefValueRecord.addColumn(createColumn("spatial_ref_value", "x1", "x1"), getXPathValue(boundingBoxes.item(j), "gmd:westBoundLongitude/gco:Decimal"))
 					log.debug("adding 'spatial_ref_value.x2" + "' = '" + getXPathValue(boundingBoxes.item(j), "gmd:eastBoundLongitude/gco:Decimal") + "' to ingrid document.");
