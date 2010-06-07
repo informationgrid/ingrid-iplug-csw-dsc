@@ -14,7 +14,6 @@ public class AllTests {
 		//$JUnit-BEGIN$
 		suite.addTestSuite(CaseTestLocal.class);
 		suite.addTestSuite(DSCSearcherTest.class);
-		suite.addTestSuite(GroupByDatasourceTest.class);
 		suite.addTestSuite(IndexesTestLocal.class);
 		//$JUnit-END$
 		return suite;
