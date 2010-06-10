@@ -220,7 +220,7 @@ if (!WebUtil.getParameter(request, "organisationAbbr", "").equals("")
 	description.setIplugAdminPassword(iplugAdminGuiPassword.trim());
 	description.setIplugAdminGuiPort(Integer.parseInt(iplugAdminGuiPort));
 	
-	// frist we remove the old fields.
+	// first we remove the old fields.
 	description.remove("fields");
 	description.addField("incl_meta");	
 	description.addField("location");	
@@ -228,6 +228,8 @@ if (!WebUtil.getParameter(request, "organisationAbbr", "").equals("")
 	description.addField("t01_object.obj_id");
 	description.addField("parent.object_node.obj_uuid");
 	description.addField("object_access.terms_of_use");
+    // to guarantee that an InGrid query with field metaclass works (e.g. metaclass:map)
+    description.addField("t01_object.obj_class");
 	
 	// generate this dynamic
 	description.setPlugId(plugId);

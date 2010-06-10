@@ -237,7 +237,8 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
 		<property name="cswToIngridMapping" value="conf/csw-2.0.2-AP-ISO-1.0_to_ingrid-igc-1.0.3.js" />
 	</bean>
 	
-	<bean id="plugDescription" class="de.ingrid.iplug.PlugServer" factory-method="getPlugDescription" />
+    <!-- ALWAYS RELOAD TO HAVE LATEST SETTINGS (scope="prototype"), e.g. when in Admin Gui and service URL was changed -->
+	<bean id="plugDescription" class="de.ingrid.iplug.PlugServer" factory-method="getPlugDescription" scope="prototype" />
 	
 
 </beans>

@@ -13,12 +13,16 @@
 <%@ page import="de.ingrid.iplug.util.*"%>
 <%@ page import="de.ingrid.utils.BeanFactory"%>
 
+<%@ taglib uri='http://java.sun.com/jsp/jstl/core' prefix='c'%>
+
 <%@ include file="timeoutcheck.jsp"%>
 
 <%!
 private static IndexRunner fIndexRunner;
 class IndexRunner extends Thread{
 	private boolean fIndexing = true;
+	private boolean fError = false;
+    private String fErrorMsg = "";
  
 	private PlugDescription fDescription;
 	public IndexRunner(PlugDescription description){
@@ -30,6 +34,11 @@ class IndexRunner extends Thread{
 			job.execute(null);
 		} catch (Exception e ){
 			e.printStackTrace();
+			fError = true;
+//			fErrorMsg = e.toString();
+			StringWriter sw = new StringWriter();
+            e.printStackTrace(new PrintWriter(sw));
+            fErrorMsg = sw.toString();
 		}
 		fIndexing= false;
 	}
@@ -37,6 +46,12 @@ class IndexRunner extends Thread{
 	public boolean isIndexing(){
 		return fIndexing;
 	}
+    public boolean hasError(){
+        return fError;
+    }
+    public String getErrorMsg(){
+        return fErrorMsg;
+    }
 }
 
 %>
@@ -49,7 +64,7 @@ if(fIndexRunner == null){
 	File pd_file = (File) beanFactory.getBean("pd_file");
 	XMLSerializer serializer = new XMLSerializer();
 	if (null == description) {
-		System.out.println("step1/save.jsp: ERROR in step1/save.jsp: current values lost during session timeout, plugdescription from web container was <null> and was not written");
+		System.out.println("step1/indexXml.jsp: ERROR in step1/indexXml.jsp: current values lost during session timeout, plugdescription from web container was <null> and was not written");
 	} else {
 	    serializer.serialize(description,pd_file);
 		fIndexRunner = new IndexRunner(description);
@@ -84,13 +99,24 @@ dauern.</span></div>
 <br />
 
 <%
+    boolean hasError = false;
 	if(fIndexRunner!=null && !fIndexRunner.isIndexing()){
+       String displayTitle = "<br />";
+	   String displayMessage = "Indizierung abgeschlossen.";
+	   hasError = fIndexRunner.hasError();
+
+	   if (hasError) {
+           displayTitle = "FEHLER:<br />";
+           displayMessage = fIndexRunner.getErrorMsg();
+	   }
+	  
 		fIndexRunner = null;
 	%>
 <table class="table" align="center">
 	<tr align="center">
-		<td align="center"><br />
-		Indizierung abgeschlossen.<br />
+		<td align="center">
+		<%=displayTitle%>
+		<c:out value="<%=displayMessage%>" escapeXml="true" /><br />
 		</td>
 	</tr>
 </table>
@@ -102,7 +128,13 @@ dauern.</span></div>
 	</tr>
 </table>
 <%} %> <br />
-<form method="post" action="<%=response.encodeURL("search.jsp")%>">
+<%
+    String nextUrl = response.encodeURL("search.jsp");
+    if (hasError) {
+        nextUrl = "javascript:history.back()";
+    }
+%>
+<form method="post" action="<%=nextUrl%>">
 <table class="table" align="center">
 	<tr align="center">
 		<td><input type="button" name="back" value="Zur&#x00FC;ck"

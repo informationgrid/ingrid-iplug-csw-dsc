@@ -52,9 +52,13 @@ public class UpdateJob {
 		Set<String> filterStrSet = (Set<String>)SimpleSpringBeanFactory.INSTANCE.getBean(
 				ConfigurationKeys.CSW_HARVEST_FILTER, Set.class);
 
-		// get strategy set from configuration 
+		// get strategy set from configuration
+		// NOTICE: PlugDescription WILL BE RELOADED (due to scope="prototype" in spring XML configuration file) !!!!!
 		PlugDescription plugDescription = SimpleSpringBeanFactory.INSTANCE.getBean(ConfigurationKeys.PLUGDESCRIPTION, 
 				PlugDescription.class);
+		// ALSO SET RELOADED PD IN FACTORY SO WE HAVE THE LATEST SETTINGS (e.g. when URL was changed and reindexing in admin gui)
+		factory.setPlugDescription(plugDescription);
+
 		Map strategies = SimpleSpringBeanFactory.INSTANCE.getBean(ConfigurationKeys.CSW_UPDATE_STRATEGIES, Map.class);
 		String updateStrategy = plugDescription.getString("updateStrategy");
 		String beanId = (String)strategies.get(updateStrategy);
