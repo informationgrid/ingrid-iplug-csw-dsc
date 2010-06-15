@@ -53,12 +53,10 @@ class IndexRunner extends Thread{
         return fErrorMsg;
     }
 }
-
 %>
 <%
+PlugDescription  description = (PlugDescription)  request.getSession().getAttribute("description");
 if(fIndexRunner == null){
-	PlugDescription   description = (PlugDescription)  request.getSession().getAttribute("description");
-
 	// save pd first. the indexer job will pick it up from the conf directory
 	BeanFactory beanFactory = (BeanFactory) application.getAttribute("beanFactory");
 	File pd_file = (File) beanFactory.getBean("pd_file");
@@ -71,8 +69,6 @@ if(fIndexRunner == null){
 		fIndexRunner.start();
 	}
 }
-
-
 %>
 
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
@@ -106,7 +102,7 @@ dauern.</span></div>
 	   hasError = fIndexRunner.hasError();
 
 	   if (hasError) {
-           displayTitle = "FEHLER:<br />";
+           displayTitle = "FEHLER beim Zugriff auf " + description.get("serviceUrl") + "<br /><br />";
            displayMessage = fIndexRunner.getErrorMsg();
 	   }
 	  
