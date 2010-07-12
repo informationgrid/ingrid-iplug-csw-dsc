@@ -13,7 +13,6 @@
     <connection>scm:svn:https://harrison.its-technidata.de:444/svn/ingrid/ingrid-iplug-csw-dsc/trunk</connection>
     <developerConnection>scm:svn:https://harrison.its-technidata.de:444/svn/ingrid/ingrid-iplug-csw-dsc/trunk</developerConnection>
   </scm>
-  <!-- ==================== DEPENDENCIES ==================== -->
   <dependencies>
     <dependency>
       <groupId>de.ingrid</groupId>
@@ -22,6 +21,10 @@
         <exclusion>
           <groupId>ant</groupId>
           <artifactId>ant</artifactId>
+        </exclusion>
+        <exclusion>
+          <groupId>axis</groupId>
+          <artifactId>axis</artifactId>
         </exclusion>
       </exclusions>
     </dependency>
@@ -137,18 +140,6 @@
     <dependency>
       <groupId>junit</groupId>
       <artifactId>junit</artifactId>
-    </dependency>
-    <dependency>
-      <groupId>log4j</groupId>
-      <artifactId>log4j</artifactId>
-    </dependency>
-    <dependency>
-      <groupId>quartz</groupId>
-      <artifactId>quartz</artifactId>
-    </dependency>
-    <dependency>
-      <groupId>com.thoughtworks.xstream</groupId>
-      <artifactId>xstream</artifactId>
     </dependency>
   </dependencies>
   <build>

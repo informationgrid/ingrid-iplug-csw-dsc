@@ -3,7 +3,7 @@
   <parent>
     <groupId>de.ingrid</groupId>
     <artifactId>ingrid-releases-pom</artifactId>
-    <version>1.0.2</version>
+    <version>1.1.0</version>
   </parent>
   <modelVersion>4.0.0</modelVersion>
   <groupId>de.ingrid</groupId>
@@ -22,20 +22,11 @@
   <repositories>
     <!-- Repo of parent pom needed, parent pom may not be installed locally yet -->
     <repository>
-      <id>de.ingrid.m2</id>
-      <name>Maven2 Repo InGrid</name>
+      <id>de.ingrid.all</id>
+      <name>Maven Repo InGrid</name>
       <url>http://harrison.its-technidata.de/archiva/repository/ingrid-all</url>
     </repository>
   </repositories>
-  <dependencyManagement>
-    <dependencies>
-      <dependency>
-        <groupId>de.ingrid</groupId>
-        <artifactId>ingrid-utils</artifactId>
-        <version>1.3.0</version>
-      </dependency>
-    </dependencies>
-  </dependencyManagement>
   <build>
     <finalName>${artifactId}-${version}</finalName>
     <plugins>
@@ -45,19 +36,18 @@
         <inherited>false</inherited>
       </plugin>
       <plugin>
-				<groupId>org.apache.maven.plugins</groupId>
-				<artifactId>maven-antrun-plugin</artifactId>
+		<groupId>org.apache.maven.plugins</groupId>
+		<artifactId>maven-antrun-plugin</artifactId>
         <inherited>false</inherited>
       </plugin>
       <plugin>
-				<groupId>org.apache.maven.plugins</groupId>
-				<artifactId>maven-changes-plugin</artifactId>
+		<groupId>org.apache.maven.plugins</groupId>
+		<artifactId>maven-changes-plugin</artifactId>
         <inherited>false</inherited>
       </plugin>
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-jar-plugin</artifactId>
-        <version>2.2</version>
         <configuration>
           <archive>
             <manifestEntries>
@@ -73,7 +63,6 @@
       </plugin>
 	  <plugin>
 		<artifactId>maven-assembly-plugin</artifactId>
-		<version>2.2-beta-4</version>
 			<!-- Add Type of Component to Manifest of Installer for Upgrade Server -->
 			<configuration>
 				<archive>

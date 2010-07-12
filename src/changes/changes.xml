@@ -5,7 +5,10 @@
     <author email="joachim@wemove.com">Joachim Müller</author>
   </properties>
   <body>
-    <release version="x.x.x" date="2010-xx-xx" description="Release">
+    <release version="1.1.2" date="2010-07-12" description="Release">
+      <action type="add">
+        Einbindung in Upgrade Server.
+      </action>
       <action type="fix" dev="wemove" issue="INGRID-1843">
         Admin-GUI: Meldung bei fehlerhafter Indexerstellung, Csw Service URL "direkt" änderbar, neueste Query Extension, neues Index Feld "Objektklasse"
       </action>
@@ -13,6 +16,7 @@
         Einführung des Index-Feldes 'location'.
       </action>
     </release>
+
     <release version="1.1.1" date="2009-12-12" description="Release">
       <action type="add">
         Abbildung von gmd:MD_BrowseGraphic auf IGC Verweis ergaenzt.
