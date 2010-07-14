@@ -22,6 +22,7 @@ import org.apache.lucene.search.BooleanQuery;
 import org.apache.lucene.search.FuzzyQuery;
 import org.apache.lucene.search.Hits;
 import org.apache.lucene.search.IndexSearcher;
+import org.apache.lucene.search.MatchAllDocsQuery;
 import org.apache.lucene.search.PhraseQuery;
 import org.apache.lucene.search.PrefixQuery;
 import org.apache.lucene.search.Query;
@@ -166,7 +167,12 @@ public abstract class AbstractSearcher implements IPlug, IRecordLoader {
 			log.info("boost title's with " + fTitleBoost);
 		}
 
-		Query luceneQuery = buildLuceneQuery(query, addDataTypes);
+		BooleanQuery luceneQuery = (BooleanQuery)buildLuceneQuery(query, addDataTypes);
+		
+		// if query is empty then return all entries
+        if (luceneQuery.getClauses().length == 0) {
+            luceneQuery.add(new MatchAllDocsQuery(), false, false);
+        }
 		if (log.isDebugEnabled())
 			log.debug("LuceneQuery: " + luceneQuery.toString());
 		Hits luceneHits = this.fSearcher.search(luceneQuery);
