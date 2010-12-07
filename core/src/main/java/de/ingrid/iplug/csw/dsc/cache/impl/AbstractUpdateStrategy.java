@@ -207,9 +207,10 @@ public abstract class AbstractUpdateStrategy implements UpdateStrategy {
 				if (log.isInfoEnabled())
 					log.info("Fetched record: "+id+" "+record.getElementSetName());
 				cache.putRecord(record);
-			} catch (IllegalArgumentException e) {
+			} catch (Exception e) {
 				log.error("Error fetching record '" + query.getId() + "'! Removing record from cache.", e);
 				cache.removeRecord(query.getId());
+				recordIds.remove(id);
 			}
 			Thread.sleep(requestPause);
 		}
