@@ -49,7 +49,7 @@ public class MapperToIndexTest extends TestCase {
 			assertEquals(testRecordId, doc.get("t01_object.obj_id"));
 			assertTrue("Valid hierarchyLevel set.", Integer.parseInt(doc.get("t01_object.obj_class")) >= 0 && Integer.parseInt(doc.get("t01_object.obj_class")) <= 5);
 			String mdBrowseGraphic_FileName = XPathUtils.getString(cswRecord.getOriginalResponse(), "//gmd:identificationInfo//gmd:graphicOverview/gmd:MD_BrowseGraphic/gmd:fileName/gco:CharacterString");
-			assertTrue("MD_BrowseGraphic is not set or is mapped as link", mdBrowseGraphic_FileName == null || mdBrowseGraphic_FileName.equals(doc.get("t017_url_ref.url_link")));
+			assertTrue("MD_BrowseGraphic is not set or is mapped as link", mdBrowseGraphic_FileName == null || mdBrowseGraphic_FileName.equals(doc.getValues("t017_url_ref.url_link")[0]) || mdBrowseGraphic_FileName.equals(doc.getValues("t017_url_ref.url_link")[1]));
 		}
 		
 		
