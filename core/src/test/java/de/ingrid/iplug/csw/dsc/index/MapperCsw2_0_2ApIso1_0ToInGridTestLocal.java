@@ -75,7 +75,21 @@ public class MapperCsw2_0_2ApIso1_0ToInGridTestLocal extends TestCase {
 		assertTrue("Detail record found.", record != null);
 		assertTrue("Subrecords not null.", record.getSubRecords() != null);
 		assertTrue("Subrecords found.", record.getSubRecords().length > 0);
+
+		
+        cswRecord = TestUtil.getRecord("24265", ElementSetName.FULL, new GenericRecord());
+        record = null;
+        try {
+            record = mapper.mapCswToIngrid(cswRecord);
+        } catch (Throwable t) {
+            System.out.println(t);
+        }
+        
+        assertTrue("Detail record found.", record != null);
+        assertTrue("Subrecords not null.", record.getSubRecords() != null);
+        assertTrue("Subrecords found.", record.getSubRecords().length > 0);
 		
 		
 	}
+
 }
