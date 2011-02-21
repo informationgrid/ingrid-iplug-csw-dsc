@@ -25,7 +25,7 @@ var mappingDescription =
 	  			{
 					"field":"obj_uuid",
 					"indexName":"t01_object.obj_id",
-					"xpath":"//gmd:fileIdentifier/gco:CharacterString"
+					"xpath":"//gmd:MD_Metadata/gmd:fileIdentifier/gco:CharacterString"
 				},
 				{
 					"field":"obj_name",
@@ -34,7 +34,7 @@ var mappingDescription =
 				},
 				{
 					"field":"org_obj_id",
-					"xpath":"//gmd:fileIdentifier/gco:CharacterString"
+					"xpath":"//gmd:MD_Metadata/gmd:fileIdentifier/gco:CharacterString"
 				},
 				{
 					"field":"obj_descr",
