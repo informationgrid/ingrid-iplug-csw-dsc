@@ -5,12 +5,16 @@
     <author email="joachim@wemove.com">Joachim Müller</author>
   </properties>
   <body>
+    <release version="3.0.0-SNAPSHOT" date="2011-xx-xx" description="Release">
+      <action type="add">
+        Query fileIdentifier more explicitly, avoiding errors when another fileIdentifier element is present in source.
+      </action>
+    </release>
     <release version="2.3.1" date="2011-01-20" description="Release">
       <action type="add">
         Do not cancel the harvesting process if an error occurs while fetching a record detail with GetRecordById.
       </action>
     </release>
-
     <release version="1.1.2" date="2010-07-14" description="Release">
       <action type="add">
         Bei Anfrage InGrid Query ohne Suchparameter werden jetzt alle Ergebnisse zurück geliefert.
