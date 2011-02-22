@@ -8,7 +8,6 @@ import de.ingrid.iplug.csw.dsc.ConfigurationKeys;
 import de.ingrid.iplug.csw.dsc.cache.Cache;
 import de.ingrid.iplug.csw.dsc.cswclient.CSWFactory;
 import de.ingrid.iplug.csw.dsc.cswclient.CSWQuery;
-import de.ingrid.iplug.csw.dsc.mapping.DocumentMapper;
 
 /**
  * @author Administrator
@@ -25,7 +24,6 @@ public class SimpleSpringBeanFactoryTestLocal extends TestCase {
 		assertNotNull(SimpleSpringBeanFactory.INSTANCE.getBean(ConfigurationKeys.CSW_QUERY_TEMPLATE, CSWQuery.class));
 		assertNotNull(SimpleSpringBeanFactory.INSTANCE.getBean(ConfigurationKeys.CSW_CACHE, Cache.class));
 		assertNotNull(SimpleSpringBeanFactory.INSTANCE.getBean(ConfigurationKeys.CSW_HARVEST_FILTER, String.class));
-		assertNotNull(SimpleSpringBeanFactory.INSTANCE.getBean(ConfigurationKeys.CSW_MAPPER, DocumentMapper.class));
 	}
 
 }

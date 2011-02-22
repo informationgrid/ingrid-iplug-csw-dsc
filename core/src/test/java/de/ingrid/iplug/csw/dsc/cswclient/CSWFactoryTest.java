@@ -76,7 +76,7 @@ public class CSWFactoryTest extends TestCase {
     	else
     		f.setRecordImpl(desc.get("setRecordImpl").toString());
 
-    	f.setPlugDescription(desc);
+    	f.configure(desc);
     	
 		return f;
     } 

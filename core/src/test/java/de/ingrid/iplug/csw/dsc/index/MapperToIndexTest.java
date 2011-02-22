@@ -6,13 +6,17 @@ import java.util.Set;
 import junit.framework.TestCase;
 
 import org.apache.lucene.document.Document;
+import org.springframework.core.io.FileSystemResource;
 
 import de.ingrid.iplug.csw.dsc.ConfigurationKeys;
 import de.ingrid.iplug.csw.dsc.TestUtil;
+import de.ingrid.iplug.csw.dsc.cache.Cache;
+import de.ingrid.iplug.csw.dsc.cswclient.CSWFactory;
 import de.ingrid.iplug.csw.dsc.cswclient.CSWRecord;
 import de.ingrid.iplug.csw.dsc.cswclient.constants.ElementSetName;
 import de.ingrid.iplug.csw.dsc.cswclient.impl.GenericRecord;
-import de.ingrid.iplug.csw.dsc.mapping.DocumentMapper;
+import de.ingrid.iplug.csw.dsc.index.mapper.ScriptedDocumentMapper;
+import de.ingrid.iplug.csw.dsc.om.CswCacheSourceRecord;
 import de.ingrid.iplug.csw.dsc.tools.SimpleSpringBeanFactory;
 import de.ingrid.utils.xml.XPathUtils;
 
@@ -33,14 +37,20 @@ public class MapperToIndexTest extends TestCase {
 
 		SimpleSpringBeanFactory.INSTANCE.setBeanConfig("beans_mapper_test.xml");
 
-		DocumentMapper mapper = SimpleSpringBeanFactory.INSTANCE.getBean(ConfigurationKeys.CSW_MAPPER, DocumentMapper.class);
+		Cache cache = SimpleSpringBeanFactory.INSTANCE.getBean(ConfigurationKeys.CSW_CACHE, Cache.class);
+        CSWFactory factory = SimpleSpringBeanFactory.INSTANCE.getBean(ConfigurationKeys.CSW_FACTORY, CSWFactory.class);
+        cache.configure(factory);
+		
+		ScriptedDocumentMapper mapper = new ScriptedDocumentMapper();
+		mapper.setCompile(false);
+        mapper.setMappingScript(new FileSystemResource("src/main/resources/mapping/csw-2.0.2-AP-ISO-1.0_to_lucene-igc-1.0.3.js"));
 		Set<String> testRecordIds = TestUtil.getRecordIds();
 		for (Iterator<String> it = testRecordIds.iterator(); it.hasNext();) {
 			String testRecordId = it.next();
 			CSWRecord cswRecord = TestUtil.getRecord(testRecordId, ElementSetName.FULL, new GenericRecord());
-			Document doc = null;
+			Document doc = new Document();
 			try {
-				doc = mapper.mapCswToLucene(cswRecord);
+				mapper.map(new CswCacheSourceRecord(cswRecord), doc);
 			} catch (Throwable t) {
 				System.out.println(t);
 			}

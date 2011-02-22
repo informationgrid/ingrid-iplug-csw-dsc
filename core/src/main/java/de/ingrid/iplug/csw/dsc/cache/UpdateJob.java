@@ -23,22 +23,26 @@ import org.apache.commons.logging.LogFactory;
 import de.ingrid.iplug.csw.dsc.ConfigurationKeys;
 import de.ingrid.iplug.csw.dsc.cswclient.CSWFactory;
 import de.ingrid.iplug.csw.dsc.tools.SimpleSpringBeanFactory;
+import de.ingrid.utils.IConfigurable;
 import de.ingrid.utils.PlugDescription;
 
 /**
  * The update job.
  * @author ingo herwig <ingo@wemove.com>
  */
-public class UpdateJob {
+public class UpdateJob implements IConfigurable {
 
 	final protected static Log log = LogFactory.getLog(UpdateJob.class);
 	final private static String DATE_FILENAME = "updatejob.dat";
 	final private static SimpleDateFormat DATEFORMAT = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 	
-	private CSWFactory factory;
+    private PlugDescription plugDescription;
+
+    private CSWFactory factory;
 	private Cache cache;
 	private Set<String> filterStrSet;
 	private UpdateStrategy updateStrategy;
+	
 
 	/**
 	 * Constructor
@@ -53,12 +57,6 @@ public class UpdateJob {
 				ConfigurationKeys.CSW_HARVEST_FILTER, Set.class);
 
 		// get strategy set from configuration
-		// NOTICE: PlugDescription WILL BE RELOADED (due to scope="prototype" in spring XML configuration file) !!!!!
-		PlugDescription plugDescription = SimpleSpringBeanFactory.INSTANCE.getBean(ConfigurationKeys.PLUGDESCRIPTION, 
-				PlugDescription.class);
-		// ALSO SET RELOADED PD IN FACTORY SO WE HAVE THE LATEST SETTINGS (e.g. when URL was changed and reindexing in admin gui)
-		factory.setPlugDescription(plugDescription);
-
 		Map strategies = SimpleSpringBeanFactory.INSTANCE.getBean(ConfigurationKeys.CSW_UPDATE_STRATEGIES, Map.class);
 		String updateStrategy = plugDescription.getString("updateStrategy");
 		String beanId = (String)strategies.get(updateStrategy);
@@ -162,4 +160,9 @@ public class UpdateJob {
 					"The update job fetches all records next time.");
 		}
 	}
+
+    @Override
+    public void configure(PlugDescription arg0) {
+        this.plugDescription = arg0;
+    }
 }

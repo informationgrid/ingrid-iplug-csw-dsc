@@ -9,6 +9,7 @@ import java.util.Map;
 
 import de.ingrid.iplug.csw.dsc.cswclient.constants.Operation;
 import de.ingrid.iplug.csw.dsc.cswclient.impl.GenericClient;
+import de.ingrid.utils.IConfigurable;
 import de.ingrid.utils.PlugDescription;
 
 /**
@@ -17,7 +18,7 @@ import de.ingrid.utils.PlugDescription;
  * The specific implementation is configured in bean.xml.
  * @author ingo herwig <ingo@wemove.com>
  */
-public class CSWFactory implements Serializable {
+public class CSWFactory implements IConfigurable, Serializable {
 
 	private static final long serialVersionUID = CSWFactory.class.getName().hashCode();
 	private static final String serviceUrlKey = "serviceUrl";
@@ -52,25 +53,6 @@ public class CSWFactory implements Serializable {
 	}
 	
 	
-	
-	/**
-	 * Returns the PlugDescription.
-	 * 
-	 * @return The PlugDescription
-	 */
-	public PlugDescription getPlugDescription() {
-		return plugDescription;
-	}
-
-
-	/**
-	 * Set the PlugDescription
-	 * @param plugDescription
-	 */
-	public void setPlugDescription(PlugDescription plugDescription) {
-		this.plugDescription = plugDescription;
-	}
-
 	/**
 	 * Set the CSWClient implementation
 	 * @param clientImpl
@@ -257,4 +239,11 @@ public class CSWFactory implements Serializable {
 		}
 		return record;
 	}
+
+
+
+    @Override
+    public void configure(PlugDescription arg0) {
+        this.plugDescription = arg0;
+    }
 }

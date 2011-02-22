@@ -13,20 +13,11 @@ import javax.xml.parsers.DocumentBuilderFactory;
 
 import junit.framework.TestCase;
 
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
 import org.w3c.dom.Document;
 import org.xml.sax.InputSource;
 
 import de.ingrid.iplug.csw.dsc.TestServer;
-import de.ingrid.iplug.csw.dsc.cswclient.constants.ElementSetName;
-import de.ingrid.iplug.csw.dsc.cswclient.constants.Namespace;
 import de.ingrid.iplug.csw.dsc.cswclient.constants.Operation;
-import de.ingrid.iplug.csw.dsc.cswclient.constants.OutputFormat;
-import de.ingrid.iplug.csw.dsc.cswclient.constants.ResultType;
-import de.ingrid.iplug.csw.dsc.cswclient.constants.TypeName;
-import de.ingrid.iplug.csw.dsc.cswclient.impl.GenericQuery;
-import de.ingrid.iplug.csw.dsc.index.CSWDocumentReader;
 import de.ingrid.utils.PlugDescription;
 
 @SuppressWarnings("unused")
