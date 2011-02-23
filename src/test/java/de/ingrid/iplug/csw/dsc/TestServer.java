@@ -13,10 +13,10 @@ import de.ingrid.iplug.csw.dsc.cswclient.constants.TypeName;
 
 public enum TestServer {
 	
-	PORTALU ("http://www.portalu.de/csw", "http://www.portalu.de/csw", 
-			Namespace.CSW, Namespace.CSW_PROFILE,
-			OutputFormat.TEXT_XML, "2.0.0", new TypeName[] { TypeName.RECORD }, ResultType.RESULTS,
-			ElementSetName.BRIEF, "1.0.0"),
+	PORTALU ("http://www.portalu.de/csw202/", "http://www.portalu.de/csw202", 
+			Namespace.CSW_2_0_2, Namespace.CSW_PROFILE,
+			OutputFormat.TEXT_XML, "2.0.2", new TypeName[] { TypeName.MD_METADATA }, ResultType.RESULTS,
+			ElementSetName.BRIEF, "1.1.0"),
 
 	DISY ("http://demo.disy.net/preludio2.lubw/ws/csw", "http://demo.disy.net/preludio2.lubw/ws/csw", 
 			Namespace.CSW, Namespace.CSW_PROFILE,

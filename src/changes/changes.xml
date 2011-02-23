@@ -7,6 +7,9 @@
   <body>
     <release version="3.0.0-SNAPSHOT" date="2011-xx-xx" description="Release">
       <action type="add">
+        Update webapp, introduce new architecture for the iPlug.
+      </action>
+      <action type="add">
         Query fileIdentifier more explicitly, avoiding errors when another fileIdentifier element is present in source.
       </action>
     </release>

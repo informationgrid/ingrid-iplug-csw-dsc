@@ -146,6 +146,7 @@ public abstract class AbstractUpdateStrategy implements UpdateStrategy {
 			// do requests
 
 			// do first request
+			
 			CSWSearchResult result = client.getRecords(query);
 			numCurrentTotal = result.getNumberOfRecordsTotal();
 			if (log.isInfoEnabled())

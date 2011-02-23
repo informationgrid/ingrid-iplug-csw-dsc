@@ -10,8 +10,11 @@ import org.apache.commons.logging.LogFactory;
 import org.apache.lucene.document.Document;
 
 import de.ingrid.admin.object.IDocumentProducer;
+import de.ingrid.iplug.csw.dsc.cache.Cache;
+import de.ingrid.iplug.csw.dsc.cache.UpdateJob;
+import de.ingrid.iplug.csw.dsc.cswclient.CSWFactory;
 import de.ingrid.iplug.csw.dsc.index.mapper.IRecordMapper;
-import de.ingrid.iplug.csw.dsc.index.producer.IRecordSetProducer;
+import de.ingrid.iplug.csw.dsc.index.producer.ICswCacheRecordSetProducer;
 import de.ingrid.iplug.csw.dsc.om.SourceRecord;
 import de.ingrid.utils.PlugDescription;
 
@@ -21,14 +24,26 @@ import de.ingrid.utils.PlugDescription;
  */
 public class CswDscDocumentProducer implements IDocumentProducer {
 
-    private IRecordSetProducer recordSetProducer = null;
+    private ICswCacheRecordSetProducer recordSetProducer = null;
 
     private List<IRecordMapper> recordMapperList = null;
 
+    Cache cache;
+
+    Cache tmpCache = null;
+
+    CSWFactory factory;
+    
+    UpdateJob job;
+    
     final private static Log log = LogFactory.getLog(CswDscDocumentProducer.class);
     
     public CswDscDocumentProducer() {
         log.info("CswDscDocumentProducer started.");
+    }
+    
+    public void init() {
+        cache.configure(factory);
     }
     
     /*
@@ -39,7 +54,33 @@ public class CswDscDocumentProducer implements IDocumentProducer {
     @Override
     public boolean hasNext() {
         try {
-            return recordSetProducer.hasNext();
+            if (tmpCache == null) {
+                try {
+                    // start transaction
+                    tmpCache = cache.startTransaction();
+                    tmpCache.removeAllRecords();
+
+                    // run the update job: fetch all csw data from csw source
+                    job.setCache(tmpCache);
+                    job.init();
+                    job.execute();
+                    
+                    recordSetProducer.setCache(tmpCache);
+
+                } catch (Exception e) {
+                    log.error("Error harvesting CSW datasource.", e);
+                    if (tmpCache != null) {
+                        tmpCache.rollbackTransaction();
+                    }
+                }
+            }
+            if (recordSetProducer.hasNext()) {
+                return true;
+            } else {
+                tmpCache.commitTransaction();
+                tmpCache = null;
+                return false;
+            }
         } catch (Exception e) {
             log.error("Error obtaining information about a next record. Skip all records.", e);
             return false;
@@ -69,6 +110,10 @@ public class CswDscDocumentProducer implements IDocumentProducer {
             return doc;
         } catch (Exception e) {
             log.error("Error obtaining next record.", e);
+            if (tmpCache != null) {
+                tmpCache.rollbackTransaction();
+                tmpCache = null;
+            }
             return null;
         }
     }
@@ -84,11 +129,11 @@ public class CswDscDocumentProducer implements IDocumentProducer {
         log.info("CswDscDocumentProducer: configuring...");
     }
 
-    public IRecordSetProducer getRecordSetProducer() {
+    public ICswCacheRecordSetProducer getRecordSetProducer() {
         return recordSetProducer;
     }
 
-    public void setRecordSetProducer(IRecordSetProducer recordProducer) {
+    public void setRecordSetProducer(ICswCacheRecordSetProducer recordProducer) {
         this.recordSetProducer = recordProducer;
     }
 
@@ -100,4 +145,28 @@ public class CswDscDocumentProducer implements IDocumentProducer {
         this.recordMapperList = recordMapperList;
     }
 
+    public Cache getCache() {
+        return cache;
+    }
+
+    public void setCache(Cache cache) {
+        this.cache = cache;
+    }
+
+    public CSWFactory getFactory() {
+        return factory;
+    }
+
+    public void setFactory(CSWFactory factory) {
+        this.factory = factory;
+    }
+    
+    public UpdateJob getJob() {
+        return job;
+    }
+
+    public void setJob(UpdateJob job) {
+        this.job = job;
+    }
+    
 }

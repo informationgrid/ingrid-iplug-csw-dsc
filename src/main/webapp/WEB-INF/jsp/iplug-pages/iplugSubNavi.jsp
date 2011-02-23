@@ -17,16 +17,16 @@
 <c:choose>
     <c:when test="${plugdescriptionExists == 'false'}">
         <li
-        <c:if test="${active == 'dbParams'}">
+        <c:if test="${active == 'cswParams'}">
             class="active"
         </c:if>
-        >Database Parameter</li>
+        >CSW Parameter</li>
     </c:when>
-    <c:when test="${active != 'dbParams'}">
-        <li><a href="../iplug-pages/dbParams.html">Database Parameter</a></li>
+    <c:when test="${active != 'cswParams'}">
+        <li><a href="../iplug-pages/cswParams.html">CSW Parameter</a></li>
     </c:when>
     <c:otherwise>
-        <li class="active">Database Parameter</li>
+        <li class="active">CSW Parameter</li>
     </c:otherwise>
 </c:choose>
 

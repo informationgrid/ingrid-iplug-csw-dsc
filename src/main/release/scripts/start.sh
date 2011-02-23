@@ -9,6 +9,8 @@
 #
 #   INGRID_OPTS      addtional java runtime options
 #
+#	INGRID_USER 	 starting user, default ist "ingrid"
+#
 
 THIS="$0"
 
@@ -16,6 +18,17 @@ THIS="$0"
 THIS_DIR=`dirname "$THIS"`
 INGRID_HOME=`cd "$THIS_DIR" ; pwd`
 PID=$INGRID_HOME/ingrid.pid
+
+INGRID_OPTS="-Djetty.port=@SERVER_PORT@ -Dindexing=false -Djetty.home=./jetty"
+if [ -f $INGRID_HOME/conf/plugDescription.xml ]; then
+    for tag in IPLUG_ADMIN_GUI_PORT
+    do
+        OUT=`grep --after-context=1 $tag $INGRID_HOME/conf/plugDescription.xml | tr -d '<string>'${tag}'</string>\n' | tr -d '\t' | tr -d ' ' | sed 's/^<.*>\([^<].*\)<.*>$/\1/' `
+        eval ${tag}=`echo \""${OUT}"\"`
+    done
+  P_ARRAY=`echo ${IPLUG_ADMIN_GUI_PORT}`
+  INGRID_OPTS="-Dindexing=false -Djetty.home=./jetty -Djetty.port="${P_ARRAY}
+fi
 
 # functions
 stopIplug()
@@ -48,13 +61,13 @@ stopIplug()
 
 stopNoExitIplug()
 {
-  echo "Try stopping ingrid component ($INGRID_HOME)..."
+  echo "Try stopping jetty ($INGRID_HOME)..."
   if [ -f $PID ]; then
       procid=`cat $PID`
       idcount=`ps -p $procid | wc -l`
       if [ $idcount -eq 2 ]; then
         echo stopping $command
-        kill `cat $PID`
+        kill -9 `cat $PID`
         echo "process ($procid) has been terminated."
       else
         echo "process is not running. Exit."
@@ -67,7 +80,7 @@ stopNoExitIplug()
 
 startIplug()
 {
-  echo "Try starting ingrid component ($INGRID_HOME)..."
+  echo "Try starting jetty ($INGRID_HOME)..."
   if [ -f $PID ]; then
       procid=`cat $PID`
       idcount=`ps -p $procid | wc -l`
@@ -75,12 +88,6 @@ startIplug()
         echo plug running as process `cat $PID`.  Stop it first.
         exit 1
       fi
-  fi
-  
-  if [ -d "$INGRID_HOME/../repository/" ]; then
-  	echo 'syncronize libs from repository...'
-	rsync -av --update --existing $INGRID_HOME/../repository/ $INGRID_HOME/lib/
-	echo 'finished syncronize.'
   fi
   
   # some Java parameters
@@ -103,14 +110,10 @@ startIplug()
     echo "run with heapsize $JAVA_HEAP_MAX"
   fi
 
-  # CLASSPATH initially contains $INGRID_CONF_DIR, or defaults to $INGRID_HOME/conf
-  CLASSPATH=${CLASSPATH}:${INGRID_CONF_DIR:=$INGRID_HOME/conf}
-  CLASSPATH=${CLASSPATH}:$JAVA_HOME/lib/tools.jar
-  CLASSPATH=${CLASSPATH}:${INGRID_HOME}
-  
   # so that filenames w/ spaces are handled correctly in loops below
   IFS=
   # add libs to CLASSPATH
+  CLASSPATH=${CLASSPATH}:${INGRID_CONF_DIR:=$INGRID_HOME/conf}
   for f in $INGRID_HOME/lib/*.jar; do
     CLASSPATH=${CLASSPATH}:$f;
   done
@@ -122,14 +125,14 @@ startIplug()
     CLASSPATH=`cygpath -p -w "$CLASSPATH"`
   fi
 
+  # run it
   export CLASSPATH="$CLASSPATH"
   INGRID_OPTS="$INGRID_OPTS -Dingrid_home=$INGRID_HOME"
-  CLASS=de.ingrid.iplug.PlugServer
+  CLASS=de.ingrid.iplug.dsc.JettyStarter
+	
+  exec nohup "$JAVA" $JAVA_HEAPSIZE $INGRID_OPTS $CLASS > console.log & 
   
-  # run it
-  exec nohup "$JAVA" $JAVA_HEAP_MAX $INGRID_OPTS $CLASS --descriptor conf/communication.xml --plugdescription conf/plugdescription.xml > console.log &
-  
-  echo "ingrid component ($INGRID_HOME) started."
+  echo "jetty ($INGRID_HOME) started."
   echo $! > $PID
 }
 

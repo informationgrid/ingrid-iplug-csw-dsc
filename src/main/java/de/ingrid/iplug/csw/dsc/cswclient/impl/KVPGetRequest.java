@@ -98,6 +98,7 @@ public class KVPGetRequest implements CSWRequest {
 			int code = conn.getResponseCode();
 			if (code >= 200 && code < 300) {
 		        DocumentBuilderFactory domFactory = DocumentBuilderFactory.newInstance();
+		        domFactory.setNamespaceAware(true);
 		        DocumentBuilder builder = domFactory.newDocumentBuilder();
 		        result = builder.parse(conn.getInputStream());
 			}

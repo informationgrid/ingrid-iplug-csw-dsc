@@ -59,10 +59,6 @@
       </exclusions>
     </dependency>
     <dependency>
-      <groupId>lucene</groupId>
-      <artifactId>lucene</artifactId>
-    </dependency>
-    <dependency>
       <groupId>commons-el</groupId>
       <artifactId>commons-el</artifactId>
     </dependency>

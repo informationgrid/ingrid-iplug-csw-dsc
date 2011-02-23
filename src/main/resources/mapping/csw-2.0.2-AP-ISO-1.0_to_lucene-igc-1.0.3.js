@@ -18,10 +18,6 @@ importPackage(Packages.org.w3c.dom);
 
 
 
-var _store = true;
-var _index = true;
-var _token = true;
-
 if (log.isDebugEnabled()) {
 	log.debug("Mapping csw record "+cswRecord.getId()+" to lucene document");
 }
@@ -418,7 +414,7 @@ var transformationDescriptions = [
 		}
 	];
 
-document.add(new Field("datatype", "default", !_store, _index, !_token));
+document.add(new Field("datatype", "default", Field.Store.NO, Field.Index.ANALYZED));
 	
 // iterate over all transformation descriptions
 var value;
@@ -830,9 +826,9 @@ function addToDoc(field, content, tokenized) {
 		if (log.isDebugEnabled()) {
 			log.debug("Add '" + field + "'='" + content + "' to lucene index");
 		}
-		document.add(new Field(field, content, _store, _index, tokenized));
-		document.add(new Field("content", content, !_store, _index, true));
-		document.add(new Field("content", LuceneTools.filterTerm(content), !_store, _index, true));
+		document.add(new Field(field, content, Field.Store.YES, Field.Index.ANALYZED));
+		document.add(new Field("content", content, Field.Store.NO, Field.Index.ANALYZED));
+		document.add(new Field("content", LuceneTools.filterTerm(content), Field.Store.NO, Field.Index.ANALYZED));
 	}
 }
 

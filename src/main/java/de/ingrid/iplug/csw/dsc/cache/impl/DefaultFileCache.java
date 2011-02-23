@@ -427,4 +427,10 @@ public class DefaultFileCache implements Cache, Serializable {
 		File cacheDir = new File(this.getCachePath());
 		return new Date(cacheDir.lastModified());
 	}
+	
+    @Override
+	public String toString() {
+        return this.getWorkPath() + ", " + super.toString();
+	    
+	}
 }

@@ -25,7 +25,8 @@ public class GenericCapabilities implements CSWCapabilities {
 	public void initialize(Document capDoc) {
 		
 		// check if capDoc is a valid capabilities document
-		Node rootNode = XPathUtils.getNode(capDoc, "//csw:Capabilities");
+		XPathUtils.getXPathInstance();
+	    Node rootNode = XPathUtils.getNode(capDoc, "//csw:Capabilities");
 		if (rootNode != null) {
 			this.capDoc = capDoc;
 		}

@@ -23,6 +23,7 @@ import org.apache.axis2.context.ConfigurationContextFactory;
 import org.apache.axis2.util.XMLUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.springframework.core.io.ClassPathResource;
 import org.w3c.dom.Document;
 
 import de.ingrid.iplug.csw.dsc.cswclient.CSWConstants;
@@ -217,10 +218,10 @@ public class SoapRequest implements CSWRequest {
 	 * @return ServiceClient
 	 * @throws AxisFault 
 	 */
-	protected ServiceClient createClient(String serverURL) throws AxisFault {
+	protected ServiceClient createClient(String serverURL) throws AxisFault, Exception {
 		// set up the client
-		ConfigurationContext configContext = 
-			ConfigurationContextFactory.createConfigurationContextFromFileSystem("conf", null);
+	    ConfigurationContext configContext = 
+			ConfigurationContextFactory.createConfigurationContextFromFileSystem((new ClassPathResource("axis2.xml")).getURI().getPath());
 		ServiceClient serviceClient = new ServiceClient(configContext, null);
 
 		Options opts = new Options();

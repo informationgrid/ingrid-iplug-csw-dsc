@@ -14,61 +14,39 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.HashSet;
 import java.util.List;
-import java.util.Map;
 import java.util.Set;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
-import de.ingrid.iplug.csw.dsc.ConfigurationKeys;
 import de.ingrid.iplug.csw.dsc.cswclient.CSWFactory;
-import de.ingrid.iplug.csw.dsc.tools.SimpleSpringBeanFactory;
-import de.ingrid.utils.IConfigurable;
-import de.ingrid.utils.PlugDescription;
 
 /**
  * The update job.
  * @author ingo herwig <ingo@wemove.com>
  */
-public class UpdateJob implements IConfigurable {
+public class UpdateJob {
 
 	final protected static Log log = LogFactory.getLog(UpdateJob.class);
 	final private static String DATE_FILENAME = "updatejob.dat";
 	final private static SimpleDateFormat DATEFORMAT = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 	
-    private PlugDescription plugDescription;
-
     private CSWFactory factory;
-	private Cache cache;
+
+    private Cache cache;
+    
 	private Set<String> filterStrSet;
-	private UpdateStrategy updateStrategy;
+	
+    private UpdateStrategy updateStrategy;
 	
 
-	/**
+    /**
 	 * Constructor
-	 * @param factory The CSWFactory instance
-	 * @param cache The Cache instance (UpdateJob assumes that the Cache is an transaction already)
 	 */
-	@SuppressWarnings({"unchecked"})
-	public UpdateJob(CSWFactory factory, Cache cache) {
-
-		// get filter set from configuration 
-		Set<String> filterStrSet = (Set<String>)SimpleSpringBeanFactory.INSTANCE.getBean(
-				ConfigurationKeys.CSW_HARVEST_FILTER, Set.class);
-
-		// get strategy set from configuration
-		Map strategies = SimpleSpringBeanFactory.INSTANCE.getBean(ConfigurationKeys.CSW_UPDATE_STRATEGIES, Map.class);
-		String updateStrategy = plugDescription.getString("updateStrategy");
-		String beanId = (String)strategies.get(updateStrategy);
-		if (beanId == null)
-			throw new RuntimeException("Unknown value for 'updateStrategy' in PlugDescription: "+updateStrategy);
-		
-		UpdateStrategy strategy = SimpleSpringBeanFactory.INSTANCE.getBean(beanId, UpdateStrategy.class);
-
-		this.factory = factory;
-		this.cache = cache;
-		this.filterStrSet = filterStrSet;
-		this.updateStrategy = strategy;
+	public UpdateJob() {}
+	
+	public void init() {
+	    cache.configure(factory);
 	}
 	
 	/**
@@ -161,8 +139,36 @@ public class UpdateJob implements IConfigurable {
 		}
 	}
 
-    @Override
-    public void configure(PlugDescription arg0) {
-        this.plugDescription = arg0;
+    public UpdateStrategy getUpdateStrategy() {
+        return updateStrategy;
     }
+
+    public void setUpdateStrategy(UpdateStrategy updateStrategy) {
+        this.updateStrategy = updateStrategy;
+    }
+
+    public CSWFactory getFactory() {
+        return factory;
+    }
+
+    public void setFactory(CSWFactory factory) {
+        this.factory = factory;
+    }
+
+    public Cache getCache() {
+        return cache;
+    }
+
+    public void setCache(Cache cache) {
+        this.cache = cache;
+    }
+    
+    public Set<String> getFilterStrSet() {
+        return filterStrSet;
+    }
+
+    public void setFilterStrSet(Set<String> filterStrSet) {
+        this.filterStrSet = filterStrSet;
+    }
+
 }
