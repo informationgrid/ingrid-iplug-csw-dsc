@@ -11,10 +11,9 @@ import java.util.zip.GZIPOutputStream;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 
+import org.apache.commons.codec.binary.Base64;
 import org.apache.log4j.Logger;
 import org.apache.lucene.document.Document;
-
-import com.sun.org.apache.xml.internal.security.utils.Base64;
 
 import de.ingrid.iplug.csw.dsc.cswclient.constants.ElementSetName;
 import de.ingrid.iplug.csw.dsc.om.SourceRecord;
@@ -85,7 +84,7 @@ public class IdfRecordCreator {
                         new GZIPOutputStream(bos));
                 bufos.write(data.getBytes());
                 bufos.close();
-                data = new String(Base64.encode(bos.toByteArray()));
+                data = new String(Base64.encodeBase64String(bos.toByteArray()));
                 bos.close();
                 record.put("compressed", "true");
             } else {
