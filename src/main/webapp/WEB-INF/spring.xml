@@ -63,6 +63,7 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
     <bean id="cswHarvestFilter" class="org.springframework.beans.factory.config.SetFactoryBean">
         <property name="sourceSet">
             <set>
+<!-- 
                 <value>
                     <![CDATA[<ogc:Filter xmlns:ogc="http://www.opengis.net/ogc">
                     <ogc:PropertyIsLike escapeChar="\\" singleChar="?" wildCard="*">
@@ -71,7 +72,6 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
                     </ogc:PropertyIsLike>
                     </ogc:Filter>]]>
                 </value>
-<!-- 
                 <value>
                     <![CDATA[<ogc:Filter xmlns:ogc="http://www.opengis.net/ogc">
                     <ogc:PropertyIsLike escapeChar="\\" singleChar="?" wildCard="*">
