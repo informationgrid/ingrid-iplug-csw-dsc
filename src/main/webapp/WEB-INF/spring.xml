@@ -268,10 +268,12 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
                 <ref bean="idfMapper"/>
             </list>
         </property>
+        <property name="compressed" value="true" />
     </bean>
     
     <bean id="recordProducer" class="de.ingrid.iplug.csw.dsc.record.producer.CswRecordProducer">
         <property name="cache" ref="cswCache" />
+        <property name="factory" ref="cswFactory" />
     </bean>
     
     <bean id="createIdfMapper" class="de.ingrid.iplug.csw.dsc.record.mapper.CreateIdfMapper" />
