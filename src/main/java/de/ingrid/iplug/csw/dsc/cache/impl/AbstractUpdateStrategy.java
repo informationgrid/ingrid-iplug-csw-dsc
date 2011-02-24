@@ -9,8 +9,10 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashSet;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
+import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -122,7 +124,7 @@ public abstract class AbstractUpdateStrategy implements UpdateStrategy {
 				
 		// variables for complete fetch process
 		int numTotal = 0;
-		List<String> fetchedRecordIds = new ArrayList<String>();
+		List<String> fetchedRecordIds = new CopyOnWriteArrayList<String>();
 
 		// iterate over all filters
 		int filterIndex = 1;
@@ -161,21 +163,26 @@ public abstract class AbstractUpdateStrategy implements UpdateStrategy {
 						currentFetchedRecordIds.size() < numCurrentTotal) {
 					Thread.sleep(this.requestPause);
 
-					// prepare next request
-					query.setStartPosition(query.getStartPosition()
-							+ result.getNumberOfRecords());
-
-					// do next request
-					result = client.getRecords(query);
-
-					// process
-					currentFetchedRecordIds.addAll(processResult(result, doCache));
+					try {
+    					// prepare next request
+    					query.setStartPosition(query.getStartPosition()
+    							+ result.getNumberOfRecords());
+    
+    					// do next request
+    					result = client.getRecords(query);
+    
+    					// process
+    					currentFetchedRecordIds.addAll(processResult(result, doCache));
+					} catch (Exception e) {
+					    log.error("Error fetching records " + query.getStartPosition() + result.getNumberOfRecords() + "-" + query.getStartPosition() + result.getNumberOfRecords() + this.recordsPerCall + ". Skipping all following records for this filter from harvesting.");
+					    break;
+					}
 				}
 			}
 
 			// collect record ids
 			fetchedRecordIds.addAll(currentFetchedRecordIds);
-			numTotal += numCurrentTotal;
+			numTotal += currentFetchedRecordIds.size();
 			filterIndex++;
 		}
 		return fetchedRecordIds;
@@ -200,19 +207,24 @@ public abstract class AbstractUpdateStrategy implements UpdateStrategy {
 		CSWQuery query = factory.createQuery();
 		query.setElementSetName(elementSetName);
 
-		for (String id : recordIds) {
-			query.setId(id);
+		int cnt = 1;
+        int max = recordIds.size();
+		Iterator<String> it = recordIds.iterator();
+		while (it.hasNext()) {
+			String id = it.next();
+		    query.setId(id);
 			CSWRecord record = null;
 			try {
 				record = client.getRecordById(query);
 				if (log.isInfoEnabled())
-					log.info("Fetched record: "+id+" "+record.getElementSetName());
+					log.info("Fetched record: "+id+" "+record.getElementSetName() + " (" + cnt + "/" + max + ")");
 				cache.putRecord(record);
 			} catch (Exception e) {
 				log.error("Error fetching record '" + query.getId() + "'! Removing record from cache.", e);
 				cache.removeRecord(query.getId());
 				recordIds.remove(id);
 			}
+			cnt++;
 			Thread.sleep(requestPause);
 		}
 	}

@@ -5,11 +5,11 @@
 package de.ingrid.iplug.csw.dsc.cache.impl;
 
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
+import java.util.concurrent.CopyOnWriteArrayList;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -87,9 +87,18 @@ public class IncrementalUpdateOptimizedStrategy extends AbstractUpdateStrategy {
 		// copy the unmodified records from the initial cache to our cache
 		for (String recordId : allRecordIds) {
 			if (!recordIdsToUpdate.contains(recordId)) {
-				reuseOrFetchRecord(client, ElementSetName.BRIEF, recordId);
-				reuseOrFetchRecord(client, ElementSetName.SUMMARY, recordId);
-				reuseOrFetchRecord(client, ElementSetName.FULL, recordId);
+				try {
+                    reuseOrFetchRecord(client, ElementSetName.BRIEF, recordId);
+                    reuseOrFetchRecord(client, ElementSetName.SUMMARY, recordId);
+                    reuseOrFetchRecord(client, ElementSetName.FULL, recordId);
+                } catch (Exception e) {
+                    log.error("Error synchronizing initial cache with new cache for id: " + recordId + ". Skip this record.", e);
+                    Cache cache = this.context.getCache();
+                    // remove records from both caches since synchronization failed
+                    cache.removeRecord(recordId);
+                    cache.getInitialCache().removeRecord(recordId);
+                    allRecordIds.remove(recordId);
+                }
 			}
 		}
 		return allRecordIds;
@@ -189,7 +198,7 @@ public class IncrementalUpdateOptimizedStrategy extends AbstractUpdateStrategy {
 	protected List<String> detectModifiedRecords(List<String> allRecordIds) throws IOException {
 		CSWRecord record = null;
 		Cache cache = this.context.getCache();
-		List<String> resultList = new ArrayList<String>();
+		List<String> resultList = new CopyOnWriteArrayList<String>();
 		
 		for (String recordId : allRecordIds) {
 			record = cache.getRecord(recordId, ElementSetName.BRIEF);

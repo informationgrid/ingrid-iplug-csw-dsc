@@ -126,7 +126,7 @@ public class CswDscDocumentProducer implements IDocumentProducer {
      */
     @Override
     public void configure(PlugDescription arg0) {
-        log.info("CswDscDocumentProducer: configuring...");
+        log.info("CswDscDocumentProducer: configure called.");
     }
 
     public ICswCacheRecordSetProducer getRecordSetProducer() {

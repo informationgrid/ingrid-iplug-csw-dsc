@@ -98,9 +98,18 @@ public class IncrementalUpdateStrategy extends AbstractUpdateStrategy {
 		// copy the unmodified records from the initial cache to our cache
 		for (String recordId : allRecordIds) {
 			if (!recordIdsToUpdate.contains(recordId)) {
-				reuseOrFetchRecord(client, ElementSetName.BRIEF, recordId);
-				reuseOrFetchRecord(client, ElementSetName.SUMMARY, recordId);
-				reuseOrFetchRecord(client, ElementSetName.FULL, recordId);
+                try {
+                    reuseOrFetchRecord(client, ElementSetName.BRIEF, recordId);
+                    reuseOrFetchRecord(client, ElementSetName.SUMMARY, recordId);
+                    reuseOrFetchRecord(client, ElementSetName.FULL, recordId);
+                } catch (Exception e) {
+                    log.error("Error synchronizing initial cache with new cache for id: " + recordId + ". Skip this record.", e);
+                    Cache cache = this.context.getCache();
+                    // remove records from both caches since synchronization failed
+                    cache.removeRecord(recordId);
+                    cache.getInitialCache().removeRecord(recordId);
+                    allRecordIds.remove(recordId);
+                }
 			}
 		}
 		return allRecordIds;
