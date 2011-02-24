@@ -4,7 +4,7 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" lang="de">
 <head>
-<title><fmt:message key="DatabaseConfig.main.title"/></title>
+<title><fmt:message key="CswConfig.main.configuration"/></title>
 <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
 <meta name="description" content="" />
 <meta name="keywords" content="" />
@@ -32,7 +32,7 @@
     <c:import url="../base/subNavi.jsp"></c:import>
 
     <div id="contentBox" class="contentMiddle">
-        <h1 id="head">Database Parameter</h1>
+        <h1 id="head">CSW Parameter</h1>
         <div class="controls">
             <a href="../base/extras.html">Zur&uuml;ck</a>
             <a href="../base/welcome.html">Abbrechen</a>

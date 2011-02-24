@@ -18,42 +18,29 @@
 			name		="intro"
 			displayText	="Willkommen zur InGrid iPlug CSW-DSC Installation"
 			target		="extract">
-			<comment displayText="" bold="true" explanatoryText="Dieser Assistent hilft Ihnen bei der Installation sowie Konfiguration der Komponente."/>
+			<comment displayText="" bold="true" explanatoryText="Dieser Assistent hilft Ihnen bei der Installation sowie Konfiguration des iPlugs."/>
+      <comment displayText="Hinweis: " bold="true"/>
+      <comment displayText="" explanatoryText="Wenn dies ein Update ist, dann können die Einstellungen der vorherigen Installation verwendet werden. Dazu muss sich die Datei 'ant.install.properties' im gleichen Verzeichnis wie der Installer befinden. Es empfiehlt sich daher, die Updates immer vom gleichen Verzeichnis auszuführen."/>
 	</page>
 
-	<page
-			type		="input"
-			name		="communicationClientOptions"
-			displayText	="Einstellungen fuer den iBus"
-			>
-			
-			<text property="clientName" displayText="Client ID:" defaultValue="/ingrid-group:iplug-csw-dsc-'Ihr-Name'"/>
-			
-			<comment displayText="" explanatoryText="Die Client-ID muss eindeutig sein, da es sonst zu Kommunikationsproblemen zum iBus fuehren kann."/>
-	</page>
-	
-	<page
-			type		="input"
-			name		="iBusOptions"
-			displayText	="Einstellungen fuer den iBus"
-			target		="ibus">
-			
-			<text property="serverName" displayText="Server ID:" defaultValue="/ingrid-group:ibus-'Ihr-Name'"/>
-			<text property="serverIp"   displayText="Server IP:"   defaultValue="127.0.0.1"/>
-			<text property="serverPort" displayText="Server Port:" defaultValue="9900"/>
-			
-			<comment displayText="" explanatoryText="Die Server-IP ist die Adresse des Rechners, auf dem der iBus ueber dem Server-Port angesprochen werden kann."/>
-	</page>
+    <page
+            type        ="input"
+            name        ="componentOptions"
+            displayText ="Einstellungen fuer das iPlug.">
+            
+            <comment displayText="" explanatoryText="Lokaler Port, unter dem die Administrationsoberfläche des Opensearch-iPlugs erreichbar sein soll."/>           
+            <text property="localServerPort" displayText="Port für Adminoberfläche:" defaultValue="9667"/>
+    </page>
 
 	<!--  type="input" shows a list of editable options for the installer -->
 	<page
 			type		="input"
 			name		="properties"
-			displayText	="Benoetigte Installationsoptionen">
+			displayText	="Benötigte Installationsoptionen">
 		<directory
 				property		="installDir"
-				defaultValue	="/opt/ingrid/${project.build.finalName}"
-				defaultValueWin	="${env.ProgramFiles}\${project.build.finalName}"
+				defaultValue	="/opt/ingrid/${project.artifactId}-${project.version}"
+				defaultValueWin	="${env.ProgramFiles}\${project.artifactId}-${project.version}"
 				displayText		="Installationsverzeichnis"
 				create			="true"/>
 	</page>
@@ -66,5 +53,3 @@
 			target		="startComponent">
 	</page>
 </installer>
-
-
