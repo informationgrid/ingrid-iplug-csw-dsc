@@ -3,15 +3,12 @@
  */
 package de.ingrid.iplug.csw.dsc.record;
 
-import java.io.BufferedOutputStream;
-import java.io.ByteArrayOutputStream;
 import java.util.List;
 import java.util.zip.GZIPOutputStream;
 
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 
-import org.apache.commons.codec.binary.Base64;
 import org.apache.log4j.Logger;
 import org.apache.lucene.document.Document;
 
@@ -20,6 +17,7 @@ import de.ingrid.iplug.csw.dsc.om.SourceRecord;
 import de.ingrid.iplug.csw.dsc.record.mapper.IIdfMapper;
 import de.ingrid.iplug.csw.dsc.record.producer.IRecordProducer;
 import de.ingrid.utils.dsc.Record;
+import de.ingrid.utils.idf.IdfTool;
 import de.ingrid.utils.xml.XMLUtils;
 
 /**
@@ -73,25 +71,11 @@ public class IdfRecordCreator {
                     log.debug("Mapping of source record with " + record2IdfMapper + " took: " + (System.currentTimeMillis() - start) + " ms.");
                 }
             }
-            Record record = new Record();
             String data = XMLUtils.toString(idfDoc);
             if (log.isDebugEnabled()) {
                 log.debug("Resulting IDF document:\n" + data);
             }
-            if (compressed) {
-                ByteArrayOutputStream bos = new ByteArrayOutputStream();
-                BufferedOutputStream bufos = new BufferedOutputStream(
-                        new GZIPOutputStream(bos));
-                bufos.write(data.getBytes());
-                bufos.close();
-                data = new String(Base64.encodeBase64String(bos.toByteArray()));
-                bos.close();
-                record.put("compressed", "true");
-            } else {
-                record.put("compressed", "false");
-            }
-            record.put("data", data);
-            return record;
+            return IdfTool.createIdfRecord(data, compressed);
         } catch (Exception e) {
             log.error("Error creating IDF document.", e);
             throw e;
