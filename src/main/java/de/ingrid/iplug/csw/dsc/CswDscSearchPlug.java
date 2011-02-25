@@ -44,36 +44,36 @@ public class CswDscSearchPlug extends HeartBeatPlug implements IRecordLoader {
     private static Log log = LogFactory.getLog(CswDscSearchPlug.class);
 
     private IdfRecordCreator dscRecordProducer = null;
-    
-    private final IngridIndexSearcher _indexSearcher;    
-    
+
+    private final IngridIndexSearcher _indexSearcher;
+
     @Autowired
-    public CswDscSearchPlug(final IngridIndexSearcher indexSearcher,
-            IPlugdescriptionFieldFilter[] fieldFilters,
-            IMetadataInjector[] injector, IPreProcessor[] preProcessors,
-            IPostProcessor[] postProcessors) throws IOException {
-        super(60000, new PlugDescriptionFieldFilters(fieldFilters), injector,
-                preProcessors, postProcessors);
+    public CswDscSearchPlug(final IngridIndexSearcher indexSearcher, IPlugdescriptionFieldFilter[] fieldFilters,
+            IMetadataInjector[] injector, IPreProcessor[] preProcessors, IPostProcessor[] postProcessors)
+            throws IOException {
+        super(60000, new PlugDescriptionFieldFilters(fieldFilters), injector, preProcessors, postProcessors);
         _indexSearcher = indexSearcher;
     }
 
-
-    /* (non-Javadoc)
-     * @see de.ingrid.utils.ISearcher#search(de.ingrid.utils.query.IngridQuery, int, int)
+    /*
+     * (non-Javadoc)
+     * 
+     * @see de.ingrid.utils.ISearcher#search(de.ingrid.utils.query.IngridQuery,
+     * int, int)
      */
     @Override
-    public final IngridHits search(final IngridQuery query, final int start,
-            final int length) throws Exception {
-        
+    public final IngridHits search(final IngridQuery query, final int start, final int length) throws Exception {
+
         if (log.isDebugEnabled()) {
-            log.debug("Incoming query: " + query.toString() + ", start="
-                    + start + ", length=" + length);
+            log.debug("Incoming query: " + query.toString() + ", start=" + start + ", length=" + length);
         }
         preProcess(query);
         return _indexSearcher.search(query, start, length);
     }
 
-    /* (non-Javadoc)
+    /*
+     * (non-Javadoc)
+     * 
      * @see de.ingrid.utils.IRecordLoader#getRecord(de.ingrid.utils.IngridHit)
      */
     @Override
@@ -83,7 +83,9 @@ public class CswDscSearchPlug extends HeartBeatPlug implements IRecordLoader {
         return dscRecordProducer.getRecord(document, elementSetName);
     }
 
-    /* (non-Javadoc)
+    /*
+     * (non-Javadoc)
+     * 
      * @see de.ingrid.iplug.HeartBeatPlug#close()
      */
     @Override
@@ -91,28 +93,40 @@ public class CswDscSearchPlug extends HeartBeatPlug implements IRecordLoader {
         _indexSearcher.close();
     }
 
-    /* (non-Javadoc)
+    /*
+     * (non-Javadoc)
+     * 
      * @see de.ingrid.iplug.HeartBeatPlug#close()
      */
     @Override
-    public IngridHitDetail getDetail(IngridHit hit, IngridQuery query,
-            String[] fields) throws Exception {
-        final IngridHitDetail detail = _indexSearcher.getDetail(hit, query,
-                fields);
+    public IngridHitDetail getDetail(IngridHit hit, IngridQuery query, String[] fields) throws Exception {
+        final IngridHitDetail detail = _indexSearcher.getDetail(hit, query, fields);
+
+        // add original idf data (including the original response), if requested
+        ElementSetName elementSetName = this.getDirectDataElementSetName(query);
+        if (elementSetName != null) {
+            this.setDirectData(detail, elementSetName);
+        }
+
         return detail;
     }
 
-    /* (non-Javadoc)
+    /*
+     * (non-Javadoc)
+     * 
      * @see de.ingrid.iplug.HeartBeatPlug#close()
      */
     @Override
-    public IngridHitDetail[] getDetails(IngridHit[] hits, IngridQuery query,
-            String[] fields) throws Exception {
-        final IngridHitDetail[] details = _indexSearcher.getDetails(hits,
-                query, fields);
+    public IngridHitDetail[] getDetails(IngridHit[] hits, IngridQuery query, String[] fields) throws Exception {
+        IngridHitDetail[] details = new IngridHitDetail[hits.length];
+        for (int i = 0; i < hits.length; i++) {
+            IngridHit ingridHit = hits[i];
+            IngridHitDetail detail = getDetail(ingridHit, query, fields);
+            details[i] = detail;
+        }
         return details;
     }
-    
+
     public IdfRecordCreator getDscRecordProducer() {
         return dscRecordProducer;
     }
@@ -123,6 +137,7 @@ public class CswDscSearchPlug extends HeartBeatPlug implements IRecordLoader {
 
     /**
      * Get the ElementSetName of the requested original csw data, if any
+     * 
      * @param document
      * @return The ElementSetName or ElementSetName.FULL
      */
@@ -135,6 +150,25 @@ public class CswDscSearchPlug extends HeartBeatPlug implements IRecordLoader {
         }
         return ElementSetName.FULL;
     }
-    
-    
+
+    /**
+     * Set the original idf data in an IngridHitDetail
+     * 
+     * @param document
+     * @param elementSetName
+     * @throws Exception
+     */
+    protected void setDirectData(IngridHitDetail document, ElementSetName elementSetName) throws Exception {
+        Document luceneDoc = _indexSearcher.doc(document.getDocumentId());
+        long startTime = 0;
+        if (log.isDebugEnabled()) {
+            startTime = System.currentTimeMillis();
+        }
+        Record r = dscRecordProducer.getRecord(luceneDoc, elementSetName);
+        if (log.isDebugEnabled()) {
+            log.debug("Get IDF record in " + (System.currentTimeMillis() - startTime) + " ms");
+        }
+        document.put(ConfigurationKeys.RESPONSE_KEY_IDF_RECORD, r);
+    }
+
 }

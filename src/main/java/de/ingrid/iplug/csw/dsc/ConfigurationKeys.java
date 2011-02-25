@@ -21,5 +21,6 @@ public class ConfigurationKeys {
 	public final static String PLUGDESCRIPTION_KEY_DIRECT_DATA		= "directData";
 	public static final String REQUEST_KEY_CSW_DIRECT_RESPONSE = "cswDirectResponse";
 	public static final String RESPONSE_KEY_CSW_DATA = "cswData";
+    public static final String RESPONSE_KEY_IDF_RECORD = "idfRecord";
 	
 }

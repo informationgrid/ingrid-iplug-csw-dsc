@@ -28,6 +28,8 @@
     <string>y1</string>
     <string>x2</string>
     <string>y2</string>
+    <string>metaclass</string>
+    <string>t01_object.obj_class</string>
     <string>incl_meta</string>
   </list>
   <string>workingDirectory</string>
@@ -72,7 +74,6 @@
   <string>bund</string>
   <string>ranking</string>
   <list>
-    <string>score</string>
     <string>score</string>
   </list>
   <string>IPLUG_ADMIN_PASSWORD</string>

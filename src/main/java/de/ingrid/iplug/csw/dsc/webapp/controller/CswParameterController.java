@@ -75,6 +75,10 @@ public class CswParameterController extends AbstractController {
         // remove field first to prevent multiple equal entries
         pdCommandObject.removeFromList(PlugDescription.FIELDS, "incl_meta");
         pdCommandObject.addField("incl_meta");
+        pdCommandObject.removeFromList(PlugDescription.FIELDS, "t01_object.obj_class");
+        pdCommandObject.addField("t01_object.obj_class");
+        pdCommandObject.removeFromList(PlugDescription.FIELDS, "metaclass");
+        pdCommandObject.addField("metaclass");
 
         // add required datatypes to PD
         pdCommandObject.addDataType("dsc_csw");
