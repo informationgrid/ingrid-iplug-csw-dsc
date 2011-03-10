@@ -41,8 +41,10 @@
                 <ref bean="contentQueryParser" />
                 <!-- NO datatype in lucene query ! -->
                 <!-- ref bean="dataTypeQueryParser" /-->
-                <ref bean="fieldQueryParser" />
                 <ref bean="titleQueryParser" />
+                <ref bean="fieldQueryParserIGC" />
+                <ref bean="rangeQueryParser" />
+                <ref bean="wildCardFieldQueryParser" />
                 <ref bean="allResultsOnEmptyQueryParser" />
             </list>
         </property>
