@@ -12,6 +12,9 @@
       <action type="add">
         Query fileIdentifier more explicitly, avoiding errors when another fileIdentifier element is present in source.
       </action>
+      <action type="fix">
+        Fix big native memory leak, because axis2 service client was not destroyed.
+      </action>
     </release>
     <release version="2.3.1" date="2011-01-20" description="Release">
       <action type="add">

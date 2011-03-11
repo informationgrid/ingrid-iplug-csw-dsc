@@ -263,7 +263,11 @@ public class SoapRequest implements CSWRequest {
 		result = serviceClient.sendReceive(payload);
 		if (log.isDebugEnabled())
 			log.debug("Response: "+serializeElement(result.cloneOMElement()));
-		return convertToDOM(result);
+		Document doc = convertToDOM(result); 
+        serviceClient.cleanupTransport();
+        serviceClient.cleanup();
+        serviceClient.getServiceContext().getConfigurationContext().terminate();
+		return doc;
 	}
 
 	/**
