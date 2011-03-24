@@ -7,6 +7,8 @@ import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.xpath.XPath;
 
+import org.springframework.core.io.FileSystemResource;
+
 import junit.framework.TestCase;
 import de.ingrid.iplug.csw.dsc.ConfigurationKeys;
 import de.ingrid.iplug.csw.dsc.TestUtil;
@@ -43,9 +45,9 @@ public class MapperToIngridTest extends TestCase {
         CSWFactory factory = SimpleSpringBeanFactory.INSTANCE.getBean(ConfigurationKeys.CSW_FACTORY, CSWFactory.class);
         cache.configure(factory);
 		
-		
         CreateIdfMapper createIdfMapper = new CreateIdfMapper();
         CswIdfMapper cswIdfMapper = new CswIdfMapper();
+        cswIdfMapper.setStyleSheetResource(new FileSystemResource("src/main/resources/mapping/iso_metadata_to_idf-1.0.0.xsl"));
 		Set<String> testRecordIds = TestUtil.getRecordIds();
 		for (Iterator<String> it = testRecordIds.iterator(); it.hasNext();) {
 			String testRecordId = it.next();
@@ -63,8 +65,8 @@ public class MapperToIngridTest extends TestCase {
 			
 			assertTrue("Idf found.", idfDoc.hasChildNodes());
 			System.out.println(XMLUtils.toString(idfDoc));
-			XPath xpath = XPathUtils.getXPathInstance();
-			assertTrue("Metadata found.", XPathUtils.nodeExists(idfDoc, "//gmd:MD_Metadata"));
+			XPathUtils.getXPathInstance();
+			assertTrue("Metadata found.", XPathUtils.nodeExists(idfDoc, "//idf:idfMdMetadata"));
 		}
 	}
 }
