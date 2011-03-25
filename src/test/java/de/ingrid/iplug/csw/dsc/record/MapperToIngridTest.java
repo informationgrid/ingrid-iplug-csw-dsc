@@ -5,11 +5,11 @@ import java.util.Set;
 
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
-import javax.xml.xpath.XPath;
+
+import junit.framework.TestCase;
 
 import org.springframework.core.io.FileSystemResource;
 
-import junit.framework.TestCase;
 import de.ingrid.iplug.csw.dsc.ConfigurationKeys;
 import de.ingrid.iplug.csw.dsc.TestUtil;
 import de.ingrid.iplug.csw.dsc.cache.Cache;

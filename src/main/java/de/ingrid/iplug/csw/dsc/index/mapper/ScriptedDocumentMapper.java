@@ -3,7 +3,6 @@
  */
 package de.ingrid.iplug.csw.dsc.index.mapper;
 
-import java.io.IOException;
 import java.io.InputStreamReader;
 
 import javax.script.Bindings;
@@ -16,9 +15,7 @@ import org.apache.log4j.Logger;
 import org.apache.lucene.document.Document;
 import org.springframework.core.io.Resource;
 
-import de.ingrid.iplug.csw.dsc.cache.Cache;
 import de.ingrid.iplug.csw.dsc.cswclient.CSWRecord;
-import de.ingrid.iplug.csw.dsc.cswclient.constants.ElementSetName;
 import de.ingrid.iplug.csw.dsc.om.CswCacheSourceRecord;
 import de.ingrid.iplug.csw.dsc.om.SourceRecord;
 
