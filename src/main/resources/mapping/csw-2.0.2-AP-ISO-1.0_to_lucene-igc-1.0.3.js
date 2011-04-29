@@ -44,6 +44,7 @@ var recordNode = cswRecord.getOriginalResponse();
 */
 var transformationDescriptions = [
 		{	"indexField":"t01_object.obj_id",
+			"tokenized":false,
 			"xpath":"//gmd:MD_Metadata/gmd:fileIdentifier/gco:CharacterString"
 		}, 
 		{	"indexField":"title",
@@ -51,6 +52,7 @@ var transformationDescriptions = [
 			"xpath":"//gmd:identificationInfo//gmd:citation/gmd:CI_Citation/gmd:title/gco:CharacterString"
 		},
 		{	"indexField":"t01_object.org_obj_id",
+			"tokenized":false,
 			"xpath":"//gmd:MD_Metadata/gmd:fileIdentifier/gco:CharacterString"
 		},
 		{	"indexField":"summary",
@@ -826,8 +828,10 @@ function addToDoc(field, content, tokenized) {
 		if (log.isDebugEnabled()) {
 			log.debug("Add '" + field + "'='" + content + "' to lucene index");
 		}
-		document.add(new Field(field, content, Field.Store.YES, Field.Index.ANALYZED));
-		document.add(new Field("content", content, Field.Store.NO, Field.Index.ANALYZED));
+		var analyzed = Field.Index.ANALYZED;
+		if (!tokenized) analyzed = Field.Index.NOT_ANALYZED;
+		document.add(new Field(field, content, Field.Store.YES, analyzed));
+		document.add(new Field("content", content, Field.Store.NO, analyzed));
 		document.add(new Field("content", LuceneTools.filterTerm(content), Field.Store.NO, Field.Index.ANALYZED));
 	}
 }
