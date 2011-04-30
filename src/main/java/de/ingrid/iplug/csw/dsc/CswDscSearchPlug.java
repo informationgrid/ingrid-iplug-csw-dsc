@@ -80,6 +80,9 @@ public class CswDscSearchPlug extends HeartBeatPlug implements IRecordLoader {
     public Record getRecord(IngridHit hit) throws Exception {
         Document document = _indexSearcher.doc(hit.getDocumentId());
         ElementSetName elementSetName = this.getDirectDataElementSetName(hit);
+        if (elementSetName == null) {
+            elementSetName = ElementSetName.FULL;
+        }
         return dscRecordProducer.getRecord(document, elementSetName);
     }
 
@@ -148,7 +151,7 @@ public class CswDscSearchPlug extends HeartBeatPlug implements IRecordLoader {
                     return name;
             }
         }
-        return ElementSetName.FULL;
+        return null;
     }
 
     /**
