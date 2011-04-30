@@ -108,6 +108,9 @@ public class CswDscSearchPlug extends HeartBeatPlug implements IRecordLoader {
         // add original idf data (including the original response), if requested
         ElementSetName elementSetName = this.getDirectDataElementSetName(query);
         if (elementSetName != null) {
+            if (log.isDebugEnabled()) {
+                log.debug("Request for direct CSW Data found. (" + ConfigurationKeys.REQUEST_KEY_CSW_DIRECT_RESPONSE + ":" + elementSetName + ")");
+            }
             this.setDirectData(detail, elementSetName);
         }
 
