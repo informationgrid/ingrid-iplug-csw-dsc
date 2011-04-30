@@ -559,19 +559,15 @@ function mapGeographicElements(recordNode) {
 			var value = XPathUtils.getString(geographicElements.item(i), "gmd:EX_GeographicDescription/gmd:geographicIdentifier/gmd:MD_Identifier/gmd:code/gco:CharacterString");
 			if (hasValue(value)) {
 				addToDoc("location", value, true);
-				addToDoc("x1", "", false);
-				addToDoc("x2", "", false);
-				addToDoc("y1", "", false);
-				addToDoc("y2", "", false);
 			}
 			var boundingBoxes = XPathUtils.getNodeList(geographicElements.item(i), "gmd:EX_GeographicBoundingBox");
 			for (j=0; j<boundingBoxes.getLength(); j++ ) {
 				if (hasValue(boundingBoxes.item(j)) && hasValue(XPathUtils.getString(boundingBoxes.item(j), "gmd:westBoundLongitude/gco:Decimal"))) {
 					addToDoc("location", "", true);
-					addToDoc("x1", XPathUtils.getString(boundingBoxes.item(j), "gmd:westBoundLongitude/gco:Decimal"), false);
-					addToDoc("x2", XPathUtils.getString(boundingBoxes.item(j), "gmd:eastBoundLongitude/gco:Decimal"), false);
-					addToDoc("y1", XPathUtils.getString(boundingBoxes.item(j), "gmd:southBoundLatitude/gco:Decimal"), false);
-					addToDoc("y2", XPathUtils.getString(boundingBoxes.item(j), "gmd:northBoundLatitude/gco:Decimal"), false);
+					addNumericToDoc("x1", XPathUtils.getString(boundingBoxes.item(j), "gmd:westBoundLongitude/gco:Decimal"), false);
+					addNumericToDoc("x2", XPathUtils.getString(boundingBoxes.item(j), "gmd:eastBoundLongitude/gco:Decimal"), false);
+					addNumericToDoc("y1", XPathUtils.getString(boundingBoxes.item(j), "gmd:southBoundLatitude/gco:Decimal"), false);
+					addNumericToDoc("y2", XPathUtils.getString(boundingBoxes.item(j), "gmd:northBoundLatitude/gco:Decimal"), false);
 				}
 			}
 		}
@@ -835,6 +831,22 @@ function addToDoc(field, content, tokenized) {
 		document.add(new Field("content", LuceneTools.filterTerm(content), Field.Store.NO, Field.Index.ANALYZED));
 	}
 }
+
+function addNumericToDoc(field, content) {
+	if (typeof content != "undefined" && content != null) {
+        try {
+    		if (log.isDebugEnabled()) {
+    			log.debug("Add numeric '" + field + "'='" + content + "' to lucene index.");
+    		}
+            document.add(new NumericField(field, Field.Store.YES, true).setDoubleValue(content));
+        } catch (e) {
+            if (log.isDebugEnabled()) {
+                log.debug("Value '" + content + "' is not a number. Ignoring field '" + field + "'.");
+            }
+        }
+	}
+}
+
 
 function hasValue(val) {
 	if (typeof val == "undefined") {
