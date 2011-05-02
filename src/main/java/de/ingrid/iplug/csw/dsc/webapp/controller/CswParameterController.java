@@ -81,9 +81,10 @@ public class CswParameterController extends AbstractController {
         pdCommandObject.addField("metaclass");
 
         // add required datatypes to PD
-        pdCommandObject.addDataType("dsc_csw");
-        pdCommandObject.addDataType("csw");
-        pdCommandObject.addDataType("IDF_1.0");
+        // -> is added in GeneralController with forced added datatype!
+        //pdCommandObject.addDataType("dsc_csw");
+        //pdCommandObject.addDataType("csw");
+        //pdCommandObject.addDataType("IDF_1.0");
     }
 
     private void mapConfigFromPD(CswConfiguration mapConfig,
