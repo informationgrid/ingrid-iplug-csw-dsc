@@ -278,7 +278,9 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
     
     <bean id="createIdfMapper" class="de.ingrid.iplug.csw.dsc.record.mapper.CreateIdfMapper" />
     
-    <bean id="idfMapper" class="de.ingrid.iplug.csw.dsc.record.mapper.CswIdfMapper" />
+    <bean id="idfMapper" class="de.ingrid.iplug.csw.dsc.record.mapper.CswIdfMapper">
+        <property name="styleSheetResource" value="classpath:mapping/iso_metadata_to_idf-1.0.0.xsl"/>
+    </bean>
 
 
 </beans>
