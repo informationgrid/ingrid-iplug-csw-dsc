@@ -101,7 +101,7 @@ public class CSWClientTest extends TestCase {
 				equals(cap.getOperationUrl(Operation.GET_RECORDS)));
 	}
 	
-	public void testGetRecordsAndRecordByIdSoap() throws Exception {
+	public void localTestGetRecordsAndRecordByIdSoap() throws Exception {
 		
 		TestServer server = TestServer.PORTALU;
 		int recordCount = 4;
