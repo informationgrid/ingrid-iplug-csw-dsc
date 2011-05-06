@@ -255,7 +255,7 @@
            <archive>
              <manifestEntries>
                <!-- see ingrid-utils:de.ingrid.utils.metadata.IPlugType-->
-               <iPlug-Type>IPLUG_DSC</iPlug-Type>
+               <iPlug-Type>IPLUG_CSW_DSC</iPlug-Type>
              </manifestEntries>
            </archive>
          </configuration>
@@ -265,7 +265,7 @@
         <configuration>
             <archive>
               <manifestEntries>
-                <ingridComponentType>IPLUG_DSC</ingridComponentType>
+                <ingridComponentType>IPLUG_CSW_DSC</ingridComponentType>
               </manifestEntries>
             </archive>
         </configuration>
