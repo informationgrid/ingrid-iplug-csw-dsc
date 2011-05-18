@@ -50,7 +50,7 @@
                 <table id="konfigForm">
                     <br />
                     <tr>
-                        <td colspan="2"><h3>Choose the CSW config parameters:</h3></td>
+                        <td colspan="2"><h3><fmt:message key="CswConfiguration.serviceUrl.chooseParameter"/></h3></td>
                     </tr>
                     <tr>
                         <td class="leftCol">Service Url</td>
@@ -58,8 +58,8 @@
                             <form:input path="serviceUrl" />
                             <form:errors path="serviceUrl" cssClass="error" element="div" />
                             <br />
-                            Please supply a CSW Service URL.
-                            <p style="color: gray;">(Sample: http://domain/path)</p>
+                            <fmt:message key="CswConfiguration.serviceUrl.help"/>
+                            <p style="color: gray;"><fmt:message key="CswConfiguration.serviceUrl.help.example"/></p>
                         </td>
                     </tr>
                 </table>
