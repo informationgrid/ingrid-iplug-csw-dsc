@@ -5,16 +5,19 @@
     <author email="joachim@wemove.com">Joachim Müller</author>
   </properties>
   <body>
-    <release version="3.0.1" date="2011-05-06" description="Bugfix-Release">
+    <release version="3.0.1-SNAPSHOT" date="2011-xx-xx" description="Release">
+      <action type="add">
+        Add a new index.sh script to index an iPlug from command line.
+      </action>
       <action type="fix">
         Fixed localisation of CSW Parameters admin page.
       </action>
-    </release>
+    </release>  
     <release version="3.0.0" date="2011-05-06" description="Release">
       <action type="add">
         Update webapp, introduce new architecture for the iPlug.
       </action>
-      <action type="add">
+  	  <action type="add">
         Transformation to InGridDataFormat (IDF), which only can be understood from other components starting from version 3.0.0.
       </action>
       <action type="add">
