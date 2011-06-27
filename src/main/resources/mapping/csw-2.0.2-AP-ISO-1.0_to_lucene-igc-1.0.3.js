@@ -687,11 +687,15 @@ function mapReferenceSystemInfo() {
 		for (i=0; i<rsIdentifiers.getLength(); i++ ) {
 			var code = XPathUtils.getString(rsIdentifiers.item(i), "gmd:code/gco:CharacterString");
 			var codeSpace = XPathUtils.getString(rsIdentifiers.item(i), "gmd:codeSpace/gco:CharacterString");
+            var val = code;
 			if (hasValue(codeSpace) && hasValue(code)) {
-				addToDoc("t011_obj_geo.referencesystem_id", codeSpace+":"+code, true);
-			} else if (hasValue(code)) {
-				addToDoc("t011_obj_geo.referencesystem_id", code, true);
+                val = codeSpace+":"+code;
 			}
+            if (hasValue(val)) {
+                addToDoc("spatial_system.referencesystem_value", val, true);
+                // legacy mapping (used in csw interface)
+                addToDoc("t011_obj_geo.referencesystem_id", val, true);
+            }
 		}
 	}
 }

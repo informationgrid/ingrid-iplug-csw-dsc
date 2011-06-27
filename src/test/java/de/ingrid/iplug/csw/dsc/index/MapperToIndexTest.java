@@ -7,6 +7,7 @@ import junit.framework.TestCase;
 
 import org.apache.lucene.document.Document;
 import org.springframework.core.io.FileSystemResource;
+import org.w3c.dom.NodeList;
 
 import de.ingrid.iplug.csw.dsc.ConfigurationKeys;
 import de.ingrid.iplug.csw.dsc.TestUtil;
@@ -18,6 +19,7 @@ import de.ingrid.iplug.csw.dsc.cswclient.impl.GenericRecord;
 import de.ingrid.iplug.csw.dsc.index.mapper.ScriptedDocumentMapper;
 import de.ingrid.iplug.csw.dsc.om.CswCacheSourceRecord;
 import de.ingrid.iplug.csw.dsc.tools.SimpleSpringBeanFactory;
+import de.ingrid.utils.tool.StringUtil;
 import de.ingrid.utils.xml.XPathUtils;
 
 public class MapperToIndexTest extends TestCase {
@@ -62,6 +64,23 @@ public class MapperToIndexTest extends TestCase {
 			assertTrue("MD_BrowseGraphic is not set or is mapped as link", mdBrowseGraphic_FileName == null || mdBrowseGraphic_FileName.equals(doc.getValues("t017_url_ref.url_link")[0]) || mdBrowseGraphic_FileName.equals(doc.getValues("t017_url_ref.url_link")[1]));
             String fileIdentifier = XPathUtils.getString(cswRecord.getOriginalResponse(), "//gmd:MD_Metadata/gmd:fileIdentifier/gco:CharacterString");
             assertTrue("fileIdentifier is not mapped", fileIdentifier.equals(doc.getValues("t01_object.obj_id")[0]));
+
+            // check gmd:referenceSystemInfo
+        	NodeList rsIdentifiers = XPathUtils.getNodeList(cswRecord.getOriginalResponse(), "//gmd:referenceSystemInfo/gmd:MD_ReferenceSystem/gmd:referenceSystemIdentifier/gmd:RS_Identifier");
+        	if (rsIdentifiers != null) {
+        		for (int i=0; i<rsIdentifiers.getLength(); i++ ) {
+        			String code = XPathUtils.getString(rsIdentifiers.item(i), "gmd:code/gco:CharacterString");
+        			String codeSpace = XPathUtils.getString(rsIdentifiers.item(i), "gmd:codeSpace/gco:CharacterString");
+                    String val = code;
+        			if (codeSpace != null && code != null) {
+                        val = codeSpace + ":" + code;
+        			}
+        			if (val != null) {
+                        assertTrue("spatial_system.referencesystem_value is not mapped", StringUtil.containsString(doc.getValues("spatial_system.referencesystem_value"), val));        				
+                        assertTrue("t011_obj_geo.referencesystem_id", StringUtil.containsString(doc.getValues("t011_obj_geo.referencesystem_id"), val));        				
+        			}
+        		}
+        	}
 		}
 		
 		
