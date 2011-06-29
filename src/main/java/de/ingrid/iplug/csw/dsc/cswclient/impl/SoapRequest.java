@@ -75,7 +75,7 @@ public class SoapRequest implements CSWRequest {
 		// create AcceptFormats element
 		OMElement acceptFormats = fac.createOMElement("AcceptFormats", owsNs);
 		OMElement outputFormat = fac.createOMElement("OutputFormat", owsNs);
-		outputFormat.setText(OutputFormat.TEXT_XML.toString());
+		outputFormat.setText(OutputFormat.APPLICATION_XML.toString());
 		acceptFormats.addChild(outputFormat);
 		
 		method.addChild(acceptVersions);
