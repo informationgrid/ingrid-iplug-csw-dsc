@@ -8,11 +8,14 @@ import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileFilter;
+import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
+import java.io.Reader;
 import java.io.Serializable;
 import java.io.Writer;
 import java.util.Date;
@@ -284,7 +287,8 @@ public class DefaultFileCache implements Cache, Serializable {
 		if (file.exists()) {
 		
 			StringBuilder content = new StringBuilder();
-			BufferedReader input =  new BufferedReader(new FileReader(file));
+			BufferedReader input = new BufferedReader(new InputStreamReader(new FileInputStream(file), "UTF-8"));
+
 			try {
 				String line = null;
 				while((line = input.readLine()) != null) {
