@@ -8,9 +8,11 @@ import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileFilter;
+import java.io.FileOutputStream;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.io.OutputStreamWriter;
 import java.io.Serializable;
 import java.io.Writer;
 import java.util.Date;
@@ -319,7 +321,7 @@ public class DefaultFileCache implements Cache, Serializable {
 		new File(path).mkdirs();
 
 		String filePath = this.getAbsoluteFilename(record.getId(), record.getElementSetName());
-		Writer output = new BufferedWriter(new FileWriter(filePath));
+		BufferedWriter output = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(filePath),"UTF8"));
 		try {
 			output.write(StringUtils.nodeToString(record.getOriginalResponse()));
 			output.close();
