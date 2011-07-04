@@ -5,15 +5,34 @@
     <author email="joachim@wemove.com">Joachim Müller</author>
   </properties>
   <body>
-    <release version="3.0.1-SNAPSHOT" date="2011-xx-xx" description="Release">
-      <action type="add">
+    <release version="3.0.1" date="2011-07-04" description="Add-Ons + Bugfixes for InGrid 3.0">
+      <action type="update" issue="INGRID-1940">
+        Introduced new field "metainfo" in query for various control info to be handled by iBus / iPlugs. 
+      </action>
+      <action type="add" dev="wemove" issue="INGRID23-60">
+        Allow multiple spatial systems ("Raumbezugssystem"), now 1:n association.
+      </action>
+      <action type="add" dev="wemove" issue="INGRID23-152">
         Add a new index.sh script to index an iPlug from command line.
       </action>
-      <action type="fix">
+      <action type="fix" dev="wemove" issue="INGRID23-246">
         Fixed localisation of CSW Parameters admin page.
       </action>
-    </release>  
-    <release version="3.0.0" date="2011-05-06" description="Release">
+      <action type="fix" dev="wemove">
+        Set file encoding explicitly to UTF-8 also on windows systems !
+      </action>
+      <action type="fix" dev="wemove">
+        Change outputformat from "text/xml" to "application/xml" for more compatibility.
+      </action>
+      <action type="fix" dev="wemove">
+        Make sure fields are indexed analyzed, because the search terms will be analyzed as well.
+      </action>
+      <action type="fix" dev="wemove">
+        Changed iPlug-Type in Manifest to IPLUG_CSW_DSC (to be handled by Upgrader).
+      </action>
+    </release>
+
+    <release version="3.0.0" date="2011-05-06" description="Release InGrid 3.0">
       <action type="add">
         Update webapp, introduce new architecture for the iPlug.
       </action>
