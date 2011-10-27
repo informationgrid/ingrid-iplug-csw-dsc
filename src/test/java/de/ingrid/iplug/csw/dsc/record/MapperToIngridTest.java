@@ -21,11 +21,15 @@ import de.ingrid.iplug.csw.dsc.om.CswCacheSourceRecord;
 import de.ingrid.iplug.csw.dsc.record.mapper.CreateIdfMapper;
 import de.ingrid.iplug.csw.dsc.record.mapper.CswIdfMapper;
 import de.ingrid.iplug.csw.dsc.tools.SimpleSpringBeanFactory;
+import de.ingrid.utils.xml.IDFNamespaceContext;
 import de.ingrid.utils.xml.XMLUtils;
-import de.ingrid.utils.xml.XPathUtils;
+import de.ingrid.utils.xpath.XPathUtils;
 
 public class MapperToIngridTest extends TestCase {
 
+    final private XPathUtils xPathUtils = new XPathUtils(new IDFNamespaceContext());
+    
+    
 	@Override
 	protected void setUp() throws Exception {
 	}
@@ -65,8 +69,7 @@ public class MapperToIngridTest extends TestCase {
 			
 			assertTrue("Idf found.", idfDoc.hasChildNodes());
 			System.out.println(XMLUtils.toString(idfDoc));
-			XPathUtils.getXPathInstance();
-			assertTrue("Metadata found.", XPathUtils.nodeExists(idfDoc, "//idf:idfMdMetadata"));
+			assertTrue("Metadata found.", xPathUtils.nodeExists(idfDoc, "//idf:idfMdMetadata"));
 		}
 	}
 }

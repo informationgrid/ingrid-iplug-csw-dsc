@@ -21,11 +21,14 @@ import de.ingrid.iplug.csw.dsc.cswclient.constants.ElementSetName;
 import de.ingrid.iplug.csw.dsc.tools.FileUtils;
 import de.ingrid.iplug.csw.dsc.tools.StringUtils;
 import de.ingrid.utils.PlugDescription;
+import de.ingrid.utils.xml.Csw202NamespaceContext;
 import de.ingrid.utils.xml.XMLSerializer;
-import de.ingrid.utils.xml.XPathUtils;
+import de.ingrid.utils.xpath.XPathUtils;
 
 public class TestUtil {
 
+    final static private XPathUtils xPathUtils = new XPathUtils(new Csw202NamespaceContext());
+    
 	final protected static Log log = LogFactory.getLog(TestUtil.class);
 
 	/**
@@ -121,11 +124,11 @@ public class TestUtil {
 	}
 
 	public static String getRecordTitle(CSWRecord record) {
-		return XPathUtils.getString(record.getOriginalResponse(), "//gmd:title/gco:CharacterString");
+		return xPathUtils.getString(record.getOriginalResponse(), "//gmd:title/gco:CharacterString");
 	}
 
 	public static void setRecordTitle(CSWRecord record, String title) {
-		Node titleNode = XPathUtils.getNode(record.getOriginalResponse(), "//gmd:title/gco:CharacterString");
+		Node titleNode = xPathUtils.getNode(record.getOriginalResponse(), "//gmd:title/gco:CharacterString");
 		titleNode.setTextContent(title);
 	}
 

@@ -20,10 +20,14 @@ import de.ingrid.iplug.csw.dsc.index.mapper.ScriptedDocumentMapper;
 import de.ingrid.iplug.csw.dsc.om.CswCacheSourceRecord;
 import de.ingrid.iplug.csw.dsc.tools.SimpleSpringBeanFactory;
 import de.ingrid.utils.tool.StringUtil;
-import de.ingrid.utils.xml.XPathUtils;
+import de.ingrid.utils.xml.Csw202NamespaceContext;
+import de.ingrid.utils.xpath.XPathUtils;
 
 public class MapperToIndexTest extends TestCase {
 
+    final private XPathUtils xPathUtils = new XPathUtils(new Csw202NamespaceContext());
+    
+    
 	@Override
 	protected void setUp() throws Exception {
 	}
@@ -60,17 +64,17 @@ public class MapperToIndexTest extends TestCase {
 			assertTrue("Lucene doc found.", doc != null);
 			assertEquals(testRecordId, doc.get("t01_object.obj_id"));
 			assertTrue("Valid hierarchyLevel set.", Integer.parseInt(doc.get("t01_object.obj_class")) >= 0 && Integer.parseInt(doc.get("t01_object.obj_class")) <= 5);
-			String mdBrowseGraphic_FileName = XPathUtils.getString(cswRecord.getOriginalResponse(), "//gmd:identificationInfo//gmd:graphicOverview/gmd:MD_BrowseGraphic/gmd:fileName/gco:CharacterString");
+			String mdBrowseGraphic_FileName = xPathUtils.getString(cswRecord.getOriginalResponse(), "//gmd:identificationInfo//gmd:graphicOverview/gmd:MD_BrowseGraphic/gmd:fileName/gco:CharacterString");
 			assertTrue("MD_BrowseGraphic is not set or is mapped as link", mdBrowseGraphic_FileName == null || mdBrowseGraphic_FileName.equals(doc.getValues("t017_url_ref.url_link")[0]) || mdBrowseGraphic_FileName.equals(doc.getValues("t017_url_ref.url_link")[1]));
-            String fileIdentifier = XPathUtils.getString(cswRecord.getOriginalResponse(), "//gmd:MD_Metadata/gmd:fileIdentifier/gco:CharacterString");
+            String fileIdentifier = xPathUtils.getString(cswRecord.getOriginalResponse(), "//gmd:MD_Metadata/gmd:fileIdentifier/gco:CharacterString");
             assertTrue("fileIdentifier is not mapped", fileIdentifier.equals(doc.getValues("t01_object.obj_id")[0]));
 
             // check gmd:referenceSystemInfo
-        	NodeList rsIdentifiers = XPathUtils.getNodeList(cswRecord.getOriginalResponse(), "//gmd:referenceSystemInfo/gmd:MD_ReferenceSystem/gmd:referenceSystemIdentifier/gmd:RS_Identifier");
+        	NodeList rsIdentifiers = xPathUtils.getNodeList(cswRecord.getOriginalResponse(), "//gmd:referenceSystemInfo/gmd:MD_ReferenceSystem/gmd:referenceSystemIdentifier/gmd:RS_Identifier");
         	if (rsIdentifiers != null) {
         		for (int i=0; i<rsIdentifiers.getLength(); i++ ) {
-        			String code = XPathUtils.getString(rsIdentifiers.item(i), "gmd:code/gco:CharacterString");
-        			String codeSpace = XPathUtils.getString(rsIdentifiers.item(i), "gmd:codeSpace/gco:CharacterString");
+        			String code = xPathUtils.getString(rsIdentifiers.item(i), "gmd:code/gco:CharacterString");
+        			String codeSpace = xPathUtils.getString(rsIdentifiers.item(i), "gmd:codeSpace/gco:CharacterString");
                     String val = code;
         			if (codeSpace != null && code != null) {
                         val = codeSpace + ":" + code;

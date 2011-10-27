@@ -16,7 +16,7 @@ import de.ingrid.iplug.csw.dsc.om.CswCacheSourceRecord;
 import de.ingrid.iplug.csw.dsc.om.SourceRecord;
 import de.ingrid.iplug.csw.dsc.tools.DocumentStyler;
 import de.ingrid.utils.xml.IDFNamespaceContext;
-import de.ingrid.utils.xml.XPathUtils;
+import de.ingrid.utils.xpath.XPathUtils;
 
 /**
  * Creates a base InGrid Detail data Format (IDF) skeleton.
@@ -26,35 +26,33 @@ import de.ingrid.utils.xml.XPathUtils;
  */
 public class CswIdfMapper implements IIdfMapper {
 
+    final private XPathUtils xPathUtils = new XPathUtils(new IDFNamespaceContext());
+
     protected static final Logger log = Logger.getLogger(CswIdfMapper.class);
 
     private Resource styleSheetResource;
-    
+
     @Override
     public void map(SourceRecord record, Document doc) throws Exception {
 
         if (!(record instanceof CswCacheSourceRecord)) {
             log.error("Source Record is not a CswCacheSourceRecord!");
-            throw new IllegalArgumentException(
-                    "Source Record is not a CswCacheSourceRecord!");
+            throw new IllegalArgumentException("Source Record is not a CswCacheSourceRecord!");
         }
 
-        CSWRecord cswRecord = (CSWRecord) record
-                .get(CswCacheSourceRecord.CSW_RECORD);
+        CSWRecord cswRecord = (CSWRecord) record.get(CswCacheSourceRecord.CSW_RECORD);
 
-        XPathUtils.getXPathInstance().setNamespaceContext(
-                new IDFNamespaceContext());
-        Node body = XPathUtils.getNode(doc, "/idf:html/idf:body");
+        Node body = xPathUtils.getNode(doc, "/idf:html/idf:body");
         Node originalResponse = cswRecord.getOriginalResponse();
         Source style = new StreamSource(styleSheetResource.getInputStream());
         DocumentStyler ds = new DocumentStyler(style);
-        
+
         Document idfResponse = ds.transform(originalResponse.getOwnerDocument());
         Node csw = doc.importNode(idfResponse.getDocumentElement(), true);
 
         body.appendChild(csw);
     }
-    
+
     public Resource getStyleSheetResource() {
         return styleSheetResource;
     }
