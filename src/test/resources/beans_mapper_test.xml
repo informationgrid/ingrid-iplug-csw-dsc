@@ -22,17 +22,23 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
 			value="de.ingrid.iplug.csw.dsc.cswclient.impl.GenericRecord" />
 	</bean>
 	
-	<bean id="cswRequestImpl" class="org.springframework.beans.factory.config.MapFactoryBean">
-	  <property name="sourceMap">
-	      <map>
-	        <entry key="GetCapabilities" value="de.ingrid.iplug.csw.dsc.cswclient.impl.KVPGetRequest"/>
-	        <entry key="DescribeRecord" value="de.ingrid.iplug.csw.dsc.cswclient.impl.SoapRequest"/>
-	        <entry key="GetDomain" value="de.ingrid.iplug.csw.dsc.cswclient.impl.SoapRequest"/>
-	        <entry key="GetRecords" value="de.ingrid.iplug.csw.dsc.cswclient.impl.SoapRequest"/>
-	        <entry key="GetRecordById" value="de.ingrid.iplug.csw.dsc.cswclient.impl.SoapRequest"/>
-	      </map>
-	  </property>
-	</bean>	
+    <bean id="cswRequestImpl" class="org.springframework.beans.factory.config.MapFactoryBean">
+      <property name="sourceMap">
+          <map>
+            <entry key="GetCapabilities" value-ref="kvpRequest"/>
+            <entry key="DescribeRecord" value-ref="soapRequest"/>
+            <entry key="GetDomain" value-ref="soapRequest"/>
+            <entry key="GetRecords" value-ref="soapRequest"/>
+            <entry key="GetRecordById" value-ref="soapRequest"/>
+          </map>
+      </property>
+    </bean> 
+    
+    <bean id="soapRequest" class="de.ingrid.iplug.csw.dsc.cswclient.impl.SoapRequest">
+    </bean>
+
+    <bean id="kvpRequest" class="de.ingrid.iplug.csw.dsc.cswclient.impl.KVPGetRequest">
+    </bean>
 
 	<bean id="cswQueryTemplate" class="de.ingrid.iplug.csw.dsc.cswclient.impl.GenericQuery">
 		<property name="schema" value="CSW_2_0_2" />

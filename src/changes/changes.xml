@@ -8,6 +8,9 @@
     
     <release version="3.2.0-SNAPSHOT" date="2011-xx-xx" description="Feature Release">
       <action type="add" dev="wemove">
+        Add support for SAML ticket authentication for protected services.
+      </action>
+      <action type="add" dev="wemove">
         Add support for generating facets if requested.
       </action>
       <action type="update" dev="wemove" issue="INGRID-1885">

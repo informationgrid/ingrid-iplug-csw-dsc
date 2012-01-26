@@ -26,7 +26,7 @@ public class CSWFactory implements IConfigurable, Serializable {
 	private PlugDescription plugDescription;
 	
 	private String clientImpl;
-	private Map<String, String> requestImpl;
+	private Map<String, CSWRequest> requestImpl;
 	private String capabilitiesImpl;
 	private String recordDescriptionImpl;
 	private String queryImpl;
@@ -65,7 +65,7 @@ public class CSWFactory implements IConfigurable, Serializable {
 	 * Set the CSWRequest implementation
 	 * @param requestImpl
 	 */
-	public void setRequestImpl(Map<String, String> requestImpl) {
+	public void setRequestImpl(Map<String, CSWRequest> requestImpl) {
 		this.requestImpl = requestImpl;
 	}
 
@@ -150,9 +150,9 @@ public class CSWFactory implements IConfigurable, Serializable {
 	public CSWRequest createRequest(Operation op) throws RuntimeException {
 		CSWRequest request;
 		try {
-			request = (CSWRequest)Class.forName(this.requestImpl.get(op.toString()).toString()).newInstance();
+			request = this.requestImpl.get(op.toString());
 		} catch (Exception e) {
-			throw new RuntimeException("CSWFactory is not configured properly. Parameter 'requestImpl' is missing or wrong. No value found for operation "+op+".");
+			throw new RuntimeException("CSWFactory is not configured properly. Parameter 'requestImpl' is missing or wrong. No value found for operation "+op+".", e);
 		}
 		return request;
 	}

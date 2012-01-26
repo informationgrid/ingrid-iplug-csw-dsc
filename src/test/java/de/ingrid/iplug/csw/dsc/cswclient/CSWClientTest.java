@@ -33,7 +33,7 @@ public class CSWClientTest extends TestCase {
 		// set up factory - KVPGet requests
 		PlugDescription desc = new PlugDescription();
 		desc.put("serviceUrl", server.getCapUrlGet());
-		Map<String, String> requestImpl = new Hashtable<String, String>();
+		Map<String, CSWRequest> requestImpl = new Hashtable<String, CSWRequest>();
 		requestImpl.put(Operation.GET_CAPABILITIES.toString(), CSWFactoryTest.cswRequestKVPGetImpl);
 		desc.put("CSWRequestImpl", requestImpl );
 		CSWFactory f = CSWFactoryTest.createFactory(desc);

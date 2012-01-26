@@ -9,6 +9,8 @@ import java.util.Map;
 
 import junit.framework.TestCase;
 import de.ingrid.iplug.csw.dsc.cswclient.constants.Operation;
+import de.ingrid.iplug.csw.dsc.cswclient.impl.KVPGetRequest;
+import de.ingrid.iplug.csw.dsc.cswclient.impl.SoapRequest;
 import de.ingrid.utils.PlugDescription;
 
 public class CSWFactoryTest extends TestCase {
@@ -16,8 +18,8 @@ public class CSWFactoryTest extends TestCase {
 	public static final String cswClientImpl = "de.ingrid.iplug.csw.dsc.cswclient.impl.GenericClient";
 	public static final String cswCapabilitiesImpl = "de.ingrid.iplug.csw.dsc.cswclient.impl.GenericCapabilities";
 	public static final String cswRecordDescriptionImpl = "de.ingrid.iplug.csw.dsc.cswclient.impl.GenericRecordDescription";
-	public static final String cswRequestKVPGetImpl = "de.ingrid.iplug.csw.dsc.cswclient.impl.KVPGetRequest";
-	public static final String cswRequestSoapImpl = "de.ingrid.iplug.csw.dsc.cswclient.impl.SoapRequest";
+	public static final CSWRequest cswRequestKVPGetImpl = new KVPGetRequest();
+	public static final CSWRequest cswRequestSoapImpl = new SoapRequest();
 	public static final String cswQueryImpl = "de.ingrid.iplug.csw.dsc.cswclient.impl.GenericQuery";
 	public static final String cswSearchResultImpl = "de.ingrid.iplug.csw.dsc.cswclient.impl.GenericSearchResult";
 	public static final String cswRecordImpl = "de.ingrid.iplug.csw.dsc.cswclient.impl.GenericRecord";
@@ -59,7 +61,7 @@ public class CSWFactoryTest extends TestCase {
     		f.setRequestImpl(requestImpl);
     	}
     	else
-    		f.setRequestImpl((Map<String, String>)desc.get("CSWRequestImpl"));
+    		f.setRequestImpl((Map<String, CSWRequest>)desc.get("CSWRequestImpl"));
 
     	if (!desc.containsKey("CSWQueryImpl"))
     		f.setQueryImpl(cswQueryImpl);

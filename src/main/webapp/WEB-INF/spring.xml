@@ -24,14 +24,23 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
     <bean id="cswRequestImpl" class="org.springframework.beans.factory.config.MapFactoryBean">
       <property name="sourceMap">
           <map>
-            <entry key="GetCapabilities" value="de.ingrid.iplug.csw.dsc.cswclient.impl.SoapRequest"/>
-            <entry key="DescribeRecord" value="de.ingrid.iplug.csw.dsc.cswclient.impl.SoapRequest"/>
-            <entry key="GetDomain" value="de.ingrid.iplug.csw.dsc.cswclient.impl.SoapRequest"/>
-            <entry key="GetRecords" value="de.ingrid.iplug.csw.dsc.cswclient.impl.SoapRequest"/>
-            <entry key="GetRecordById" value="de.ingrid.iplug.csw.dsc.cswclient.impl.SoapRequest"/>
+            <entry key="GetCapabilities" value-ref="soapRequest"/>
+            <entry key="DescribeRecord" value-ref="soapRequest"/>
+            <entry key="GetDomain" value-ref="soapRequest"/>
+            <entry key="GetRecords" value-ref="soapRequest"/>
+            <entry key="GetRecordById" value-ref="soapRequest"/>
           </map>
       </property>
     </bean> 
+    
+    <bean id="soapRequest" class="de.ingrid.iplug.csw.dsc.cswclient.impl.SoapRequest">
+    <!--
+      GeoPortal.WSV specific! This pre processor retrieves a SAML Ticket and adds a SOAP header.  
+
+        <property name="preProcessor" ref="samlTicketSoapRequestPreprocessor" /> 
+    -->
+    </bean>
+    
 
     <bean id="cswQueryTemplate" class="de.ingrid.iplug.csw.dsc.cswclient.impl.GenericQuery">
         <property name="schema" value="CSW_2_0_2" />
@@ -280,6 +289,32 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
     
     <bean id="idfMapper" class="de.ingrid.iplug.csw.dsc.record.mapper.CswIdfMapper">
         <property name="styleSheetResource" value="classpath:mapping/iso_metadata_to_idf-1.0.0.xsl"/>
+    </bean>
+
+    <!-- 
+        This pre-processor retrieves a SAML ticket via a provider and adds a SOAP header to every Axis service client.
+        
+        It is used for the Geoportal.WSV Installation but could be used elsewhere.
+    -->
+    <bean id="samlTicketSoapRequestPreprocessor" class="de.ingrid.iplug.csw.dsc.cswclient.impl.SamlTicketSoapRequestPreprocessor">
+        <property name="soapHeaderTemplate"><value><![CDATA[<tcExt:tcSecurity soapenv:role="http://www.conterra.de/service.csw#component::terraCatalog#catalog" soapenv:mustUnderstand="false" xmlns:tcExt="http://www.conterra.de/catalog/ext" xmlns:soapenv="http://www.w3.org/2003/05/soap-envelope">
+<tcExt:tcSecuredAction>
+<tcExt:action>service.csw::discovery.read</tcExt:action>
+</tcExt:tcSecuredAction>
+<tcExt:samlTicket>${SAML_TICKET}</tcExt:samlTicket>
+</tcExt:tcSecurity>]]></value>
+        </property>
+        <property name="samlTicketProvider" ref="samlTicketProvider" />
+    </bean>
+    
+    <!-- 
+        This is a SAML Ticket provider that queries an URL for a SAML Ticket.
+        
+        The configuration is Geoportal.WSV specific!!!
+     -->
+    <bean id="samlTicketProvider" class="de.ingrid.iplug.csw.dsc.cswclient.impl.SamlTicketProvider">
+        <property name="samlTicketRequestUrl" value="http://geokat.wsv.bvbs.bund.de/administration/WAS?VERSION=1.1&amp;REQUEST=GetSAMLResponse&amp;CREDENTIALS=ZGF0a2F0dGVzdEBpbG1lbmF1LmJhdy5kZQ==,dGVzdA==&amp;METHOD=urn:opengeospatial:authNMethod:OWS:1.0:password" />
+        <property name="cacheForSeconds" value="30" />
     </bean>
 
 
