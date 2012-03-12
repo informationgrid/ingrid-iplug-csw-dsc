@@ -56,6 +56,7 @@ public class CswDscDocumentProducer implements IDocumentProducer {
         try {
             if (tmpCache == null) {
                 try {
+                    recordSetProducer.setCache(tmpCache);
                     // start transaction
                     tmpCache = cache.startTransaction();
                     tmpCache.removeAllRecords();
@@ -65,7 +66,6 @@ public class CswDscDocumentProducer implements IDocumentProducer {
                     job.init();
                     job.execute();
                     
-                    recordSetProducer.setCache(tmpCache);
 
                 } catch (Exception e) {
                     log.error("Error harvesting CSW datasource.", e);
