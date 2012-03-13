@@ -212,15 +212,16 @@ public class IncrementalUpdateOptimizedStrategy extends AbstractUpdateStrategy {
 				resultList.add(recordId);
 			} else {
 				Node dateStampNode = idNodes.item(0);
-				String modifiedDateString = XPathUtils.getString(dateStampNode, "Date");
+				String modifiedDateString = XPathUtils.getString(dateStampNode, "gco:Date");
 				if (modifiedDateString == null || modifiedDateString.length() == 0) {
-					modifiedDateString = XPathUtils.getString(dateStampNode, "DateTime");
+					modifiedDateString = XPathUtils.getString(dateStampNode, "gco:DateTime");
 				}
 				// make sure we have a date
 				if (modifiedDateString != null && modifiedDateString.length() > 3) {
 					String datePattern = UtilsCSWDate.getDatePattern(modifiedDateString);
 					if (datePattern == null) {
 						log.info("Unrecognized date pattern for date '" + modifiedDateString + "'. Record '" + recordId + "' marked for refetching.");
+						resultList.add(recordId);
 					} else {
 						Date modifiedDate = UtilsDate.parseDateString(UtilsDate.convertDateString(modifiedDateString, UtilsCSWDate.getDatePattern(modifiedDateString), "yyyyMMddHHmmssSSS"));
 						if (modifiedDate.after(this.context.getLastExecutionDate())) {

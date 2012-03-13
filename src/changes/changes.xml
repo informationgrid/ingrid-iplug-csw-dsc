@@ -5,6 +5,15 @@
     <author email="joachim@wemove.com">Joachim Müller</author>
   </properties>
   <body>
+    <release version="3.0.1.1" date="2012-03-13" description="Bugfix Release InGrid 3.0.1">
+      <action type="fix" dev="wemove">
+        Fix optimized update strategy. Only modified records (summary, full) will be fetched (brief records will always be fetched). Delete 'updatejob.dat' to fetch all records again.
+      </action>
+      <action type="fix" dev="wemove">
+        Fix problem with failing succeeding harvest processes if an exception occurs while harvesting.
+      </action>
+    </release>
+    
     <release version="3.0.1" date="2011-07-04" description="Add-Ons + Bugfixes for InGrid 3.0">
       <action type="update" issue="INGRID-1940">
         Introduced new field "metainfo" in query for various control info to be handled by iBus / iPlugs. 

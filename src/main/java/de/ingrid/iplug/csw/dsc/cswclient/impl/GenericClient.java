@@ -110,7 +110,7 @@ public class GenericClient implements CSWClient {
 			
 			// extract the record from the response
 			Node recordNode = XPathUtils.getNode(responseDoc, "//csw:GetRecordByIdResponse/child::*");
-			if (recordNode.getNodeName() == "") {
+			if (recordNode == null || recordNode.getNodeName() == "") {
 				log.error("Invalid GetRecordByIdResponse! No response has been supplied by the connected service (requesting record: " + query.getId() + ").");
 				throw new Exception("Invalid GetRecordByIdResponse! No response has been supplied by the connected service (requesting record: \" + query.getId() + \").");
 			}

@@ -43,15 +43,18 @@ public class CswRecordSetProducer implements ICswCacheRecordSetProducer {
      */
     @Override
     public boolean hasNext() {
-        if (recordIdIterator == null) {
-            recordIdIterator = cache.getCachedRecordIds().iterator();
+        try {
+            if (recordIdIterator == null) {
+                recordIdIterator = cache.getCachedRecordIds().iterator();
+            }
+            if (recordIdIterator.hasNext()) {
+                return true;
+            }
+        } catch (Exception e) {
+            log.error("Error obtaining record from cache:" + cache, e);
         }
-        if (recordIdIterator.hasNext()) {
-            return true;
-        } else {
-            recordIdIterator = null;
-            return false;
-        }
+        recordIdIterator = null;
+        return false;
     }
 
     /*
