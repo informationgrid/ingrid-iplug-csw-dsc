@@ -77,7 +77,12 @@ public class CswDscDocumentProducer implements IDocumentProducer {
             if (recordSetProducer.hasNext()) {
                 return true;
             } else {
-                tmpCache.commitTransaction();
+                // prevent runtime exception if the cache was not in transaction
+                // this can happen if the harvest process throws an exception and the
+                // transaction was rolled back (see above)
+                if (tmpCache.isInTransaction()) {
+                    tmpCache.commitTransaction();
+                }
                 tmpCache = null;
                 return false;
             }
