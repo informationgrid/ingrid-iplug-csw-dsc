@@ -56,9 +56,9 @@ public class CswDscDocumentProducer implements IDocumentProducer {
         try {
             if (tmpCache == null) {
                 try {
-                    recordSetProducer.setCache(tmpCache);
                     // start transaction
                     tmpCache = cache.startTransaction();
+                    recordSetProducer.setCache(tmpCache);
                     tmpCache.removeAllRecords();
 
                     // run the update job: fetch all csw data from csw source
