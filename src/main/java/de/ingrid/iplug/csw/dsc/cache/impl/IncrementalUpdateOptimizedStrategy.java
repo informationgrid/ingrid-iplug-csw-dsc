@@ -236,6 +236,7 @@ public class IncrementalUpdateOptimizedStrategy extends AbstractUpdateStrategy {
                     if (datePattern == null) {
                         log.info("Unrecognized date pattern for date '" + modifiedDateString + "'. Record '" + recordId
                                 + "' marked for refetching.");
+                        resultList.add(recordId);
                     } else {
                         Date modifiedDate = UtilsDate.parseDateString(UtilsDate.convertDateString(modifiedDateString,
                                 UtilsCSWDate.getDatePattern(modifiedDateString), "yyyyMMddHHmmssSSS"));
