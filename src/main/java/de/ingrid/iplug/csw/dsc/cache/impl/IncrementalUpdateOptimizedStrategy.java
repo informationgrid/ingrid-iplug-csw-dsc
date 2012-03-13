@@ -226,9 +226,9 @@ public class IncrementalUpdateOptimizedStrategy extends AbstractUpdateStrategy {
                 resultList.add(recordId);
             } else {
                 Node dateStampNode = idNodes.item(0);
-                String modifiedDateString = xPathUtils.getString(dateStampNode, "Date");
+                String modifiedDateString = xPathUtils.getString(dateStampNode, "gco:Date");
                 if (modifiedDateString == null || modifiedDateString.length() == 0) {
-                    modifiedDateString = xPathUtils.getString(dateStampNode, "DateTime");
+                    modifiedDateString = xPathUtils.getString(dateStampNode, "gco:DateTime");
                 }
                 // make sure we have a date
                 if (modifiedDateString != null && modifiedDateString.length() > 3) {

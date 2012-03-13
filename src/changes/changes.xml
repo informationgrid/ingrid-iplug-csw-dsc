@@ -7,6 +7,9 @@
   <body>
     
     <release version="3.2.0-SNAPSHOT" date="2011-xx-xx" description="Feature Release">
+      <action type="fix" dev="wemove">
+        Fix optimized update strategy. Only modified records (summary, full) will be fetched (brief records will always be fetched). Delete 'updatejob.dat' to fetch all records again.
+      </action>
       <action type="update" dev="wemove">
         Improve robustness of index process in case of an unexpected exception during harvesting.
       </action>
