@@ -58,6 +58,7 @@ public class CswDscDocumentProducer implements IDocumentProducer {
                 try {
                     // start transaction
                     tmpCache = cache.startTransaction();
+                    recordSetProducer.setCache(tmpCache);
                     tmpCache.removeAllRecords();
 
                     // run the update job: fetch all csw data from csw source
@@ -65,8 +66,6 @@ public class CswDscDocumentProducer implements IDocumentProducer {
                     job.init();
                     job.execute();
                     
-                    recordSetProducer.setCache(tmpCache);
-
                 } catch (Exception e) {
                     log.error("Error harvesting CSW datasource.", e);
                     if (tmpCache != null) {
@@ -77,7 +76,12 @@ public class CswDscDocumentProducer implements IDocumentProducer {
             if (recordSetProducer.hasNext()) {
                 return true;
             } else {
-                tmpCache.commitTransaction();
+                // prevent runtime exception if the cache was not in transaction
+                // this can happen if the harvest process throws an exception and the
+                // transaction was rolled back (see above)
+                if (tmpCache.isInTransaction()) {
+                    tmpCache.commitTransaction();
+                }                
                 tmpCache = null;
                 return false;
             }
