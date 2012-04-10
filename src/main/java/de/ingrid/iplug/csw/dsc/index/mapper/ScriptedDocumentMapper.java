@@ -15,6 +15,7 @@ import org.apache.log4j.Logger;
 import org.apache.lucene.document.Document;
 import org.springframework.core.io.Resource;
 
+import de.ingrid.codelists.CodeListService;
 import de.ingrid.iplug.csw.dsc.cswclient.CSWRecord;
 import de.ingrid.iplug.csw.dsc.om.CswCacheSourceRecord;
 import de.ingrid.iplug.csw.dsc.om.SourceRecord;
@@ -39,6 +40,8 @@ public class ScriptedDocumentMapper implements IRecordMapper {
 
     private ScriptEngine engine;
     private CompiledScript compiledScript;
+    
+    private CodeListService codelistService;
 
     private static final Logger log = Logger
             .getLogger(ScriptedDocumentMapper.class);
@@ -78,6 +81,8 @@ public class ScriptedDocumentMapper implements IRecordMapper {
             bindings.put("cswRecord", cswRecord);
             bindings.put("document", doc);
             bindings.put("log", log);
+            bindings.put("codelistService", codelistService);
+            
             if (compiledScript != null) {
                 compiledScript.eval(bindings);
             } else {
@@ -106,4 +111,7 @@ public class ScriptedDocumentMapper implements IRecordMapper {
         this.compile = compile;
     }
 
+    public void setCodelistService(CodeListService codelistService) {
+        this.codelistService = codelistService;
+    }
 }

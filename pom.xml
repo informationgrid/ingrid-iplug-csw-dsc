@@ -41,6 +41,10 @@
     </dependency>
     <dependency>
       <groupId>de.ingrid</groupId>
+      <artifactId>ingrid-codelist-service</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>de.ingrid</groupId>
       <artifactId>ingrid-base-webapp</artifactId>
     </dependency>
     <dependency>

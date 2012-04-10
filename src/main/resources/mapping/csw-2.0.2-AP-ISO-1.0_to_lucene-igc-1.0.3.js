@@ -724,7 +724,9 @@ function transformToIgcDomainId(val, codeListId) {
 		// transform to IGC domain id
 		var idcCode = null;
 		try {
-			idcCode = UtilsUDKCodeLists.getIgcIdFromIsoCodeListEntry(codeListId, val);
+			idcCode = codelistService.getCodeListEntryId(codeListId, val, "iso");
+			if (idcCode == null)
+			    idcCode = codelistService.getCodeListEntryId(codeListId, val, "en");
 		} catch (e) {
 			if (log.isInfoEnabled()) {
 				log.info("Error tranforming value '" + val + "' with code list " + codeListId + ". Does the codeList exist?");
@@ -762,7 +764,7 @@ function addResourceMaintenance() {
 	var maintenanceFrequencyCode = XPathUtils.getString(recordNode, "//gmd:identificationInfo//gmd:resourceMaintenance/gmd:MD_MaintenanceInformation/gmd:maintenanceAndUpdateFrequency/gmd:MD_MaintenanceFrequencyCode/@codeListValue")
 	if (hasValue(maintenanceFrequencyCode)) {
 		// transform to IGC domain id
-		var idcCode = UtilsUDKCodeLists.getIgcIdFromIsoCodeListEntry(518, maintenanceFrequencyCode);
+		var idcCode = codelistService.getCodeListEntryId("518", maintenanceFrequencyCode, "iso");
 		if (hasValue(idcCode)) {
 			addToDoc("t01_object.time_period", idcCode, false);
 			addToDoc("t01_object.time_descr", XPathUtils.getString(recordNode, "//gmd:identificationInfo//gmd:resourceMaintenance/gmd:MD_MaintenanceInformation/gmd:maintenanceNote/gco:CharacterString"), true);
