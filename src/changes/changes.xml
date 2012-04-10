@@ -20,6 +20,9 @@
         Updated start.sh, which had an issue when being batch-invoked, deleted RSYNC which is no longer used, see https://dev.wemove.com/jira/browse/INGRID-1885
       </action>	  
       <action type="fix" dev="wemove">
+        Fix problem in start script. Heap memory settings were not set correctly.
+      </action>
+      <action type="fix" dev="wemove">
         Fix optimized update strategy. Only modified records (summary, full) will be fetched (brief records will always be fetched). Delete 'updatejob.dat' to fetch all records again.
       </action>
       <action type="fix" dev="wemove">
