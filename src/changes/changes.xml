@@ -7,6 +7,9 @@
   <body>
     
     <release version="3.2.0-SNAPSHOT" date="2011-xx-xx" description="Feature Release">
+      <action type="add" dev="wemove" issue="INGRID32-24">
+        Usage of codelist repository to get codelist values from.
+      </action>
       <action type="add" dev="wemove">
         Add support for SAML ticket authentication for protected services.
       </action>
