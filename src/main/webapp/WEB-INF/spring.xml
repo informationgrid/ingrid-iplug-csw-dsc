@@ -239,7 +239,7 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
     
     
     <bean id="updateJob" class="de.ingrid.iplug.csw.dsc.cache.UpdateJob" init-method="init">
-        <property name="updateStrategy" ref="cswIncrementalUpdateOptimizedStrategy" />
+        <property name="updateStrategy" ref="cswDefaultUpdateStrategy" />
         <property name="filterStrSet" ref="cswHarvestFilter" />
         <property name="cache" ref="cswCache" />
         <property name="factory" ref="cswFactory" />

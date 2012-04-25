@@ -19,6 +19,9 @@
       <action type="update" dev="wemove">
         Improve robustness of index process in case of an unexpected exception during harvesting.
       </action>
+      <action type="update" dev="wemove" issue="INGRID-2114">
+        Use not optimized harvesting per default, since gmd:dateStamp is NOT used as modified date in many CSW datasources.
+      </action>
       <action type="update" dev="wemove" issue="INGRID-1885">
         Updated start.sh, which had an issue when being batch-invoked, deleted RSYNC which is no longer used, see https://dev.wemove.com/jira/browse/INGRID-1885
       </action>	  
