@@ -24,7 +24,7 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
     <bean id="cswRequestImpl" class="org.springframework.beans.factory.config.MapFactoryBean">
       <property name="sourceMap">
           <map>
-            <entry key="GetCapabilities" value-ref="soapRequest"/>
+            <entry key="GetCapabilities" value-ref="kvpGetRequest"/>
             <entry key="DescribeRecord" value-ref="soapRequest"/>
             <entry key="GetDomain" value-ref="soapRequest"/>
             <entry key="GetRecords" value-ref="soapRequest"/>
@@ -40,6 +40,8 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
         <property name="preProcessor" ref="samlTicketSoapRequestPreprocessor" /> 
     -->
     </bean>
+
+    <bean id="kvpGetRequest" class="de.ingrid.iplug.csw.dsc.cswclient.impl.KVPGetRequest"> </bean>
     
 
     <bean id="cswQueryTemplate" class="de.ingrid.iplug.csw.dsc.cswclient.impl.GenericQuery">

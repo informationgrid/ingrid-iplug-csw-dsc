@@ -31,11 +31,22 @@ public class KVPGetRequest implements CSWRequest {
 		
 		// add the GetCapability request parameters, 
 		// @note Parameters must be treated in case-insensitive manner on the server side
-		String requestURL = serverURL+
-			"?SERVICE="+CSWConstants.SERVICE_TYPE+
-			"&REQUEST="+Operation.GET_CAPABILITIES/*+
-			"&OUTPUTFORMAT="+OutputFormat.TEXT_XML+
-			"&ACCEPTVERSION="+CSWConstants.PREFERRED_VERSION*/;
+		String requestURL = serverURL;
+		if (requestURL.endsWith("?")) {
+		    requestURL = requestURL.substring(0, requestURL.length() -1);
+		}
+        URL getCapUrl = new URL(requestURL);
+		if (getCapUrl.getQuery() == null) {
+		    requestURL += "?SERVICE="+CSWConstants.SERVICE_TYPE+
+            "&REQUEST="+Operation.GET_CAPABILITIES;
+		} else if (getCapUrl.getQuery().toLowerCase().indexOf("service=") == -1) {
+		    requestURL += "&SERVICE="+CSWConstants.SERVICE_TYPE;
+        } else if (getCapUrl.getQuery().toLowerCase().indexOf("request=") == -1) {
+            requestURL += "&REQUEST="+Operation.GET_CAPABILITIES;
+        } else {
+            requestURL += "&SERVICE="+CSWConstants.SERVICE_TYPE+
+            "&REQUEST="+Operation.GET_CAPABILITIES;
+		}
 		
 		Document result = sendRequest(requestURL);
 		return result;
