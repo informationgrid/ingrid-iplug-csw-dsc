@@ -5,6 +5,7 @@
 package de.ingrid.iplug.csw.dsc.cache.impl;
 
 import java.io.IOException;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.HashSet;
 import java.util.List;
@@ -240,12 +241,20 @@ public class IncrementalUpdateOptimizedStrategy extends AbstractUpdateStrategy {
                     } else {
                         Date modifiedDate = UtilsDate.parseDateString(UtilsDate.convertDateString(modifiedDateString,
                                 UtilsCSWDate.getDatePattern(modifiedDateString), "yyyyMMddHHmmssSSS"));
-                        if (modifiedDate.after(this.context.getLastExecutionDate())) {
-                            log.debug("CSWRecord '" + recordId
-                                    + "' has been modified since last retrieval. Record marked for refetching.");
+                        Calendar cal = Calendar.getInstance();
+                        cal.setTime(modifiedDate);
+                        cal.add(Calendar.DATE, 1);
+                        if (cal.after(this.context.getLastExecutionDate())) {
+                            if (log.isDebugEnabled()) {
+                                log.debug("CSWRecord '" + recordId
+                                        + "' has been modified since last retrieval. Record marked for refetching.");
+                            }
                             resultList.add(recordId);
                         } else {
-                            log.debug("CSWRecord '" + recordId + "' has not been modified since last retrieval, skip.");
+                            if (log.isDebugEnabled()) {
+                                log.debug("CSWRecord '" + recordId
+                                        + "' has not been modified since last retrieval, skip.");
+                            }
                         }
                     }
                 } else {

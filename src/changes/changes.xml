@@ -6,6 +6,11 @@
   </properties>
   <body>
     
+    <release version="3.2.0.1-SNAPSHOT" date="2012-08-xx" description="Bugfix Release InGrid 3.2">
+      <action type="fix" dev="wemove">
+        Fix date calulation issue in incemental optimized strategy when the date tag in ISO is not fully specified up to the second.
+      </action>
+    </release>
     <release version="3.2.0" date="2012-07-13" description="Release InGrid 3.2">
       <action type="add" dev="wemove">
         Use GET Request for Capabilities instead of SOAP.
