@@ -21,7 +21,7 @@ import de.ingrid.iplug.csw.dsc.cswclient.constants.Operation;
 import de.ingrid.utils.PlugDescription;
 
 @SuppressWarnings("unused")
-public class CSWClientTest extends TestCase {
+public class CSWClientTestLocal extends TestCase {
     
     String storedRecordId = null;
     
