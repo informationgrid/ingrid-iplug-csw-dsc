@@ -6,12 +6,15 @@
   </properties>
   <body>
     
-    <release version="3.2.0.1-SNAPSHOT" date="2012-08-xx" description="Bugfix Release InGrid 3.2">
+    <release version="3.2.1" date="2012-09-26" description="Bugfix Release InGrid 3.2.1">
       <action type="fix" dev="wemove">
         Fix date calculation issue in incremental optimized strategy when the date tag in ISO is not fully specified up to the second.
       </action>
       <action type="add" dev="wemove" issue="INGRID33-4">
         Added local working directory, so that temp-dir is not deleted accidentally when cleaning up global temp dir.
+      </action>
+      <action type="fix" dev="wemove">
+        Infobox during indexing now updates correctly and disappears when finished.
       </action>
     </release>
     <release version="3.2.0" date="2012-07-13" description="Release InGrid 3.2">
