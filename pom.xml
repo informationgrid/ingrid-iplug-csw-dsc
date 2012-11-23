@@ -8,12 +8,12 @@
   <modelVersion>4.0.0</modelVersion>
   <groupId>de.ingrid</groupId>
   <artifactId>ingrid-iplug-csw-dsc</artifactId>
-  <version>3.3.0-SNAPSHOT</version>
+  <version>3.2.1.1-SNAPSHOT</version>
   <packaging>jar</packaging>
   <name>ingrid-iplug-csw-dsc:war</name>
   <scm>
-    <connection>scm:svn:https://harrison.its-technidata.de:444/svn/ingrid/ingrid-iplug-csw-dsc/trunk</connection>
-    <developerConnection>scm:svn:https://harrison.its-technidata.de:444/svn/ingrid/ingrid-iplug-csw-dsc/trunk</developerConnection>
+    <connection>scm:svn:https://harrison.its-technidata.de:444/svn/ingrid/ingrid-iplug-csw-dsc/branches/ingrid-iplug-csw-dsc-3.2.x</connection>
+    <developerConnection>scm:svn:https://harrison.its-technidata.de:444/svn/ingrid/ingrid-iplug-csw-dsc/branches/ingrid-iplug-csw-dsc-3.2.x</developerConnection>
   </scm>
   <repositories>
     <!-- Repo of parent pom needed, parent pom may not be installed locally yet -->
@@ -44,6 +44,11 @@
           <groupId>de.ingrid</groupId>
           <artifactId>ingrid-codelist-service</artifactId>
           <version>3.2.1</version>
+        </dependency>
+        <dependency>
+          <groupId>de.ingrid</groupId>
+          <artifactId>ingrid-search-utils</artifactId>
+          <version>1.0.1</version>
         </dependency>
     </dependencies>
   </dependencyManagement>
