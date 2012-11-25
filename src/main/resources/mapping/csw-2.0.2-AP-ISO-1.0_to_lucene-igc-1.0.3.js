@@ -371,12 +371,9 @@ var transformationDescriptions = [
 		{	"indexField":"t017_url_ref.descr",
 			"xpath":"//gmd:distributionInfo/gmd:MD_Distribution/gmd:transferOptions/gmd:MD_DigitalTransferOptions/gmd:onLine/gmd:CI_OnlineResource/gmd:description/gco:CharacterString"
 		},
-		// add MD_BrowseGraphic as additional html
-		{	"indexField":"additional_html_1",
-			"xpath":"//gmd:identificationInfo//gmd:graphicOverview/gmd:MD_BrowseGraphic/gmd:fileName/gco:CharacterString",
-			"transform":{
-                "funct":transformToPreviewGraphic
-			}
+		// add MD_BrowseGraphic as link (t017_url_ref)
+		{	"indexField":"t017_url_ref.url_link",
+			"xpath":"//gmd:identificationInfo//gmd:graphicOverview/gmd:MD_BrowseGraphic/gmd:fileName/gco:CharacterString"
 		},
 		{	"indexField":"t017_url_ref.content",
 			"xpath":"//gmd:identificationInfo//gmd:graphicOverview/gmd:MD_BrowseGraphic/gmd:fileDescription/gco:CharacterString"
@@ -760,15 +757,6 @@ function transformISO639_2ToISO639_1(val) {
 		return val;
 	}
 	
-} 
-
-function transformToPreviewGraphic(val) {
-    if (hasValue(val)) {
-        var previewImageHtmlTag = "<img src='" + val + "' height='100' style='float:left; margin: 0 5px 0 0;' />";
-        return previewImageHtmlTag;
-    } else {
-        return "";
-    }
 } 
 
 

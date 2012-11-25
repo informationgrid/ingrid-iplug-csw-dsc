@@ -5,12 +5,12 @@
     <author email="joachim@wemove.com">Joachim Müller</author>
   </properties>
   <body>
-    <release version="3.3.0-SNAPSHOT" date="2013-01-??" description="Release InGrid 3.3">
+    <release version="3.2.1.1" date="2012-11-25" description="Bugfix Release InGrid 3.2.1.1">
         <action type="add" dev="wemove" issue="INGRID-2150">
             Add java parameter "-Dfile.encoding=UTF8" to start script.
         </action>
         <action type="fix" dev="wemove" issue="INGRID-2176">
-            Fix problem where no facet was produced from index field values if a query fragment was defined in the facet definition.
+          Fix problem where no facet was produced from index field values if a query fragment was defined in the facet definition.
         </action>
 	</release>
     <release version="3.2.1" date="2012-09-26" description="Bugfix Release InGrid 3.2.1">
