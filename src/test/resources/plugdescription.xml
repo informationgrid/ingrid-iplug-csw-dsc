@@ -51,7 +51,7 @@
   <string>dataSourceName</string>
   <string>CswDsc Test</string>
   <string>serviceUrl</string>
-  <string>http://localhost:8083/csw</string>
+  <string>http://harrison.its-technidata.de/csw</string>
   <string>personSureName</string>
   <string>Peters</string>
   <string>dataType</string>
