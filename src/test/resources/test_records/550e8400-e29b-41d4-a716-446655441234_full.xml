@@ -8,10 +8,10 @@
 		<gco:CharacterString>en</gco:CharacterString>
 	</language>
 	<hierarchyLevel>
-		<MD_ScopeCode codeList="http://www.isotc211.org/2005/resources/codeList.xml#MD_ScopeCode" codeListValue="dataset"/>
+		<MD_ScopeCode codeList="http://www.isotc211.org/2005/resources/codeList.xml#MD_ScopeCode" codeListValue="nonGeographicDataset"/>
 	</hierarchyLevel>
 	<hierarchyLevelName>
-		<gco:CharacterString>UTI</gco:CharacterString>
+		<gco:CharacterString>database</gco:CharacterString>
 	</hierarchyLevelName>
 	<contact>
 		<CI_ResponsibleParty>
