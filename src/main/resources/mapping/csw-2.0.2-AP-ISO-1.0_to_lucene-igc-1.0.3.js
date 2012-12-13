@@ -74,11 +74,9 @@ var transformationDescriptions = [
 				"params":[523]
 			}
 		},
-		{	"indexField":"t01_object.obj_class",
-			"xpath":"//gmd:hierarchyLevel/gmd:MD_ScopeCode/@codeListValue",
-			"defaultValue":"dataset",
-			"transform":{
-				"funct":getObjectClassFromHierarchyLevel
+		{	"execute":{
+				"funct":mapObjectClass,
+				"params":[recordNode]
 			}
 		},
 		{	"indexField":"t01_object.dataset_character_set",
@@ -826,16 +824,35 @@ function addTimeConstraints() {
 	}
 }
 
-
-function getObjectClassFromHierarchyLevel(val) {
-	// default to "Geo-Information / Karte"
-	var result = "1"; 
-	if (hasValue(val) && val.toLowerCase() == "service") {
-		// "Dienst / Anwendung / Informationssystem"
-		result = "3";
+function mapObjectClass() {
+	var hierarchyLevel = XPathUtils.getString(recordNode, "//gmd:hierarchyLevel/gmd:MD_ScopeCode/@codeListValue");
+	var hierarchyLevelName = XPathUtils.getString(recordNode, "//gmd:hierarchyLevelName/gco:CharacterString");
+	var objectClass = "1"; 
+	if (hasValue(hierarchyLevel)) {
+		if (hierarchyLevel.toLowerCase() == "service") {
+			// "Geodatendienst"
+			objectClass = "3";
+		} else if (hierarchyLevel.toLowerCase() == "application") {
+			// "Dienst / Anwendung / Informationssystem"
+			objectClass = "6";
+		} else if (hierarchyLevel.toLowerCase() == "nongeographicdataset") {
+			if (hasValue(hierarchyLevelName)) {
+				if (hierarchyLevelName == "job") {
+					// "Organisation/Fachaufgabe"
+					objectClass = "0";
+				} else if (hierarchyLevelName == "document") {
+					objectClass = "2";
+				} else if (hierarchyLevelName == "project") {
+					objectClass = "4";
+				} else if (hierarchyLevelName == "database") {
+					objectClass = "5";
+				}
+			}
+		}
 	}
-	return result;
+	addToDoc("t01_object.obj_class", objectClass, false);	
 }
+
 
 function addToDoc(field, content, tokenized) {
 	if (typeof content != "undefined" && content != null) {
