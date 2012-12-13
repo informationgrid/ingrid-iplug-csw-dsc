@@ -9,6 +9,9 @@
         <action type="add" dev="wemove" issue="INGRID-2166">
           Add mapping of Ingrid specific hierarchyLevelNames to object classes.
         </action>
+        <action type="update" dev="wemove" issue="INGRID-2156">
+          Connect to iBus even if the iBus was started after the iPlug.
+        </action>
     </release>
     <release version="3.2.1.1" date="2012-11-25" description="Bugfix Release InGrid 3.2.1.1">
         <action type="add" dev="wemove" issue="INGRID-2150">
