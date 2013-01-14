@@ -762,7 +762,7 @@ function transformISO639_2ToISO639_1(val) {
 
 function transformToPreviewGraphic(val) {
     if (hasValue(val)) {
-        var previewImageHtmlTag = "<img src='" + val + "' height='100' style='float:left; margin: 0 5px 0 0;' />";
+        var previewImageHtmlTag = "<img src='" + val + "' height='100' class='preview_image' />";
         return previewImageHtmlTag;
     } else {
         return "";
