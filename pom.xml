@@ -3,12 +3,12 @@
   <parent>
     <groupId>de.ingrid</groupId>
     <artifactId>ingrid-releases-pom</artifactId>
-    <version>3.3.0-SNAPSHOT</version>
+    <version>3.3.0</version>
   </parent>
   <modelVersion>4.0.0</modelVersion>
   <groupId>de.ingrid</groupId>
   <artifactId>ingrid-iplug-csw-dsc</artifactId>
-  <version>3.3.0-SNAPSHOT</version>
+  <version>3.3.0-RELEASE-SNAPSHOT</version>
   <packaging>jar</packaging>
   <name>ingrid-iplug-csw-dsc:war</name>
   <scm>
@@ -23,30 +23,6 @@
       <url>http://harrison.its-technidata.de/archiva/repository/ingrid-all</url>
     </repository>
   </repositories>
-  
-  <!-- ==================== DEPENDENCY MANAGEMENT ==================== -->
-
-  <dependencyManagement>
-    <dependencies>
-        <dependency>
-			<groupId>de.ingrid</groupId>
-			<artifactId>ingrid-base-webapp</artifactId>
-            <version>3.2.1</version>
-        </dependency>
-        <dependency>
-			<groupId>de.ingrid</groupId>
-			<artifactId>ingrid-base-webapp</artifactId>
-            <version>3.2.1</version>
-			<classifier>res</classifier>
-			<type>zip</type>
-	    </dependency>
-        <dependency>
-          <groupId>de.ingrid</groupId>
-          <artifactId>ingrid-codelist-service</artifactId>
-          <version>3.2.1</version>
-        </dependency>
-    </dependencies>
-  </dependencyManagement>
   
   <dependencies>
     <dependency>
