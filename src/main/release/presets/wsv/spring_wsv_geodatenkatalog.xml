@@ -1,0 +1,379 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="
+http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-2.5.xsd">
+
+    <bean id="cswFactory" class="de.ingrid.iplug.csw.dsc.cswclient.CSWFactory">
+        <property name="clientImpl"
+            value="de.ingrid.iplug.csw.dsc.cswclient.impl.GenericClient" />
+        <property name="requestImpl" ref="cswRequestImpl" />
+        <property name="capabilitiesImpl"
+            value="de.ingrid.iplug.csw.dsc.cswclient.impl.GenericCapabilities" />
+        <property name="recordDescriptionImpl"
+            value="de.ingrid.iplug.csw.dsc.cswclient.impl.GenericRecordDescription" />
+        <property name="queryImpl"
+            value="de.ingrid.iplug.csw.dsc.cswclient.impl.GenericQuery" />
+        <property name="searchResultImpl"
+            value="de.ingrid.iplug.csw.dsc.cswclient.impl.GenericSearchResult" />
+        <property name="recordImpl"
+            value="de.ingrid.iplug.csw.dsc.cswclient.impl.GenericRecord" />
+        <property name="queryTemplate" ref="cswQueryTemplate" />    
+    </bean>
+
+    <bean id="cswRequestImpl" class="org.springframework.beans.factory.config.MapFactoryBean">
+      <property name="sourceMap">
+          <map>
+            <entry key="GetCapabilities" value-ref="kvpGetRequest"/>
+            <entry key="DescribeRecord" value-ref="soapRequest"/>
+            <entry key="GetDomain" value-ref="soapRequest"/>
+            <entry key="GetRecords" value-ref="soapRequest"/>
+            <entry key="GetRecordById" value-ref="soapRequest"/>
+          </map>
+      </property>
+    </bean> 
+    
+    <bean id="soapRequest" class="de.ingrid.iplug.csw.dsc.cswclient.impl.SoapRequest">
+    <!--
+      GeoPortal.WSV specific! This pre processor retrieves a SAML Ticket and adds a SOAP header.  
+
+        <property name="preProcessor" ref="samlTicketSoapRequestPreprocessor" /> 
+    -->
+    </bean>
+
+    <bean id="kvpGetRequest" class="de.ingrid.iplug.csw.dsc.cswclient.impl.KVPGetRequest"> </bean>
+    
+
+    <bean id="cswQueryTemplate" class="de.ingrid.iplug.csw.dsc.cswclient.impl.GenericQuery">
+        <property name="schema" value="CSW_2_0_2" />
+        <property name="outputSchema" value="GMD" />
+        <property name="outputFormat" value="APPLICATION_XML" />
+        <property name="version" value="2.0.2" />
+        <property name="elementSetName" value="BRIEF" />
+        <property name="typeNames">
+            <list>
+                <value type="de.ingrid.iplug.csw.dsc.cswclient.constants.TypeName">MD_METADATA</value>
+            </list>
+        </property>
+        <property name="resultType" value="RESULTS" />
+        <property name="constraintLanguage" value="FILTER" />
+        <property name="constraintLanguageVersion" value="1.1.0" />
+    </bean>
+
+    <bean id="cswCache" class="de.ingrid.iplug.csw.dsc.cache.impl.DefaultFileCache">
+        <property name="cachePath" value="./csw_cache" />
+    </bean>
+
+    <!--
+        Define the CSW filter queries to query the CSW data source. Duplicates resulting from
+        the queries will be detected based on the Identifier and be removed.
+        
+        To produce one CSW Query without a Constraint element, please remove any <value> elements.
+        Many systems support this to get all results from the CSW data source.
+     -->
+    <bean id="cswHarvestFilter" class="org.springframework.beans.factory.config.SetFactoryBean">
+        <property name="sourceSet">
+            <set>
+<!-- 
+                <value>
+                    <![CDATA[<ogc:Filter xmlns:ogc="http://www.opengis.net/ogc">
+                    <ogc:PropertyIsLike escapeChar="\\" singleChar="?" wildCard="*">
+                    <ogc:PropertyName>Identifier</ogc:PropertyName>
+                    <ogc:Literal>00*</ogc:Literal>
+                    </ogc:PropertyIsLike>
+                    </ogc:Filter>]]>
+                </value>
+                <value>
+                    <![CDATA[<ogc:Filter xmlns:ogc="http://www.opengis.net/ogc">
+                    <ogc:PropertyIsLike escapeChar="\\" singleChar="?" wildCard="*">
+                    <ogc:PropertyName>Identifier</ogc:PropertyName>
+                    <ogc:Literal>1*</ogc:Literal>
+                    </ogc:PropertyIsLike>
+                    </ogc:Filter>]]>
+                </value>
+                <value>
+                    <![CDATA[<ogc:Filter xmlns:ogc="http://www.opengis.net/ogc">
+                    <ogc:PropertyIsLike escapeChar="\\" singleChar="?" wildCard="*">
+                    <ogc:PropertyName>Identifier</ogc:PropertyName>
+                    <ogc:Literal>2*</ogc:Literal>
+                    </ogc:PropertyIsLike>
+                    </ogc:Filter>]]>
+                </value>
+                <value>
+                    <![CDATA[<ogc:Filter xmlns:ogc="http://www.opengis.net/ogc">
+                    <ogc:PropertyIsLike escapeChar="\\" singleChar="?" wildCard="*">
+                    <ogc:PropertyName>Identifier</ogc:PropertyName>
+                    <ogc:Literal>3*</ogc:Literal>
+                    </ogc:PropertyIsLike>
+                    </ogc:Filter>]]>
+                </value>
+                <value>
+                    <![CDATA[<ogc:Filter xmlns:ogc="http://www.opengis.net/ogc">
+                    <ogc:PropertyIsLike escapeChar="\\" singleChar="?" wildCard="*">
+                    <ogc:PropertyName>Identifier</ogc:PropertyName>
+                    <ogc:Literal>4*</ogc:Literal>
+                    </ogc:PropertyIsLike>
+                    </ogc:Filter>]]>
+                </value>
+                <value>
+                    <![CDATA[<ogc:Filter xmlns:ogc="http://www.opengis.net/ogc">
+                    <ogc:PropertyIsLike escapeChar="\\" singleChar="?" wildCard="*">
+                    <ogc:PropertyName>Identifier</ogc:PropertyName>
+                    <ogc:Literal>5*</ogc:Literal>
+                    </ogc:PropertyIsLike>
+                    </ogc:Filter>]]>
+                </value>
+                <value>
+                    <![CDATA[<ogc:Filter xmlns:ogc="http://www.opengis.net/ogc">
+                    <ogc:PropertyIsLike escapeChar="\\" singleChar="?" wildCard="*">
+                    <ogc:PropertyName>Identifier</ogc:PropertyName>
+                    <ogc:Literal>6*</ogc:Literal>
+                    </ogc:PropertyIsLike>
+                    </ogc:Filter>]]>
+                </value>
+                <value>
+                    <![CDATA[<ogc:Filter xmlns:ogc="http://www.opengis.net/ogc">
+                    <ogc:PropertyIsLike escapeChar="\\" singleChar="?" wildCard="*">
+                    <ogc:PropertyName>Identifier</ogc:PropertyName>
+                    <ogc:Literal>7*</ogc:Literal>
+                    </ogc:PropertyIsLike>
+                    </ogc:Filter>]]>
+                </value>
+                <value>
+                    <![CDATA[<ogc:Filter xmlns:ogc="http://www.opengis.net/ogc">
+                    <ogc:PropertyIsLike escapeChar="\\" singleChar="?" wildCard="*">
+                    <ogc:PropertyName>Identifier</ogc:PropertyName>
+                    <ogc:Literal>8*</ogc:Literal>
+                    </ogc:PropertyIsLike>
+                    </ogc:Filter>]]>
+                </value>
+                <value>
+                    <![CDATA[<ogc:Filter xmlns:ogc="http://www.opengis.net/ogc">
+                    <ogc:PropertyIsLike escapeChar="\\" singleChar="?" wildCard="*">
+                    <ogc:PropertyName>Identifier</ogc:PropertyName>
+                    <ogc:Literal>9*</ogc:Literal>
+                    </ogc:PropertyIsLike>
+                    </ogc:Filter>]]>
+                </value>
+                <value>
+                    <![CDATA[<ogc:Filter xmlns:ogc="http://www.opengis.net/ogc">
+                    <ogc:PropertyIsLike escapeChar="\\" singleChar="?" wildCard="*">
+                    <ogc:PropertyName>Identifier</ogc:PropertyName>
+                    <ogc:Literal>a*</ogc:Literal>
+                    </ogc:PropertyIsLike>
+                    </ogc:Filter>]]>
+                </value>
+                <value>
+                    <![CDATA[<ogc:Filter xmlns:ogc="http://www.opengis.net/ogc">
+                    <ogc:PropertyIsLike escapeChar="\\" singleChar="?" wildCard="*">
+                    <ogc:PropertyName>Identifier</ogc:PropertyName>
+                    <ogc:Literal>b*</ogc:Literal>
+                    </ogc:PropertyIsLike>
+                    </ogc:Filter>]]>
+                </value>
+                <value>
+                    <![CDATA[<ogc:Filter xmlns:ogc="http://www.opengis.net/ogc">
+                    <ogc:PropertyIsLike escapeChar="\\" singleChar="?" wildCard="*">
+                    <ogc:PropertyName>Identifier</ogc:PropertyName>
+                    <ogc:Literal>c*</ogc:Literal>
+                    </ogc:PropertyIsLike>
+                    </ogc:Filter>]]>
+                </value>
+                <value>
+                    <![CDATA[<ogc:Filter xmlns:ogc="http://www.opengis.net/ogc">
+                    <ogc:PropertyIsLike escapeChar="\\" singleChar="?" wildCard="*">
+                    <ogc:PropertyName>Identifier</ogc:PropertyName>
+                    <ogc:Literal>d*</ogc:Literal>
+                    </ogc:PropertyIsLike>
+                    </ogc:Filter>]]>
+                </value>
+                <value>
+                    <![CDATA[<ogc:Filter xmlns:ogc="http://www.opengis.net/ogc">
+                    <ogc:PropertyIsLike escapeChar="\\" singleChar="?" wildCard="*">
+                    <ogc:PropertyName>Identifier</ogc:PropertyName>
+                    <ogc:Literal>e*</ogc:Literal>
+                    </ogc:PropertyIsLike>
+                    </ogc:Filter>]]>
+                </value>
+                <value>
+                    <![CDATA[<ogc:Filter xmlns:ogc="http://www.opengis.net/ogc">
+                    <ogc:PropertyIsLike escapeChar="\\" singleChar="?" wildCard="*">
+                    <ogc:PropertyName>Identifier</ogc:PropertyName>
+                    <ogc:Literal>f*</ogc:Literal>
+                    </ogc:PropertyIsLike>
+                    </ogc:Filter>]]>
+                </value>
+-->
+            </set>
+        </property>
+    </bean>
+    
+    <bean id="cswUpdateStrategies" class="org.springframework.beans.factory.config.MapFactoryBean">
+        <property name="sourceMap">
+            <map>
+                <entry key="default" value="cswDefaultUpdateStrategy"/>
+                <entry key="incremental" value="cswIncrementalUpdateStrategy"/>
+                <entry key="incremental-optimized" value="cswIncrementalUpdateOptimizedStrategy"/>
+            </map>
+        </property>
+    </bean>
+
+    <bean id="cswDefaultUpdateStrategy" class="de.ingrid.iplug.csw.dsc.cache.impl.DefaultUpdateStrategy">
+        <property name="requestPause" value="1000" />
+        <property name="recordsPerCall" value="10" />
+    </bean>
+    <bean id="cswIncrementalUpdateStrategy" class="de.ingrid.iplug.csw.dsc.cache.impl.IncrementalUpdateStrategy">
+        <constructor-arg type="java.lang.String">
+            <value>
+                <![CDATA[<ogc:PropertyIsGreaterThanOrEqualTo>
+                <ogc:PropertyName>Modified</ogc:PropertyName>
+                <ogc:Literal>{LAST_UPDATE_DATE}</ogc:Literal>
+                </ogc:PropertyIsGreaterThanOrEqualTo>]]>
+            </value>
+        </constructor-arg>
+        <property name="requestPause" value="1000" />
+        <property name="recordsPerCall" value="10" />
+    </bean>
+    <bean id="cswIncrementalUpdateOptimizedStrategy" class="de.ingrid.iplug.csw.dsc.cache.impl.IncrementalUpdateOptimizedStrategy">
+        <property name="requestPause" value="1000" />
+        <property name="recordsPerCall" value="10" />
+    </bean>
+    
+    
+    <bean id="updateJob" class="de.ingrid.iplug.csw.dsc.cache.UpdateJob" init-method="init">
+        <property name="updateStrategy" ref="cswDefaultUpdateStrategy" />
+        <property name="filterStrSet" ref="cswHarvestFilter" />
+        <property name="cache" ref="cswCache" />
+        <property name="factory" ref="cswFactory" />
+    </bean>
+    
+    
+    <bean id="cswDscDocumentProducer" class="de.ingrid.iplug.csw.dsc.index.CswDscDocumentProducer" init-method="init">
+        <property name="recordSetProducer" ref="recordSetProducer" />
+        <property name="recordMapperList">
+            <list>
+                <ref bean="recordMapper"/>
+                <ref bean="recordMapperWSV"/>
+            </list>
+        </property>
+        <property name="cache" ref="cswCache" />
+        <property name="factory" ref="cswFactory" />
+        <property name="job" ref="updateJob" />
+    </bean>
+
+    <bean id="recordSetProducer" class="de.ingrid.iplug.csw.dsc.index.producer.CswRecordSetProducer"/>
+
+    <bean id="recordMapper" class="de.ingrid.iplug.csw.dsc.index.mapper.ScriptedDocumentMapper">
+        <property name="mappingScript" value="classpath:mapping/csw-2.0.2-AP-ISO-1.0_to_lucene-igc-1.0.3.js" />
+        <property name="codelistService" ref="codeListService" />
+        <property name="compile" value="false" />
+    </bean>
+    
+    <bean id="recordMapperWSV" class="de.ingrid.iplug.csw.dsc.index.mapper.ScriptedDocumentMapper">
+        <property name="mappingScript" value="classpath:mapping/post_process_lucene_wsv_geodatenkatalog.js" />
+        <property name="codelistService" ref="codeListService" />
+        <property name="compile" value="false" />
+    </bean>
+    
+    <bean id="cswDscSearchPlug" class="de.ingrid.iplug.csw.dsc.CswDscSearchPlug">
+        <property name="dscRecordProducer" ref="dscRecordProducer" />
+    </bean>
+    
+    <bean id="dscRecordProducer" class="de.ingrid.iplug.csw.dsc.record.IdfRecordCreator">
+        <property name="recordProducer" ref="recordProducer" />
+        <property name="record2IdfMapperList">
+            <list>
+                <ref bean="createIdfMapper"/>
+                <ref bean="idfMapper"/>
+                <ref bean="idfMapperWSV"/>
+            </list>
+        </property>
+        <property name="compressed" value="true" />
+    </bean>
+    
+    <bean id="recordProducer" class="de.ingrid.iplug.csw.dsc.record.producer.CswRecordProducer">
+        <property name="cache" ref="cswCache" />
+        <property name="factory" ref="cswFactory" />
+    </bean>
+    
+    <bean id="createIdfMapper" class="de.ingrid.iplug.csw.dsc.record.mapper.CreateIdfMapper" />
+    
+    <bean id="idfMapper" class="de.ingrid.iplug.csw.dsc.record.mapper.CswIdfMapper">
+        <property name="styleSheetResource" value="classpath:mapping/iso_metadata_to_idf-1.0.0.xsl"/>
+    </bean>
+
+    <bean id="idfMapperWSV" class="de.ingrid.iplug.csw.dsc.record.mapper.ProcessIdfMapper">
+        <property name="styleSheetResource" value="classpath:mapping/post_process_idf_wsv_geodatenkatalog.xsl"/>
+    </bean>
+
+    <!-- 
+        This pre-processor retrieves a SAML ticket via a provider and adds a SOAP header to every Axis service client.
+        
+        It is used for the Geoportal.WSV Installation but could be used elsewhere.
+    -->
+    <bean id="samlTicketSoapRequestPreprocessor" class="de.ingrid.iplug.csw.dsc.cswclient.impl.SamlTicketSoapRequestPreprocessor">
+        <property name="soapHeaderTemplate"><value><![CDATA[<tcExt:tcSecurity soapenv:role="http://www.conterra.de/service.csw#component::terraCatalog#catalog" soapenv:mustUnderstand="false" xmlns:tcExt="http://www.conterra.de/catalog/ext" xmlns:soapenv="http://www.w3.org/2003/05/soap-envelope">
+<tcExt:tcSecuredAction>
+<tcExt:action>service.csw::discovery.read</tcExt:action>
+</tcExt:tcSecuredAction>
+<tcExt:samlTicket>${SAML_TICKET}</tcExt:samlTicket>
+</tcExt:tcSecurity>]]></value>
+        </property>
+        <property name="samlTicketProvider" ref="samlTicketProvider" />
+    </bean>
+    
+    <!-- 
+        This is a SAML Ticket provider that queries an URL for a SAML Ticket.
+        
+        The configuration is Geoportal.WSV specific!!!
+     -->
+    <bean id="samlTicketProvider" class="de.ingrid.iplug.csw.dsc.cswclient.impl.SamlTicketProvider">
+        <property name="samlTicketRequestUrl" value="http://geokat.wsv.bvbs.bund.de/administration/WAS?VERSION=1.1&amp;REQUEST=GetSAMLResponse&amp;CREDENTIALS=ZGF0a2F0dGVzdEBpbG1lbmF1LmJhdy5kZQ==,dGVzdA==&amp;METHOD=urn:opengeospatial:authNMethod:OWS:1.0:password" />
+        <property name="cacheForSeconds" value="30" />
+    </bean>
+    
+    <!-- Beans for codelist access and synchronisation -->
+
+    <bean id="ingridCommunication" class="de.ingrid.codelists.comm.IngridCLCommunication">
+    </bean>
+    
+    <bean id="xmlPersistency" class="de.ingrid.codelists.persistency.XmlCodeListPersistency">
+        <property name="pathToXml" value="data/codelists.xml" />    
+    </bean>
+    
+    <bean id="codeListService" class="de.ingrid.codelists.CodeListService">
+        <property name="comm" ref="ingridCommunication" />
+        <property name="persistencies">
+            <list>
+                <ref bean="xmlPersistency" />
+            </list>
+        </property>
+        <property name="defaultPersistency" value="0" />
+    </bean>
+
+    <!-- Scheduler Factory -->
+
+    <bean id="scheduler" class="org.springframework.scheduling.quartz.SchedulerFactoryBean">
+        <property name="triggers">
+            <list>
+                <ref bean="simpleTriggerCodeLists" />
+            </list>
+        </property>
+        <property name="applicationContextSchedulerContextKey">  
+            <value>applicationContext</value>  
+        </property> 
+    </bean>
+    
+    <!-- Mapper Factory -->
+    
+    <bean name="updateCodeListsJobDetail" class="org.springframework.scheduling.quartz.JobDetailBean">
+        <property name="jobClass" value="de.ingrid.codelists.quartz.jobs.UpdateCodeListsJob" />
+    </bean>
+    
+    <bean id="simpleTriggerCodeLists" class="org.springframework.scheduling.quartz.SimpleTriggerBean">
+        <property name="jobDetail" ref="updateCodeListsJobDetail" />
+        <property name="startDelay" value="5000" />
+        <property name="repeatInterval" value="300000" />
+    </bean>
+
+</beans>

@@ -5,6 +5,13 @@
     <author email="joachim@wemove.com">Joachim Müller</author>
   </properties>
   <body>
+    <release version="3.4.0-SNAPSHOT" date="??" description="??">
+        <action type="add" dev="wemove" issue="GEOPORTALWSV-39">
+          Added new type of mapper for post processing of existing IDF.
+          Added configuration for post processing of index and IDF concerning WSV issue.
+        </action>
+    </release>
+
     <release version="3.3.0" date="2013-03-05" description="Release InGrid 3.3">
         <action type="add" dev="wemove" issue="INGRID-2166">
           Add mapping of Ingrid specific hierarchyLevelNames to object classes.

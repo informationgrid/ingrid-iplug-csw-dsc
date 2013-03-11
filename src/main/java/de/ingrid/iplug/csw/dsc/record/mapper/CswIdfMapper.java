@@ -19,7 +19,7 @@ import de.ingrid.utils.xml.IDFNamespaceContext;
 import de.ingrid.utils.xpath.XPathUtils;
 
 /**
- * Creates a base InGrid Detail data Format (IDF) skeleton.
+ * Creates an IDF Document out of a CSW Record (SourceRecord) !
  * 
  * @author joachim@wemove.com
  * 
