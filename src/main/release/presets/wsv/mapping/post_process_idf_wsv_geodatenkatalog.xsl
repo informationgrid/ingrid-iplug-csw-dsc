@@ -14,11 +14,11 @@
     </xsl:copy>
   </xsl:template>
 
-<!-- Add domain to gmd:URL beginning with "/" -->
+<!-- Replace gmd:URL beginning with "/" -->
   <xsl:template match="gmd:URL/text()">
     <xsl:choose>
       <xsl:when test="string(substring(.,1,1))='/'">
-        <xsl:value-of select="concat('http://geokat.wsv.bvbs.bund.de', .)" />
+        <xsl:value-of select="'http://geokat.wsv.bvbs.bund.de'" />
       </xsl:when>
       <xsl:otherwise>
         <xsl:value-of select="." />

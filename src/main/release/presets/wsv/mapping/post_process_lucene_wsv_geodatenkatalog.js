@@ -22,7 +22,7 @@ if (log.isDebugEnabled()) {
 	log.debug("WSV Geodatenkatalog post processing of lucene document !");
 }
 
-// Add domain to local "urls"
+// Replace wrong path "urls" with domain
 // see https://dev2.wemove.com/jira/browse/GEOPORTALWSV-39
 
 var urlFieldName = "t017_url_ref.url_link";
@@ -47,7 +47,7 @@ function transformToValidUrl(oldUrl, urlDomain) {
     if (hasValue(oldUrl)) {
         // NOTICE: charAt delivers code, 47 = "/"
         if (oldUrl.charAt(0) == "47") {
-            newUrl = urlDomain + oldUrl;
+            newUrl = urlDomain;
             replaceField = true;
 
             if (log.isDebugEnabled()) {
