@@ -5,7 +5,7 @@
     <author email="joachim@wemove.com">Joachim Müller</author>
   </properties>
   <body>
-    <release version="3.4.0-SNAPSHOT" date="??" description="??">
+    <release version="3.3.0.1" date="2013-03-15" description="Bugfix Release InGrid 3.3.0.1">
         <action type="add" dev="wemove" issue="GEOPORTALWSV-39">
           Added new mapper class for post processing of existing IDF.
           Added WSV configuration for post processing of index and IDF.
