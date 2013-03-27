@@ -1,0 +1,123 @@
+<project name="CSW-DSC Patch Installation">
+    <description>
+        InGrid iPlug CSW-DSC Patch Script
+    </description>
+    
+    <taskdef resource="net/sf/antcontrib/antcontrib.properties"/>
+
+    <!-- set global properties for this build -->
+    <property name="componentName"      value="${project.build.finalName}"/>
+
+    <!--
+
+    ***************************************************************************************
+    * MACROS
+    ***************************************************************************************
+
+    -->
+
+    <macrodef name="patchFile">
+        <attribute name="patchFile" description="File containing the patch."/>
+        <attribute name="originalFile" description="File to apply the patch to."/>
+        <sequential>
+            <if>
+                <os family="unix" />
+                <then>
+                    <patch patchfile="@{patchFile}" originalfile="@{originalFile}" backups="true" />
+                </then>
+            </if>
+            
+            <exec dir="." executable="cmd.exe" osfamily="Windows" output="output.log">
+                <arg line="/c patch -u -b -i @{patchFile} @{originalFile}"/>
+            </exec>
+        </sequential>
+    </macrodef>
+
+
+    <target name="patchInstaller">
+        <if>
+            <equals arg1="${askNewParameters}" arg2="true"/>
+            <then>
+                <echo message="Call Installer for more Input from user."/>
+                <java classname="org.tp23.antinstaller.runtime.ExecInstall" dir="." fork="true">
+                    <arg value="swing"/>
+                    <arg value="."/>
+                    <arg line="-type patch"/>
+                    <!-- <classpath><pathelement location="dist/test.jar"/><pathelement path="${java.class.path}"/></classpath>-->
+                    <!-- <permissions><grant class="java.security.AllPermission"/></permissions>-->
+                </java>
+            </then>
+        </if>
+    </target>
+
+    <!--
+
+    ***************************************************************************************
+    * PATCHES
+    ***************************************************************************************
+
+    -->
+    
+    <target name="patchFromVersion3.2.1.1">
+        <if>            
+            <or>
+                <equals arg1="${oldVersion}" arg2="3.2.1.1" />
+                <bool>
+                    <islessthan arg1="${oldVersion}" arg2="3.2.1.1" />
+                </bool>
+            </or>            
+            <then>
+                <echo>Patching spring.xml file in basedir: </echo>
+                <patchFile patchFile="./patches/3.3.0/spring.xml.patch" originalFile="${installDir}/webapp/WEB-INF/spring.xml" />
+            </then>
+        </if>
+    </target>
+
+    <target name="patchFromVersion3.3.0">
+        <if>            
+            <or>
+                <equals arg1="${oldVersion}" arg2="3.3.0" />
+                <bool>
+                    <islessthan arg1="${oldVersion}" arg2="3.3.0" />
+                </bool>
+            </or>            
+            <then>
+                <property name="askNewParameters" value="true"/>
+
+                <propertyfile file="./ant.install.properties">
+                    <entry  key="updateFrom3.3.0" value="true"/>
+                    <entry  key="installDir" value="${installDir}"/>
+                </propertyfile>
+
+                <runtarget target="patchInstaller" />
+            </then>
+        </if>
+    </target>
+
+
+    <!--
+
+    ***************************************************************************************
+    * CONFIGURED PATCHES (by another installer call!)
+    ***************************************************************************************
+
+    -->
+
+    <target name="patchSpringXml340">
+        <echo>Adding comment to spring.xml</echo>
+        <property file="./patches/3.4.0/spring.xml.patch" prefix="springXml"/>
+        <replace  file="./patches/3.4.0/spring.xml.patch" token="@@COMMENT_SPRING@@"   value="${commentSpring}"/>
+
+        <patchFile patchFile="./patches/3.4.0/spring.xml.patch" originalFile="${installDir}/webapp/WEB-INF/spring.xml" />
+
+        <!-- <xmlproperty  file="${installDir}/webapp/WEB-INF/spring.xml" prefix="springXml"/>
+        <property name="${commentSpring}" value="${springXml.Context.Resource(username)}" /> -->
+        
+    </target>
+
+
+    <target name="doPatch" depends="patchFromVersion3.2.1.1, patchFromVersion3.3.0">
+
+    </target>
+
+</project>

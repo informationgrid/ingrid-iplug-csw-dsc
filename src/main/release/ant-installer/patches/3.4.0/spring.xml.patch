@@ -1,0 +1,10 @@
+--- C:\temp\ingrid-iplug-csw-dsc-3.2.0\webapp\WEB-INF\spring.xml 
++++ untitled 1 
+@@ -362,6 +362,7 @@
+         <property name="jobDetail" ref="updateCodeListsJobDetail" />
+         <property name="startDelay" value="5000" />
+         <property name="repeatInterval" value="300000" />
++        <!-- This is just a comment: @@COMMENT_SPRING@@ -->
+     </bean>
+ 
+ </beans>

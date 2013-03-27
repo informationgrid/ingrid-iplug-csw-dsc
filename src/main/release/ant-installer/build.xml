@@ -1,43 +1,123 @@
-<project name="PortalU Installation">
+<project name="IPlug CSW-DSC Installation">
     <description>
         InGrid iPlug CSW-DSC Installation Script
     </description>
-	<!-- set global properties for this build -->
-	<property name="componentName" 			value="${project.build.finalName}"/>
-	<property name="xml-communication" 	value="${installDir}/conf/communication.xml"/>
+
+    <import file="build-patch.xml"  as="patch" />
+
+    <!-- set global properties for this build -->
+    <property name="componentName"      value="${project.build.finalName}"/>
+    <property name="xml-communication"  value="${installDir}/conf/communication.xml"/>
     <property name="start-script"       value="${installDir}/start.sh"/>
-	
-	<target name="extract" description="Extract all files to the installation directory.">
-		<unzip src="${antinstaller.jar}" dest="${installDir}">
-			<patternset>
-				<include name="${componentName}/**/*.*"/>
-			</patternset>
-		</unzip>
-		
-		<move toDir="${installDir}">
-			<fileset dir="${installDir}/${componentName}"/>
-		</move>
-		
-		<mkdir dir="${installDir}/logs"/>
+
+    <!--
+
+    ***************************************************************************************
+    * NEW INSTALLATION
+    ***************************************************************************************
+
+    -->
+    
+    <target name="setInstallProperty" depends="extract">
+        <property name="installProcedure" value="true" />
+    </target>
+    
+    <target name="extract" description="Extract all files to the installation directory.">
+        <unzip src="${antinstaller.jar}" dest="${installDir}">
+            <patternset>
+                <include name="${componentName}/**/*.*" />
+            </patternset>
+        </unzip>
+        
+        <move toDir="${installDir}">
+            <fileset dir="${installDir}/${componentName}"/>
+        </move>
+        
+        <mkdir dir="${installDir}/logs"/>
         <mkdir dir="${installDir}/webapp/WEB-INF/work"/>
         
         <replace file="${start-script}" token="@SERVER_PORT@" value="${localServerPort}"/>
-    
-        <condition property="copy.plugDescription">
-          <not>
-            <equals arg1="${plugDescription}" arg2="noPlugDescription"/>
-          </not>
-        </condition>
-	</target>
+    </target>
 
-	<target name="startComponent">
-		<echo>
+    <!--
+
+    ***************************************************************************************
+    * UPDATE
+    ***************************************************************************************
+
+    -->
+
+    <target name="setUpdateProperty" depends="determineVersion, extractUpdate">
+        <property name="installType" value="update" />
+        <property name="updateProcedure" value="true" />
+    </target>
+
+    <target name="determineVersion" description="Determine the version of the previous installation.">
+        <!-- <property name="oldVersion" value="3.3.0"/> -->
+        <fileset dir="${installDir}/lib" id="componentLibrary" includes="ingrid-iplug-csw-dsc-*.jar" />
+
+        <echo message="File: ${toString:componentLibrary}" />
+
+        <propertyregex 
+            property="oldVersion" 
+            input="${toString:componentLibrary}" 
+            regexp=".*ingrid-iplug-csw-dsc-(.*)\.jar"
+            select="\1" />
+
+        <echo message="Version set to: ${oldVersion}" />
+
+        <condition property="unsupportedVersion">
+            <bool>
+                <islessthan arg1="${oldVersion}" arg2="3.2.0" />
+            </bool>
+        </condition>
+    </target>
+
+    <target name="extractUpdate" description="Extract all files to the installation directory without overwriting config files.">
+        <fail if="unsupportedVersion">The version ${oldVersion} is not supported for update! Please do a new installation.</fail>
+        <echo message="Unzip to basedir: ." />
+        <unzip src="${antinstaller.jar}" dest=".">
+            <patternset>
+                <include name="**/*.*"/>
+                <exclude name="${componentName}/webapp/WEB-INF/spring.xml" />
+                <exclude name="${componentName}/start.sh" />
+                <exclude name="${componentName}/conf/communication.xml" />
+            </patternset>
+        </unzip>
+
+        <delete dir="${installDir}/lib"/>
+
+        <move toDir="${installDir}">
+            <fileset dir="./${componentName}"/>
+        </move>
+
+        <mkdir dir="${installDir}/webapp/WEB-INF/work"/>
+
+    </target>
+
+    <!--
+
+    ***************************************************************************************
+    * PATCHING
+    ***************************************************************************************
+
+    -->
+
+    <target name="patchFiles" description="Patch all config files that have been modified during last update." unless="unsupportedVersion">
+
+        <echo message="Patch from Version: ${oldVersion}" />
+        <runtarget target="patch.doPatch"/>
+
+    </target>
+
+    <target name="startComponent">
+        <echo>
 =================
 Weiteres Vorgehen
 =================
 
-		</echo>
-		<echo>
+        </echo>
+        <echo>
 Gehen Sie ins Verzeichnis:
 ${installDir}
 und rufen sie von der Kommandozeile folgendes auf
@@ -53,8 +133,7 @@ Administration (im Portal) eingeschaltet werden.
 
 Weitere Informationen entnehmen Sie bitte dem
 Online-Handbuch unter 
-			http://kst.portalu.de/foswiki/bin/view/InGrid3/InGridBetriebshandbuch.
-		</echo>
-	</target>
-	
+            http://kst.portalu.de/foswiki/bin/view/InGrid3/InGridBetriebshandbuch.
+        </echo>
+    </target>    
 </project>

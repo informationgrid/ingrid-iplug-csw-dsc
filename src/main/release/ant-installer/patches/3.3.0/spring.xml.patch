@@ -1,0 +1,11 @@
+--- C:\temp\ingrid-iplug-csw-dsc-3.2.0\webapp\WEB-INF\spring.xml 
++++ C:\Users\Public\Development\ingrid\ingrid-iplug-csw-dsc\trunk\src\main\webapp\WEB-INF\spring.xml 
+@@ -360,7 +360,7 @@
+     
+     <bean id="simpleTriggerCodeLists" class="org.springframework.scheduling.quartz.SimpleTriggerBean">
+         <property name="jobDetail" ref="updateCodeListsJobDetail" />
+-        <property name="startDelay" value="0" />
++        <property name="startDelay" value="5000" />
+         <property name="repeatInterval" value="300000" />
+     </bean>
+ 
