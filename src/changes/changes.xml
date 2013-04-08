@@ -5,6 +5,12 @@
     <author email="joachim@wemove.com">Joachim Müller</author>
   </properties>
   <body>
+    <release version="3.4.0-SNAPSHOT" date="2013-xx-xx" description="Release InGrid 3.4.0-SNAPSHOT">
+        <action type="update" dev="wemove">
+          Map keywords consistently to t04search... index fields.
+        </action>
+    </release>
+
     <release version="3.3.0.1" date="2013-03-15" description="Bugfix Release InGrid 3.3.0.1">
         <action type="add" dev="wemove" issue="GEOPORTALWSV-39">
           Added new mapper class for post processing of existing IDF.

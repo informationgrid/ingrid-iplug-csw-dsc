@@ -584,8 +584,8 @@ function mapKeywords(recordNode) {
 		for (i=0; i<keywords.getLength(); i++ ) {
 			var value = keywords.item(i).getTextContent().trim()
 			if (hasValue(value) && usedKeywords.indexOf(value) == -1) {
-				addToDoc("searchterm_value.term", value, true);
-				addToDoc("searchterm_value.type", "I", false);
+				addToDoc("t04_search.searchterm", value, true);
+				addToDoc("t04_search.type", "I", false);
 				usedKeywords+=value+";"
 			}
 		}
@@ -596,8 +596,8 @@ function mapKeywords(recordNode) {
 		for (i=0; i<keywords.getLength(); i++ ) {
 			var value = keywords.item(i).getTextContent().trim()
 			if (hasValue(value) && usedKeywords.indexOf(value) == -1) {
-				addToDoc("searchterm_value.term", value, true);
-				addToDoc("searchterm_value.type", "G", false);
+				addToDoc("t04_search.searchterm", value, true);
+				addToDoc("t04_search.type", "G", false);
 				usedKeywords+=value+";"
 			}
 		}
@@ -608,8 +608,8 @@ function mapKeywords(recordNode) {
 		for (i=0; i<keywords.getLength(); i++ ) {
 			var value = keywords.item(i).getTextContent().trim()
 			if (hasValue(value) && usedKeywords.indexOf(value) == -1) {
-				addToDoc("searchterm_value.term", value, true);
-				addToDoc("searchterm_value.type", "T", false);
+				addToDoc("t04_search.searchterm", value, true);
+				addToDoc("t04_search.type", "T", false);
 				usedKeywords+=value+";"
 			}
 		}
@@ -620,8 +620,8 @@ function mapKeywords(recordNode) {
 		for (i=0; i<keywords.getLength(); i++ ) {
 			var value = keywords.item(i).getTextContent().trim();
 			if (hasValue(value) && usedKeywords.indexOf(value) == -1) {
-				addToDoc("searchterm_value.term", value, true);
-				addToDoc("searchterm_value.type", "F", false);
+				addToDoc("t04_search.searchterm", value, true);
+				addToDoc("t04_search.type", "F", false);
 				usedKeywords+=value+";"
 			}
 		}
