@@ -762,14 +762,8 @@ function transformISO639_2ToISO639_1(val) {
 
 function transformToPreviewGraphic(val) {
     if (hasValue(val)) {
-    	var fileNameAttr = "";
-    	if(XPathUtils.getString(recordNode, "//gmd:identificationInfo//gmd:graphicOverview/gmd:MD_BrowseGraphic/gmd:fileName/@gco:nilReason")){
-    		fileNameAttr = XPathUtils.getString(recordNode, "//gmd:identificationInfo//gmd:graphicOverview/gmd:MD_BrowseGraphic/gmd:fileName/@gco:nilReason");
-    	}
-    	if(fileNameAttr != "missing"){
-    		var previewImageHtmlTag = "<img src='" + val + "' height='100' class='preview_image' />";
-    	    return previewImageHtmlTag;
-    	}
+		var previewImageHtmlTag = "<img src='" + val + "' height='100' class='preview_image' />";
+	    return previewImageHtmlTag;
     }
     return "";
 } 
@@ -894,6 +888,8 @@ function hasValue(val) {
 	} else if (val == null) {
 		return false; 
 	} else if (typeof val == "string" && val == "") {
+		return false;
+	} else if (typeof val == "object" && val.toString() == "") {
 		return false;
 	} else {
 	  return true;
