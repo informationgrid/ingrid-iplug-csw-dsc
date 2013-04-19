@@ -762,11 +762,12 @@ function transformISO639_2ToISO639_1(val) {
 
 function transformToPreviewGraphic(val) {
     if (hasValue(val)) {
-        var previewImageHtmlTag = "<img src='" + val + "' height='100' class='preview_image' />";
-        return previewImageHtmlTag;
-    } else {
-        return "";
+    	if(val.length > 0){
+	        var previewImageHtmlTag = "<img src='" + val + "' height='100' class='preview_image' />";
+	        return previewImageHtmlTag;
+    	}
     }
+    return "";
 } 
 
 
