@@ -762,9 +762,13 @@ function transformISO639_2ToISO639_1(val) {
 
 function transformToPreviewGraphic(val) {
     if (hasValue(val)) {
-    	if(val.length > 0){
-	        var previewImageHtmlTag = "<img src='" + val + "' height='100' class='preview_image' />";
-	        return previewImageHtmlTag;
+    	var fileNameAttr = "";
+    	if(XPathUtils.getString(recordNode, "//gmd:identificationInfo//gmd:graphicOverview/gmd:MD_BrowseGraphic/gmd:fileName/@gco:nilReason")){
+    		fileNameAttr = XPathUtils.getString(recordNode, "//gmd:identificationInfo//gmd:graphicOverview/gmd:MD_BrowseGraphic/gmd:fileName/@gco:nilReason");
+    	}
+    	if(fileNameAttr != "missing"){
+    		var previewImageHtmlTag = "<img src='" + val + "' height='100' class='preview_image' />";
+    	    return previewImageHtmlTag;
     	}
     }
     return "";
