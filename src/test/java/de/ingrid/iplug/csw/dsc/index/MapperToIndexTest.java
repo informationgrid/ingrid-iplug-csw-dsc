@@ -9,6 +9,7 @@ import org.apache.lucene.document.Document;
 import org.springframework.core.io.FileSystemResource;
 import org.w3c.dom.NodeList;
 
+import de.ingrid.admin.search.GermanStemmer;
 import de.ingrid.iplug.csw.dsc.ConfigurationKeys;
 import de.ingrid.iplug.csw.dsc.TestUtil;
 import de.ingrid.iplug.csw.dsc.cache.Cache;
@@ -18,6 +19,7 @@ import de.ingrid.iplug.csw.dsc.cswclient.constants.ElementSetName;
 import de.ingrid.iplug.csw.dsc.cswclient.impl.GenericRecord;
 import de.ingrid.iplug.csw.dsc.index.mapper.ScriptedDocumentMapper;
 import de.ingrid.iplug.csw.dsc.om.CswCacheSourceRecord;
+import de.ingrid.iplug.csw.dsc.tools.LuceneTools;
 import de.ingrid.iplug.csw.dsc.tools.SimpleSpringBeanFactory;
 import de.ingrid.utils.tool.StringUtil;
 import de.ingrid.utils.xml.Csw202NamespaceContext;
@@ -50,6 +52,10 @@ public class MapperToIndexTest extends TestCase {
 		ScriptedDocumentMapper mapper = new ScriptedDocumentMapper();
 		mapper.setCompile(false);
         mapper.setMappingScript(new FileSystemResource("src/main/resources/mapping/csw-2.0.2-AP-ISO-1.0_to_lucene-igc-1.0.3.js"));
+        // is autowired in spring environment !
+        LuceneTools tmpLuceneTools = new LuceneTools();
+        tmpLuceneTools.setDefaultStemmer(new GermanStemmer());
+
 		Set<String> testRecordIds = TestUtil.getRecordIds();
 		for (Iterator<String> it = testRecordIds.iterator(); it.hasNext();) {
 			String testRecordId = it.next();
