@@ -79,6 +79,8 @@ function hasValue(val) {
 		return false; 
 	} else if (typeof val == "string" && val == "") {
 		return false;
+    } else if (typeof val == "object" && val.toString() == "") {
+        return false;
 	} else {
 	  return true;
 	}
