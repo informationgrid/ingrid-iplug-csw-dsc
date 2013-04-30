@@ -10,6 +10,7 @@ import junit.framework.TestCase;
 import org.apache.lucene.document.Document;
 import org.springframework.core.io.FileSystemResource;
 
+import de.ingrid.admin.search.GermanStemmer;
 import de.ingrid.iplug.csw.dsc.ConfigurationKeys;
 import de.ingrid.iplug.csw.dsc.TestUtil;
 import de.ingrid.iplug.csw.dsc.cache.Cache;
@@ -20,6 +21,7 @@ import de.ingrid.iplug.csw.dsc.cswclient.impl.GenericRecord;
 import de.ingrid.iplug.csw.dsc.index.mapper.IRecordMapper;
 import de.ingrid.iplug.csw.dsc.index.mapper.ScriptedDocumentMapper;
 import de.ingrid.iplug.csw.dsc.om.CswCacheSourceRecord;
+import de.ingrid.iplug.csw.dsc.tools.LuceneTools;
 import de.ingrid.iplug.csw.dsc.tools.SimpleSpringBeanFactory;
 
 public class MapperToIndexWsvGeodatenkatalogTest extends TestCase {
@@ -43,6 +45,10 @@ public class MapperToIndexWsvGeodatenkatalogTest extends TestCase {
         CSWFactory factory = SimpleSpringBeanFactory.INSTANCE.getBean(ConfigurationKeys.CSW_FACTORY, CSWFactory.class);
         cache.configure(factory);
 		
+        // is autowired in spring environment !
+        LuceneTools tmpLuceneTools = new LuceneTools();
+        tmpLuceneTools.setDefaultStemmer(new GermanStemmer());
+
         // PROCESS MULTIPLE MAPPERS !
         List<IRecordMapper> myMappers = new ArrayList<IRecordMapper>();
         
@@ -65,7 +71,7 @@ public class MapperToIndexWsvGeodatenkatalogTest extends TestCase {
 			Document doc = new Document();
 			
 			for (IRecordMapper myMapper : myMappers) {
-				try {
+//				try {
 					myMapper.map(new CswCacheSourceRecord(cswRecord), doc);
 
 					// check valid URLs
@@ -74,10 +80,11 @@ public class MapperToIndexWsvGeodatenkatalogTest extends TestCase {
 						System.out.println(url);
 					}
 					System.out.println();
-					
+/*					
 				} catch (Throwable t) {
 					System.out.println(t);
-				}				
+				}
+*/
 			}
 			
 			assertTrue("Lucene doc found.", doc != null);
