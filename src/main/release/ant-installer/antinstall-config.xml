@@ -39,6 +39,38 @@
             <text property="localServerPort" displayText="Port für Adminoberfläche:" defaultValue="9667"/>
     </page>
 
+    <!-- UPDATE -->
+
+    <page
+			ifTarget    ="setUpdateProperty"
+			type		="input"
+			name		="properties"
+			displayText	="Benötigte Installationsoptionen"
+			target 		="patchFiles"
+			postDisplayTarget = "antinstaller-determineVersion">
+		<directory
+            property            ="installDir"
+            defaultValue        ="/opt/ingrid/${project.artifactId}-${project.version}"
+			defaultValueWin	    ="${env.ProgramFiles}\${project.artifactId}-${project.version}"
+            displayText         ="Altes Installationsverzeichnis"
+            create              ="false"
+            checkExists         ="true" />
+	</page>
+
+    <!--
+	<page
+			ifTarget    ="setUpdateProperty"
+             ifProperty  ="${NeedsConfiguration3.2.0}==true"
+            type        ="input"
+            name        ="newOption"
+            displayText ="Neue Option.">
+
+            <comment displayText="" explanatoryText="Dies ist nur ein Test für einen Patch mit Benutzereingaben."/>           
+            <text property="commentSpring" displayText="Kommentar in spring.xml:" defaultValue="Mein Kommentar"/>
+    </page>
+    -->
+
+    <!-- NEW INSTALL -->
 	<!--  type="input" shows a list of editable options for the installer -->
 	<page
 			ifTarget    ="setInstallProperty"
@@ -53,22 +85,10 @@
 				create			="true"/>
 	</page>
 
-	<page
-			ifTarget    ="setUpdateProperty"
-			type		="input"
-			name		="properties"
-			displayText	="Benötigte Installationsoptionen"
-			target 		="patchFiles">
-		<directory
-            property            ="installDir"
-            defaultValue        ="/opt/ingrid/${project.artifactId}-${project.version}"
-			defaultValueWin	    ="${env.ProgramFiles}\${project.artifactId}-${project.version}"
-            displayText         ="Altes Installationsverzeichnis"
-            create              ="false"
-            checkExists         ="true" />
-	</page>
+	
 
 	<page
+            ifProperty  ="${unsupportedVersion}!=true"
 			type		="progress"
 			name		="progress"
 			displayText	="Installationsfortschritt"

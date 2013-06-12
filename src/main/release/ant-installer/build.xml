@@ -1,14 +1,21 @@
-<project name="IPlug CSW-DSC Installation">
+<project name="IPlug CSW-DSC Installation" basedir=".">
     <description>
         InGrid iPlug CSW-DSC Installation Script
     </description>
 
-    <import file="build-patch.xml"  as="patch" />
+    <import file="build-installer-utils.xml"  as="utils" />
+    <import file="build-patch.xml"            as="patch" />
 
     <!-- set global properties for this build -->
     <property name="componentName"      value="${project.build.finalName}"/>
     <property name="xml-communication"  value="${installDir}/conf/communication.xml"/>
     <property name="start-script"       value="${installDir}/start.sh"/>
+
+    <!-- THIS PORPERTIES ARE NECESSARY FOR UPDATES -->
+    <property name="libraryDir"         value="lib" />
+    <property name="libraryIdent"       value="ingrid-iplug-csw-dsc-" />
+    <property name="versionsWithConfigurations"  value="" />
+    <property name="minSupportedVersion" value="3.2.0" />
 
     <!--
 
@@ -47,34 +54,12 @@
 
     -->
 
-    <target name="setUpdateProperty" depends="determineVersion, extractUpdate">
+    <target name="setUpdateProperty" depends="checkPreconditionsForUpdate, extractUpdate">
         <property name="installType" value="update" />
         <property name="updateProcedure" value="true" />
     </target>
 
-    <target name="determineVersion" description="Determine the version of the previous installation.">
-        <!-- <property name="oldVersion" value="3.3.0"/> -->
-        <fileset dir="${installDir}/lib" id="componentLibrary" includes="ingrid-iplug-csw-dsc-*.jar" />
-
-        <echo message="File: ${toString:componentLibrary}" />
-
-        <propertyregex 
-            property="oldVersion" 
-            input="${toString:componentLibrary}" 
-            regexp=".*ingrid-iplug-csw-dsc-(.*)\.jar"
-            select="\1" />
-
-        <echo message="Version set to: ${oldVersion}" />
-
-        <condition property="unsupportedVersion">
-            <bool>
-                <islessthan arg1="${oldVersion}" arg2="3.2.0" />
-            </bool>
-        </condition>
-    </target>
-
     <target name="extractUpdate" description="Extract all files to the installation directory without overwriting config files.">
-        <fail if="unsupportedVersion">The version ${oldVersion} is not supported for update! Please do a new installation.</fail>
         <echo message="Unzip to basedir: ." />
         <unzip src="${antinstaller.jar}" dest=".">
             <patternset>
@@ -135,5 +120,7 @@ Weitere Informationen entnehmen Sie bitte dem
 Online-Handbuch unter 
             http://kst.portalu.de/foswiki/bin/view/InGrid3/InGridBetriebshandbuch.
         </echo>
+
+        <runtarget target="showPatchErrors" />
     </target>    
 </project>
