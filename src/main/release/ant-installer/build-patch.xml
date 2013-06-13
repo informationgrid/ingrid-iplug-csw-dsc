@@ -1,0 +1,54 @@
+<project name="CSW-DSC Patch Installation">
+    <description>
+        InGrid iPlug CSW-DSC Patch Script
+    </description>
+    
+    <taskdef resource="net/sf/antcontrib/antcontrib.properties"/>
+
+    <!-- set global properties for this build -->
+    <property name="componentName"      value="${project.build.finalName}"/>
+    <property name="pathToPatches"      value="./patches"/>
+
+    <!--
+
+    ***************************************************************************************
+    * PATCHES
+    ***************************************************************************************
+
+    -->
+    
+    <target name="patchFromVersion3.2.1.1">
+        <compareVersion value1="${oldVersion}" value2="3.2.1.1" prop="compResult"/>
+        <if>
+            <not>
+                <equals arg1="${compResult}" arg2="1" />
+            </not>
+            <then>
+                <echo>Patching spring.xml file in basedir: </echo>
+                <patchFile patchFile="${pathToPatches}/3.3.0/spring.xml.patch" originalFile="${installDir}/webapp/WEB-INF/spring.xml" />
+            </then>
+        </if>
+    </target>
+
+    <!--
+    <target name="patchFromVersion3.3.0">
+        <compareVersion value1="${oldVersion}" value2="3.3.0" prop="compResult"/>
+        <if>
+            <not>
+                <equals arg1="${compResult}" arg2="1" />
+            </not>
+            <then>
+                <echo>Adding comment to spring.xml</echo>
+                <replace  file="${pathToPatches}/3.4.0/spring.xml.patch" token="@@COMMENT_SPRING@@"   value="${commentSpring}"/>
+
+                <patchFile patchFile="${pathToPatches}/3.4.0/spring.xml.patch" originalFile="${installDir}/webapp/WEB-INF/spring.xml" />
+            </then>
+        </if>
+    </target>
+    -->
+
+    <target name="doPatch" depends="patchFromVersion3.2.1.1">
+
+    </target>
+
+</project>
