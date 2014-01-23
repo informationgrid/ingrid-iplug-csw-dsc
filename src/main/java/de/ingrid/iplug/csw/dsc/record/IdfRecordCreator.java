@@ -3,18 +3,15 @@
  */
 package de.ingrid.iplug.csw.dsc.record;
 
-import java.util.List;
 import java.util.zip.GZIPOutputStream;
-
-import javax.xml.parsers.DocumentBuilder;
-import javax.xml.parsers.DocumentBuilderFactory;
 
 import org.apache.log4j.Logger;
 import org.apache.lucene.document.Document;
+import org.w3c.dom.Node;
 
-import de.ingrid.iplug.csw.dsc.cswclient.constants.ElementSetName;
+import de.ingrid.iplug.csw.dsc.cswclient.CSWRecord;
+import de.ingrid.iplug.csw.dsc.om.CswCacheSourceRecord;
 import de.ingrid.iplug.csw.dsc.om.SourceRecord;
-import de.ingrid.iplug.csw.dsc.record.mapper.IIdfMapper;
 import de.ingrid.iplug.csw.dsc.record.producer.IRecordProducer;
 import de.ingrid.utils.dsc.Record;
 import de.ingrid.utils.idf.IdfTool;
@@ -25,8 +22,7 @@ import de.ingrid.utils.xml.XMLUtils;
  * from a lucene document.
  * <p/>
  * The Class can be configured with a data source specific record producer
- * implementing the {@link IRecordProducer} interface. And a list of IDF (InGrid
- * Detaildata Format) mapper, implementing the {@link IIdfMapper} interface.
+ * implementing the {@link IRecordProducer} interface.
  * <p/>
  * The IDF data can optionally be compressed using a {@link GZIPOutputStream} by
  * setting the property {@link compressed} to true.
@@ -36,12 +32,9 @@ import de.ingrid.utils.xml.XMLUtils;
  */
 public class IdfRecordCreator {
 
-    protected static final Logger log = Logger
-            .getLogger(IdfRecordCreator.class);
+    protected static final Logger log = Logger.getLogger(IdfRecordCreator.class);
 
     private IRecordProducer recordProducer = null;
-
-    private List<IIdfMapper> record2IdfMapperList = null;
 
     private boolean compressed = false;
 
@@ -54,24 +47,15 @@ public class IdfRecordCreator {
      * @return
      * @throws Exception
      */
-    public Record getRecord(Document idxDoc, ElementSetName elementSetName) throws Exception {
+    public Record getRecord(Document idxDoc) throws Exception {
         try {
             recordProducer.openDatasource();
-            SourceRecord sourceRecord = recordProducer.getRecord(idxDoc, elementSetName);
-            DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
-            DocumentBuilder docBuilder = dbf.newDocumentBuilder();
-            org.w3c.dom.Document idfDoc = docBuilder.newDocument();
-            for (IIdfMapper record2IdfMapper : record2IdfMapperList) {
-                long start = 0;
-                if (log.isDebugEnabled()) {
-                    start = System.currentTimeMillis();
-                }
-                record2IdfMapper.map(sourceRecord, idfDoc);
-                if (log.isDebugEnabled()) {
-                    log.debug("Mapping of source record with " + record2IdfMapper + " took: " + (System.currentTimeMillis() - start) + " ms.");
-                }
-            }
-            String data = XMLUtils.toString(idfDoc);
+            SourceRecord sourceRecord = recordProducer.getRecord(idxDoc);
+            CSWRecord record = (CSWRecord) sourceRecord.get(CswCacheSourceRecord.CSW_RECORD);
+
+            Node idfDoc = record.getOriginalResponse();
+
+            String data = XMLUtils.toString(idfDoc.getOwnerDocument());
             if (log.isDebugEnabled()) {
                 log.debug("Resulting IDF document:\n" + data);
             }
@@ -90,14 +74,6 @@ public class IdfRecordCreator {
 
     public void setRecordProducer(IRecordProducer recordProducer) {
         this.recordProducer = recordProducer;
-    }
-
-    public List<IIdfMapper> getRecord2IdfMapperList() {
-        return record2IdfMapperList;
-    }
-
-    public void setRecord2IdfMapperList(List<IIdfMapper> record2IdfMapperList) {
-        this.record2IdfMapperList = record2IdfMapperList;
     }
 
     public boolean isCompressed() {
