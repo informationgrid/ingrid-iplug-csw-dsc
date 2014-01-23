@@ -29,9 +29,9 @@ import de.ingrid.utils.PlugDescription;
  * @author joachim@wemove.com
  * 
  */
-public class CswRecordProducer implements IRecordProducer {
+public class IdfRecordProducer implements IRecordProducer {
 
-    final private static Log log = LogFactory.getLog(CswRecordProducer.class);
+    final private static Log log = LogFactory.getLog(IdfRecordProducer.class);
 
     Cache cache;
     
@@ -45,11 +45,11 @@ public class CswRecordProducer implements IRecordProducer {
      * .document.Document)
      */
     @Override
-    public SourceRecord getRecord(Document doc, ElementSetName elementSetName) {
+    public SourceRecord getRecord(Document doc) {
         // TODO make the field configurable
         Field field = doc.getField("t01_object.obj_id");
         try {
-            return new CswCacheSourceRecord(cache.getRecord(field.stringValue(), elementSetName));
+            return new CswCacheSourceRecord(cache.getRecord(field.stringValue(), ElementSetName.IDF));
         } catch (IOException e) {
             log.error("Error reading record '" + field.stringValue() + "' from cache '"
                     + cache.toString() + "'.");

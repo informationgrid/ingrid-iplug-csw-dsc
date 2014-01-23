@@ -1,0 +1,831 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<gmd:MD_Metadata xmlns:gco="http://www.isotc211.org/2005/gco"
+	xmlns:gmd="http://www.isotc211.org/2005/gmd" xmlns:gml="http://www.opengis.net/gml"
+	xmlns:gts="http://www.isotc211.org/2005/gts" xmlns:srv="http://www.isotc211.org/2005/srv"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.isotc211.org/2005/gmd http://schemas.opengis.net/csw/2.0.2/profiles/apiso/1.0.0/apiso.xsd">
+	<gmd:fileIdentifier>
+		<gco:CharacterString>486d9622-c29d-44e5-b878-44389740011</gco:CharacterString>
+	</gmd:fileIdentifier>
+	<gmd:language>
+		<gmd:LanguageCode
+			codeList="http://standards.iso.org/ittf/PubliclyAvailableStandards/ISO_19139_Schemas/resources/codelist/ML_gmxCodelists.xml#LanguageCode"
+			codeListValue="ger">ger</gmd:LanguageCode>
+	</gmd:language>
+	<gmd:parentIdentifier>
+		<gco:CharacterString>45C958E8-E1DA-42B9-9A8D-86D9B197F3C6</gco:CharacterString>
+	</gmd:parentIdentifier>
+	<gmd:hierarchyLevel>
+		<gmd:MD_ScopeCode
+			codeList="http://standards.iso.org/ittf/PubliclyAvailableStandards/ISO_19139_Schemas/resources/codelist/ML_gmxCodelists.xml#MD_ScopeCode"
+			codeListValue="dataset">dataset</gmd:MD_ScopeCode>
+	</gmd:hierarchyLevel>
+	<gmd:contact>
+		<gmd:CI_ResponsibleParty uuid="FE8EDBF8-AC98-48AD-849F-8DC35D177481">
+			<gmd:organisationName>
+				<gco:CharacterString>KST PortalU</gco:CharacterString>
+			</gmd:organisationName>
+			<gmd:contactInfo>
+				<gmd:CI_Contact>
+					<gmd:address>
+						<gmd:CI_Address>
+							<gmd:electronicMailAddress>
+								<gco:CharacterString>kst@portalu.de</gco:CharacterString>
+							</gmd:electronicMailAddress>
+						</gmd:CI_Address>
+					</gmd:address>
+				</gmd:CI_Contact>
+			</gmd:contactInfo>
+			<gmd:role>
+				<gmd:CI_RoleCode
+					codeList="http://standards.iso.org/ittf/PubliclyAvailableStandards/ISO_19139_Schemas/resources/codelist/ML_gmxCodelists.xml#CI_RoleCode"
+					codeListValue="pointOfContact" />
+			</gmd:role>
+		</gmd:CI_ResponsibleParty>
+	</gmd:contact>
+	<gmd:dateStamp>
+		<gco:Date>2009-02-17</gco:Date>
+	</gmd:dateStamp>
+	<gmd:metadataStandardName>
+		<gco:CharacterString>ISO19115</gco:CharacterString>
+	</gmd:metadataStandardName>
+	<gmd:metadataStandardVersion>
+		<gco:CharacterString>2003/Cor.1:2006</gco:CharacterString>
+	</gmd:metadataStandardVersion>
+	<gmd:spatialRepresentationInfo>
+		<gmd:MD_VectorSpatialRepresentation>
+			<gmd:topologyLevel>
+				<gmd:MD_TopologyLevelCode
+					codeList="http://standards.iso.org/ittf/PubliclyAvailableStandards/ISO_19139_Schemas/resources/codelist/ML_gmxCodelists.xml#MD_TopologyLevelCode"
+					codeListValue="geometryOnly" />
+			</gmd:topologyLevel>
+			<gmd:geometricObjects>
+				<gmd:MD_GeometricObjects>
+					<gmd:geometricObjectType>
+						<gmd:MD_GeometricObjectTypeCode
+							codeList="http://standards.iso.org/ittf/PubliclyAvailableStandards/ISO_19139_Schemas/resources/codelist/ML_gmxCodelists.xml#MD_GeometricObjectTypeCode"
+							codeListValue="complex" />
+					</gmd:geometricObjectType>
+					<gmd:geometricObjectCount>
+						<gco:Integer>5000</gco:Integer>
+					</gmd:geometricObjectCount>
+				</gmd:MD_GeometricObjects>
+			</gmd:geometricObjects>
+			<gmd:geometricObjects>
+				<gmd:MD_GeometricObjects>
+					<gmd:geometricObjectType>
+						<gmd:MD_GeometricObjectTypeCode
+							codeList="http://standards.iso.org/ittf/PubliclyAvailableStandards/ISO_19139_Schemas/resources/codelist/ML_gmxCodelists.xml#MD_GeometricObjectTypeCode"
+							codeListValue="composite" />
+					</gmd:geometricObjectType>
+					<gmd:geometricObjectCount>
+						<gco:Integer>2000</gco:Integer>
+					</gmd:geometricObjectCount>
+				</gmd:MD_GeometricObjects>
+			</gmd:geometricObjects>
+		</gmd:MD_VectorSpatialRepresentation>
+	</gmd:spatialRepresentationInfo>
+	<gmd:referenceSystemInfo>
+		<gmd:MD_ReferenceSystem>
+			<gmd:referenceSystemIdentifier>
+				<gmd:RS_Identifier>
+					<gmd:code>
+						<gco:CharacterString>EPSG 4326: WGS 84 / geographisch</gco:CharacterString>
+					</gmd:code>
+					<gmd:codeSpace>
+						<gco:CharacterString>EPSG</gco:CharacterString>
+					</gmd:codeSpace>
+				</gmd:RS_Identifier>
+			</gmd:referenceSystemIdentifier>
+		</gmd:MD_ReferenceSystem>
+	</gmd:referenceSystemInfo>
+	<gmd:identificationInfo>
+		<gmd:MD_DataIdentification
+			uuid="http://portalu.de/igc_testNS#IGC-TEST-761AB6F0-C1B1-49D1-8551-0CE8F7D07171">
+			<gmd:citation>
+				<gmd:CI_Citation>
+					<gmd:title>
+						<gco:CharacterString>DTK 50 - Blatt L5916-Frankfurt am Main West</gco:CharacterString>
+					</gmd:title>
+					<gmd:alternateTitle>
+						<gco:CharacterString>Kurzbezeichnung f. Level 1.3 - TK50 (dat</gco:CharacterString>
+					</gmd:alternateTitle>
+					<gmd:date>
+						<gmd:CI_Date>
+							<gmd:date>
+								<gco:DateTime>2009-02-09T00:00:00</gco:DateTime>
+							</gmd:date>
+							<gmd:dateType>
+								<gmd:CI_DateTypeCode
+									codeList="http://standards.iso.org/ittf/PubliclyAvailableStandards/ISO_19139_Schemas/resources/codelist/ML_gmxCodelists.xml#CI_DateTypeCode"
+									codeListValue="creation" />
+							</gmd:dateType>
+						</gmd:CI_Date>
+					</gmd:date>
+					<gmd:date>
+						<gmd:CI_Date>
+							<gmd:date>
+								<gco:DateTime>2009-02-10T00:00:00</gco:DateTime>
+							</gmd:date>
+							<gmd:dateType>
+								<gmd:CI_DateTypeCode
+									codeList="http://standards.iso.org/ittf/PubliclyAvailableStandards/ISO_19139_Schemas/resources/codelist/ML_gmxCodelists.xml#CI_DateTypeCode"
+									codeListValue="revision" />
+							</gmd:dateType>
+						</gmd:CI_Date>
+					</gmd:date>
+					<gmd:identifier>
+						<gmd:MD_Identifier>
+							<gmd:code>
+								<gco:CharacterString>http://portalu.de/igc_testNS#IGC-TEST-761AB6F0-C1B1-49D1-8551-0CE8F7D07171</gco:CharacterString>
+							</gmd:code>
+						</gmd:MD_Identifier>
+					</gmd:identifier>
+				</gmd:CI_Citation>
+			</gmd:citation>
+			<gmd:abstract>
+				<gco:CharacterString>Testobjekt f. den compliance Level 1.3
+Test csw:CorrectRequestResponse.GetRecords-AnyTextFilter
+Testing csw:CorrectRequestResponse.GetRecords-AndOrFilter
+Testing csw:CorrectRequestResponse.GetRecordById-Full
+dataset TK50</gco:CharacterString>
+			</gmd:abstract>
+			<gmd:purpose>
+				<gco:CharacterString>Herstellungszweck des Objektes Level 1.3 - TK50 (dataset)</gco:CharacterString>
+			</gmd:purpose>
+			<gmd:status>
+				<gmd:MD_ProgressCode
+					codeList="http://standards.iso.org/ittf/PubliclyAvailableStandards/ISO_19139_Schemas/resources/codelist/ML_gmxCodelists.xml#MD_ProgressCode"
+					codeListValue="completed" />
+			</gmd:status>
+			<gmd:pointOfContact>
+				<gmd:CI_ResponsibleParty uuid="46FA9CCF-A058-4570-8B4F-7EB78DDDE603">
+					<gmd:individualName>
+						<gco:CharacterString>Kruse, Fred, Herr Dr.</gco:CharacterString>
+					</gmd:individualName>
+					<gmd:organisationName>
+						<gco:CharacterString>KST PortalU, KST PortalU</gco:CharacterString>
+					</gmd:organisationName>
+					<gmd:positionName>
+						<gco:CharacterString>Administrator of this catalog.</gco:CharacterString>
+					</gmd:positionName>
+					<gmd:contactInfo>
+						<gmd:CI_Contact>
+							<gmd:address>
+								<gmd:CI_Address>
+									<gmd:electronicMailAddress>
+										<gco:CharacterString>kst@portalu.de</gco:CharacterString>
+									</gmd:electronicMailAddress>
+								</gmd:CI_Address>
+							</gmd:address>
+						</gmd:CI_Contact>
+					</gmd:contactInfo>
+					<gmd:role>
+						<gmd:CI_RoleCode
+							codeList="http://standards.iso.org/ittf/PubliclyAvailableStandards/ISO_19139_Schemas/resources/codelist/ML_gmxCodelists.xml#CI_RoleCode"
+							codeListValue="pointOfContact" />
+					</gmd:role>
+				</gmd:CI_ResponsibleParty>
+			</gmd:pointOfContact>
+			<gmd:pointOfContact>
+				<gmd:CI_ResponsibleParty uuid="151443B6-97CC-46CE-8D55-5A611F275299">
+					<gmd:individualName>
+						<gco:CharacterString>Lehmann, Hanno, Herr</gco:CharacterString>
+					</gmd:individualName>
+					<gmd:organisationName>
+						<gco:CharacterString>Land Niedersachsen, Niedersächsisches Ministerium für Umwelt und Klimaschutz, Koordinierungsstelle PortalU</gco:CharacterString>
+					</gmd:organisationName>
+					<gmd:contactInfo>
+						<gmd:CI_Contact>
+							<gmd:address>
+								<gmd:CI_Address>
+									<gmd:deliveryPoint>
+										<gco:CharacterString>Archivstr. 2</gco:CharacterString>
+									</gmd:deliveryPoint>
+									<gmd:city>
+										<gco:CharacterString>Hannover</gco:CharacterString>
+									</gmd:city>
+									<gmd:postalCode>
+										<gco:CharacterString>D-30169</gco:CharacterString>
+									</gmd:postalCode>
+									<gmd:country>
+										<gco:CharacterString>DEU</gco:CharacterString>
+									</gmd:country>
+									<gmd:electronicMailAddress>
+										<gco:CharacterString>kst@portal.de</gco:CharacterString>
+									</gmd:electronicMailAddress>
+									<gmd:electronicMailAddress>
+										<gco:CharacterString>hanno.lehmann@portalu.de</gco:CharacterString>
+									</gmd:electronicMailAddress>
+								</gmd:CI_Address>
+							</gmd:address>
+						</gmd:CI_Contact>
+					</gmd:contactInfo>
+					<gmd:role>
+						<gmd:CI_RoleCode
+							codeList="http://standards.iso.org/ittf/PubliclyAvailableStandards/ISO_19139_Schemas/resources/codelist/ML_gmxCodelists.xml#CI_RoleCode"
+							codeListValue="custodian" />
+					</gmd:role>
+				</gmd:CI_ResponsibleParty>
+			</gmd:pointOfContact>
+			<gmd:resourceMaintenance>
+				<gmd:MD_MaintenanceInformation>
+					<gmd:maintenanceAndUpdateFrequency>
+						<gmd:MD_MaintenanceFrequencyCode
+							codeList="http://standards.iso.org/ittf/PubliclyAvailableStandards/ISO_19139_Schemas/resources/codelist/ML_gmxCodelists.xml#MD_MaintenanceFrequencyCode"
+							codeListValue="continual" />
+					</gmd:maintenanceAndUpdateFrequency>
+					<gmd:userDefinedMaintenanceFrequency>
+						<gts:TM_PeriodDuration>P2M</gts:TM_PeriodDuration>
+					</gmd:userDefinedMaintenanceFrequency>
+					<gmd:updateScope>
+						<gmd:MD_ScopeCode
+							codeList="http://standards.iso.org/ittf/PubliclyAvailableStandards/ISO_19139_Schemas/resources/codelist/ML_gmxCodelists.xml#MD_ScopeCode"
+							codeListValue="dataset" />
+					</gmd:updateScope>
+					<gmd:maintenanceNote>
+						<gco:CharacterString>Erläuterungen zum Zeitbezug Level 1.3 - TK50 (dataset)</gco:CharacterString>
+					</gmd:maintenanceNote>
+				</gmd:MD_MaintenanceInformation>
+			</gmd:resourceMaintenance>
+			<gmd:descriptiveKeywords>
+				<gmd:MD_Keywords>
+					<gmd:keyword>
+						<gco:CharacterString>Umweltinformation</gco:CharacterString>
+					</gmd:keyword>
+					<gmd:keyword>
+						<gco:CharacterString>Öffentlichkeitsarbeit</gco:CharacterString>
+					</gmd:keyword>
+					<gmd:keyword>
+						<gco:CharacterString>Umweltinformationsgesetz</gco:CharacterString>
+					</gmd:keyword>
+					<gmd:keyword>
+						<gco:CharacterString>Umweltinformationsrichtlinie</gco:CharacterString>
+					</gmd:keyword>
+					<gmd:type>
+						<gmd:MD_KeywordTypeCode
+							codeList="http://standards.iso.org/ittf/PubliclyAvailableStandards/ISO_19139_Schemas/resources/codelist/ML_gmxCodelists.xml#MD_KeywordTypeCode"
+							codeListValue="theme" />
+					</gmd:type>
+					<gmd:thesaurusName>
+						<gmd:CI_Citation>
+							<gmd:title>
+								<gco:CharacterString>UMTHES Thesaurus</gco:CharacterString>
+							</gmd:title>
+							<gmd:date>
+								<gmd:CI_Date>
+									<gmd:date>
+										<gco:Date>2009-01-15</gco:Date>
+									</gmd:date>
+									<gmd:dateType>
+										<gmd:CI_DateTypeCode
+											codeList="http://standards.iso.org/ittf/PubliclyAvailableStandards/ISO_19139_Schemas/resources/codelist/ML_gmxCodelists.xml#CI_DateTypeCode"
+											codeListValue="publication" />
+									</gmd:dateType>
+								</gmd:CI_Date>
+							</gmd:date>
+						</gmd:CI_Citation>
+					</gmd:thesaurusName>
+				</gmd:MD_Keywords>
+			</gmd:descriptiveKeywords>
+			<gmd:descriptiveKeywords>
+				<gmd:MD_Keywords>
+					<gmd:keyword>
+						<gco:CharacterString>feiner freier Suchbegriff</gco:CharacterString>
+					</gmd:keyword>
+				</gmd:MD_Keywords>
+			</gmd:descriptiveKeywords>
+			<gmd:resourceSpecificUsage>
+				<gmd:MD_Usage>
+					<gmd:specificUsage>
+						<gco:CharacterString>Eignung / Nutzung Level 1.3 - TK50 (dataset)</gco:CharacterString>
+					</gmd:specificUsage>
+					<gmd:userContactInfo gco:nilReason="unknown" />
+				</gmd:MD_Usage>
+			</gmd:resourceSpecificUsage>
+			<gmd:resourceConstraints>
+				<gmd:MD_Constraints>
+					<gmd:useLimitation>
+						<gco:CharacterString>freie Benutzung</gco:CharacterString>
+					</gmd:useLimitation>
+				</gmd:MD_Constraints>
+			</gmd:resourceConstraints>
+			<gmd:resourceConstraints>
+				<gmd:MD_LegalConstraints>
+					<gmd:accessConstraints>
+						<gmd:MD_RestrictionCode
+							codeList="http://standards.iso.org/ittf/PubliclyAvailableStandards/ISO_19139_Schemas/resources/codelist/ML_gmxCodelists.xml#MD_RestrictionCode"
+							codeListValue="otherRestrictions">otherRestrictions</gmd:MD_RestrictionCode>
+					</gmd:accessConstraints>
+					<gmd:otherConstraints>
+						<gco:CharacterString>keine</gco:CharacterString>
+					</gmd:otherConstraints>
+				</gmd:MD_LegalConstraints>
+			</gmd:resourceConstraints>
+			<gmd:resourceConstraints>
+				<gmd:MD_LegalConstraints>
+					<gmd:accessConstraints>
+						<gmd:MD_RestrictionCode
+							codeList="http://standards.iso.org/ittf/PubliclyAvailableStandards/ISO_19139_Schemas/resources/codelist/ML_gmxCodelists.xml#MD_RestrictionCode"
+							codeListValue="otherRestrictions">otherRestrictions</gmd:MD_RestrictionCode>
+					</gmd:accessConstraints>
+					<gmd:otherConstraints>
+						<gco:CharacterString>Agrarstatistikgesetz (AgrStatG)</gco:CharacterString>
+					</gmd:otherConstraints>
+				</gmd:MD_LegalConstraints>
+			</gmd:resourceConstraints>
+			<gmd:spatialRepresentationType>
+				<gmd:MD_SpatialRepresentationTypeCode
+					codeList="http://standards.iso.org/ittf/PubliclyAvailableStandards/ISO_19139_Schemas/resources/codelist/ML_gmxCodelists.xml#MD_SpatialRepresentationTypeCode"
+					codeListValue="vector" />
+			</gmd:spatialRepresentationType>
+			<gmd:spatialResolution>
+				<gmd:MD_Resolution>
+					<gmd:equivalentScale>
+						<gmd:MD_RepresentativeFraction>
+							<gmd:denominator>
+								<gco:Integer>50000</gco:Integer>
+							</gmd:denominator>
+						</gmd:MD_RepresentativeFraction>
+					</gmd:equivalentScale>
+				</gmd:MD_Resolution>
+			</gmd:spatialResolution>
+			<gmd:spatialResolution>
+				<gmd:MD_Resolution>
+					<gmd:distance>
+						<gco:Distance uom="meter">10</gco:Distance>
+					</gmd:distance>
+				</gmd:MD_Resolution>
+			</gmd:spatialResolution>
+			<gmd:spatialResolution>
+				<gmd:MD_Resolution>
+					<gmd:distance>
+						<gco:Distance uom="dpi">200</gco:Distance>
+					</gmd:distance>
+				</gmd:MD_Resolution>
+			</gmd:spatialResolution>
+			<gmd:language>
+				<gmd:LanguageCode
+					codeList="http://standards.iso.org/ittf/PubliclyAvailableStandards/ISO_19139_Schemas/resources/codelist/ML_gmxCodelists.xml#LanguageCode"
+					codeListValue="ger" />
+			</gmd:language>
+			<gmd:topicCategory>
+				<gmd:MD_TopicCategoryCode>environment</gmd:MD_TopicCategoryCode>
+			</gmd:topicCategory>
+			<gmd:extent>
+				<gmd:EX_Extent>
+					<gmd:description>
+						<gco:CharacterString>Das sidn einige Erläuterungen zum Raumbezug Level 1.3 - TK50 (dataset)</gco:CharacterString>
+					</gmd:description>
+					<gmd:geographicElement>
+						<gmd:EX_GeographicDescription>
+							<gmd:extentTypeCode>
+								<gco:Boolean>true</gco:Boolean>
+							</gmd:extentTypeCode>
+							<gmd:geographicIdentifier>
+								<gmd:MD_Identifier>
+									<gmd:code>
+										<gco:CharacterString>compliance test</gco:CharacterString>
+									</gmd:code>
+								</gmd:MD_Identifier>
+							</gmd:geographicIdentifier>
+						</gmd:EX_GeographicDescription>
+					</gmd:geographicElement>
+					<gmd:geographicElement>
+						<gmd:EX_GeographicBoundingBox>
+							<gmd:extentTypeCode>
+								<gco:Boolean>true</gco:Boolean>
+							</gmd:extentTypeCode>
+							<gmd:westBoundLongitude>
+								<gco:Decimal>8.1</gco:Decimal>
+							</gmd:westBoundLongitude>
+							<gmd:eastBoundLongitude>
+								<gco:Decimal>8.15</gco:Decimal>
+							</gmd:eastBoundLongitude>
+							<gmd:southBoundLatitude>
+								<gco:Decimal>50.0</gco:Decimal>
+							</gmd:southBoundLatitude>
+							<gmd:northBoundLatitude>
+								<gco:Decimal>50.05</gco:Decimal>
+							</gmd:northBoundLatitude>
+						</gmd:EX_GeographicBoundingBox>
+					</gmd:geographicElement>
+					<gmd:temporalElement>
+						<gmd:EX_TemporalExtent>
+							<gmd:extent>
+								<gml:TimePeriod
+									gml:id="timePeriod_ID_aebc9064-7fa4-4df5-8367-df3164a5d244">
+									<gml:beginPosition>1992-01-09</gml:beginPosition>
+									<gml:endPosition>1992-01-09</gml:endPosition>
+								</gml:TimePeriod>
+							</gmd:extent>
+						</gmd:EX_TemporalExtent>
+					</gmd:temporalElement>
+					<gmd:verticalElement>
+						<gmd:EX_VerticalExtent>
+							<gmd:minimumValue>
+								<gco:Real>10.0</gco:Real>
+							</gmd:minimumValue>
+							<gmd:maximumValue>
+								<gco:Real>300.0</gco:Real>
+							</gmd:maximumValue>
+							<gmd:verticalCRS>
+								<gml:VerticalCRS
+									gml:id="verticalCRSN_ID_07017e06-4e8e-4981-8aa5-db74f943b66d">
+									<gml:identifier codeSpace="" />
+									<gml:scope />
+									<gml:verticalCS>
+										<gml:VerticalCS
+											gml:id="verticalCS_ID_b5a460b8-4fe0-44af-96ed-d8ed129f8f8e">
+											<gml:identifier codeSpace="" />
+											<gml:axis>
+												<gml:CoordinateSystemAxis
+													gml:id="coordinateSystemAxis_ID_a5ce0f40-a933-42bd-8857-65bbfd7725cb"
+													gml:uom="Metre">
+													<gml:identifier codeSpace="" />
+													<gml:axisAbbrev />
+													<gml:axisDirection codeSpace="" />
+												</gml:CoordinateSystemAxis>
+											</gml:axis>
+										</gml:VerticalCS>
+									</gml:verticalCS>
+									<gml:verticalDatum>
+										<gml:VerticalDatum
+											gml:id="verticalDatum_ID_430c4429-28e2-4b69-b032-ebee26fb54dd">
+											<gml:identifier codeSpace="" />
+											<gml:name>Höhe über GRS80 Ellipsoid</gml:name>
+											<gml:scope />
+										</gml:VerticalDatum>
+									</gml:verticalDatum>
+								</gml:VerticalCRS>
+							</gmd:verticalCRS>
+						</gmd:EX_VerticalExtent>
+					</gmd:verticalElement>
+				</gmd:EX_Extent>
+			</gmd:extent>
+		</gmd:MD_DataIdentification>
+	</gmd:identificationInfo>
+	<gmd:contentInfo>
+		<gmd:MD_FeatureCatalogueDescription>
+			<gmd:includedWithDataset>
+				<gco:Boolean>false</gco:Boolean>
+			</gmd:includedWithDataset>
+			<gmd:featureTypes>
+				<gco:LocalName>Sachdaten Eintrag 1</gco:LocalName>
+			</gmd:featureTypes>
+			<gmd:featureTypes>
+				<gco:LocalName>Sachdateneintrag 2</gco:LocalName>
+			</gmd:featureTypes>
+			<gmd:featureCatalogueCitation>
+				<gmd:CI_Citation>
+					<gmd:title>
+						<gco:CharacterString>von Drachenfels 94</gco:CharacterString>
+					</gmd:title>
+					<gmd:date>
+						<gmd:CI_Date>
+							<gmd:date>
+								<gco:DateTime>2009-02-09T00:00:00</gco:DateTime>
+							</gmd:date>
+							<gmd:dateType>
+								<gmd:CI_DateTypeCode
+									codeList="http://standards.iso.org/ittf/PubliclyAvailableStandards/ISO_19139_Schemas/resources/codelist/ML_gmxCodelists.xml#CI_DateTypeCode"
+									codeListValue="creation" />
+							</gmd:dateType>
+						</gmd:CI_Date>
+					</gmd:date>
+					<gmd:edition>
+						<gco:CharacterString>1.5</gco:CharacterString>
+					</gmd:edition>
+				</gmd:CI_Citation>
+			</gmd:featureCatalogueCitation>
+			<gmd:featureCatalogueCitation>
+				<gmd:CI_Citation>
+					<gmd:title>
+						<gco:CharacterString>Eintrag in Schlüsselkatalog</gco:CharacterString>
+					</gmd:title>
+					<gmd:date>
+						<gmd:CI_Date>
+							<gmd:date>
+								<gco:DateTime>2009-02-04T00:00:00</gco:DateTime>
+							</gmd:date>
+							<gmd:dateType>
+								<gmd:CI_DateTypeCode
+									codeList="http://standards.iso.org/ittf/PubliclyAvailableStandards/ISO_19139_Schemas/resources/codelist/ML_gmxCodelists.xml#CI_DateTypeCode"
+									codeListValue="creation" />
+							</gmd:dateType>
+						</gmd:CI_Date>
+					</gmd:date>
+					<gmd:edition>
+						<gco:CharacterString>2.1</gco:CharacterString>
+					</gmd:edition>
+				</gmd:CI_Citation>
+			</gmd:featureCatalogueCitation>
+		</gmd:MD_FeatureCatalogueDescription>
+	</gmd:contentInfo>
+	<gmd:distributionInfo>
+		<gmd:MD_Distribution>
+			<gmd:distributionFormat>
+				<gmd:MD_Format>
+					<gmd:name>
+						<gco:CharacterString>WinWord</gco:CharacterString>
+					</gmd:name>
+					<gmd:version>
+						<gco:CharacterString>6.0</gco:CharacterString>
+					</gmd:version>
+				</gmd:MD_Format>
+			</gmd:distributionFormat>
+			<gmd:distributionFormat>
+				<gmd:MD_Format>
+					<gmd:name>
+						<gco:CharacterString>TIFF</gco:CharacterString>
+					</gmd:name>
+					<gmd:version>
+						<gco:CharacterString>1.1.0</gco:CharacterString>
+					</gmd:version>
+					<gmd:specification>
+						<gco:CharacterString>200 dpi</gco:CharacterString>
+					</gmd:specification>
+					<gmd:fileDecompressionTechnique>
+						<gco:CharacterString>LHA</gco:CharacterString>
+					</gmd:fileDecompressionTechnique>
+				</gmd:MD_Format>
+			</gmd:distributionFormat>
+			<gmd:distributor>
+				<gmd:MD_Distributor>
+					<gmd:distributorContact>
+						<gmd:CI_ResponsibleParty>
+							<gmd:role>
+								<gmd:CI_RoleCode
+									codeList="http://standards.iso.org/ittf/PubliclyAvailableStandards/ISO_19139_Schemas/resources/codelist/ML_gmxCodelists.xml#CI_RoleCode"
+									codeListValue="distributor" />
+							</gmd:role>
+						</gmd:CI_ResponsibleParty>
+					</gmd:distributorContact>
+					<gmd:distributionOrderProcess>
+						<gmd:MD_StandardOrderProcess>
+							<gmd:orderingInstructions>
+								<gco:CharacterString>Bestellinformation Level 1.3 - TK50 (dataset)</gco:CharacterString>
+							</gmd:orderingInstructions>
+						</gmd:MD_StandardOrderProcess>
+					</gmd:distributionOrderProcess>
+				</gmd:MD_Distributor>
+			</gmd:distributor>
+			<gmd:transferOptions>
+				<gmd:MD_DigitalTransferOptions>
+					<gmd:onLine>
+						<gmd:CI_OnlineResource>
+							<gmd:linkage>
+								<gmd:URL>http://www.verweis-auf-einen-dienst.de/</gmd:URL>
+							</gmd:linkage>
+							<gmd:name>
+								<gco:CharacterString>URL Verweis auf einen Dienst</gco:CharacterString>
+							</gmd:name>
+							<gmd:description>
+								<gco:CharacterString>Erläuterungen f. den URL Verweis auf einen Dienst</gco:CharacterString>
+							</gmd:description>
+							<gmd:function>
+								<gmd:CI_OnLineFunctionCode
+									codeList="http://standards.iso.org/ittf/PubliclyAvailableStandards/ISO_19139_Schemas/resources/codelist/ML_gmxCodelists.xml#CI_OnLineFunctionCode"
+									codeListValue="serviceurl">serviceurl</gmd:CI_OnLineFunctionCode>
+							</gmd:function>
+						</gmd:CI_OnlineResource>
+					</gmd:onLine>
+				</gmd:MD_DigitalTransferOptions>
+			</gmd:transferOptions>
+			<gmd:transferOptions>
+				<gmd:MD_DigitalTransferOptions>
+					<gmd:onLine>
+						<gmd:CI_OnlineResource>
+							<gmd:linkage>
+								<gmd:URL>http://www.kartenserver.niedersachsen.de:80/wmsconnector/com.esri.wms.Esrimap/Avifauna_Brut?</gmd:URL>
+							</gmd:linkage>
+						</gmd:CI_OnlineResource>
+					</gmd:onLine>
+				</gmd:MD_DigitalTransferOptions>
+			</gmd:transferOptions>
+			<gmd:transferOptions>
+				<gmd:MD_DigitalTransferOptions>
+					<gmd:transferSize>
+						<gco:Real>1000.0</gco:Real>
+					</gmd:transferSize>
+					<gmd:offLine>
+						<gmd:MD_Medium>
+							<gmd:name>
+								<gmd:MD_MediumNameCode
+									codeList="http://standards.iso.org/ittf/PubliclyAvailableStandards/ISO_19139_Schemas/resources/codelist/ML_gmxCodelists.xml#MD_MediumNameCode"
+									codeListValue="dvd" />
+							</gmd:name>
+							<gmd:mediumNote>
+								<gco:CharacterString>Speicherort ist hier</gco:CharacterString>
+							</gmd:mediumNote>
+						</gmd:MD_Medium>
+					</gmd:offLine>
+				</gmd:MD_DigitalTransferOptions>
+			</gmd:transferOptions>
+			<gmd:transferOptions>
+				<gmd:MD_DigitalTransferOptions>
+					<gmd:transferSize>
+						<gco:Real>1.0</gco:Real>
+					</gmd:transferSize>
+					<gmd:offLine>
+						<gmd:MD_Medium>
+							<gmd:name>
+								<gmd:MD_MediumNameCode
+									codeList="http://standards.iso.org/ittf/PubliclyAvailableStandards/ISO_19139_Schemas/resources/codelist/ML_gmxCodelists.xml#MD_MediumNameCode"
+									codeListValue="3halfInchFloppy" />
+							</gmd:name>
+							<gmd:mediumNote>
+								<gco:CharacterString>Speicherort ist da</gco:CharacterString>
+							</gmd:mediumNote>
+						</gmd:MD_Medium>
+					</gmd:offLine>
+				</gmd:MD_DigitalTransferOptions>
+			</gmd:transferOptions>
+		</gmd:MD_Distribution>
+	</gmd:distributionInfo>
+	<gmd:dataQualityInfo>
+		<gmd:DQ_DataQuality>
+			<gmd:scope>
+				<gmd:DQ_Scope>
+					<gmd:level>
+						<gmd:MD_ScopeCode
+							codeList="http://standards.iso.org/ittf/PubliclyAvailableStandards/ISO_19139_Schemas/resources/codelist/ML_gmxCodelists.xml#MD_ScopeCode"
+							codeListValue="dataset" />
+					</gmd:level>
+				</gmd:DQ_Scope>
+			</gmd:scope>
+			<gmd:report>
+				<gmd:DQ_CompletenessOmission>
+					<gmd:nameOfMeasure>
+						<gco:CharacterString>Rate of missing items</gco:CharacterString>
+					</gmd:nameOfMeasure>
+					<gmd:measureIdentification>
+						<gmd:MD_Identifier>
+							<gmd:code>
+								<gco:CharacterString>7</gco:CharacterString>
+							</gmd:code>
+						</gmd:MD_Identifier>
+					</gmd:measureIdentification>
+					<gmd:measureDescription>
+						<gco:CharacterString>completeness omission (rec_grade)</gco:CharacterString>
+					</gmd:measureDescription>
+					<gmd:result>
+						<gmd:DQ_QuantitativeResult>
+							<gmd:valueUnit>
+								<gml:UnitDefinition
+									gml:id="unitDefinition_ID_82799e30-2408-4b38-b079-b58dfbd69029">
+									<gml:identifier codeSpace="" />
+									<gml:name>percent</gml:name>
+									<gml:quantityType>completeness omission</gml:quantityType>
+									<gml:catalogSymbol>%</gml:catalogSymbol>
+								</gml:UnitDefinition>
+							</gmd:valueUnit>
+							<gmd:value>
+								<gco:Record>80</gco:Record>
+							</gmd:value>
+						</gmd:DQ_QuantitativeResult>
+					</gmd:result>
+				</gmd:DQ_CompletenessOmission>
+			</gmd:report>
+			<gmd:report>
+				<gmd:DQ_AbsoluteExternalPositionalAccuracy>
+					<gmd:nameOfMeasure>
+						<gco:CharacterString>Mean value of positional uncertainties (1D)</gco:CharacterString>
+					</gmd:nameOfMeasure>
+					<gmd:measureIdentification>
+						<gmd:MD_Identifier>
+							<gmd:code>
+								<gco:CharacterString>28</gco:CharacterString>
+							</gmd:code>
+						</gmd:MD_Identifier>
+					</gmd:measureIdentification>
+					<gmd:measureDescription>
+						<gco:CharacterString>vertical</gco:CharacterString>
+					</gmd:measureDescription>
+					<gmd:result>
+						<gmd:DQ_QuantitativeResult>
+							<gmd:valueUnit>
+								<gml:UnitDefinition
+									gml:id="unitDefinition_ID_e3763838-0dec-4d3e-b21f-f7f160b5cd88">
+									<gml:identifier codeSpace="" />
+									<gml:name>meter</gml:name>
+									<gml:quantityType>absolute external positional accuracy, vertical accuracy</gml:quantityType>
+									<gml:catalogSymbol>m</gml:catalogSymbol>
+								</gml:UnitDefinition>
+							</gmd:valueUnit>
+							<gmd:value>
+								<gco:Record>23</gco:Record>
+							</gmd:value>
+						</gmd:DQ_QuantitativeResult>
+					</gmd:result>
+				</gmd:DQ_AbsoluteExternalPositionalAccuracy>
+			</gmd:report>
+			<gmd:report>
+				<gmd:DQ_AbsoluteExternalPositionalAccuracy>
+					<gmd:nameOfMeasure>
+						<gco:CharacterString>Mean value of positional uncertainties (2D)</gco:CharacterString>
+					</gmd:nameOfMeasure>
+					<gmd:measureIdentification>
+						<gmd:MD_Identifier>
+							<gmd:code>
+								<gco:CharacterString>28</gco:CharacterString>
+							</gmd:code>
+						</gmd:MD_Identifier>
+					</gmd:measureIdentification>
+					<gmd:measureDescription>
+						<gco:CharacterString>geographic</gco:CharacterString>
+					</gmd:measureDescription>
+					<gmd:result>
+						<gmd:DQ_QuantitativeResult>
+							<gmd:valueUnit>
+								<gml:UnitDefinition
+									gml:id="unitDefinition_ID_a60d4120-e0d3-40d1-84e9-c1d477cc1002">
+									<gml:identifier codeSpace="" />
+									<gml:name>meter</gml:name>
+									<gml:quantityType>absolute external positional accuracy, geographic accuracy</gml:quantityType>
+									<gml:catalogSymbol>m</gml:catalogSymbol>
+								</gml:UnitDefinition>
+							</gmd:valueUnit>
+							<gmd:value>
+								<gco:Record>12</gco:Record>
+							</gmd:value>
+						</gmd:DQ_QuantitativeResult>
+					</gmd:result>
+				</gmd:DQ_AbsoluteExternalPositionalAccuracy>
+			</gmd:report>
+			<gmd:lineage>
+				<gmd:LI_Lineage>
+					<gmd:statement>
+						<gco:CharacterString>Fachliche Grundlage: es handelt sich um ein dataset.</gco:CharacterString>
+					</gmd:statement>
+					<gmd:processStep>
+						<gmd:LI_ProcessStep>
+							<gmd:description>
+								<gco:CharacterString>Herstellungsprozess zu Objekt Level 1.3 - TK50 (dataset)</gco:CharacterString>
+							</gmd:description>
+						</gmd:LI_ProcessStep>
+					</gmd:processStep>
+					<gmd:source>
+						<gmd:LI_Source>
+							<gmd:description>
+								<gco:CharacterString>Datengrundlage des Objektes Level 1.3 - TK50 (dataset)</gco:CharacterString>
+							</gmd:description>
+						</gmd:LI_Source>
+					</gmd:source>
+				</gmd:LI_Lineage>
+			</gmd:lineage>
+		</gmd:DQ_DataQuality>
+	</gmd:dataQualityInfo>
+	<gmd:portrayalCatalogueInfo>
+		<gmd:MD_PortrayalCatalogueReference>
+			<gmd:portrayalCatalogueCitation>
+				<gmd:CI_Citation>
+					<gmd:title>
+						<gco:CharacterString>Ganzflächige Biotopkartierung 94</gco:CharacterString>
+					</gmd:title>
+					<gmd:date>
+						<gmd:CI_Date>
+							<gmd:date>
+								<gco:DateTime>2009-02-09T00:00:00</gco:DateTime>
+							</gmd:date>
+							<gmd:dateType>
+								<gmd:CI_DateTypeCode
+									codeList="http://standards.iso.org/ittf/PubliclyAvailableStandards/ISO_19139_Schemas/resources/codelist/ML_gmxCodelists.xml#CI_DateTypeCode"
+									codeListValue="creation" />
+							</gmd:dateType>
+						</gmd:CI_Date>
+					</gmd:date>
+					<gmd:edition>
+						<gco:CharacterString>1.2</gco:CharacterString>
+					</gmd:edition>
+				</gmd:CI_Citation>
+			</gmd:portrayalCatalogueCitation>
+		</gmd:MD_PortrayalCatalogueReference>
+	</gmd:portrayalCatalogueInfo>
+	<gmd:portrayalCatalogueInfo>
+		<gmd:MD_PortrayalCatalogueReference>
+			<gmd:portrayalCatalogueCitation>
+				<gmd:CI_Citation>
+					<gmd:title>
+						<gco:CharacterString>Eintrag in Symbolkatalog</gco:CharacterString>
+					</gmd:title>
+					<gmd:date>
+						<gmd:CI_Date>
+							<gmd:date>
+								<gco:DateTime>2009-02-10T00:00:00</gco:DateTime>
+							</gmd:date>
+							<gmd:dateType>
+								<gmd:CI_DateTypeCode
+									codeList="http://standards.iso.org/ittf/PubliclyAvailableStandards/ISO_19139_Schemas/resources/codelist/ML_gmxCodelists.xml#CI_DateTypeCode"
+									codeListValue="creation" />
+							</gmd:dateType>
+						</gmd:CI_Date>
+					</gmd:date>
+					<gmd:edition>
+						<gco:CharacterString>1.6</gco:CharacterString>
+					</gmd:edition>
+				</gmd:CI_Citation>
+			</gmd:portrayalCatalogueCitation>
+		</gmd:MD_PortrayalCatalogueReference>
+	</gmd:portrayalCatalogueInfo>
+</gmd:MD_Metadata>

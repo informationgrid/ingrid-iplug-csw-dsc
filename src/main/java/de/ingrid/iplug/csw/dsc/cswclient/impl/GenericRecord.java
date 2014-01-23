@@ -12,12 +12,12 @@ import de.ingrid.iplug.csw.dsc.cswclient.CSWRecord;
 import de.ingrid.iplug.csw.dsc.cswclient.constants.ElementSetName;
 import de.ingrid.iplug.csw.dsc.tools.NodeUtils;
 import de.ingrid.iplug.csw.dsc.tools.StringUtils;
-import de.ingrid.utils.xml.Csw202NamespaceContext;
+import de.ingrid.utils.xml.IDFNamespaceContext;
 import de.ingrid.utils.xpath.XPathUtils;
 
 public class GenericRecord implements CSWRecord {
 
-    final private XPathUtils xPathUtils = new XPathUtils(new Csw202NamespaceContext());
+    final private XPathUtils xPathUtils = new XPathUtils(new IDFNamespaceContext());
 
     protected String id = null;
     protected ElementSetName elementSetName = null;
@@ -47,7 +47,7 @@ public class GenericRecord implements CSWRecord {
 
         // get the record id
         NodeList idNodes = xPathUtils
-                .getNodeList(this.node, "//gmd:MD_Metadata/gmd:fileIdentifier/gco:CharacterString");
+                .getNodeList(this.node, "//gmd:fileIdentifier/gco:CharacterString");
         if (idNodes == null || idNodes.item(0) == null)
             throw new RuntimeException(
                     "CSWRecord does not contain an id (looking for //gmd:fileIdentifier/gco:CharacterString):\n"
@@ -57,7 +57,7 @@ public class GenericRecord implements CSWRecord {
                     "CSWRecord contains more than one id (looking for //gmd:fileIdentifier/gco:CharacterString):\n"
                             + StringUtils.nodeToString(this.node));
 
-        this.id = idNodes.item(0).getTextContent();
+        this.id = idNodes.item(0).getTextContent().trim();
     }
 
     @Override

@@ -41,6 +41,6 @@ public interface IRecordProducer {
      * @param doc
      * @return
      */
-    SourceRecord getRecord(Document doc, ElementSetName elementSetName);
+    SourceRecord getRecord(Document doc);
 
 }
