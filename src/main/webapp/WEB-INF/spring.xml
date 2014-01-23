@@ -64,10 +64,6 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
         <property name="cachePath" value="./csw_cache" />
     </bean>
 
-    <bean id="idfCache" class="de.ingrid.iplug.csw.dsc.cache.impl.DefaultFileCache">
-        <property name="cachePath" value="./idf_cache" />
-    </bean>
-
     <!--
         Define the CSW filter queries to query the CSW data source. Duplicates resulting from
         the queries will be detected based on the Identifier and be removed.
@@ -78,15 +74,15 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
     <bean id="cswHarvestFilter" class="org.springframework.beans.factory.config.SetFactoryBean">
         <property name="sourceSet">
             <set>
+<!-- 
                 <value>
                     <![CDATA[<ogc:Filter xmlns:ogc="http://www.opengis.net/ogc">
                     <ogc:PropertyIsLike escapeChar="\\" singleChar="?" wildCard="*">
-                    <ogc:PropertyName>Title</ogc:PropertyName>
-                    <ogc:Literal>Kopplung*</ogc:Literal>
+                    <ogc:PropertyName>Identifier</ogc:PropertyName>
+                    <ogc:Literal>00*</ogc:Literal>
                     </ogc:PropertyIsLike>
                     </ogc:Filter>]]>
                 </value>
-<!-- 
                 <value>
                     <![CDATA[<ogc:Filter xmlns:ogc="http://www.opengis.net/ogc">
                     <ogc:PropertyIsLike escapeChar="\\" singleChar="?" wildCard="*">
