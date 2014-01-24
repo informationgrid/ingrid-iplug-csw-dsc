@@ -52,7 +52,7 @@ public class IsoCacheAnalyzer {
 
             // get coupled datasets for service records that are coupled over
             // the uuid of the record
-            String[] coupledDatasets = xPathUtils.getStringArray(n, "//srv:operatesOn/@uuidref");
+            String[] coupledDatasets = xPathUtils.getStringArray(n, "//srv:operatesOn[//srv:serviceType/gco:LocalName='view']/@uuidref");
             if (coupledDatasets != null && coupledDatasets.length > 0) {
                 for (String datasetId : coupledDatasets) {
                     if (cache.isCached(datasetId, ElementSetName.FULL)) {
@@ -64,7 +64,7 @@ public class IsoCacheAnalyzer {
                 }
             }
 
-            String[] coupledResources = xPathUtils.getStringArray(n, "//srv:operatesOn/@xlink:href");
+            String[] coupledResources = xPathUtils.getStringArray(n, "//srv:operatesOn[//srv:serviceType/gco:LocalName='view']/@xlink:href");
             if (coupledResources != null && coupledResources.length > 0) {
                 for (String coupledResource : coupledResources) {
                     coupledResourceIdentifier2ServiceRecords.put(coupledResource, record);
@@ -81,6 +81,11 @@ public class IsoCacheAnalyzer {
                 result.addService(datasetRecord.getId(), serviceRecord);
             }
         }
+        resourceIdentifierMap.clear();
+        resourceIdentifierMap = null;
+        
+        coupledResourceIdentifier2ServiceRecords.clear();
+        coupledResourceIdentifier2ServiceRecords = null;
 
         if (log.isInfoEnabled()) {
             log.info("Found " + result.getSize() + " couplings between datasets and services.");
