@@ -68,7 +68,7 @@ public class CswRecordSetProducer implements ICswCacheRecordSetProducer {
         try {
             recordId = recordIdIterator.next();
             return new CswCacheSourceRecord(cache.getRecord(recordId,
-                    ElementSetName.FULL));
+                    ElementSetName.IDF));
         } catch (Exception e) {
             log.error("Error reading record '" + recordId + "' from cache '"
                     + cache + "'.");

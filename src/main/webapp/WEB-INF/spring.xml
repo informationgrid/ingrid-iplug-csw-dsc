@@ -212,8 +212,6 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
         <property name="sourceMap">
             <map>
                 <entry key="default" value="cswDefaultUpdateStrategy"/>
-                <entry key="incremental" value="cswIncrementalUpdateStrategy"/>
-                <entry key="incremental-optimized" value="cswIncrementalUpdateOptimizedStrategy"/>
             </map>
         </property>
     </bean>
@@ -222,26 +220,10 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
         <property name="requestPause" value="1000" />
         <property name="recordsPerCall" value="10" />
     </bean>
-    <bean id="cswIncrementalUpdateStrategy" class="de.ingrid.iplug.csw.dsc.cache.impl.IncrementalUpdateStrategy">
-        <constructor-arg type="java.lang.String">
-            <value>
-                <![CDATA[<ogc:PropertyIsGreaterThanOrEqualTo>
-                <ogc:PropertyName>Modified</ogc:PropertyName>
-                <ogc:Literal>{LAST_UPDATE_DATE}</ogc:Literal>
-                </ogc:PropertyIsGreaterThanOrEqualTo>]]>
-            </value>
-        </constructor-arg>
-        <property name="requestPause" value="1000" />
-        <property name="recordsPerCall" value="10" />
-    </bean>
-    <bean id="cswIncrementalUpdateOptimizedStrategy" class="de.ingrid.iplug.csw.dsc.cache.impl.IncrementalUpdateOptimizedStrategy">
-        <property name="requestPause" value="1000" />
-        <property name="recordsPerCall" value="10" />
-    </bean>
-    
     
     <bean id="updateJob" class="de.ingrid.iplug.csw.dsc.cache.UpdateJob" init-method="init">
         <property name="updateStrategy" ref="cswDefaultUpdateStrategy" />
+        <property name="idfTransformer" ref="idfTransformer" />
         <property name="filterStrSet" ref="cswHarvestFilter" />
         <property name="cache" ref="cswCache" />
         <property name="factory" ref="cswFactory" />
@@ -259,11 +241,24 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
         <property name="factory" ref="cswFactory" />
         <property name="job" ref="updateJob" />
     </bean>
+    
+    <bean id="idfTransformer" class="de.ingrid.iplug.csw.dsc.cache.IdfTransformer">
+        <property name="record2IdfMapperList">
+            <list>
+                <ref bean="createIdfMapper"/>
+                <ref bean="idfMapper"/>
+                <ref bean="couplingResourcesMapper"/>
+            </list>
+        </property>
+        <property name="isoCacheAnalyzer" ref="isoCacheAnalyzer" />
+    </bean>    
+
+    <bean id="isoCacheAnalyzer" class="de.ingrid.iplug.csw.dsc.analyze.IsoCacheAnalyzer"/>
 
     <bean id="recordSetProducer" class="de.ingrid.iplug.csw.dsc.index.producer.CswRecordSetProducer"/>
 
     <bean id="recordMapper" class="de.ingrid.iplug.csw.dsc.index.mapper.ScriptedDocumentMapper">
-        <property name="mappingScript" value="classpath:mapping/csw-2.0.2-AP-ISO-1.0_to_lucene-igc-1.0.3.js" />
+        <property name="mappingScript" value="classpath:mapping/idf_to_lucene.js" />
         <property name="codelistService" ref="codeListService" />
         <property name="compile" value="false" />
     </bean>
@@ -274,16 +269,10 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
     
     <bean id="dscRecordProducer" class="de.ingrid.iplug.csw.dsc.record.IdfRecordCreator">
         <property name="recordProducer" ref="recordProducer" />
-        <property name="record2IdfMapperList">
-            <list>
-                <ref bean="createIdfMapper"/>
-                <ref bean="idfMapper"/>
-            </list>
-        </property>
         <property name="compressed" value="true" />
     </bean>
     
-    <bean id="recordProducer" class="de.ingrid.iplug.csw.dsc.record.producer.CswRecordProducer">
+    <bean id="recordProducer" class="de.ingrid.iplug.csw.dsc.record.producer.IdfRecordProducer">
         <property name="cache" ref="cswCache" />
         <property name="factory" ref="cswFactory" />
     </bean>
@@ -291,8 +280,10 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
     <bean id="createIdfMapper" class="de.ingrid.iplug.csw.dsc.record.mapper.CreateIdfMapper" />
     
     <bean id="idfMapper" class="de.ingrid.iplug.csw.dsc.record.mapper.CswIdfMapper">
-        <property name="styleSheetResource" value="classpath:mapping/iso_metadata_to_idf-1.0.0.xsl"/>
+        <property name="styleSheetResource" value="classpath:mapping/iso_to_idf.xsl"/>
     </bean>
+
+    <bean id="couplingResourcesMapper" class="de.ingrid.iplug.csw.dsc.record.mapper.CouplingResourcesMapper" />
 
     <!-- 
         This pre-processor retrieves a SAML ticket via a provider and adds a SOAP header to every Axis service client.

@@ -13,9 +13,12 @@ importPackage(Packages.org.apache.lucene.document);
 importPackage(Packages.de.ingrid.iplug.csw.dsc.tools);
 importPackage(Packages.de.ingrid.iplug.csw.dsc.index);
 importPackage(Packages.de.ingrid.utils.udk);
-importPackage(Packages.de.ingrid.utils.xml);
 importPackage(Packages.org.w3c.dom);
 
+//constant to punish the rank of a service/data object, which has no coupled resource
+var BOOST_NO_COUPLED_RESOURCE  = 0.9;
+//constant to boost the rank of a service/data object, which has at least one coupled resource
+var BOOST_HAS_COUPLED_RESOURCE = 1.0;
 
 
 if (log.isDebugEnabled()) {
@@ -44,16 +47,16 @@ var recordNode = cswRecord.getOriginalResponse();
 */
 var transformationDescriptions = [
 		{	"indexField":"t01_object.obj_id",
-			"tokenized":true,
-			"xpath":"//gmd:MD_Metadata/gmd:fileIdentifier/gco:CharacterString"
+			"tokenized":false,
+			"xpath":"//gmd:fileIdentifier/gco:CharacterString"
 		}, 
 		{	"indexField":"title",
 			"tokenized":true,
 			"xpath":"//gmd:identificationInfo//gmd:citation/gmd:CI_Citation/gmd:title/gco:CharacterString"
 		},
 		{	"indexField":"t01_object.org_obj_id",
-			"tokenized":true,
-			"xpath":"//gmd:MD_Metadata/gmd:fileIdentifier/gco:CharacterString"
+			"tokenized":false,
+			"xpath":"//gmd:fileIdentifier/gco:CharacterString"
 		},
 		{	"indexField":"summary",
 			"xpath":"//gmd:identificationInfo//gmd:abstract/gco:CharacterString"
@@ -414,6 +417,11 @@ var transformationDescriptions = [
 				"funct":mapAddresses,
 				"params":[recordNode]
 			}
+		},
+		{	"execute":{
+				"funct":addCoupledServices,
+				"params":[recordNode]
+			}
 		}
 	];
 
@@ -439,7 +447,10 @@ for (var i in transformationDescriptions) {
 		var nodeList = XPathUtils.getNodeList(recordNode, t.xpath);
 		if (nodeList && nodeList.getLength() > 0) {
 			for (j=0; j<nodeList.getLength(); j++ ) {
-				value = nodeList.item(j).getTextContent()
+				value = nodeList.item(j).getTextContent();
+				if (log.isDebugEnabled()) {
+					log.debug("Found value '" + value + "'");
+				}
 				// check for transformation
 				if (hasValue(t.transform)) {
 					var args = new Array(value);
@@ -485,7 +496,7 @@ for (var i in transformationDescriptions) {
 }
 
 function mapAddresses(recordNode) {
-	var addresses = XPathUtils.getNodeList(recordNode, "//*/gmd:CI_ResponsibleParty");
+	var addresses = XPathUtils.getNodeList(recordNode, "//*/idf:idfResponsibleParty");
 	if (hasValue(addresses)) {
 		if (log.isDebugEnabled()) {
 			log.debug("number of found addresses:" + addresses.getLength())
@@ -852,12 +863,33 @@ function mapObjectClass() {
 	addToDoc("t01_object.obj_class", objectClass, false);	
 }
 
+function addCoupledServices() {
+	var crossReferences = XPathUtils.getNodeList(recordNode, "//idf:crossReference[./idf:objectType=3]");
+	if (hasValue(crossReferences)) {
+		for (i=0; i<crossReferences.getLength(); i++ ) {
+			var crossReference = crossReferences.item(i);
+			var objUuid = XPathUtils.getString(crossReference, "./@uuid");
+			var objName = XPathUtils.getString(crossReference, "idf:objectName");
+			var serviceUrl = XPathUtils.getString(crossReference, "idf:serviceUrl");
+			var resourceIdentifier = XPathUtils.getString(recordNode, "//gmd:identificationInfo/*/gmd:citation/*/gmd:identifier/*/gmd:code/gco:CharacterString");
+		    var data = objUuid 
+		    	+ "@@" + objName 
+		    	+ "@@" + serviceUrl
+		    	+ "@@" + resourceIdentifier;
+            addToDoc("refering_service_uuid", data, false);
+            addToDoc("capabilities_url", serviceUrl, false);
+		}
+	}
+}
+
+
 
 function addToDoc(field, content, tokenized) {
 	if (typeof content != "undefined" && content != null) {
 		if (log.isDebugEnabled()) {
 			log.debug("Add '" + field + "'='" + content + "' to lucene index");
 		}
+		content = (content+"").trim();
 		var analyzed = Field.Index.ANALYZED;
 		if (!tokenized) analyzed = Field.Index.NOT_ANALYZED;
 		document.add(new Field(field, content, Field.Store.YES, analyzed));

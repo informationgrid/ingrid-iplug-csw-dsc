@@ -19,6 +19,8 @@ import de.ingrid.codelists.CodeListService;
 import de.ingrid.iplug.csw.dsc.cswclient.CSWRecord;
 import de.ingrid.iplug.csw.dsc.om.CswCacheSourceRecord;
 import de.ingrid.iplug.csw.dsc.om.SourceRecord;
+import de.ingrid.utils.xml.IDFNamespaceContext;
+import de.ingrid.utils.xpath.XPathUtils;
 
 /**
  * Script based source record to lucene document mapping. This class takes a
@@ -77,11 +79,15 @@ public class ScriptedDocumentMapper implements IRecordMapper {
                     }
                 }
             }
+            
+            XPathUtils xpathUtils = new XPathUtils(new IDFNamespaceContext());
+            
             Bindings bindings = engine.createBindings();
             bindings.put("cswRecord", cswRecord);
             bindings.put("document", doc);
             bindings.put("log", log);
             bindings.put("codelistService", codelistService);
+            bindings.put("XPathUtils", xpathUtils);
             
             if (compiledScript != null) {
                 compiledScript.eval(bindings);

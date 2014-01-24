@@ -48,9 +48,7 @@ public class CswDscSearchPlug extends HeartBeatPlug implements IRecordLoader {
     private final IngridIndexSearcher _indexSearcher;
 
     @Autowired
-    public CswDscSearchPlug(final IngridIndexSearcher indexSearcher, IPlugdescriptionFieldFilter[] fieldFilters,
-            IMetadataInjector[] injector, IPreProcessor[] preProcessors, IPostProcessor[] postProcessors)
-            throws IOException {
+    public CswDscSearchPlug(final IngridIndexSearcher indexSearcher, IPlugdescriptionFieldFilter[] fieldFilters, IMetadataInjector[] injector, IPreProcessor[] preProcessors, IPostProcessor[] postProcessors) throws IOException {
         super(60000, new PlugDescriptionFieldFilters(fieldFilters), injector, preProcessors, postProcessors);
         _indexSearcher = indexSearcher;
     }
@@ -79,11 +77,7 @@ public class CswDscSearchPlug extends HeartBeatPlug implements IRecordLoader {
     @Override
     public Record getRecord(IngridHit hit) throws Exception {
         Document document = _indexSearcher.doc(hit.getDocumentId());
-        ElementSetName elementSetName = this.getDirectDataElementSetName(hit);
-        if (elementSetName == null) {
-            elementSetName = ElementSetName.FULL;
-        }
-        return dscRecordProducer.getRecord(document, elementSetName);
+        return dscRecordProducer.getRecord(document);
     }
 
     /*
@@ -170,7 +164,7 @@ public class CswDscSearchPlug extends HeartBeatPlug implements IRecordLoader {
         if (log.isDebugEnabled()) {
             startTime = System.currentTimeMillis();
         }
-        Record r = dscRecordProducer.getRecord(luceneDoc, elementSetName);
+        Record r = dscRecordProducer.getRecord(luceneDoc);
         if (log.isDebugEnabled()) {
             log.debug("Get IDF record in " + (System.currentTimeMillis() - startTime) + " ms");
         }

@@ -16,7 +16,21 @@
     ***************************************************************************************
 
     -->
-    
+
+    <target name="patchFromVersion3.3.1">
+        <compareVersion value1="${oldVersion}" value2="3.3.1" prop="compResult"/>
+        <if>
+            <not>
+                <equals arg1="${compResult}" arg2="1" />
+            </not>
+            <then>
+                <echo>Patching spring.xml file in basedir: </echo>
+                <patchFile patchFile="${pathToPatches}/3.4.0/spring.xml.patch" originalFile="${installDir}/webapp/WEB-INF/spring.xml" />
+            </then>
+        </if>
+    </target>
+	
+	
     <target name="patchFromVersion3.2.1.1">
         <compareVersion value1="${oldVersion}" value2="3.2.1.1" prop="compResult"/>
         <if>
@@ -47,7 +61,7 @@
     </target>
     -->
 
-    <target name="doPatch" depends="patchFromVersion3.2.1.1">
+    <target name="doPatch" depends="patchFromVersion3.2.1.1,patchFromVersion3.3.1">
 
     </target>
 

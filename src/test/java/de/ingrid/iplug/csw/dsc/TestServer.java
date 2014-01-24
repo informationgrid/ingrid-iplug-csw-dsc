@@ -16,17 +16,17 @@ public enum TestServer {
 	PORTALU ("http://www.portalu.de/csw202/", "http://www.portalu.de/csw202", 
 			Namespace.CSW_2_0_2, Namespace.CSW_PROFILE,
 			OutputFormat.TEXT_XML, "2.0.2", new TypeName[] { TypeName.MD_METADATA }, ResultType.RESULTS,
-			ElementSetName.BRIEF, "1.1.0"),
+			ElementSetName.FULL, "1.1.0"),
 
 	DISY ("http://demo.disy.net/preludio2.lubw/ws/csw", "http://demo.disy.net/preludio2.lubw/ws/csw", 
 			Namespace.CSW, Namespace.CSW_PROFILE,
 			OutputFormat.APPLICATION_XML, "2.0.1", new TypeName[] { TypeName.RECORD }, ResultType.RESULTS,
-			ElementSetName.BRIEF, "1.0.0"),
+			ElementSetName.FULL, "1.0.0"),
 
 	SDISUITE ("http://gdi-de.sdisuite.de/soapServices/CSWStartup", "http://gdi-de.sdisuite.de/soapServices/services/CSWDiscovery", 
 			Namespace.CSW_2_0_2, Namespace.CSW_PROFILE,
 			OutputFormat.TEXT_XML, "2.0.2", new TypeName[] { TypeName.RECORD }, ResultType.RESULTS,
-			ElementSetName.BRIEF, "1.0.0");
+			ElementSetName.FULL, "1.0.0");
 
 	private String capUrlGet;
 	private String capUrlSoap;

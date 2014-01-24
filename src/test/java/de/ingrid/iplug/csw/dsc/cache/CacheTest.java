@@ -26,7 +26,7 @@ public class CacheTest extends TestCase {
 	public void testPut() throws Exception {
 		
 		String id = "10453eff-59fa-42e9-a3e1-6e3cd99e2a05";
-		ElementSetName elementSetName = ElementSetName.BRIEF;
+		ElementSetName elementSetName = ElementSetName.FULL;
 		
 		this.putRecord(id, elementSetName);
 		
@@ -38,7 +38,7 @@ public class CacheTest extends TestCase {
 	public void testExists() throws Exception {
 
 		String id = "10453eff-59fa-42e9-a3e1-6e3cd99e2a05";
-		ElementSetName elementSetName = ElementSetName.BRIEF;
+		ElementSetName elementSetName = ElementSetName.FULL;
 		
 		this.putRecord(id, elementSetName);
 		
@@ -50,7 +50,7 @@ public class CacheTest extends TestCase {
 	public void testGet() throws Exception {
 
 		String id = "10453eff-59fa-42e9-a3e1-6e3cd99e2a05";
-		ElementSetName elementSetName = ElementSetName.BRIEF;
+		ElementSetName elementSetName = ElementSetName.FULL;
 		
 		this.putRecord(id, elementSetName);
 		
@@ -66,7 +66,7 @@ public class CacheTest extends TestCase {
 				"33462e89-e5ab-11c3-737d-b3a61366d028"
 		};
 		
-		this.putRecord(ids[0], ElementSetName.BRIEF);
+		this.putRecord(ids[0], ElementSetName.FULL);
 		this.putRecord(ids[1], ElementSetName.FULL);
 		
 		Cache cache = this.setupCache();
@@ -83,7 +83,7 @@ public class CacheTest extends TestCase {
 				"33462e89-e5ab-11c3-737d-b3a61366d028"
 		};
 		
-		this.putRecord(ids[0], ElementSetName.BRIEF);
+		this.putRecord(ids[0], ElementSetName.FULL);
 		this.putRecord(ids[1], ElementSetName.FULL);
 		
 		Cache cache = this.setupCache();
@@ -126,7 +126,7 @@ public class CacheTest extends TestCase {
 		};
 		
 		this.putRecord(ids[0], ElementSetName.FULL);
-		this.putRecord(ids[1], ElementSetName.BRIEF);
+		this.putRecord(ids[1], ElementSetName.FULL);
 		
 		Cache cache = this.setupCache();
 		cache.removeAllRecords();
@@ -137,7 +137,7 @@ public class CacheTest extends TestCase {
 	public void testTransactionModifyWithCommit() throws Exception {
 
 		String id = "10453eff-59fa-42e9-a3e1-6e3cd99e2a05";
-		ElementSetName elementSetName = ElementSetName.BRIEF;
+		ElementSetName elementSetName = ElementSetName.FULL;
 
 		Cache cache = this.setupCache();
 		
@@ -174,7 +174,7 @@ public class CacheTest extends TestCase {
 	public void testTransactionModifyWithRollback() throws Exception {
 
 		String id = "10453eff-59fa-42e9-a3e1-6e3cd99e2a05";
-		ElementSetName elementSetName = ElementSetName.BRIEF;
+		ElementSetName elementSetName = ElementSetName.FULL;
 
 		Cache cache = this.setupCache();
 		
@@ -211,7 +211,7 @@ public class CacheTest extends TestCase {
 	public void testTransactionRemoveWithCommit() throws Exception {
 
 		String id = "10453eff-59fa-42e9-a3e1-6e3cd99e2a05";
-		ElementSetName elementSetName = ElementSetName.BRIEF;
+		ElementSetName elementSetName = ElementSetName.FULL;
 
 		Cache cache = this.setupCache();
 		
@@ -243,7 +243,7 @@ public class CacheTest extends TestCase {
 	public void testTransactionRemoveWithRollback() throws Exception {
 
 		String id = "10453eff-59fa-42e9-a3e1-6e3cd99e2a05";
-		ElementSetName elementSetName = ElementSetName.BRIEF;
+		ElementSetName elementSetName = ElementSetName.FULL;
 
 		Cache cache = this.setupCache();
 		
@@ -306,7 +306,7 @@ public class CacheTest extends TestCase {
 	
 	public void testGetOriginalResponse() throws Exception {
 		String id = "10453eff-59fa-42e9-a3e1-6e3cd99e2a05";
-		ElementSetName elementSetName = ElementSetName.BRIEF;
+		ElementSetName elementSetName = ElementSetName.FULL;
 
 		// create original set
 		CSWRecord originalRecord = TestUtil.getRecord(id, elementSetName, new GenericRecord());

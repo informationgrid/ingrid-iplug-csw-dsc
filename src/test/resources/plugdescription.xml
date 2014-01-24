@@ -1,5 +1,5 @@
 <de.ingrid.utils.PlugDescription>
-  <int>29</int>
+  <int>33</int>
   <string>IPLUG_ADMIN_GUI_PORT</string>
   <int>50023</int>
   <string>busUrls</string>
@@ -11,37 +11,98 @@
   <string>dataSourceDescription</string>
   <string>CswDsc iPlug Test</string>
   <string>md5Hash</string>
-  <string>/torwald-group:torwald-iplug-opensearch-test</string>
+  <string>/torwald-group:ingrid-iplug-csw-dsc-test-jm</string>
   <string>personName</string>
   <string>Sybille</string>
   <string>personMail</string>
   <string>test@test.de</string>
   <string>personPhone</string>
   <string>120-3466</string>
+  <string>CACHED_IN_DISK_STORE</string>
+  <boolean>false</boolean>
   <string>partner</string>
   <list>
     <string>bund</string>
   </list>
   <string>fields</string>
   <list>
-    <string>x1</string>
-    <string>y1</string>
-    <string>x2</string>
-    <string>y2</string>
-    <string>metaclass</string>
-    <string>t01_object.obj_class</string>
+    <string>metainfo</string>
     <string>incl_meta</string>
+    <string>summary</string>
+    <string>t04_search.type</string>
+    <string>t012_obj_adr.special_ref</string>
+    <string>location</string>
+    <string>t011_obj_serv_operation.invocation_name</string>
+    <string>t04_search.searchterm</string>
+    <string>t011_obj_geo.referencesystem_id</string>
+    <string>t011_obj_serv_operation.descr</string>
+    <string>t011_obj_serv_op_platform.platform</string>
+    <string>t021_communication.comm_type</string>
+    <string>t01_object.obj_id</string>
+    <string>t01_object.mod_time</string>
+    <string>t011_obj_geo_scale.scale</string>
+    <string>t011_obj_topic_cat.topic_category</string>
+    <string>t01_object.obj_class</string>
+    <string>object_access.restriction_key</string>
+    <string>y1</string>
+    <string>y2</string>
+    <string>object_access.terms_of_use</string>
+    <string>t011_obj_geo.special_base</string>
+    <string>t011_obj_geo_keyc.subject_cat</string>
+    <string>t01_object.dataset_alternate_name</string>
+    <string>t01_object.metadata_standard_version</string>
+    <string>t012_obj_adr.special_name</string>
+    <string>content</string>
+    <string>t0110_avail_format.name</string>
+    <string>t011_obj_serv_version.serv_version</string>
+    <string>capabilities_url</string>
+    <string>object_reference.obj_to_uuid</string>
+    <string>object_reference.special_ref</string>
+    <string>t011_obj_geo.datasource_uuid</string>
+    <string>t01_object.dataset_character_set</string>
+    <string>additional_html_1</string>
+    <string>t02_address.city</string>
+    <string>t02_address.institution</string>
+    <string>t02_address.street</string>
+    <string>x2</string>
+    <string>t02_address.lastname</string>
+    <string>x1</string>
+    <string>t011_obj_serv.history</string>
+    <string>title</string>
+    <string>t0110_avail_format.version</string>
+    <string>refering_service_uuid</string>
+    <string>t02_address.postcode</string>
+    <string>t01_object.ordering_instructions</string>
+    <string>t012_obj_adr.typ</string>
+    <string>t0110_avail_format.specification</string>
+    <string>t0113_dataset_reference.type</string>
+    <string>object_access.restriction_value</string>
+    <string>t011_obj_serv_op_para.name</string>
+    <string>t01_object.metadata_character_set</string>
+    <string>t011_obj_geo.method</string>
+    <string>t021_communication.comm_value</string>
+    <string>t011_obj_serv_op_connpoint.connect_point</string>
+    <string>t011_obj_serv_operation.name</string>
+    <string>spatial_system.referencesystem_value</string>
+    <string>t01_object.metadata_standard_name</string>
+    <string>t01_object.org_obj_id</string>
+    <string>t011_obj_serv.type</string>
+    <string>t017_url_ref.url_link</string>
+    <string>datatype</string>
+    <string>t02_address.country_code</string>
   </list>
   <string>workingDirectory</string>
   <string>./</string>
   <string>IPLUG_ADMIN_GUI_URL</string>
   <string>http://localhost:50023/</string>
   <string>proxyServiceUrl</string>
-  <string>/torwald-group:csw-dsc-test</string>
+  <string>/torwald-group:ingrid-iplug-csw-dsc-test-jm</string>
   <string>forceAddRankingOff</string>
   <boolean>false</boolean>
   <string>organisation</string>
   <string>Koordinierungsstelle PortalU</string>
+  <string>CACHE_ACTIVE</string>
+  <boolean>false</boolean>
   <string>isRecordLoader</string>
   <boolean>true</boolean>
   <string>provider</string>
@@ -56,16 +117,20 @@
   <string>Peters</string>
   <string>dataType</string>
   <list>
+    <string>metadata</string>
     <string>default</string>
-    <string>dsc_csw</string>
-    <string>csw</string>
+    <string>IDF_1.0</string>
   </list>
+  <string>CACHED_ELEMENTS</string>
+  <int>1000</int>
   <string>timeOut</string>
   <string>20000</string>
-  <string>personTitle</string>
-  <string></string>
   <string>iPlugClass</string>
   <string>de.ingrid.iplug.csw.dsc.CswDscSearchPlug</string>
+  <string>personTitle</string>
+  <string></string>
+  <string>CACHED_LIFE_TIME</string>
+  <int>10</int>
   <string>soapVersion</string>
   <string>12</string>
   <string>language</string>

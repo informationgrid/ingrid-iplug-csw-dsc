@@ -70,4 +70,5 @@ public class StringUtils {
         }
         return idcUuid.toString();
    }
+
 }

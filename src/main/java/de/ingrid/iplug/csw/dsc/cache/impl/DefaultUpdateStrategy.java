@@ -47,21 +47,8 @@ public class DefaultUpdateStrategy extends AbstractUpdateStrategy {
 		// fetch all BRIEF records to get the ids from the server
 		if (log.isInfoEnabled())
 			log.info("Fetching BRIEF records...");
-		List<String> allRecordIds = fetchRecords(client, ElementSetName.BRIEF,
+		List<String> allRecordIds = fetchRecords(client, ElementSetName.FULL,
 				filterSet, true);
-
-		// default update fetches all records in SUMMARY and FULL flavour
-		List<String> recordIdsToUpdate = allRecordIds;
-		
-		// fetch the SUMMARY record for each id to update
-		if (log.isInfoEnabled())
-			log.info("Fetching SUMMARY records...");
-		fetchRecords(client, ElementSetName.SUMMARY, recordIdsToUpdate, requestPause);
-
-		// fetch the FULL record for each id to update
-		if (log.isInfoEnabled())
-			log.info("Fetching FULL records...");
-		fetchRecords(client, ElementSetName.FULL, recordIdsToUpdate, requestPause);
 		
 		return allRecordIds;
 	}
