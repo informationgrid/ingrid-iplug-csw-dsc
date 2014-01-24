@@ -3,7 +3,6 @@
  */
 package de.ingrid.iplug.csw.dsc.analyze;
 
-import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -29,7 +28,7 @@ public class IsoCacheAnalyzer {
 
     protected static final Logger log = Logger.getLogger(IsoCacheAnalyzer.class);
 
-    public CoupledResources analyze(Cache cache) throws IOException {
+    public CoupledResources analyze(Cache cache) throws Exception {
 
         CoupledResources result = new CoupledResources();
 
@@ -83,7 +82,7 @@ public class IsoCacheAnalyzer {
         }
         resourceIdentifierMap.clear();
         resourceIdentifierMap = null;
-        
+
         coupledResourceIdentifier2ServiceRecords.clear();
         coupledResourceIdentifier2ServiceRecords = null;
 
