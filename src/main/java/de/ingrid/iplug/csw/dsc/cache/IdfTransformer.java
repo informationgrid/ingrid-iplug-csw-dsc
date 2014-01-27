@@ -23,8 +23,7 @@ import de.ingrid.utils.xml.XMLUtils;
 
 /**
  * Transforms all CSW records in a cache to the IDF format. Also includes
- * coupling information between dataset and service records, since they do not
- * exists in the original CSW response.
+ * coupling information between dataset and service records.
  * 
  * @author joachim
  * 
@@ -58,7 +57,7 @@ public class IdfTransformer {
             Document idfDoc = null;
 
             try {
-                SourceRecord sourceRecord = new CswCoupledResourcesCacheSourceRecord(cswRecord, coupledResources.getCoupledServices(cswRecord.getId()));
+                SourceRecord sourceRecord = new CswCoupledResourcesCacheSourceRecord(cswRecord, coupledResources.getCoupledRecords(cswRecord.getId()));
                 DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
                 DocumentBuilder docBuilder = dbf.newDocumentBuilder();
                 idfDoc = docBuilder.newDocument();

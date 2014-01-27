@@ -58,7 +58,10 @@ public class IsoCacheAnalyzer {
                         if (log.isDebugEnabled()) {
                             log.debug("Found coupling between dataset '" + datasetId + "' and service '" + record.getId() + "' by uuid reference.");
                         }
-                        result.addService(datasetId, record);
+                        // add dataset -> service record
+                        result.addCoupling(datasetId, record);
+                        // add service -> dataset record
+                        result.addCoupling(id, cache.getRecord(datasetId, ElementSetName.FULL));
                     }
                 }
             }
@@ -77,7 +80,10 @@ public class IsoCacheAnalyzer {
                 if (log.isDebugEnabled()) {
                     log.debug("Found coupling between dataset '" + datasetRecord.getId() + "' and service '" + serviceRecord.getId() + "' by resource identifier reference.");
                 }
-                result.addService(datasetRecord.getId(), serviceRecord);
+                // add dataset -> service record
+                result.addCoupling(datasetRecord.getId(), serviceRecord);
+                // add service -> dataset record
+                result.addCoupling(serviceRecord.getId(), datasetRecord);
             }
         }
         resourceIdentifierMap.clear();

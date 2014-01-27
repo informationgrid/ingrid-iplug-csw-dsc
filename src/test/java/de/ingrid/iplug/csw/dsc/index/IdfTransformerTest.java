@@ -19,6 +19,12 @@ public class IdfTransformerTest extends BaseIndexTestCase {
         assertNotNull("Dataset IDF record CF902C59-D50B-42F6-ADE4-F3CEC39A3259 exists in cache.", record);
         assertEquals("Dataset IDF record CF902C59-D50B-42F6-ADE4-F3CEC39A3259 has reference to service CFA384AB-028F-476B-AC95-EB75CCEFB296.", "CFA384AB-028F-476B-AC95-EB75CCEFB296",
                 xPathUtils.getString(n, "//idf:idfMdMetadata/idf:crossReference/@uuid"));
+        
+        record = cache.getRecord("CFA384AB-028F-476B-AC95-EB75CCEFB296", ElementSetName.IDF);
+        n = record.getOriginalResponse();
+        assertNotNull("Service IDF record CFA384AB-028F-476B-AC95-EB75CCEFB296 exists in cache.", record);
+        assertEquals("Service IDF record CFA384AB-028F-476B-AC95-EB75CCEFB296 has reference to dataset CF902C59-D50B-42F6-ADE4-F3CEC39A3259.", "CF902C59-D50B-42F6-ADE4-F3CEC39A3259",
+                xPathUtils.getString(n, "//idf:idfMdMetadata/idf:crossReference/@uuid"));
 
         record = cache.getRecord("0C12204F-5626-4A2E-94F4-514424F093A1", ElementSetName.IDF);
         n = record.getOriginalResponse();

@@ -47,7 +47,7 @@ var recordNode = cswRecord.getOriginalResponse();
 */
 var transformationDescriptions = [
 		{	"indexField":"t01_object.obj_id",
-			"tokenized":false,
+			"tokenized":true,
 			"xpath":"//gmd:fileIdentifier/gco:CharacterString"
 		}, 
 		{	"indexField":"title",
@@ -55,7 +55,7 @@ var transformationDescriptions = [
 			"xpath":"//gmd:identificationInfo//gmd:citation/gmd:CI_Citation/gmd:title/gco:CharacterString"
 		},
 		{	"indexField":"t01_object.org_obj_id",
-			"tokenized":false,
+			"tokenized":true,
 			"xpath":"//gmd:fileIdentifier/gco:CharacterString"
 		},
 		{	"indexField":"summary",

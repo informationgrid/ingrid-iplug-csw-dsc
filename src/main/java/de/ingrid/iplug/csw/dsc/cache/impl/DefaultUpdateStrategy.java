@@ -46,7 +46,7 @@ public class DefaultUpdateStrategy extends AbstractUpdateStrategy {
 
 		// fetch all BRIEF records to get the ids from the server
 		if (log.isInfoEnabled())
-			log.info("Fetching BRIEF records...");
+			log.info("Fetching records...");
 		List<String> allRecordIds = fetchRecords(client, ElementSetName.FULL,
 				filterSet, true);
 		

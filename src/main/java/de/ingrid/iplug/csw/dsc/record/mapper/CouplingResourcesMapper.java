@@ -47,28 +47,43 @@ public class CouplingResourcesMapper implements IIdfMapper {
         if (coupledResources != null) {
             DOMUtils domUtils = new DOMUtils(doc, xPathUtils, nsContext);
             IdfElement mdMetadata = domUtils.getElement(doc, "/idf:html/idf:body/idf:idfMdMetadata");
-            for (CSWRecord serviceRecord : coupledResources) {
-                Node n = serviceRecord.getOriginalResponse();
-                String serviceType = xPathUtils.getString(n, "//srv:serviceType/gco:LocalName");
-                NodeList operationNodes = xPathUtils.getNodeList(n, "//srv:containsOperations/srv:SV_OperationMetadata");
-                for (int i = 0; i < operationNodes.getLength(); i++) {
-                    Node operationNode = operationNodes.item(i);
-                    String operationName = xPathUtils.getString(operationNode, "srv:operationName/gco:CharacterString");
-                    String operationServiceUrl = xPathUtils.getString(operationNode, "srv:connectPoint/gmd:CI_OnlineResource/gmd:linkage/gmd:URL");
-                    if (operationName.equalsIgnoreCase("getcapabilities")) {
-                        IdfElement crossReference = mdMetadata.addElement("idf:crossReference");
-                        crossReference.addAttribute("direction", "IN").addAttribute("uuid", serviceRecord.getId()).addAttribute("orig-uuid", serviceRecord.getId());
-                        crossReference.addElement("idf:objectName").addText(xPathUtils.getString(n, "//gmd:identificationInfo/*/gmd:citation/gmd:CI_Citation/gmd:title/gco:CharacterString"));
-                        crossReference.addElement("idf:objectType").addText("3");
-                        crossReference.addElement("idf:description").addText(xPathUtils.getString(n, "//gmd:identificationInfo/*/gmd:abstract/gco:CharacterString"));
-                        crossReference.addElement("idf:serviceType").addText(serviceType);
-                        crossReference.addElement("idf:serviceOperation").addText(operationName);
-                        crossReference.addElement("idf:serviceUrl").addText(operationServiceUrl);
+            for (CSWRecord coupledRecord : coupledResources) {
+                // check for coupling
+                if (isServiceRecord(coupledRecord)) {
+                    Node coupledResourceNode = coupledRecord.getOriginalResponse();
+                    String serviceType = xPathUtils.getString(coupledResourceNode, "//srv:serviceType/gco:LocalName");
+                    NodeList operationNodes = xPathUtils.getNodeList(coupledResourceNode, "//srv:containsOperations/srv:SV_OperationMetadata");
+                    for (int i = 0; i < operationNodes.getLength(); i++) {
+                        Node operationNode = operationNodes.item(i);
+                        String operationName = xPathUtils.getString(operationNode, "srv:operationName/gco:CharacterString");
+                        String operationServiceUrl = xPathUtils.getString(operationNode, "srv:connectPoint/gmd:CI_OnlineResource/gmd:linkage/gmd:URL");
+                        if (operationName.equalsIgnoreCase("getcapabilities")) {
+                            IdfElement crossReference = mdMetadata.addElement("idf:crossReference");
+                            crossReference.addAttribute("direction", "IN").addAttribute("uuid", coupledRecord.getId()).addAttribute("orig-uuid", coupledRecord.getId());
+                            crossReference.addElement("idf:objectName").addText(xPathUtils.getString(coupledResourceNode, "//gmd:identificationInfo/*/gmd:citation/gmd:CI_Citation/gmd:title/gco:CharacterString"));
+                            crossReference.addElement("idf:attachedToField").addAttribute("entry-id", "3600").addAttribute("list-id", "2000").addText("Gekoppelte Daten");
+                            crossReference.addElement("idf:objectType").addText("3");
+                            crossReference.addElement("idf:description").addText(xPathUtils.getString(coupledResourceNode, "//gmd:identificationInfo/*/gmd:abstract/gco:CharacterString"));
+                            crossReference.addElement("idf:serviceType").addText(serviceType);
+                            crossReference.addElement("idf:serviceOperation").addText(operationName);
+                            crossReference.addElement("idf:serviceUrl").addText(operationServiceUrl);
+                        }
                     }
+                } else {
+                    Node coupledResourceNode = coupledRecord.getOriginalResponse();
+                    IdfElement crossReference = mdMetadata.addElement("idf:crossReference");
+                    crossReference.addAttribute("direction", "OUT").addAttribute("uuid", coupledRecord.getId()).addAttribute("orig-uuid", coupledRecord.getId());
+                    crossReference.addElement("idf:objectName").addText(xPathUtils.getString(coupledResourceNode, "//gmd:identificationInfo/*/gmd:citation/gmd:CI_Citation/gmd:title/gco:CharacterString"));
+                    crossReference.addElement("idf:objectType").addText("1");
+                    crossReference.addElement("idf:attachedToField").addAttribute("entry-id", "3600").addAttribute("list-id", "2000").addText("Gekoppelte Daten");
+                    crossReference.addElement("idf:description").addText(xPathUtils.getString(coupledResourceNode, "//gmd:identificationInfo/*/gmd:abstract/gco:CharacterString"));
                 }
             }
-
         }
+    }
+
+    private boolean isServiceRecord(CSWRecord record) {
+        return xPathUtils.nodeExists(record.getOriginalResponse(), "//srv:serviceType");
     }
 
 }

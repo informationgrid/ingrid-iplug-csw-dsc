@@ -12,9 +12,7 @@ import de.ingrid.iplug.csw.dsc.cswclient.CSWRecord;
 
 /**
  * Represents a list of coupled resources of ISO metadata records. The coupling
- * relates dataset UUIDs to service records since this information is not
- * included within the ISO file format and must be analyzed across all records
- * of a catalog.
+ * relates record UUIDs to records.
  * 
  * 
  * @author joachim
@@ -24,18 +22,25 @@ public class CoupledResources {
 
     Map<String, List<CSWRecord>> coupling = new HashMap<String, List<CSWRecord>>();
 
-    public void addService(String datasetId, CSWRecord serviceRecord) {
+    public void addCoupling(String datasetId, CSWRecord record) {
         if (!coupling.containsKey(datasetId)) {
             List<CSWRecord> entry = new ArrayList<CSWRecord>();
             coupling.put(datasetId, entry);
         }
         List<CSWRecord> entry = coupling.get(datasetId);
-        if (!entry.contains(serviceRecord)) {
-            entry.add(serviceRecord);
+        boolean newCoupling = true;
+        for (CSWRecord r : entry) {
+            if (r.getId().equals(record.getId())) {
+                newCoupling = false;
+                break;
+            }
+        }
+        if (newCoupling) {
+            entry.add(record);
         }
     }
 
-    public List<CSWRecord> getCoupledServices(String datasetId) {
+    public List<CSWRecord> getCoupledRecords(String datasetId) {
         return coupling.get(datasetId);
     }
 
