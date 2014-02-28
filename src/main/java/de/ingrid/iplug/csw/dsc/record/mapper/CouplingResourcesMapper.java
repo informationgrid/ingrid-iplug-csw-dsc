@@ -12,7 +12,9 @@ import org.w3c.dom.Document;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 
+import de.ingrid.iplug.csw.dsc.cache.Cache;
 import de.ingrid.iplug.csw.dsc.cswclient.CSWRecord;
+import de.ingrid.iplug.csw.dsc.cswclient.constants.ElementSetName;
 import de.ingrid.iplug.csw.dsc.om.CswCoupledResourcesCacheSourceRecord;
 import de.ingrid.iplug.csw.dsc.om.SourceRecord;
 import de.ingrid.iplug.csw.dsc.tools.DOMUtils;
@@ -42,15 +44,17 @@ public class CouplingResourcesMapper implements IIdfMapper {
         }
 
         @SuppressWarnings("unchecked")
-        List<CSWRecord> coupledResources = (List<CSWRecord>) record.get(CswCoupledResourcesCacheSourceRecord.COUPLED_RESOURCES);
+        List<String> coupledResourceIds = (List<String>) record.get(CswCoupledResourcesCacheSourceRecord.COUPLED_RESOURCES);
+        Cache cache = (Cache) record.get(CswCoupledResourcesCacheSourceRecord.CACHE);
 
-        if (coupledResources != null) {
+        if (coupledResourceIds != null) {
             DOMUtils domUtils = new DOMUtils(doc, xPathUtils, nsContext);
             IdfElement mdMetadata = domUtils.getElement(doc, "/idf:html/idf:body/idf:idfMdMetadata");
-            for (CSWRecord coupledRecord : coupledResources) {
+            for (String coupledRecordId : coupledResourceIds) {
+                CSWRecord coupledRecord = cache.getRecord(coupledRecordId, ElementSetName.FULL);
                 // check for coupling
-                if (isServiceRecord(coupledRecord)) {
-                    Node coupledResourceNode = coupledRecord.getOriginalResponse();
+                Node coupledResourceNode = coupledRecord.getOriginalResponse();
+                if (isServiceRecordDocument(coupledResourceNode)) {
                     String serviceType = xPathUtils.getString(coupledResourceNode, "//srv:serviceType/gco:LocalName");
                     NodeList operationNodes = xPathUtils.getNodeList(coupledResourceNode, "//srv:containsOperations/srv:SV_OperationMetadata");
                     for (int i = 0; i < operationNodes.getLength(); i++) {
@@ -59,7 +63,7 @@ public class CouplingResourcesMapper implements IIdfMapper {
                         String operationServiceUrl = xPathUtils.getString(operationNode, "srv:connectPoint/gmd:CI_OnlineResource/gmd:linkage/gmd:URL");
                         if (operationName.equalsIgnoreCase("getcapabilities")) {
                             IdfElement crossReference = mdMetadata.addElement("idf:crossReference");
-                            crossReference.addAttribute("direction", "IN").addAttribute("uuid", coupledRecord.getId()).addAttribute("orig-uuid", coupledRecord.getId());
+                            crossReference.addAttribute("direction", "IN").addAttribute("uuid", coupledRecordId).addAttribute("orig-uuid", coupledRecordId);
                             crossReference.addElement("idf:objectName").addText(xPathUtils.getString(coupledResourceNode, "//gmd:identificationInfo/*/gmd:citation/gmd:CI_Citation/gmd:title/gco:CharacterString"));
                             crossReference.addElement("idf:attachedToField").addAttribute("entry-id", "3600").addAttribute("list-id", "2000").addText("Gekoppelte Daten");
                             crossReference.addElement("idf:objectType").addText("3");
@@ -70,9 +74,8 @@ public class CouplingResourcesMapper implements IIdfMapper {
                         }
                     }
                 } else {
-                    Node coupledResourceNode = coupledRecord.getOriginalResponse();
                     IdfElement crossReference = mdMetadata.addElement("idf:crossReference");
-                    crossReference.addAttribute("direction", "OUT").addAttribute("uuid", coupledRecord.getId()).addAttribute("orig-uuid", coupledRecord.getId());
+                    crossReference.addAttribute("direction", "OUT").addAttribute("uuid", coupledRecordId).addAttribute("orig-uuid", coupledRecordId);
                     crossReference.addElement("idf:objectName").addText(xPathUtils.getString(coupledResourceNode, "//gmd:identificationInfo/*/gmd:citation/gmd:CI_Citation/gmd:title/gco:CharacterString"));
                     crossReference.addElement("idf:objectType").addText("1");
                     crossReference.addElement("idf:attachedToField").addAttribute("entry-id", "3600").addAttribute("list-id", "2000").addText("Gekoppelte Daten");
@@ -82,8 +85,8 @@ public class CouplingResourcesMapper implements IIdfMapper {
         }
     }
 
-    private boolean isServiceRecord(CSWRecord record) {
-        return xPathUtils.nodeExists(record.getOriginalResponse(), "//srv:serviceType");
+    private boolean isServiceRecordDocument(Node node) {
+        return xPathUtils.nodeExists(node, "//srv:serviceType");
     }
 
 }

@@ -8,11 +8,9 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import de.ingrid.iplug.csw.dsc.cswclient.CSWRecord;
-
 /**
  * Represents a list of coupled resources of ISO metadata records. The coupling
- * relates record UUIDs to records.
+ * relates record UUIDs to coupled records UUIDs.
  * 
  * 
  * @author joachim
@@ -20,27 +18,27 @@ import de.ingrid.iplug.csw.dsc.cswclient.CSWRecord;
  */
 public class CoupledResources {
 
-    Map<String, List<CSWRecord>> coupling = new HashMap<String, List<CSWRecord>>();
+    Map<String, List<String>> coupling = new HashMap<String, List<String>>();
 
-    public void addCoupling(String datasetId, CSWRecord record) {
+    public void addCoupling(String datasetId, String recordId) {
         if (!coupling.containsKey(datasetId)) {
-            List<CSWRecord> entry = new ArrayList<CSWRecord>();
+            List<String> entry = new ArrayList<String>();
             coupling.put(datasetId, entry);
         }
-        List<CSWRecord> entry = coupling.get(datasetId);
+        List<String> entry = coupling.get(datasetId);
         boolean newCoupling = true;
-        for (CSWRecord r : entry) {
-            if (r.getId().equals(record.getId())) {
+        for (String r : entry) {
+            if (r.equals(recordId)) {
                 newCoupling = false;
                 break;
             }
         }
         if (newCoupling) {
-            entry.add(record);
+            entry.add(recordId);
         }
     }
 
-    public List<CSWRecord> getCoupledRecords(String datasetId) {
+    public List<String> getCoupledRecordIds(String datasetId) {
         return coupling.get(datasetId);
     }
 

@@ -57,7 +57,7 @@ public class IdfTransformer {
             Document idfDoc = null;
 
             try {
-                SourceRecord sourceRecord = new CswCoupledResourcesCacheSourceRecord(cswRecord, coupledResources.getCoupledRecords(cswRecord.getId()));
+                SourceRecord sourceRecord = new CswCoupledResourcesCacheSourceRecord(cswRecord, cache, coupledResources.getCoupledRecordIds(cswRecord.getId()));
                 DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
                 DocumentBuilder docBuilder = dbf.newDocumentBuilder();
                 idfDoc = docBuilder.newDocument();

@@ -32,8 +32,8 @@ public class IsoCacheAnalyzer {
 
         CoupledResources result = new CoupledResources();
 
-        Map<String, CSWRecord> coupledResourceIdentifier2ServiceRecords = new HashMap<String, CSWRecord>();
-        Map<String, CSWRecord> resourceIdentifierMap = new HashMap<String, CSWRecord>();
+        Map<String, String> coupledResourceIdentifier2ServiceRecords = new HashMap<String, String>();
+        Map<String, String> resourceIdentifierMap = new HashMap<String, String>();
 
         if (log.isInfoEnabled()) {
             log.info("Start analyzing " + cache.getCachedRecordIds().size() + " records for coupled resources.");
@@ -46,7 +46,7 @@ public class IsoCacheAnalyzer {
             // record resource identifiers
             String[] resourceIdentifiers = xPathUtils.getStringArray(n, "//gmd:identificationInfo/*/gmd:citation/*/gmd:identifier/*/gmd:code/gco:CharacterString");
             for (String resourceIdentifier : resourceIdentifiers) {
-                resourceIdentifierMap.put(resourceIdentifier, record);
+                resourceIdentifierMap.put(resourceIdentifier, record.getId());
             }
 
             // get coupled datasets for service records that are coupled over
@@ -59,9 +59,9 @@ public class IsoCacheAnalyzer {
                             log.debug("Found coupling between dataset '" + datasetId + "' and service '" + record.getId() + "' by uuid reference.");
                         }
                         // add dataset -> service record
-                        result.addCoupling(datasetId, record);
+                        result.addCoupling(datasetId, record.getId());
                         // add service -> dataset record
-                        result.addCoupling(id, cache.getRecord(datasetId, ElementSetName.FULL));
+                        result.addCoupling(id, cache.getRecord(datasetId, ElementSetName.FULL).getId());
                     }
                 }
             }
@@ -69,21 +69,21 @@ public class IsoCacheAnalyzer {
             String[] coupledResources = xPathUtils.getStringArray(n, "//srv:operatesOn[//srv:serviceType/gco:LocalName='view']/@xlink:href");
             if (coupledResources != null && coupledResources.length > 0) {
                 for (String coupledResource : coupledResources) {
-                    coupledResourceIdentifier2ServiceRecords.put(coupledResource, record);
+                    coupledResourceIdentifier2ServiceRecords.put(coupledResource, record.getId());
                 }
             }
         }
         for (String resourceIdentifier : resourceIdentifierMap.keySet()) {
-            CSWRecord datasetRecord = resourceIdentifierMap.get(resourceIdentifier);
-            CSWRecord serviceRecord = coupledResourceIdentifier2ServiceRecords.get(resourceIdentifier);
-            if (serviceRecord != null) {
+            String datasetRecordId = resourceIdentifierMap.get(resourceIdentifier);
+            String serviceRecordId = coupledResourceIdentifier2ServiceRecords.get(resourceIdentifier);
+            if (serviceRecordId != null) {
                 if (log.isDebugEnabled()) {
-                    log.debug("Found coupling between dataset '" + datasetRecord.getId() + "' and service '" + serviceRecord.getId() + "' by resource identifier reference.");
+                    log.debug("Found coupling between dataset '" + datasetRecordId + "' and service '" + serviceRecordId + "' by resource identifier reference.");
                 }
                 // add dataset -> service record
-                result.addCoupling(datasetRecord.getId(), serviceRecord);
+                result.addCoupling(datasetRecordId, serviceRecordId);
                 // add service -> dataset record
-                result.addCoupling(serviceRecord.getId(), datasetRecord);
+                result.addCoupling(serviceRecordId, datasetRecordId);
             }
         }
         resourceIdentifierMap.clear();
