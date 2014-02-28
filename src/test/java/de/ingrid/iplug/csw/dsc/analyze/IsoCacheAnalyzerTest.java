@@ -52,28 +52,28 @@ public class IsoCacheAnalyzerTest extends TestCase {
         CoupledResources result = isoCacheAnalyzer.analyze(cache);
 
         assertNull("Dataset 3B20D603-30D1-47D5-AC62-E10193CDE1D8 is coupled to service 33462e89-e5ab-11c3-737d-b3a61366d028, but does not exist in cache.",
-                result.getCoupledRecords("3B20D603-30D1-47D5-AC62-E10193CDE1D8"));
+                result.getCoupledRecordIds("3B20D603-30D1-47D5-AC62-E10193CDE1D8"));
 
         assertEquals("Dataset CF902C59-D50B-42F6-ADE4-F3CEC39A3259 is coupled to one service.",1, 
-                result.getCoupledRecords("CF902C59-D50B-42F6-ADE4-F3CEC39A3259").size());
+                result.getCoupledRecordIds("CF902C59-D50B-42F6-ADE4-F3CEC39A3259").size());
 
         assertEquals("Dataset CF902C59-D50B-42F6-ADE4-F3CEC39A3259 is coupled to service CFA384AB-028F-476B-AC95-EB75CCEFB296 by uuid ref.", "CFA384AB-028F-476B-AC95-EB75CCEFB296", 
-                result.getCoupledRecords("CF902C59-D50B-42F6-ADE4-F3CEC39A3259").get(0).getId());
+                result.getCoupledRecordIds("CF902C59-D50B-42F6-ADE4-F3CEC39A3259").get(0));
         
         assertEquals("Dataset 486d9622-c29d-44e5-b878-44389740011 is coupled to one service.",1, 
-                result.getCoupledRecords("486d9622-c29d-44e5-b878-44389740011").size());
+                result.getCoupledRecordIds("486d9622-c29d-44e5-b878-44389740011").size());
         
         assertEquals("Dataset 486d9622-c29d-44e5-b878-44389740011 is coupled to service 77793F43-707A-4346-9A24-9F4E22213F54 by resource identifier.", "77793F43-707A-4346-9A24-9F4E22213F54",
-                result.getCoupledRecords("486d9622-c29d-44e5-b878-44389740011").get(0).getId());
+                result.getCoupledRecordIds("486d9622-c29d-44e5-b878-44389740011").get(0));
 
         assertEquals("Dataset 0C12204F-5626-4A2E-94F4-514424F093A1 is coupled to one service.",1, 
-                result.getCoupledRecords("0C12204F-5626-4A2E-94F4-514424F093A1").size());
+                result.getCoupledRecordIds("0C12204F-5626-4A2E-94F4-514424F093A1").size());
 
         assertEquals("Dataset 0C12204F-5626-4A2E-94F4-514424F093A1 is coupled to service 77793F43-707A-4346-9A24-9F4E22213F54 by uuid ref.", "77793F43-707A-4346-9A24-9F4E22213F54",
-                result.getCoupledRecords("0C12204F-5626-4A2E-94F4-514424F093A1").get(0).getId());
+                result.getCoupledRecordIds("0C12204F-5626-4A2E-94F4-514424F093A1").get(0));
 
         assertEquals("Service 77793F43-707A-4346-9A24-9F4E22213F54 is coupled to 2 existing datasets", 2,
-                result.getCoupledRecords("77793F43-707A-4346-9A24-9F4E22213F54").size());
+                result.getCoupledRecordIds("77793F43-707A-4346-9A24-9F4E22213F54").size());
         
         
     }
