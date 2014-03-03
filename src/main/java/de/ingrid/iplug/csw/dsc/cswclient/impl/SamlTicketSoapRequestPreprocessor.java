@@ -1,16 +1,13 @@
 package de.ingrid.iplug.csw.dsc.cswclient.impl;
 
-import javax.xml.soap.SOAPFactory;
-import javax.xml.soap.SOAPHeader;
-import javax.xml.soap.SOAPMessage;
-
+import org.apache.axiom.om.impl.llom.util.AXIOMUtil;
+import org.apache.axis2.client.ServiceClient;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
 import de.ingrid.iplug.csw.dsc.cswclient.CSWRequestPreprocessor;
-import de.ingrid.iplug.csw.dsc.tools.StringUtils;
 
-public class SamlTicketSoapRequestPreprocessor implements CSWRequestPreprocessor<SOAPMessage> {
+public class SamlTicketSoapRequestPreprocessor implements CSWRequestPreprocessor<ServiceClient> {
 
     final static Log log = LogFactory.getLog(SamlTicketSoapRequestPreprocessor.class);
 
@@ -19,7 +16,7 @@ public class SamlTicketSoapRequestPreprocessor implements CSWRequestPreprocessor
     private SamlTicketProvider samlTicketProvider = null;
 
     @Override
-    public SOAPMessage process(SOAPMessage param) {
+    public ServiceClient process(ServiceClient param) {
         String samlTicket = samlTicketProvider.get();
         if (log.isDebugEnabled()) {
             log.debug("Got SAML Ticket: " + samlTicket);
@@ -28,11 +25,8 @@ public class SamlTicketSoapRequestPreprocessor implements CSWRequestPreprocessor
         try {
 
             soapHeaderTemplate = soapHeaderTemplate.replaceAll("\\$\\{SAML_TICKET\\}", samlTicket);
-            SOAPHeader header = param.getSOAPPart().getEnvelope().getHeader();
-            if (header == null) {
-                header = param.getSOAPPart().getEnvelope().addHeader();
-            }
-            header.addChildElement((SOAPFactory.newInstance()).createElement(StringUtils.stringToDocument(soapHeaderTemplate).getDocumentElement()));
+
+            param.addHeader(AXIOMUtil.stringToOM(soapHeaderTemplate));
         } catch (Exception e) {
             log.error("Error adding SOAP header.", e);
         }

@@ -8,20 +8,22 @@ import java.util.ArrayList;
 import java.util.List;
 
 import javax.xml.namespace.QName;
-import javax.xml.soap.MessageFactory;
-import javax.xml.soap.SOAPBody;
-import javax.xml.soap.SOAPConnection;
-import javax.xml.soap.SOAPConnectionFactory;
-import javax.xml.soap.SOAPConstants;
-import javax.xml.soap.SOAPElement;
-import javax.xml.soap.SOAPEnvelope;
-import javax.xml.soap.SOAPException;
-import javax.xml.soap.SOAPFactory;
-import javax.xml.soap.SOAPMessage;
-import javax.xml.soap.SOAPPart;
+import javax.xml.stream.XMLStreamException;
 
+import org.apache.axiom.om.OMAbstractFactory;
+import org.apache.axiom.om.OMElement;
+import org.apache.axiom.om.OMFactory;
+import org.apache.axiom.om.OMNamespace;
+import org.apache.axis2.AxisFault;
+import org.apache.axis2.addressing.EndpointReference;
+import org.apache.axis2.client.Options;
+import org.apache.axis2.client.ServiceClient;
+import org.apache.axis2.context.ConfigurationContext;
+import org.apache.axis2.context.ConfigurationContextFactory;
+import org.apache.axis2.util.XMLUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.springframework.core.io.ClassPathResource;
 import org.w3c.dom.Document;
 
 import de.ingrid.iplug.csw.dsc.cswclient.CSWConstants;
@@ -45,7 +47,7 @@ public class SoapRequest implements CSWRequest {
 
     final protected static Log log = LogFactory.getLog(CSWRequest.class);
 
-    private CSWRequestPreprocessor<SOAPMessage> preProcessor = null;
+    private CSWRequestPreprocessor<ServiceClient> preProcessor = null;
 
     /**
      * CSWRequest implementation
@@ -58,30 +60,35 @@ public class SoapRequest implements CSWRequest {
     @Override
     public Document doGetCapabilitiesRequest(String serverURL) throws Exception {
 
-        SOAPMessage soapMessage = createSoapMessage();
-        SOAPPart soapPart = soapMessage.getSOAPPart();
+        // create the request
+        OMFactory fac = OMAbstractFactory.getOMFactory();
+        OMNamespace cswNs = fac.createOMNamespace(Namespace.CSW_2_0_2.getQName().getNamespaceURI(), Namespace.CSW_2_0_2
+                .getQName().getPrefix());
+        OMNamespace owsNs = fac.createOMNamespace(Namespace.OWS.getQName().getNamespaceURI(), Namespace.OWS.getQName()
+                .getPrefix());
 
-        // SOAP Envelope
-        SOAPEnvelope envelope = soapPart.getEnvelope();
-        envelope.addNamespaceDeclaration(Namespace.CSW_2_0_2.getQName().getPrefix(), Namespace.CSW_2_0_2.getQName().getNamespaceURI());
-        envelope.addNamespaceDeclaration(Namespace.OWS.getQName().getPrefix(), Namespace.OWS.getQName().getNamespaceURI());
-
-        // SOAP Body
-        SOAPBody soapBody = envelope.getBody();
-        SOAPElement method = soapBody.addChildElement(Operation.GET_CAPABILITIES.toString(), Namespace.CSW_2_0_2.getQName().getPrefix());
-        method.addAttribute(new QName("service"), CSWConstants.SERVICE_TYPE);
+        // create method
+        OMElement method = fac.createOMElement(Operation.GET_CAPABILITIES.toString(), cswNs);
+        method.addAttribute("service", CSWConstants.SERVICE_TYPE, null);
 
         // create AcceptVersions element
-        method.addChildElement("AcceptVersions", Namespace.OWS.getQName().getPrefix()).addChildElement("Version", Namespace.OWS.getQName().getPrefix()).addTextNode(CSWConstants.PREFERRED_VERSION);
+        OMElement acceptVersions = fac.createOMElement("AcceptVersions", owsNs);
+        OMElement version = fac.createOMElement("Version", owsNs);
+        version.setText(CSWConstants.PREFERRED_VERSION);
+        acceptVersions.addChild(version);
 
         // create AcceptFormats element
-        method.addChildElement("AcceptFormats", Namespace.OWS.getQName().getPrefix()).addChildElement("OutputFormat", Namespace.OWS.getQName().getPrefix()).addTextNode(OutputFormat.APPLICATION_XML.toString());
+        OMElement acceptFormats = fac.createOMElement("AcceptFormats", owsNs);
+        OMElement outputFormat = fac.createOMElement("OutputFormat", owsNs);
+        outputFormat.setText(OutputFormat.APPLICATION_XML.toString());
+        acceptFormats.addChild(outputFormat);
 
-        soapMessage.saveChanges();
+        method.addChild(acceptVersions);
+        method.addChild(acceptFormats);
 
         // send the request
         try {
-            return sendRequest(serverURL, soapMessage);
+            return sendRequest(serverURL, method);
         } catch (Exception e) {
             throw new RuntimeException(e);
         }
@@ -94,63 +101,67 @@ public class SoapRequest implements CSWRequest {
     @Override
     public Document doGetRecords(String serverURL, CSWQuery query) throws Exception {
 
-        SOAPMessage soapMessage = createSoapMessage();
-        SOAPPart soapPart = soapMessage.getSOAPPart();
+        // create the request
+        OMFactory fac = OMAbstractFactory.getOMFactory();
+        OMNamespace cswNs = fac.createOMNamespace(query.getSchema().getQName().getNamespaceURI(), query.getSchema()
+                .getQName().getPrefix());
 
-        // SOAP Envelope
-        SOAPEnvelope envelope = soapPart.getEnvelope();
-        envelope.addNamespaceDeclaration(query.getSchema().getQName().getPrefix(), query.getSchema().getQName().getNamespaceURI());
+        // create method
+        OMElement method = fac.createOMElement(Operation.GET_RECORDS.toString(), cswNs);
+        method.declareNamespace(Namespace.ISO.getQName().getNamespaceURI(), Namespace.ISO.getQName().getPrefix());
+        method.declareNamespace(Namespace.GML.getQName().getNamespaceURI(), Namespace.GML.getQName().getPrefix());
 
-        // SOAP Body
-        SOAPBody soapBody = envelope.getBody();
-        SOAPElement method = soapBody.addChildElement(Operation.GET_RECORDS.toString(), query.getSchema().getQName().getPrefix());
-        method.addNamespaceDeclaration(Namespace.ISO.getQName().getPrefix(), Namespace.ISO.getQName().getNamespaceURI());
-        method.addNamespaceDeclaration(Namespace.GML.getQName().getPrefix(), Namespace.GML.getQName().getNamespaceURI());
-        method.addAttribute(new QName("service"), CSWConstants.SERVICE_TYPE);
-        method.addAttribute(new QName("version"), query.getVersion());
-        method.addAttribute(new QName("outputFormat"), query.getOutputFormat().toString());
-        method.addAttribute(new QName("resultType"), query.getResultType().toString());
-        method.addAttribute(new QName("startPosition"), Integer.toString(query.getStartPosition()));
-        method.addAttribute(new QName("maxRecords"), Integer.toString(query.getMaxRecords()));
+        // add the default parameters
+        method.addAttribute("service", CSWConstants.SERVICE_TYPE, null);
+
+        // add the query specific parameters
+        method.addAttribute("version", query.getVersion(), null);
+        method.addAttribute("outputFormat", query.getOutputFormat().toString(), null);
+        method.addAttribute("resultType", query.getResultType().toString(), null);
+        method.addAttribute("startPosition", Integer.toString(query.getStartPosition()), null);
+        method.addAttribute("maxRecords", Integer.toString(query.getMaxRecords()), null);
 
         QName outputSchemaQN = query.getOutputSchema().getQName();
-        method.addNamespaceDeclaration(outputSchemaQN.getPrefix(), outputSchemaQN.getNamespaceURI());
+        method.declareNamespace(outputSchemaQN.getNamespaceURI(), outputSchemaQN.getPrefix());
         if (outputSchemaQN.getLocalPart().length() > 0)
-            method.addAttribute(new QName("outputSchema"), outputSchemaQN.getPrefix() + ":" + outputSchemaQN.getLocalPart());
+            method.addAttribute("outputSchema", outputSchemaQN.getPrefix() + ":" + outputSchemaQN.getLocalPart(), null);
         else
-            method.addAttribute(new QName("outputSchema"), outputSchemaQN.getNamespaceURI());
+            method.addAttribute("outputSchema", outputSchemaQN.getNamespaceURI(), null);
 
         // create Query element typename
-        SOAPElement queryElem = method.addChildElement("Query", query.getSchema().getQName().getPrefix());
-
+        OMElement queryElem = fac.createOMElement("Query", cswNs);
         // add typeNames attribute
         List<String> typeNames = new ArrayList<String>();
         for (TypeName typeName : query.getTypeNames()) {
             QName typeNameQN = typeName.getQName();
-            method.addNamespaceDeclaration(typeNameQN.getPrefix(), typeNameQN.getNamespaceURI());
+            method.declareNamespace(typeNameQN.getNamespaceURI(), typeNameQN.getPrefix());
             typeNames.add(typeNameQN.getPrefix() + ":" + typeNameQN.getLocalPart());
         }
         String typeNamesValue = StringUtils.join(typeNames.toArray(), ",");
-        queryElem.addAttribute(new QName("typeNames"), typeNamesValue);
+        queryElem.addAttribute("typeNames", typeNamesValue, null);
 
         // create ElementSetName element typename
-        queryElem.addChildElement("ElementSetName", query.getSchema().getQName().getPrefix()).setTextContent(query.getElementSetName().toString());
+        OMElement elementSetName = fac.createOMElement("ElementSetName", cswNs);
+        elementSetName.setText(query.getElementSetName().toString());
+        queryElem.addChild(elementSetName);
 
         // add the Filter
         if (query.getConstraint() != null) {
             // create Constraint
             // make sure the constraint element is only created when
             // we have a filter.
-            SOAPElement constraint = queryElem.addChildElement("Constraint", query.getSchema().getQName().getPrefix());
-            constraint.addAttribute(new QName("version"), query.getConstraintLanguageVersion());
-            constraint.addChildElement((SOAPFactory.newInstance()).createElement(query.getConstraint().getDocumentElement()));
+            OMElement constraint = fac.createOMElement("Constraint", cswNs);
+            constraint.addAttribute("version", query.getConstraintLanguageVersion(), null);
+            queryElem.addChild(constraint);
+            OMElement filter = XMLUtils.toOM(query.getConstraint().getDocumentElement());
+            constraint.addChild(filter);
         }
 
-        soapMessage.saveChanges();
+        method.addChild(queryElem);
 
         // send the request
         try {
-            return sendRequest(serverURL, soapMessage);
+            return sendRequest(serverURL, method);
         } catch (Exception e) {
             throw new RuntimeException(e);
         }
@@ -163,43 +174,47 @@ public class SoapRequest implements CSWRequest {
     @Override
     public Document doGetRecordById(String serverURL, CSWQuery query) throws Exception {
 
-        SOAPMessage soapMessage = createSoapMessage();
-        SOAPPart soapPart = soapMessage.getSOAPPart();
+        // create the request
+        OMFactory fac = OMAbstractFactory.getOMFactory();
+        OMNamespace cswNs = fac.createOMNamespace(query.getSchema().getQName().getNamespaceURI(), query.getSchema()
+                .getQName().getPrefix());
 
-        // SOAP Envelope
-        SOAPEnvelope envelope = soapPart.getEnvelope();
-        envelope.addNamespaceDeclaration(query.getSchema().getQName().getPrefix(), query.getSchema().getQName().getNamespaceURI());
+        // create method
+        OMElement method = fac.createOMElement(Operation.GET_RECORD_BY_ID.toString(), cswNs);
 
-        // SOAP Body
-        SOAPBody soapBody = envelope.getBody();
-        SOAPElement method = soapBody.addChildElement(Operation.GET_RECORD_BY_ID.toString(), Namespace.CSW_2_0_2.getQName().getPrefix());
-        method.addAttribute(new QName("service"), CSWConstants.SERVICE_TYPE);
-        method.addAttribute(new QName("version"), query.getVersion());
-        method.addAttribute(new QName("outputFormat"), query.getOutputFormat().toString());
+        // add the default parameters
+        method.addAttribute("service", CSWConstants.SERVICE_TYPE, null);
+
+        // add the query specific parameters
+        method.addAttribute("version", query.getVersion(), null);
+        method.addAttribute("outputFormat", query.getOutputFormat().toString(), null);
 
         QName outputSchemaQN = query.getOutputSchema().getQName();
-        method.addNamespaceDeclaration(outputSchemaQN.getPrefix(), outputSchemaQN.getNamespaceURI());
+        method.declareNamespace(outputSchemaQN.getNamespaceURI(), outputSchemaQN.getPrefix());
         if (outputSchemaQN.getLocalPart().length() > 0)
-            method.addAttribute(new QName("outputSchema"), outputSchemaQN.getPrefix() + ":" + outputSchemaQN.getLocalPart());
+            method.addAttribute("outputSchema", outputSchemaQN.getPrefix() + ":" + outputSchemaQN.getLocalPart(), null);
         else
-            method.addAttribute(new QName("outputSchema"), outputSchemaQN.getNamespaceURI());
+            method.addAttribute("outputSchema", outputSchemaQN.getNamespaceURI(), null);
 
         // create Id
-        method.addChildElement("Id", query.getSchema().getQName().getPrefix()).addTextNode(query.getId());
+        OMElement idNode = fac.createOMElement("Id", cswNs);
+        idNode.setText(query.getId());
+        method.addChild(idNode);
 
-        method.addChildElement("ElementSetName", query.getSchema().getQName().getPrefix()).addTextNode(query.getElementSetName().toString());
-
-        soapMessage.saveChanges();
+        // create ElementSetName element typename
+        OMElement elementSetName = fac.createOMElement("ElementSetName", cswNs);
+        elementSetName.setText(query.getElementSetName().toString());
+        method.addChild(elementSetName);
 
         // send the request
         try {
-            return sendRequest(serverURL, soapMessage);
+            return sendRequest(serverURL, method);
         } catch (Exception e) {
             throw new RuntimeException(e);
         }
     }
 
-    public void setPreProcessor(CSWRequestPreprocessor<SOAPMessage> preProcessor) {
+    public void setPreProcessor(CSWRequestPreprocessor<ServiceClient> preProcessor) {
         this.preProcessor = preProcessor;
     }
 
@@ -208,46 +223,89 @@ public class SoapRequest implements CSWRequest {
      */
 
     /**
+     * Create a soap client for the given server url
+     * 
+     * @param serverURL
+     * @return ServiceClient
+     * @throws AxisFault
+     */
+    protected ServiceClient createClient(String serverURL) throws AxisFault, Exception {
+        // set up the client
+        ConfigurationContext configContext = ConfigurationContextFactory
+                .createConfigurationContextFromFileSystem((new ClassPathResource("axis2.xml")).getURI().getPath());
+        ServiceClient serviceClient = new ServiceClient(configContext, null);
+
+        Options opts = new Options();
+        opts.setTo(new EndpointReference(serverURL));
+        opts.setProperty(org.apache.axis2.transport.http.HTTPConstants.CHUNKED, false);
+        opts.setProperty(org.apache.axis2.Constants.Configuration.CHARACTER_SET_ENCODING, "UTF-8");
+        /*
+         * opts.setProperty(org.apache.axis2.transport.http.HTTPConstants.HTTP_PROTOCOL_VERSION
+         * , org.apache.axis2.transport.http.HTTPConstants.HEADER_PROTOCOL_10);
+         */
+        opts.setSoapVersionURI(org.apache.axiom.soap.SOAP12Constants.SOAP_ENVELOPE_NAMESPACE_URI);
+        // opts.setSoapVersionURI(org.apache.axiom.soap.SOAP11Constants.SOAP_ENVELOPE_NAMESPACE_URI);
+        opts.setAction("urn:anonOutInOp");
+        serviceClient.setOptions(opts);
+
+        return serviceClient;
+    }
+
+    /**
      * Send the given request to the server.
      * 
      * @param serverURL
-     * @param soapRequest
+     * @param payload
      * @return Document
      * @throws Exception
      */
-    protected Document sendRequest(String serverURL, SOAPMessage soapRequest) throws Exception {
-
-        Document doc = null;
-
-        SOAPConnectionFactory soapConnectionFactory = SOAPConnectionFactory.newInstance();
-        SOAPConnection soapConnection = soapConnectionFactory.createConnection();
+    protected Document sendRequest(String serverURL, OMElement payload) throws Exception {
+        // set up the client
+        ServiceClient serviceClient;
+        try {
+            serviceClient = createClient(serverURL);
+        } catch (AxisFault e) {
+            throw new RuntimeException(e);
+        }
 
         // send the request
-        if (log.isDebugEnabled()) {
-            log.debug("Request SOAP Message: " + StringUtils.soapMessageTostring(soapRequest));
-        }
-
+        if (log.isDebugEnabled())
+            log.debug("Request: " + serializeElement(payload.cloneOMElement()));
+        OMElement result = null;
         if (preProcessor != null) {
-            preProcessor.process(soapRequest);
+            serviceClient = preProcessor.process(serviceClient);
         }
-
-        // Send SOAP Message to SOAP Server
-        SOAPMessage soapResponse = soapConnection.call(soapRequest, serverURL);
-
-        if (log.isDebugEnabled()) {
-            log.debug("Response SOAP Message: " + StringUtils.soapMessageTostring(soapResponse));
-        }
-
-        doc = soapResponse.getSOAPPart();
-        soapConnection.close();
-
+        result = serviceClient.sendReceive(payload);
+        if (log.isDebugEnabled())
+            log.debug("Response: " + serializeElement(result.cloneOMElement()));
+        Document doc = convertToDOM(result);
+        serviceClient.cleanupTransport();
+        serviceClient.cleanup();
+        serviceClient.getServiceContext().getConfigurationContext().terminate();
         return doc;
     }
 
-    private SOAPMessage createSoapMessage() throws SOAPException {
-        MessageFactory messageFactory = MessageFactory.newInstance(SOAPConstants.SOAP_1_2_PROTOCOL);
-        SOAPMessage soapMessage = messageFactory.createMessage();
-        return soapMessage;
+    /**
+     * Get a string representation for an OMElement
+     * 
+     * @param element
+     * @return String
+     * @throws XMLStreamException
+     */
+    protected String serializeElement(OMElement element) throws XMLStreamException {
+        return element.toStringWithConsume();
     }
 
+    /**
+     * Convert an OMElement to a w3c DOM Document TODO: possible performance
+     * bottleneck
+     * 
+     * @param element
+     * @return Document
+     * @throws Exception
+     */
+    protected Document convertToDOM(OMElement element) throws Exception {
+        String xmlString = serializeElement(element);
+        return StringUtils.stringToDocument(xmlString);
+    }
 }
