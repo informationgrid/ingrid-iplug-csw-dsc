@@ -53,6 +53,7 @@ public class CswDscDocumentProducer implements IDocumentProducer {
      */
     @Override
     public boolean hasNext() {
+        boolean result = false;
         try {
             if (tmpCache == null) {
                 try {
@@ -75,7 +76,7 @@ public class CswDscDocumentProducer implements IDocumentProducer {
                 }
             }
             if (recordSetProducer.hasNext()) {
-                return true;
+                result = true;
             } else {
                 // prevent runtime exception if the cache was not in transaction
                 // this can happen if the harvest process throws an exception and the
@@ -84,15 +85,24 @@ public class CswDscDocumentProducer implements IDocumentProducer {
                     tmpCache.commitTransaction();
                 }
                 tmpCache = null;
-                return false;
+                result = false;
             }
         } catch (Exception e) {
             log.error("Error obtaining information about a next record. Skip all records.", e);
             // make sure the tmp cache is released after exception occurs
             // otherwise the indexer will never "heal" from this exception
             tmpCache = null;
-            return false;
+            result = false;
+        } finally {
+            if (!result) {
+                tmpCache = null;
+                for (IRecordMapper mapper : recordMapperList) {
+                    mapper.cleanup();
+                }
+            }
+            
         }
+        return result;
     }
 
     /*

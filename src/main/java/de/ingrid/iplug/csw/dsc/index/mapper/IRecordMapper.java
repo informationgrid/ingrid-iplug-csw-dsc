@@ -26,5 +26,11 @@ public interface IRecordMapper {
      * @return
      */
     void map(SourceRecord record, Document doc) throws Exception;
+    
+    /**
+     * Clean up the mappers resources.
+     * 
+     */
+    void cleanup();
 
 }

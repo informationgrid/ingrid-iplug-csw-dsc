@@ -120,4 +120,11 @@ public class ScriptedDocumentMapper implements IRecordMapper {
     public void setCodelistService(CodeListService codelistService) {
         this.codelistService = codelistService;
     }
+
+    @Override
+    public void cleanup() {
+        // use a new script engine, try to avoid funny long term errors like INGRID-2350
+        compiledScript = null;
+        engine = null;
+    }
 }

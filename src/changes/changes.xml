@@ -5,6 +5,12 @@
     <author email="joachim@wemove.com">Joachim Müller</author>
   </properties>
   <body>
+    <release version="3.5.0" date="2014-xx-xx" description="Release InGrid 3.5.0">
+      <action type="update" dev="wemove" issue="INGRID-2350">
+          Remove script engine after indexing process to avoid long term javascript errors.
+      </action>
+    </release>
+
     <release version="3.4.0" date="2014-02-25" description="Release InGrid 3.4.0">
       <action type="add" dev="wemove" issue="REDMINE-136">
           Added handling of coupled resources and pre generate IDF records while indexing.
