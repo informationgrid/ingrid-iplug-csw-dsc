@@ -5,9 +5,12 @@
     <author email="joachim@wemove.com">Joachim Müller</author>
   </properties>
   <body>
-    <release version="3.5.0" date="2014-xx-xx" description="Release InGrid 3.5.0">
+    <release version="3.4.0.1" date="2014-04-29" description="Bugfix Release InGrid 3.4.0.1">
+      <action type="update" dev="wemove">
+          Improve robustness of analyzing coupled resources in case of empty xml attributes.
+      </action>
       <action type="update" dev="wemove" issue="INGRID-2350">
-          Remove script engine after indexing process to avoid long term javascript errors.
+          Reinitialize script engine before every indexing process to avoid long term javascript errors.
       </action>
     </release>
 
