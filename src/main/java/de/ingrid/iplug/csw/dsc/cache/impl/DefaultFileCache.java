@@ -162,7 +162,7 @@ public class DefaultFileCache implements Cache, Serializable {
 	 * @return String
 	 */
 	protected String getRelativePath(String id, ElementSetName elementSetName) {
-		return this.encodeId(id).substring(0, 1);
+	    return this.encodeId(id).substring(0, 1);
 	}
 	
 	/**
@@ -268,9 +268,16 @@ public class DefaultFileCache implements Cache, Serializable {
 		if (!this.isInitialized())
 			initialize();
 		
-		String filePath = this.getAbsoluteFilename(id, elementSetName);
-		File file = new File(filePath);
-		return file.exists();
+		try {
+    		String filePath = this.getAbsoluteFilename(id, elementSetName);
+    		File file = new File(filePath);
+    		return file.exists();
+		} catch (Exception e) {
+		    if (log.isDebugEnabled()) {
+		        log.debug("Could not find {" +id+ "," + elementSetName.name() +"} in cache.");
+		    }
+		    return false;
+		}
 	}
 
 	@Override

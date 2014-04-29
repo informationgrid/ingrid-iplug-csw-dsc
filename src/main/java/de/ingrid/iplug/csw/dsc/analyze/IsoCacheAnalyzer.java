@@ -46,7 +46,10 @@ public class IsoCacheAnalyzer {
             // record resource identifiers
             String[] resourceIdentifiers = xPathUtils.getStringArray(n, "//gmd:identificationInfo/*/gmd:citation/*/gmd:identifier/*/gmd:code/gco:CharacterString");
             for (String resourceIdentifier : resourceIdentifiers) {
-                resourceIdentifierMap.put(resourceIdentifier, record.getId());
+                resourceIdentifier = resourceIdentifier.trim();
+                if (resourceIdentifier != null && resourceIdentifier.length() > 0) {
+                    resourceIdentifierMap.put(resourceIdentifier, record.getId());
+                }
             }
 
             // get coupled datasets for service records that are coupled over
@@ -54,7 +57,8 @@ public class IsoCacheAnalyzer {
             String[] coupledDatasets = xPathUtils.getStringArray(n, "//srv:operatesOn[//srv:serviceType/gco:LocalName='view']/@uuidref");
             if (coupledDatasets != null && coupledDatasets.length > 0) {
                 for (String datasetId : coupledDatasets) {
-                    if (cache.isCached(datasetId, ElementSetName.FULL)) {
+                    datasetId = datasetId.trim();
+                    if (datasetId != null && datasetId.length() > 0 && cache.isCached(datasetId, ElementSetName.FULL)) {
                         if (log.isDebugEnabled()) {
                             log.debug("Found coupling between dataset '" + datasetId + "' and service '" + record.getId() + "' by uuid reference.");
                         }
@@ -69,7 +73,10 @@ public class IsoCacheAnalyzer {
             String[] coupledResources = xPathUtils.getStringArray(n, "//srv:operatesOn[//srv:serviceType/gco:LocalName='view']/@xlink:href");
             if (coupledResources != null && coupledResources.length > 0) {
                 for (String coupledResource : coupledResources) {
-                    coupledResourceIdentifier2ServiceRecords.put(coupledResource, record.getId());
+                    coupledResource = coupledResource.trim();
+                    if (coupledResource != null && coupledResource.length() > 0) {
+                        coupledResourceIdentifier2ServiceRecords.put(coupledResource, record.getId());
+                    }
                 }
             }
         }
