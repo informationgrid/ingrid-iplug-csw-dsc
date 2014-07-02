@@ -889,7 +889,11 @@ function addToDoc(field, content, tokenized) {
 		if (log.isDebugEnabled()) {
 			log.debug("Add '" + field + "'='" + content + "' to lucene index");
 		}
-		content = (content+"").trim();
+		try {
+			content = (content+"").trim();
+		} catch (e) {
+			log.error("Could not execut trim() on '" + content + "' (Type: "+ (typeof content) +"). Exception: " + e.message);
+	    }
 		var analyzed = Field.Index.ANALYZED;
 		if (!tokenized) analyzed = Field.Index.NOT_ANALYZED;
 		document.add(new Field(field, content, Field.Store.YES, analyzed));
