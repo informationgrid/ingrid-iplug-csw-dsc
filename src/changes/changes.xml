@@ -5,6 +5,12 @@
     <author email="joachim@wemove.com">Joachim Müller</author>
   </properties>
   <body>
+    <release version="3.4.0.2" date="2014-08-04" description="Bugfix Release InGrid 3.4.0.2">
+      <action type="update" dev="wemove" issue="INGRID-2350">
+          Fall back to regular expression based trimming if trim() is not defined.
+      </action>
+    </release>
+
     <release version="3.4.0.1" date="2014-04-29" description="Bugfix Release InGrid 3.4.0.1">
       <action type="update" dev="wemove">
           Improve robustness of analyzing coupled resources in case of empty xml attributes.

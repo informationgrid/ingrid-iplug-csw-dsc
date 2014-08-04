@@ -887,13 +887,19 @@ function addCoupledServices() {
 function addToDoc(field, content, tokenized) {
 	if (typeof content != "undefined" && content != null) {
 		if (log.isDebugEnabled()) {
-			log.debug("Add '" + field + "'='" + content + "' to lucene index");
+		  log.debug("Add '" + field + "'='" + content + "' to lucene index");
 		}
-		try {
-			content = (content+"").trim();
-		} catch (e) {
-			log.error("Could not execut trim() on '" + content + "' (Type: "+ (typeof content) +"). Exception: " + e.message);
-	    }
+
+		// try to fix trim related errors (INGRID-2350)
+        if (typeof(content.trim) === "function") {
+          content = content.trim();
+        } else {
+          if (log.isDebugEnabled()) {
+            log.debug("Could not execut trim() on '" + content + "' (Type: "+ (typeof content) +"). Trim() not found, fall back to regular expression based trimming.");
+          }
+          content = (""+content).replace(/^\s+|\s+$/gm,'');
+        }
+
 		var analyzed = Field.Index.ANALYZED;
 		if (!tokenized) analyzed = Field.Index.NOT_ANALYZED;
 		document.add(new Field(field, content, Field.Store.YES, analyzed));
