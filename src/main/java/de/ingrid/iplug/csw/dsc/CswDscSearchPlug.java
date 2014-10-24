@@ -12,6 +12,9 @@ import org.apache.lucene.document.Document;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.tngtech.configbuilder.ConfigBuilder;
+
+import de.ingrid.admin.JettyStarter;
 import de.ingrid.admin.search.IngridIndexSearcher;
 import de.ingrid.iplug.HeartBeatPlug;
 import de.ingrid.iplug.IPlugdescriptionFieldFilter;
@@ -47,6 +50,8 @@ public class CswDscSearchPlug extends HeartBeatPlug implements IRecordLoader {
 
     private final IngridIndexSearcher _indexSearcher;
 
+    public static Configuration conf;
+	
     @Autowired
     public CswDscSearchPlug(final IngridIndexSearcher indexSearcher, IPlugdescriptionFieldFilter[] fieldFilters, IMetadataInjector[] injector, IPreProcessor[] preProcessors, IPostProcessor[] postProcessors) throws IOException {
         super(60000, new PlugDescriptionFieldFilters(fieldFilters), injector, preProcessors, postProcessors);
@@ -171,4 +176,8 @@ public class CswDscSearchPlug extends HeartBeatPlug implements IRecordLoader {
         document.put(ConfigurationKeys.RESPONSE_KEY_IDF_RECORD, r);
     }
 
+    public static void main(String[] args) throws Exception {
+        conf = new ConfigBuilder<Configuration>(Configuration.class).withCommandLineArgs(args).build();
+        new JettyStarter( conf );
+    }
 }
