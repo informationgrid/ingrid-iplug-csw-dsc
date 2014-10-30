@@ -34,7 +34,7 @@
             type        ="input"
             name        ="componentOptions"
             displayText ="Einstellungen fuer das iPlug."
-            target      ="adminPort"
+            target      ="adminPort">
             
             <comment displayText="" explanatoryText="Lokaler Port, unter dem die Administrationsoberfläche des iPlugs erreichbar sein soll."/>           
             <text property="localServerPort" displayText="Port für Adminoberfläche:" defaultValue="9667"/>
