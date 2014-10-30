@@ -33,7 +33,8 @@
     		ifTarget    ="setInstallProperty"
             type        ="input"
             name        ="componentOptions"
-            displayText ="Einstellungen fuer das iPlug.">
+            displayText ="Einstellungen fuer das iPlug."
+            target      ="adminPort"
             
             <comment displayText="" explanatoryText="Lokaler Port, unter dem die Administrationsoberfläche des iPlugs erreichbar sein soll."/>           
             <text property="localServerPort" displayText="Port für Adminoberfläche:" defaultValue="9667"/>

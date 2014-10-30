@@ -9,7 +9,7 @@
     <!-- set global properties for this build -->
     <property name="componentName"      value="${project.build.finalName}"/>
     <property name="xml-communication"  value="${installDir}/conf/communication.xml"/>
-    <property name="start-script"       value="${installDir}/start.sh"/>
+	<property name="config"             value="${installDir}/conf/config.override.properties"/>
 
     <!-- THIS PORPERTIES ARE NECESSARY FOR UPDATES -->
     <property name="libraryDir"         value="lib" />
@@ -42,8 +42,6 @@
         
         <mkdir dir="${installDir}/logs"/>
         <mkdir dir="${installDir}/webapp/WEB-INF/work"/>
-        
-        <replace file="${start-script}" token="@SERVER_PORT@" value="${localServerPort}"/>
     </target>
 
     <!--
@@ -65,8 +63,6 @@
             <patternset>
                 <include name="**/*.*"/>
                 <exclude name="${componentName}/webapp/WEB-INF/spring.xml" />
-                <exclude name="${componentName}/start.sh" />
-                <exclude name="${componentName}/conf/communication.xml" />
             </patternset>
         </unzip>
 
@@ -93,6 +89,15 @@
         <echo message="Patch from Version: ${oldVersion}" />
         <runtarget target="patch.doPatch"/>
 
+    </target>
+	
+	<target name="adminPort" description="Configure the admin port.">
+        <echo>Schreiben der Konfiguration
+        </echo>
+        <touch file="${config}"/>
+        <propertyfile file="${config}">
+            <entry key="jetty.port" value="${localServerPort}" />
+        </propertyfile>
     </target>
 
     <target name="startComponent">
