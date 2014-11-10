@@ -88,6 +88,7 @@ public class ScriptedDocumentMapper implements IRecordMapper {
             bindings.put("log", log);
             bindings.put("codelistService", codelistService);
             bindings.put("XPathUtils", xpathUtils);
+            bindings.put("javaVersion", System.getProperty( "java.version" ));
             
             if (compiledScript != null) {
                 compiledScript.eval(bindings);
