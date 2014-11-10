@@ -23,7 +23,7 @@
       <url>http://harrison.its-technidata.de/archiva/repository/ingrid-all</url>
     </repository>
   </repositories>
-  
+
   <dependencyManagement>
 	<dependencies>
 		<dependency>
@@ -132,7 +132,7 @@
     <dependency>
       <groupId>org.apache.axis2</groupId>
       <artifactId>axis2-kernel</artifactId>
-      <version>1.6.2</version>
+      <version>1.4.1</version>
       <exclusions>
         <exclusion>
           <groupId>javax.servlet</groupId>
@@ -141,19 +141,9 @@
       </exclusions>
     </dependency>
     <dependency>
-	    <groupId>org.apache.axis2</groupId>
-	    <artifactId>axis2</artifactId>
-	    <version>1.6.2</version>
-	</dependency>
-	<dependency>
-	    <groupId>org.apache.axis2</groupId>
-	    <artifactId>axis2-transport-local</artifactId>
-	    <version>1.6.2</version>
-	</dependency>
-    <dependency>
       <groupId>org.apache.axis2</groupId>
       <artifactId>axis2-jaxws</artifactId>
-      <version>1.6.2</version>
+      <version>1.4.1</version>
       <exclusions>
         <exclusion>
           <groupId>commons-io</groupId>
