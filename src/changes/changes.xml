@@ -1,10 +1,38 @@
 <?xml version="1.0" encoding="utf-8"?>
+<!--
+  **************************************************-
+  ingrid-iplug-csw-dsc:war
+  ==================================================
+  Copyright (C) 2014 wemove digital solutions GmbH
+  ==================================================
+  Licensed under the EUPL, Version 1.1 or – as soon they will be
+  approved by the European Commission - subsequent versions of the
+  EUPL (the "Licence");
+
+  You may not use this work except in compliance with the Licence.
+  You may obtain a copy of the Licence at:
+
+  http://ec.europa.eu/idabc/eupl5
+
+  Unless required by applicable law or agreed to in writing, software
+  distributed under the Licence is distributed on an "AS IS" basis,
+  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  See the Licence for the specific language governing permissions and
+  limitations under the Licence.
+  **************************************************#
+  -->
+
 <document>
   <properties>
     <title>Changes Ingrid iPlug CSW AP ISO 1.0 (ingrid-iplug-csw-dsc)</title>
     <author email="joachim@wemove.com">Joachim Müller</author>
   </properties>
   <body>
+    <release version="3.5-SNAPSHOT" date="2014-xx-xx" description="Release InGrid 3.5">
+        <action type="add" dev="wemove" issue="REDMINE-524">
+            Added license header to all source files for Open Source migration.
+        </action>
+    </release>
     <release version="3.4.0.2" date="2014-08-04" description="Bugfix Release InGrid 3.4.0.2">
       <action type="update" dev="wemove" issue="INGRID-2350">
           Fall back to regular expression based trimming if trim() is not defined.
@@ -99,7 +127,7 @@
       </action>
       <action type="update" dev="wemove" issue="INGRID-1885">
         Updated start.sh, which had an issue when being batch-invoked, deleted RSYNC which is no longer used, see https://dev.wemove.com/jira/browse/INGRID-1885
-      </action>	  
+      </action>
       <action type="fix" dev="wemove">
         Fix problem in start script. Heap memory settings were not set correctly.
       </action>
@@ -113,7 +141,7 @@
         Fix query problems if a stop word is part of the query (i.e. 'is').
       </action>
     </release>
-    
+
     <release version="3.1.0" date="2011-09-15" description="Release InGrid 3.1">
       <action type="update" dev="wemove" issue="INGRID-1962">
         Rework title and general content query analysis to better match the analysis of the index process.
@@ -127,10 +155,10 @@
       <action type="fix" issue="INGRID-1992">
         Changed logging behavior, so that not so many files will be created.
       </action>
-    </release>  
+    </release>
     <release version="3.0.1" date="2011-07-04" description="Add-Ons + Bugfixes for InGrid 3.0">
       <action type="update" issue="INGRID-1940">
-        Introduced new field "metainfo" in query for various control info to be handled by iBus / iPlugs. 
+        Introduced new field "metainfo" in query for various control info to be handled by iBus / iPlugs.
       </action>
       <action type="add" dev="wemove" issue="INGRID23-60">
         Allow multiple spatial systems ("Raumbezugssystem"), now 1:n association.

@@ -1,4 +1,26 @@
 <!--
+  **************************************************-
+  ingrid-iplug-csw-dsc:war
+  ==================================================
+  Copyright (C) 2014 wemove digital solutions GmbH
+  ==================================================
+  Licensed under the EUPL, Version 1.1 or – as soon they will be
+  approved by the European Commission - subsequent versions of the
+  EUPL (the "Licence");
+  
+  You may not use this work except in compliance with the Licence.
+  You may obtain a copy of the Licence at:
+  
+  http://ec.europa.eu/idabc/eupl5
+  
+  Unless required by applicable law or agreed to in writing, software
+  distributed under the Licence is distributed on an "AS IS" basis,
+  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  See the Licence for the specific language governing permissions and
+  limitations under the Licence.
+  **************************************************#
+  -->
+<!--
   ~ Licensed to the Apache Software Foundation (ASF) under one
   ~ or more contributor license agreements. See the NOTICE file
   ~ distributed with this work for additional information
@@ -42,7 +64,7 @@
     <!--To override repository/services you need to uncomment following parameter and value SHOULD be absolute file path.-->
     <!--ServicesDirectory only works on the following cases-->
     <!---File based configurator and in that case the value should be a file URL (http:// not allowed)-->
-    <!---When creating URL Based configurator with URL “file://”  -->
+    <!---When creating URL Based configurator with URL “file://�?  -->
     <!--- War based configurator with expanded case , -->
 
     <!--All the other scenarios it will be ignored.-->
