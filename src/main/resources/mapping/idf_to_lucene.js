@@ -70,6 +70,7 @@ var recordNode = cswRecord.getOriginalResponse();
 	  	        params: The parameters for the function additional to the recordNode 
 	  		            that is always the first parameter.
 	 tokenized: If set to false no tokenizing will take place before the value is put into the index.
+	 additionalTokenize: constant specifying additional method to tokenize value and write tokenized value to index
 */
 var transformationDescriptions = [
 		{	"indexField":"t01_object.obj_id",
@@ -225,7 +226,8 @@ var transformationDescriptions = [
 		},
 		// t011_obj_serv_op_connpoint
 		{	"indexField":"t011_obj_serv_op_connpoint.connect_point",
-			"xpath":"//gmd:identificationInfo//srv:containsOperations/srv:SV_OperationMetadata/srv:connectPoint/gmd:CI_OnlineResource/gmd:linkage/gmd:URL"
+			"xpath":"//gmd:identificationInfo//srv:containsOperations/srv:SV_OperationMetadata/srv:connectPoint/gmd:CI_OnlineResource/gmd:linkage/gmd:URL",
+			"additionalTokenize":"SPLIT_URL"
 		},
 		// t011_obj_serv_op_depends
 		{	"indexField":"t011_obj_serv_op_depends.depends_on",
@@ -492,7 +494,7 @@ for (var i in transformationDescriptions) {
 					}
 				}
 				if (hasValue(value)) {
-					addToDoc(t.indexField, value, tokenized);
+					addToDoc(t.indexField, value, tokenized, t.additionalTokenize);
 				}
 			}
 		} else {
@@ -514,7 +516,7 @@ for (var i in transformationDescriptions) {
 					}
 				}
 				if (hasValue(value)) {
-					addToDoc(t.indexField, value, tokenized);
+					addToDoc(t.indexField, value, tokenized, t.additionalTokenize);
 				}
 			}
 		}
@@ -910,7 +912,7 @@ function addCoupledServices() {
 
 
 
-function addToDoc(field, content, tokenized) {
+function addToDoc(field, content, tokenized, additionalTokenize) {
 	if (typeof content != "undefined" && content != null) {
 		if (log.isDebugEnabled()) {
 		  log.debug("Add '" + field + "'='" + content + "' to lucene index");
@@ -931,7 +933,30 @@ function addToDoc(field, content, tokenized) {
 		document.add(new Field(field, content, Field.Store.YES, analyzed));
 		document.add(new Field("content", content, Field.Store.NO, analyzed));
 		document.add(new Field("content", LuceneTools.filterTerm(content), Field.Store.NO, Field.Index.ANALYZED));
+
+        if (hasValue(additionalTokenize)) {
+          var newContent = doAdditionalTokenize(content, additionalTokenize);
+          if (hasValue(newContent) && newContent != content) {
+            document.add(new Field(field, newContent, Field.Store.YES, analyzed));
+            document.add(new Field("content", newContent, Field.Store.NO, analyzed));
+            document.add(new Field("content", LuceneTools.filterTerm(newContent), Field.Store.NO, Field.Index.ANALYZED));
+          }
+        }
 	}
+}
+
+function doAdditionalTokenize(content, additionalTokenize) {
+  if (hasValue(content)) {
+    if (additionalTokenize == "SPLIT_URL") {
+    	// split by "/" and "."
+        var newContent = ("" + content).split(/[.\/]/).join(' ');
+        if (log.isDebugEnabled()) {
+          log.debug("Additional tokenizing of '" + content + "' to '" + newContent + "'");
+        }
+        return newContent;
+    }
+  }
+  return content;
 }
 
 function addNumericToDoc(field, content) {
