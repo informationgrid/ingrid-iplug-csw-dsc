@@ -3,7 +3,7 @@
   <parent>
     <groupId>de.ingrid</groupId>
     <artifactId>ingrid-releases-pom</artifactId>
-    <version>3.5.0-SNAPSHOT-R304</version>
+    <version>3.5.0</version>
   </parent>
   <modelVersion>4.0.0</modelVersion>
   <groupId>de.ingrid</groupId>
@@ -25,40 +25,25 @@
   </repositories>
 
   <dependencyManagement>
-	<dependencies>
-		<dependency>
-			<groupId>org.springframework</groupId>
-			<artifactId>spring-beans</artifactId>
-			<version>4.0.0.RELEASE</version>
-		</dependency>
-		<dependency>
-	        <groupId>org.springframework</groupId>
-	        <artifactId>spring-core</artifactId>
-	        <version>4.0.0.RELEASE</version>
-     	</dependency>
-     	<dependency>
-	        <groupId>org.springframework</groupId>
-	        <artifactId>spring-context</artifactId>
-	        <version>4.0.0.RELEASE</version>
-     	</dependency>
-     	<dependency>
-	        <groupId>commons-logging</groupId>
-            <artifactId>commons-logging</artifactId>
-	        <version>1.1.1</version>
-     	</dependency>
-	</dependencies>
+    <dependencies>
+      <dependency>
+        <groupId>commons-logging</groupId>
+        <artifactId>commons-logging</artifactId>
+        <version>1.1.1</version>
+      </dependency>
+    </dependencies>
   </dependencyManagement>
   <dependencies>
-  	<dependency>
-	  <groupId>org.springframework</groupId>
-	  <artifactId>spring-context-support</artifactId>
-	  <version>4.0.0.RELEASE</version>
-	</dependency>
-	<dependency>
-	  <groupId>org.springframework</groupId>
-	  <artifactId>spring-tx</artifactId>
-	  <version>4.0.0.RELEASE</version>
-	</dependency>
+    <dependency>
+    <groupId>org.springframework</groupId>
+    <artifactId>spring-context-support</artifactId>
+    <version>4.0.0.RELEASE</version>
+  </dependency>
+  <dependency>
+    <groupId>org.springframework</groupId>
+    <artifactId>spring-tx</artifactId>
+    <version>4.0.0.RELEASE</version>
+  </dependency>
     <dependency>
       <groupId>de.ingrid</groupId>
       <artifactId>ingrid-utils</artifactId>
@@ -67,21 +52,19 @@
       <groupId>de.ingrid</groupId>
       <artifactId>ingrid-codelist-service</artifactId>
       <exclusions>
-      	<exclusion>
-      		<groupId>org.springframework</groupId>
-          	<artifactId>spring</artifactId>
-      	</exclusion>
+        <exclusion>
+          <groupId>org.springframework</groupId>
+            <artifactId>spring</artifactId>
+        </exclusion>
       </exclusions>
     </dependency>
     <dependency>
       <groupId>de.ingrid</groupId>
       <artifactId>ingrid-base-webapp</artifactId>
-      <version>4.0.0-SNAPSHOT</version>
     </dependency>
     <dependency>
       <groupId>de.ingrid</groupId>
       <artifactId>ingrid-base-webapp</artifactId>
-      <version>4.0.0-SNAPSHOT</version>
       <classifier>res</classifier>
       <type>zip</type>
     </dependency>

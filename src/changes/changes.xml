@@ -28,7 +28,7 @@
     <author email="joachim@wemove.com">Joachim Müller</author>
   </properties>
   <body>
-    <release version="3.5-SNAPSHOT" date="2014-xx-xx" description="Release InGrid 3.5">
+    <release version="3.5.0" date="2015-01-30" description="Release InGrid 3.5.0">
         <action type="add" dev="wemove" issue="REDMINE-591">
             Added additional tokenizing to index mapping, e.g. splitting URLs by "." and "/" to be able to search for URL elements.
         </action>
