@@ -33,9 +33,9 @@ import org.springframework.web.bind.annotation.SessionAttributes;
 
 import de.ingrid.admin.command.PlugdescriptionCommandObject;
 import de.ingrid.admin.controller.AbstractController;
+import de.ingrid.iplug.csw.dsc.CswDscSearchPlug;
 import de.ingrid.iplug.csw.dsc.webapp.object.CswConfiguration;
 import de.ingrid.iplug.csw.dsc.webapp.validation.CswParameterValidator;
-import de.ingrid.utils.PlugDescription;
 
 /**
  * Control the csw parameter page.
@@ -89,18 +89,7 @@ public class CswParameterController extends AbstractController {
     private void mapParamsToPD(CswConfiguration commandObject,
             PlugdescriptionCommandObject pdCommandObject) {
 
-        pdCommandObject.put("serviceUrl", commandObject.getServiceUrl());
-
-        pdCommandObject.setRankinTypes(true, false, false);
-
-        // add necessary fields so iBus actually will query us
-        // remove field first to prevent multiple equal entries
-        pdCommandObject.removeFromList(PlugDescription.FIELDS, "incl_meta");
-        pdCommandObject.addField("incl_meta");
-        pdCommandObject.removeFromList(PlugDescription.FIELDS, "t01_object.obj_class");
-        pdCommandObject.addField("t01_object.obj_class");
-        pdCommandObject.removeFromList(PlugDescription.FIELDS, "metaclass");
-        pdCommandObject.addField("metaclass");
+        CswDscSearchPlug.conf.serviceUrl= commandObject.getServiceUrl();
 
         // add required datatypes to PD
         // -> is added in GeneralController with forced added datatype!
