@@ -145,7 +145,7 @@ public abstract class AbstractUpdateStrategy implements UpdateStrategy {
 			filterSet.add(null);
 				
 		// variables for complete fetch process
-		int numTotal = 0;
+		// int numTotal = 0;
 		List<String> fetchedRecordIds = new CopyOnWriteArrayList<String>();
 
 		// iterate over all filters
@@ -204,7 +204,7 @@ public abstract class AbstractUpdateStrategy implements UpdateStrategy {
 
 			// collect record ids
 			fetchedRecordIds.addAll(currentFetchedRecordIds);
-			numTotal += currentFetchedRecordIds.size();
+			// numTotal += currentFetchedRecordIds.size();
 			filterIndex++;
 		}
 		return fetchedRecordIds;

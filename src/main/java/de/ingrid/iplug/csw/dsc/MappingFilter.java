@@ -37,7 +37,7 @@ import de.ingrid.iplug.IPlugdescriptionFieldFilter;
 public class MappingFilter implements IPlugdescriptionFieldFilter {
 
 	public boolean filter(Object object) {
-		String key = object.toString();
+		//String key = object.toString();
 /*
 		if ("rankingMul".equals(key) ||
 			"rankingAdd".equals(key) ||

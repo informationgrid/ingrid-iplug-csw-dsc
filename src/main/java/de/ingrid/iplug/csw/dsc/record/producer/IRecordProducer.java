@@ -27,7 +27,6 @@ package de.ingrid.iplug.csw.dsc.record.producer;
 
 import org.apache.lucene.document.Document;
 
-import de.ingrid.iplug.csw.dsc.cswclient.constants.ElementSetName;
 import de.ingrid.iplug.csw.dsc.om.SourceRecord;
 
 /**

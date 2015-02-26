@@ -30,7 +30,6 @@
 
     <!-- set global properties for this build -->
     <property name="componentName"      value="${project.build.finalName}"/>
-    <property name="xml-communication"  value="${installDir}/conf/communication.xml"/>
 	<property name="config"             value="${installDir}/conf/config.override.properties"/>
 
     <!-- THIS PORPERTIES ARE NECESSARY FOR UPDATES -->
@@ -84,7 +83,6 @@
         <unzip src="${antinstaller.jar}" dest=".">
             <patternset>
                 <include name="**/*.*"/>
-                <exclude name="${componentName}/webapp/WEB-INF/spring.xml" />
             </patternset>
         </unzip>
 
