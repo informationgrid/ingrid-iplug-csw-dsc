@@ -41,10 +41,12 @@ import java.util.regex.Pattern;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 
+import org.apache.commons.lang.exception.ExceptionUtils;
 import org.apache.commons.logging.Log;
 import org.w3c.dom.Document;
 import org.xml.sax.InputSource;
 
+import de.ingrid.iplug.csw.dsc.CswDscSearchPlug;
 import de.ingrid.iplug.csw.dsc.cache.Cache;
 import de.ingrid.iplug.csw.dsc.cache.ExecutionContext;
 import de.ingrid.iplug.csw.dsc.cache.UpdateStrategy;
@@ -196,8 +198,15 @@ public abstract class AbstractUpdateStrategy implements UpdateStrategy {
     					// process
     					currentFetchedRecordIds.addAll(processResult(result, doCache));
 					} catch (Exception e) {
-					    log.error("Error fetching records " + query.getStartPosition() + result.getNumberOfRecords() + "-" + query.getStartPosition() + result.getNumberOfRecords() + this.recordsPerCall + ". Skipping all following records for this filter from harvesting.");
-					    break;
+					    log.error("Error fetching records " + query.getStartPosition() + " - " + (query.getStartPosition() + this.recordsPerCall));
+					    log.error("Records fetched: " + result.getNumberOfRecords());
+					    log.error( ExceptionUtils.getStackTrace(e) );
+					    if (CswDscSearchPlug.conf.continueFetchOnError) {
+					    	log.error("Continue fetching following records (conf continueFetchOnError=true).");
+					    } else {
+					    	log.error("Skipping all following records for this filter from harvesting (conf continueFetchOnError=false).");
+						    break;					    	
+					    }
 					}
 				}
 			}
@@ -238,8 +247,8 @@ public abstract class AbstractUpdateStrategy implements UpdateStrategy {
 			CSWRecord record = null;
 			try {
 				record = client.getRecordById(query);
-				if (log.isInfoEnabled())
-					log.info("Fetched record: "+id+" "+record.getElementSetName() + " (" + cnt + "/" + max + ")");
+				if (log.isDebugEnabled())
+					log.debug("Fetched record: "+id+" "+record.getElementSetName() + " (" + cnt + "/" + max + ")");
 				cache.putRecord(record);
 			} catch (Exception e) {
 				log.error("Error fetching record '" + query.getId() + "'! Removing record from cache.", e);
@@ -269,8 +278,8 @@ public abstract class AbstractUpdateStrategy implements UpdateStrategy {
 		for (CSWRecord record : result.getRecordList()) {
 			String id = record.getId();
 
-			if (log.isInfoEnabled())
-				log.info("Fetched record: "+id+" "+record.getElementSetName());
+			if (log.isDebugEnabled())
+				log.debug("Fetched record: "+id+" "+record.getElementSetName());
 			if (fetchedRecordIds.contains(id)) {
 				log.warn("Duplicated id: "+id+". Overriding previous entry.");
 			}

@@ -50,6 +50,10 @@ public class Configuration implements IConfig {
     @DefaultValue("")
     public String serviceUrl;
 
+    @PropertyValue("continueFetchOnError")
+    @DefaultValue("false")
+    public Boolean continueFetchOnError;
+
     @Override
     public void initialize() {}
 
