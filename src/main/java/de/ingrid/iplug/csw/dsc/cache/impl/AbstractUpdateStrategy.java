@@ -63,11 +63,18 @@ public abstract class AbstractUpdateStrategy implements UpdateStrategy {
 
 	DocumentBuilder docBuilder = null;
 
-	// The time in msec the strategy pauses between requests to the CSW server.
+	/** The time in msec the strategy pauses between different requests to the CSW server. */
 	int requestPause = 1000;
 	
-	// The number of records the strategy requests at once during fetching of records.
+	/** The default number of records the strategy requests at once during fetching of records. */
 	int recordsPerCall = 10;
+
+	/** The default number of total fetching retries before ending the fetching process. */
+	int maxNumRetries = 50;
+	/** The default number of retries per request with increasing pause in between. */
+	int numRetriesPerRequest = 3;
+	/** The time to wait between retries in milliseconds. Is multiplied with the number of retries. */
+	int timeBetweenRetries = 1000;
 
 	
 	/**
@@ -158,7 +165,9 @@ public abstract class AbstractUpdateStrategy implements UpdateStrategy {
 						StringUtils.nodeToString(filter).replace("\n", "")+".");
 
 			// variables for current fetch process (current filter)
-			int numCurrentTotal = 0;
+			int numRecordsTotal = 0;
+			int numRecordsFetched = 0;
+			int numRetriesTotal = 0;
 			List<String> currentFetchedRecordIds = new ArrayList<String>();
 
 			// create the query
@@ -174,39 +183,80 @@ public abstract class AbstractUpdateStrategy implements UpdateStrategy {
 			// do first request
 			
 			CSWSearchResult result = client.getRecords(query);
-			numCurrentTotal = result.getNumberOfRecordsTotal();
+			numRecordsFetched += result.getNumberOfRecords();
+			numRecordsTotal = result.getNumberOfRecordsTotal();
 			if (log.isInfoEnabled())
-				log.info(numCurrentTotal+" record(s) from filter "+filterIndex+":");
+				log.info(numRecordsTotal+" record(s) from filter "+filterIndex+":");
 
-			if (numCurrentTotal > 0) {
+			if (numRecordsTotal > 0) {
 
 				// process
 				currentFetchedRecordIds.addAll(processResult(result, doCache));
 
-				while (result.getNumberOfRecords() > 0 && 
-						currentFetchedRecordIds.size() < numCurrentTotal) {
+				while (numRecordsFetched < numRecordsTotal) {
+
+					if (numRetriesTotal > this.maxNumRetries) {
+				    	log.error("Problems fetching records. Total number of retries reached (" + this.maxNumRetries +
+				    		" retries across various requests). We end fetching process for this filter.");
+					    break;
+					}
+
+					if (result == null) {
+						// problems fetching !
+					    if (CswDscSearchPlug.conf.continueFetchOnError) {
+							// fetching error occured but we should continue !
+					    	log.error("Continue fetching all following records for this filter for harvesting (conf continueFetchOnError=true).");
+					    } else {
+					    	log.error("Skipping all following records for this filter from harvesting (conf continueFetchOnError=false).");
+						    break;
+					    }
+					}
+
+					// generic pause between requests, set via spring
 					Thread.sleep(this.requestPause);
 
 					try {
     					// prepare next request
-    					query.setStartPosition(query.getStartPosition()
-    							+ result.getNumberOfRecords());
+						// Just for safety: get number of last fetched records from last result, if we have a result and records.
+						int numLastFetch = query.getMaxRecords();
+						if (result != null && (result.getNumberOfRecords() > 0)) {
+							numLastFetch = result.getNumberOfRecords();
+						}
+    					numRecordsFetched += numLastFetch;
+
+    					query.setStartPosition(query.getStartPosition() + numLastFetch);
+
     
-    					// do next request
-    					result = client.getRecords(query);
+    					// do next request, if problems retry with increasing pause in between 
+    					int numRetries = 0;
+    					while (true) {
+        					try {
+            					result = null;
+            					result = client.getRecords(query);
+            					break;
+
+        					} catch (Exception e) {
+        						if (numRetries == this.numRetriesPerRequest) {
+        						    log.error("Retried " + numRetries + "times ! We skip records " + query.getStartPosition() + " - " + query.getMaxRecords(), e);
+        							break;
+        						}
+        						numRetries++;
+        						int timeBetweenRetry = numRetries * this.timeBetweenRetries;
+    						    log.error("Error fetching records " + query.getStartPosition() + " - " + query.getMaxRecords() + ". We retry " +
+    						    		numRetries + ". time after " + timeBetweenRetry + "msec !", e);
+        						Thread.sleep(timeBetweenRetry);    							
+        					}
+    					}
+    					numRetriesTotal += numRetries;
+
     
     					// process
-    					currentFetchedRecordIds.addAll(processResult(result, doCache));
+    					if (result != null) {
+        					currentFetchedRecordIds.addAll(processResult(result, doCache));    						
+    					}
 					} catch (Exception e) {
-					    log.error("Error fetching records " + query.getStartPosition() + " - " + (query.getStartPosition() + this.recordsPerCall));
-					    log.error("Records fetched: " + result.getNumberOfRecords());
+					    log.error("Error processing records " + query.getStartPosition() + " - " + query.getMaxRecords());
 					    log.error( ExceptionUtils.getStackTrace(e) );
-					    if (CswDscSearchPlug.conf.continueFetchOnError) {
-					    	log.error("Continue fetching following records (conf continueFetchOnError=true).");
-					    } else {
-					    	log.error("Skipping all following records for this filter from harvesting (conf continueFetchOnError=false).");
-						    break;					    	
-					    }
 					}
 				}
 			}
