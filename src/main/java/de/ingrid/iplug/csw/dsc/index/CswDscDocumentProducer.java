@@ -135,8 +135,9 @@ public class CswDscDocumentProducer implements IDocumentProducer {
     @Override
     public Document next() {
         Document doc = new Document();
+        SourceRecord record = null;
         try {
-            SourceRecord record = recordSetProducer.next();
+            record = recordSetProducer.next();
             for (IRecordMapper mapper : recordMapperList) {
                 long start = 0;
                 if (log.isDebugEnabled()) {
@@ -148,8 +149,13 @@ public class CswDscDocumentProducer implements IDocumentProducer {
                 }
             }
             return doc;
-        } catch (Exception e) {
-            log.error("Error obtaining next record.", e);
+        } catch (Throwable t) {
+        	if (record == null) {
+                log.error("Error obtaining next record.", t);
+        	} else {
+                log.error("Error mapping record.", t);
+        	}
+
             if (tmpCache != null) {
                 tmpCache.rollbackTransaction();
                 tmpCache = null;

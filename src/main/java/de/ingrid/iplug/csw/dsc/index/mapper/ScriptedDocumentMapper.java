@@ -119,7 +119,11 @@ public class ScriptedDocumentMapper implements IRecordMapper {
                         .getInputStream()), bindings);
             }
         } catch (Exception e) {
-            log.error("Error mapping source record to lucene document.", e);
+        	String cswRecordId = null;
+        	if (cswRecord != null) {
+        		cswRecordId = cswRecord.getId();
+        	}
+            log.error("Error mapping source record to lucene document: cswRecordId=" + cswRecordId, e);
             throw e;
         }
     }
