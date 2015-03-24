@@ -30,7 +30,9 @@
   <body>
     <release version="3.6.0-SNAPSHOT" date="??" description="??">
         <action type="add" dev="wemove">
-            Added functionality to continue fetching of records if a record causes an error (set via configuration).
+            Change behavior when fetching CSW records: On failure try now multiple times per request with increasing pause in between.
+            Count failures and stop if maximum number reached (across various requests).
+            Continue fetching after failure, if set in configuration (continueFetchOnError property).
         </action>
     </release>
 
