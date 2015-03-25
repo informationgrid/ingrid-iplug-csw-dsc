@@ -241,12 +241,12 @@ public abstract class AbstractUpdateStrategy implements UpdateStrategy {
     					if (result == null || result.getNumberOfRecords() == 0) {
     						// no result from this query, we count the failures to check whether fetching process should be ended !
         					numSkippedRequests++;
-        					lostRecordsLog += currLostRecordsLog + "\n";
+        					if (!currLostRecordsLog.isEmpty()) {
+            					lostRecordsLog += currLostRecordsLog + "\n";        						
+        					}
 
     					} else {
         					currentFetchedRecordIds.addAll(processResult(result, doCache));
-    						// we have a result ! reset number of failures, fetching seems to work again. 
-        					numSkippedRequests = 0;
     					}
 					} catch (Exception e) {
 					    log.error("Error processing records " + query.getStartPosition() + " - " + query.getMaxRecords());
