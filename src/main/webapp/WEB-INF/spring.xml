@@ -64,6 +64,8 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
     -->
     </bean>
 
+    <bean id="xmlPostRequest" class="de.ingrid.iplug.csw.dsc.cswclient.impl.XMLPostRequest"> </bean>
+
     <bean id="kvpGetRequest" class="de.ingrid.iplug.csw.dsc.cswclient.impl.KVPGetRequest"> </bean>
     
 
