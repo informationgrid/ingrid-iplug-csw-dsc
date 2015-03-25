@@ -50,9 +50,17 @@ public class Configuration implements IConfig {
     @DefaultValue("")
     public String serviceUrl;
 
-    @PropertyValue("continueFetchOnError")
-    @DefaultValue("false")
-    public Boolean continueFetchOnError;
+    @PropertyValue("numRetriesPerRequest")
+    @DefaultValue("3")
+    public Integer numRetriesPerRequest;
+
+    @PropertyValue("timeBetweenRetries")
+    @DefaultValue("1000")
+    public Integer timeBetweenRetries;
+
+    @PropertyValue("maxNumSkippedRequests")
+    @DefaultValue("0")
+    public Integer maxNumSkippedRequests;
 
     @Override
     public void initialize() {}

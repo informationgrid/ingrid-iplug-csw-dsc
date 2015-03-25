@@ -69,13 +69,6 @@ public abstract class AbstractUpdateStrategy implements UpdateStrategy {
 	/** The default number of records the strategy requests at once during fetching of records. */
 	int recordsPerCall = 10;
 
-	/** The default number of total fetching retries before ending the fetching process. */
-	int maxNumRetries = 50;
-	/** The default number of retries per request with increasing pause in between. */
-	int numRetriesPerRequest = 3;
-	/** The time to wait between retries in milliseconds. Is multiplied with the number of retries. */
-	int timeBetweenRetries = 1000;
-
 	
 	/**
 	 * Set the time in msec the strategy pauses between requests to the CSW server.
@@ -167,7 +160,7 @@ public abstract class AbstractUpdateStrategy implements UpdateStrategy {
 			// variables for current fetch process (current filter)
 			int numRecordsTotal = 0;
 			int numRecordsFetched = 0;
-			int numRetriesTotal = 0;
+			int numSkippedRequests = 0;
 			List<String> currentFetchedRecordIds = new ArrayList<String>();
 
 			// create the query
@@ -195,21 +188,11 @@ public abstract class AbstractUpdateStrategy implements UpdateStrategy {
 
 				while (numRecordsFetched < numRecordsTotal) {
 
-					if (numRetriesTotal > this.maxNumRetries) {
-				    	log.error("Problems fetching records. Total number of retries reached (" + this.maxNumRetries +
-				    		" retries across various requests). We end fetching process for this filter.");
+					if (CswDscSearchPlug.conf.maxNumSkippedRequests > -1 && 
+							numSkippedRequests > CswDscSearchPlug.conf.maxNumSkippedRequests) {
+				    	log.error("Problems fetching records. Total number of skipped requests reached (" + CswDscSearchPlug.conf.maxNumSkippedRequests +
+				    		" requests without results). We end fetching process for this filter.");
 					    break;
-					}
-
-					if (result == null) {
-						// problems fetching !
-					    if (CswDscSearchPlug.conf.continueFetchOnError) {
-							// fetching error occured but we should continue !
-					    	log.error("Continue fetching all following records for this filter for harvesting (conf continueFetchOnError=true).");
-					    } else {
-					    	log.error("Skipping all following records for this filter from harvesting (conf continueFetchOnError=false).");
-						    break;
-					    }
 					}
 
 					// generic pause between requests, set via spring
@@ -237,23 +220,25 @@ public abstract class AbstractUpdateStrategy implements UpdateStrategy {
 
         					} catch (Exception e) {
         					    String recordsOutput = "" + query.getStartPosition() + " - " + (query.getStartPosition() + query.getMaxRecords());
-        						if (numRetries == this.numRetriesPerRequest) {
+        						if (numRetries == CswDscSearchPlug.conf.numRetriesPerRequest) {
         						    log.error("Retried " + numRetries + " times ! We skip records " + recordsOutput, e);
         							break;
         						}
         						numRetries++;
-        						int timeBetweenRetry = numRetries * this.timeBetweenRetries;
+        						int timeBetweenRetry = numRetries * CswDscSearchPlug.conf.timeBetweenRetries;
     						    log.error("Error fetching records " + recordsOutput + ". We retry " +
     						    		numRetries + ". time after " + timeBetweenRetry + " msec !", e);
         						Thread.sleep(timeBetweenRetry);    							
         					}
     					}
-    					numRetriesTotal += numRetries;
 
     
     					// process
-    					if (result != null) {
-        					currentFetchedRecordIds.addAll(processResult(result, doCache));    						
+    					if (result == null || result.getNumberOfRecords() == 0) {
+    						// no result from this query, we count the failures to check whether fetching process should be ended !
+        					numSkippedRequests++;
+    					} else {
+        					currentFetchedRecordIds.addAll(processResult(result, doCache));
     					}
 					} catch (Exception e) {
 					    log.error("Error processing records " + query.getStartPosition() + " - " + query.getMaxRecords());
