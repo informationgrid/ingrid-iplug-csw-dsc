@@ -182,6 +182,13 @@ public abstract class AbstractUpdateStrategy implements UpdateStrategy {
 
 			if (numRecordsTotal > 0) {
 
+				if (log.isInfoEnabled()) {
+					log.info("Fetching Parameters:");
+					log.info("numRetriesPerRequest: " + CswDscSearchPlug.conf.numRetriesPerRequest);
+					log.info("timeBetweenRetries: " + CswDscSearchPlug.conf.timeBetweenRetries);
+					log.info("maxNumSkippedRequests (lost chunks of records): " + CswDscSearchPlug.conf.maxNumSkippedRequests);
+				}
+
 				// process
 				currentFetchedRecordIds.addAll(processResult(result, doCache));
 
