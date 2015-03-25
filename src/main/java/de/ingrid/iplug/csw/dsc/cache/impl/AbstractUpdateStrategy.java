@@ -160,7 +160,6 @@ public abstract class AbstractUpdateStrategy implements UpdateStrategy {
 			// variables for current fetch process (current filter)
 			int numRecordsTotal = 0;
 			int numRecordsFetched = 0;
-			int numSkippedRequests = 0;
 			List<String> currentFetchedRecordIds = new ArrayList<String>();
 
 			// create the query
@@ -186,13 +185,17 @@ public abstract class AbstractUpdateStrategy implements UpdateStrategy {
 				// process
 				currentFetchedRecordIds.addAll(processResult(result, doCache));
 
+				int numSkippedRequests = 0;
+				String lostRecordsLog = "";
 				while (numRecordsFetched < numRecordsTotal) {
 
-					if (CswDscSearchPlug.conf.maxNumSkippedRequests > -1 && 
-							numSkippedRequests > CswDscSearchPlug.conf.maxNumSkippedRequests) {
-				    	log.error("Problems fetching records. Total number of skipped requests reached (" + CswDscSearchPlug.conf.maxNumSkippedRequests +
-				    		" requests without results). We end fetching process for this filter.");
-					    break;
+					if (CswDscSearchPlug.conf.maxNumSkippedRequests > -1) {
+						// fetching should end when a maximum number of failures (in a row) is reached.
+						if (numSkippedRequests > CswDscSearchPlug.conf.maxNumSkippedRequests) {
+					    	log.error("Problems fetching records. Total number of skipped requests reached (" + CswDscSearchPlug.conf.maxNumSkippedRequests +
+					    		" requests without results). We end fetching process for this filter.");
+						    break;
+						}
 					}
 
 					// generic pause between requests, set via spring
@@ -212,6 +215,7 @@ public abstract class AbstractUpdateStrategy implements UpdateStrategy {
     
     					// do next request, if problems retry with increasing pause in between 
     					int numRetries = 0;
+    					String currLostRecordsLog = "";
     					while (true) {
         					try {
             					result = null;
@@ -219,14 +223,14 @@ public abstract class AbstractUpdateStrategy implements UpdateStrategy {
             					break;
 
         					} catch (Exception e) {
-        					    String recordsOutput = "" + query.getStartPosition() + " - " + (query.getStartPosition() + query.getMaxRecords());
+        						currLostRecordsLog = "" + query.getStartPosition() + " - " + (query.getStartPosition() + query.getMaxRecords());
         						if (numRetries == CswDscSearchPlug.conf.numRetriesPerRequest) {
-        						    log.error("Retried " + numRetries + " times ! We skip records " + recordsOutput, e);
+        						    log.error("Retried " + numRetries + " times ! We skip records " + currLostRecordsLog, e);
         							break;
         						}
         						numRetries++;
         						int timeBetweenRetry = numRetries * CswDscSearchPlug.conf.timeBetweenRetries;
-    						    log.error("Error fetching records " + recordsOutput + ". We retry " +
+    						    log.error("Error fetching records " + currLostRecordsLog + ". We retry " +
     						    		numRetries + ". time after " + timeBetweenRetry + " msec !", e);
         						Thread.sleep(timeBetweenRetry);    							
         					}
@@ -237,13 +241,22 @@ public abstract class AbstractUpdateStrategy implements UpdateStrategy {
     					if (result == null || result.getNumberOfRecords() == 0) {
     						// no result from this query, we count the failures to check whether fetching process should be ended !
         					numSkippedRequests++;
+        					lostRecordsLog += currLostRecordsLog + "\n";
+
     					} else {
         					currentFetchedRecordIds.addAll(processResult(result, doCache));
+    						// we have a result ! reset number of failures, fetching seems to work again. 
+        					numSkippedRequests = 0;
     					}
 					} catch (Exception e) {
 					    log.error("Error processing records " + query.getStartPosition() + " - " + query.getMaxRecords());
 					    log.error( ExceptionUtils.getStackTrace(e) );
 					}
+				}
+
+				if (!lostRecordsLog.isEmpty()) {
+				    log.error("\nWe had failed GetRecords requests ! The following records were NOT fetched:");					
+				    log.error(lostRecordsLog + "\n");					
 				}
 			}
 
