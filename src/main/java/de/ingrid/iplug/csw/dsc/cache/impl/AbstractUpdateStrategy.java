@@ -236,14 +236,15 @@ public abstract class AbstractUpdateStrategy implements UpdateStrategy {
             					break;
 
         					} catch (Exception e) {
+        					    String recordsOutput = "" + query.getStartPosition() + " - " + (query.getStartPosition() + query.getMaxRecords());
         						if (numRetries == this.numRetriesPerRequest) {
-        						    log.error("Retried " + numRetries + "times ! We skip records " + query.getStartPosition() + " - " + query.getMaxRecords(), e);
+        						    log.error("Retried " + numRetries + " times ! We skip records " + recordsOutput, e);
         							break;
         						}
         						numRetries++;
         						int timeBetweenRetry = numRetries * this.timeBetweenRetries;
-    						    log.error("Error fetching records " + query.getStartPosition() + " - " + query.getMaxRecords() + ". We retry " +
-    						    		numRetries + ". time after " + timeBetweenRetry + "msec !", e);
+    						    log.error("Error fetching records " + recordsOutput + ". We retry " +
+    						    		numRetries + ". time after " + timeBetweenRetry + " msec !", e);
         						Thread.sleep(timeBetweenRetry);    							
         					}
     					}
