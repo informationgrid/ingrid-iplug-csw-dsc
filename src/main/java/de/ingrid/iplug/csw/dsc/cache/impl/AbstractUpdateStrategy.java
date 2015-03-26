@@ -194,6 +194,7 @@ public abstract class AbstractUpdateStrategy implements UpdateStrategy {
 
 				int numSkippedRequests = 0;
 				String lostRecordsLog = "";
+				int numLostRecords = 0;
 				while (numRecordsFetched < numRecordsTotal) {
 
 					if (CswDscSearchPlug.conf.maxNumSkippedRequests > -1) {
@@ -235,11 +236,12 @@ public abstract class AbstractUpdateStrategy implements UpdateStrategy {
         						    log.error("Retried " + numRetries + " times ! We skip records " + currLostRecordsLog, e);
         							break;
         						}
+
         						numRetries++;
         						int timeBetweenRetry = numRetries * CswDscSearchPlug.conf.timeBetweenRetries;
     						    log.error("Error fetching records " + currLostRecordsLog + ". We retry " +
     						    		numRetries + ". time after " + timeBetweenRetry + " msec !", e);
-        						Thread.sleep(timeBetweenRetry);    							
+        						Thread.sleep(timeBetweenRetry);
         					}
     					}
 
@@ -248,8 +250,9 @@ public abstract class AbstractUpdateStrategy implements UpdateStrategy {
     					if (result == null || result.getNumberOfRecords() == 0) {
     						// no result from this query, we count the failures to check whether fetching process should be ended !
         					numSkippedRequests++;
+        					numLostRecords += query.getMaxRecords();
         					if (!currLostRecordsLog.isEmpty()) {
-            					lostRecordsLog += currLostRecordsLog + "\n";        						
+            					lostRecordsLog += currLostRecordsLog + "\n";
         					}
 
     					} else {
@@ -261,9 +264,10 @@ public abstract class AbstractUpdateStrategy implements UpdateStrategy {
 					}
 				}
 
-				if (!lostRecordsLog.isEmpty()) {
-				    log.error("\nWe had failed GetRecords requests ! The following records were NOT fetched:");					
-				    log.error(lostRecordsLog + "\n");					
+				if (numLostRecords > 0) {
+				    log.error("We had failed GetRecords requests !!!\n");
+				    log.error("The following " + numLostRecords + " records were NOT fetched and are \"lost\":");
+				    log.error(lostRecordsLog + "\n");
 				}
 			}
 
