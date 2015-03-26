@@ -195,7 +195,7 @@ public abstract class AbstractUpdateStrategy implements UpdateStrategy {
 				currentFetchedRecordIds.addAll(processResult(result, doCache));
 
 				int numSkippedRequests = 0;
-				String lostRecordsLog = "";
+				String logLostRecordChunks = "";
 				int numLostRecords = 0;
 				while (numRecordsFetched < numRecordsTotal) {
 
@@ -211,6 +211,7 @@ public abstract class AbstractUpdateStrategy implements UpdateStrategy {
 					// generic pause between requests, set via spring
 					Thread.sleep(this.requestPause);
 
+					String logCurrRecordChunk = "";
 					try {
     					// prepare next request
 						// Just for safety: get number of last fetched records from last result, if we have a result and records.
@@ -222,10 +223,11 @@ public abstract class AbstractUpdateStrategy implements UpdateStrategy {
 
     					query.setStartPosition(query.getStartPosition() + numLastFetch);
 
+    					// for logging below
+						logCurrRecordChunk = "" + query.getStartPosition() + " - " + (query.getStartPosition() + query.getMaxRecords());
     
     					// do next request, if problems retry with increasing pause in between 
     					int numRetries = 0;
-    					String currLostRecordsLog = "";
     					while (true) {
         					try {
             					result = null;
@@ -233,15 +235,14 @@ public abstract class AbstractUpdateStrategy implements UpdateStrategy {
             					break;
 
         					} catch (Exception e) {
-        						currLostRecordsLog = "" + query.getStartPosition() + " - " + (query.getStartPosition() + query.getMaxRecords());
         						if (numRetries == CswDscSearchPlug.conf.numRetriesPerRequest) {
-        						    log.error("Retried " + numRetries + " times ! We skip records " + currLostRecordsLog, e);
+        						    log.error("Retried " + numRetries + " times ! We skip records " + logCurrRecordChunk, e);
         							break;
         						}
 
         						numRetries++;
         						int timeBetweenRetry = numRetries * CswDscSearchPlug.conf.timeBetweenRetries;
-    						    log.error("Error fetching records " + currLostRecordsLog + ". We retry " +
+    						    log.error("Error fetching records " + logCurrRecordChunk + ". We retry " +
     						    		numRetries + ". time after " + timeBetweenRetry + " msec !", e);
         						Thread.sleep(timeBetweenRetry);
         					}
@@ -253,15 +254,13 @@ public abstract class AbstractUpdateStrategy implements UpdateStrategy {
     						// no result from this query, we count the failures to check whether fetching process should be ended !
         					numSkippedRequests++;
         					numLostRecords += query.getMaxRecords();
-        					if (!currLostRecordsLog.isEmpty()) {
-            					lostRecordsLog += currLostRecordsLog + "\n";
-        					}
+            				logLostRecordChunks += logCurrRecordChunk + "\n";
 
     					} else {
         					currentFetchedRecordIds.addAll(processResult(result, doCache));
     					}
 					} catch (Exception e) {
-					    log.error("Error processing records " + query.getStartPosition() + " - " + query.getMaxRecords());
+					    log.error("Error processing records " + logCurrRecordChunk);
 					    log.error( ExceptionUtils.getStackTrace(e) );
 					}
 				}
@@ -269,7 +268,7 @@ public abstract class AbstractUpdateStrategy implements UpdateStrategy {
 				if (numLostRecords > 0) {
 				    log.error("We had failed GetRecords requests !!!\n");
 				    log.error("The following " + numLostRecords + " records were NOT fetched and are \"lost\":");
-				    log.error(lostRecordsLog + "\n");
+				    log.error(logLostRecordChunks + "\n");
 				}
 			}
 
