@@ -151,15 +151,19 @@ public class CswDscDocumentProducer implements IDocumentProducer {
             return doc;
         } catch (Throwable t) {
         	if (record == null) {
-                log.error("Error obtaining next record.", t);
+                log.error("Error obtaining next record, IS NULL.", t);
         	} else {
                 log.error("Error mapping record.", t);
         	}
 
+// DO NOT EMPTY CACHE !!! We want to continue indexing the fetched records !!!
+// if tmpCache is set to null the fetching process is started from scratch (see this.hasNext() method) !
+/*
             if (tmpCache != null) {
                 tmpCache.rollbackTransaction();
                 tmpCache = null;
             }
+*/
             return null;
         }
     }

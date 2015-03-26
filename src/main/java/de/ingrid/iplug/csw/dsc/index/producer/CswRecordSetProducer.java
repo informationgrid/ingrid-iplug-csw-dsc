@@ -93,7 +93,7 @@ public class CswRecordSetProducer implements ICswCacheRecordSetProducer {
                     ElementSetName.IDF));
         } catch (Exception e) {
             log.error("Error reading record '" + recordId + "' from cache '"
-                    + cache + "'.");
+                    + cache + "' -> WE RETURN NULL !");
         }
         return null;
     }
