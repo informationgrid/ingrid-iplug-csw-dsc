@@ -266,9 +266,9 @@ public abstract class AbstractUpdateStrategy implements UpdateStrategy {
 				}
 
 				if (numLostRecords > 0) {
-				    log.error("We had failed GetRecords requests !!!\n");
-				    log.error("The following " + numLostRecords + " records were NOT fetched and are \"lost\":");
-				    log.error(logLostRecordChunks + "\n");
+				    log.error("\nWe had failed GetRecords requests !!!" +
+				    		"\nThe following " + numLostRecords + " records were NOT fetched and are \"lost\":" +
+				    		"\n" + logLostRecordChunks);
 				}
 			}
 
