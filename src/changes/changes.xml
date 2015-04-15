@@ -28,11 +28,16 @@
     <author email="joachim@wemove.com">Joachim Müller</author>
   </properties>
   <body>
-    <release version="3.6.0-SNAPSHOT" date="??" description="??">
+    <release version="3.5.1" date="2015-04-15" description="Release 3.5.1">
         <action type="add" dev="wemove">
+             Added XMLPostRequest to use plain POST method as alternative to SOAP requests (set in spring.xml).
+        </action>
+        <action type="update" dev="wemove">
+             Change behavior when indexing CSW records: Do not restart fetching when record can't be read from cache ! Instead continue indexing with next record from cache !
+        </action>
+        <action type="update" dev="wemove">
             Change behavior when fetching CSW records: On failure try now multiple times per request with increasing pause in between.
-            Count failures and stop if maximum number reached (across various requests).
-            Continue fetching after failure, if set in configuration (continueFetchOnError property).
+            Count failures and stop fetching if maximum number of failures reached (across various requests).
         </action>
     </release>
 
