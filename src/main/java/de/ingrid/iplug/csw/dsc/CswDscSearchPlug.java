@@ -30,19 +30,19 @@ import java.io.IOException;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import org.apache.lucene.document.Document;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.tngtech.configbuilder.ConfigBuilder;
 
 import de.ingrid.admin.JettyStarter;
-import de.ingrid.admin.search.IngridIndexSearcher;
+import de.ingrid.admin.elasticsearch.IndexImpl;
 import de.ingrid.iplug.HeartBeatPlug;
 import de.ingrid.iplug.IPlugdescriptionFieldFilter;
 import de.ingrid.iplug.PlugDescriptionFieldFilters;
 import de.ingrid.iplug.csw.dsc.cswclient.constants.ElementSetName;
 import de.ingrid.iplug.csw.dsc.record.IdfRecordCreator;
+import de.ingrid.utils.ElasticDocument;
 import de.ingrid.utils.IRecordLoader;
 import de.ingrid.utils.IngridDocument;
 import de.ingrid.utils.IngridHit;
@@ -70,12 +70,12 @@ public class CswDscSearchPlug extends HeartBeatPlug implements IRecordLoader {
 
     private IdfRecordCreator dscRecordProducer = null;
 
-    private final IngridIndexSearcher _indexSearcher;
+    private final IndexImpl _indexSearcher;
 
     public static Configuration conf;
 	
     @Autowired
-    public CswDscSearchPlug(final IngridIndexSearcher indexSearcher, IPlugdescriptionFieldFilter[] fieldFilters, IMetadataInjector[] injector, IPreProcessor[] preProcessors, IPostProcessor[] postProcessors) throws IOException {
+    public CswDscSearchPlug(final IndexImpl indexSearcher, IPlugdescriptionFieldFilter[] fieldFilters, IMetadataInjector[] injector, IPreProcessor[] preProcessors, IPostProcessor[] postProcessors) throws IOException {
         super(60000, new PlugDescriptionFieldFilters(fieldFilters), injector, preProcessors, postProcessors);
         _indexSearcher = indexSearcher;
     }
@@ -103,7 +103,7 @@ public class CswDscSearchPlug extends HeartBeatPlug implements IRecordLoader {
      */
     @Override
     public Record getRecord(IngridHit hit) throws Exception {
-        Document document = _indexSearcher.doc(hit.getDocumentId());
+        ElasticDocument document = _indexSearcher.getDocById( hit.getDocumentId() );
         return dscRecordProducer.getRecord(document);
     }
 
@@ -186,7 +186,7 @@ public class CswDscSearchPlug extends HeartBeatPlug implements IRecordLoader {
      * @throws Exception
      */
     protected void setDirectData(IngridHitDetail document, ElementSetName elementSetName) throws Exception {
-        Document luceneDoc = _indexSearcher.doc(document.getDocumentId());
+        ElasticDocument luceneDoc = _indexSearcher.getDocById( document.getDocumentId() );
         long startTime = 0;
         if (log.isDebugEnabled()) {
             startTime = System.currentTimeMillis();

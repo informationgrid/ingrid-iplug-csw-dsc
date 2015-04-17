@@ -29,14 +29,13 @@ import java.io.IOException;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import org.apache.lucene.document.Document;
-import org.apache.lucene.document.Field;
 
 import de.ingrid.iplug.csw.dsc.cache.Cache;
 import de.ingrid.iplug.csw.dsc.cswclient.CSWFactory;
 import de.ingrid.iplug.csw.dsc.cswclient.constants.ElementSetName;
 import de.ingrid.iplug.csw.dsc.om.CswCacheSourceRecord;
 import de.ingrid.iplug.csw.dsc.om.SourceRecord;
+import de.ingrid.utils.ElasticDocument;
 import de.ingrid.utils.PlugDescription;
 
 /**
@@ -67,14 +66,13 @@ public class IdfRecordProducer implements IRecordProducer {
      * .document.Document)
      */
     @Override
-    public SourceRecord getRecord(Document doc) {
+    public SourceRecord getRecord(ElasticDocument doc) {
         // TODO make the field configurable
-        Field field = doc.getField("t01_object.obj_id");
+        String field = (String) doc.get("t01_object.obj_id");
         try {
-            return new CswCacheSourceRecord(cache.getRecord(field.stringValue(), ElementSetName.IDF));
+            return new CswCacheSourceRecord(cache.getRecord(field, ElementSetName.IDF));
         } catch (IOException e) {
-            log.error("Error reading record '" + field.stringValue() + "' from cache '"
-                    + cache.toString() + "'.");
+            log.error("Error reading record '" + field + "' from cache '" + cache.toString() + "'.");
         }
         return null;
     }

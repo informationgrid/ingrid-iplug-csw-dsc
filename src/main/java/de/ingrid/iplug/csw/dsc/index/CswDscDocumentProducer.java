@@ -29,7 +29,6 @@ import java.util.List;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import org.apache.lucene.document.Document;
 
 import de.ingrid.admin.object.IDocumentProducer;
 import de.ingrid.iplug.csw.dsc.cache.Cache;
@@ -38,6 +37,7 @@ import de.ingrid.iplug.csw.dsc.cswclient.CSWFactory;
 import de.ingrid.iplug.csw.dsc.index.mapper.IRecordMapper;
 import de.ingrid.iplug.csw.dsc.index.producer.ICswCacheRecordSetProducer;
 import de.ingrid.iplug.csw.dsc.om.SourceRecord;
+import de.ingrid.utils.ElasticDocument;
 import de.ingrid.utils.PlugDescription;
 
 /**
@@ -133,8 +133,8 @@ public class CswDscDocumentProducer implements IDocumentProducer {
      * @see de.ingrid.admin.object.IDocumentProducer#next()
      */
     @Override
-    public Document next() {
-        Document doc = new Document();
+    public ElasticDocument next() {
+        ElasticDocument doc = new ElasticDocument();
         SourceRecord record = null;
         try {
             record = recordSetProducer.next();

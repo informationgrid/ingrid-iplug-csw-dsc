@@ -25,17 +25,15 @@ package de.ingrid.iplug.csw.dsc.index;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.apache.lucene.document.Document;
 import org.springframework.core.io.FileSystemResource;
 
-import de.ingrid.admin.search.GermanStemmer;
 import de.ingrid.codelists.CodeListService;
 import de.ingrid.iplug.csw.dsc.cswclient.CSWRecord;
 import de.ingrid.iplug.csw.dsc.cswclient.constants.ElementSetName;
 import de.ingrid.iplug.csw.dsc.index.mapper.IRecordMapper;
 import de.ingrid.iplug.csw.dsc.index.mapper.ScriptedDocumentMapper;
 import de.ingrid.iplug.csw.dsc.om.CswCacheSourceRecord;
-import de.ingrid.iplug.csw.dsc.tools.LuceneTools;
+import de.ingrid.utils.ElasticDocument;
 
 public class MapperToIndexWsvGeodatenkatalogTest extends BaseIndexTestCase {
 
@@ -45,10 +43,6 @@ public class MapperToIndexWsvGeodatenkatalogTest extends BaseIndexTestCase {
     public void testMapper() throws Exception {
 
         prepareCache(null, null);
-
-        // is autowired in spring environment !
-        LuceneTools tmpLuceneTools = new LuceneTools();
-        tmpLuceneTools.setDefaultStemmer(new GermanStemmer());
 
         // PROCESS MULTIPLE MAPPERS !
         List<IRecordMapper> myMappers = new ArrayList<IRecordMapper>();
@@ -69,7 +63,7 @@ public class MapperToIndexWsvGeodatenkatalogTest extends BaseIndexTestCase {
 
         for (String id : cache.getCachedRecordIds()) {
             CSWRecord cswRecord = cache.getRecord(id, ElementSetName.IDF);
-            Document doc = new Document();
+            ElasticDocument doc = new ElasticDocument();
 
             for (IRecordMapper myMapper : myMappers) {
                 // try {

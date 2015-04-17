@@ -22,18 +22,16 @@
  */
 package de.ingrid.iplug.csw.dsc.index;
 
-import org.apache.lucene.document.Document;
 import org.springframework.core.io.FileSystemResource;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 
-import de.ingrid.admin.search.GermanStemmer;
 import de.ingrid.codelists.CodeListService;
 import de.ingrid.iplug.csw.dsc.cswclient.CSWRecord;
 import de.ingrid.iplug.csw.dsc.cswclient.constants.ElementSetName;
 import de.ingrid.iplug.csw.dsc.index.mapper.ScriptedDocumentMapper;
 import de.ingrid.iplug.csw.dsc.om.CswCacheSourceRecord;
-import de.ingrid.iplug.csw.dsc.tools.LuceneTools;
+import de.ingrid.utils.ElasticDocument;
 import de.ingrid.utils.tool.StringUtil;
 
 public class MapperToIndexTest extends BaseIndexTestCase {
@@ -45,10 +43,6 @@ public class MapperToIndexTest extends BaseIndexTestCase {
 
         prepareCache(null, null);
 
-        // is autowired in spring environment !
-        LuceneTools tmpLuceneTools = new LuceneTools();
-        tmpLuceneTools.setDefaultStemmer(new GermanStemmer());
-
         ScriptedDocumentMapper mapper = new ScriptedDocumentMapper();
         mapper.setCompile(false);
         mapper.setMappingScript(new FileSystemResource("src/main/resources/mapping/idf_to_lucene.js"));
@@ -56,7 +50,7 @@ public class MapperToIndexTest extends BaseIndexTestCase {
 
         for (String id : cache.getCachedRecordIds()) {
             CSWRecord idfRecord = cache.getRecord(id, ElementSetName.IDF);
-            Document doc = new Document();
+            ElasticDocument doc = new ElasticDocument();
             // try {
             mapper.map(new CswCacheSourceRecord(idfRecord), doc);
             /*
@@ -65,7 +59,7 @@ public class MapperToIndexTest extends BaseIndexTestCase {
 
             assertTrue("Lucene doc found.", doc != null);
             assertEquals(id, doc.get("t01_object.obj_id"));
-            assertTrue("Valid hierarchyLevel set.", Integer.parseInt(doc.get("t01_object.obj_class")) >= 0 && Integer.parseInt(doc.get("t01_object.obj_class")) <= 5);
+            assertTrue("Valid hierarchyLevel set.", Integer.parseInt((String) doc.get("t01_object.obj_class")) >= 0 && Integer.parseInt((String) doc.get("t01_object.obj_class")) <= 5);
             String mdBrowseGraphic_FileName = xPathUtils.getString(idfRecord.getOriginalResponse(), "//gmd:identificationInfo//gmd:graphicOverview/gmd:MD_BrowseGraphic/gmd:fileName/gco:CharacterString");
             if (mdBrowseGraphic_FileName != null) {
                 assertFalse("MD_BrowseGraphic is mapped as link", (doc.getValues("t017_url_ref.url_link").length > 0 && mdBrowseGraphic_FileName.equals(doc.getValues("t017_url_ref.url_link")[0]))

@@ -35,11 +35,11 @@ if (javaVersion.indexOf( "1.8" ) === 0) {
     load("nashorn:mozilla_compat.js");
 }
 
-importPackage(Packages.org.apache.lucene.document);
 importPackage(Packages.de.ingrid.iplug.csw.dsc.tools);
 importPackage(Packages.de.ingrid.iplug.csw.dsc.index);
 importPackage(Packages.de.ingrid.utils.udk);
 importPackage(Packages.de.ingrid.utils.xml);
+importPackage(Packages.de.ingrid.admin);
 importPackage(Packages.org.w3c.dom);
 
 
@@ -90,11 +90,8 @@ function addToDoc(field, content, tokenized) {
 		if (log.isDebugEnabled()) {
 			log.debug("Add '" + field + "'='" + content + "' to lucene index");
 		}
-		var analyzed = Field.Index.ANALYZED;
-		if (!tokenized) analyzed = Field.Index.NOT_ANALYZED;
-		document.add(new Field(field, content, Field.Store.YES, analyzed));
-		document.add(new Field("content", content, Field.Store.NO, analyzed));
-		document.add(new Field("content", LuceneTools.filterTerm(content), Field.Store.NO, Field.Index.ANALYZED));
+		Utils.addToDoc( document, field, content );
+		Utils.addToDoc( document, "content", content );
 	}
 }
 
