@@ -34,13 +34,13 @@ import javax.script.ScriptEngine;
 import javax.script.ScriptEngineManager;
 
 import org.apache.log4j.Logger;
-import org.apache.lucene.document.Document;
 import org.springframework.core.io.Resource;
 
 import de.ingrid.codelists.CodeListService;
 import de.ingrid.iplug.csw.dsc.cswclient.CSWRecord;
 import de.ingrid.iplug.csw.dsc.om.CswCacheSourceRecord;
 import de.ingrid.iplug.csw.dsc.om.SourceRecord;
+import de.ingrid.utils.ElasticDocument;
 import de.ingrid.utils.xml.IDFNamespaceContext;
 import de.ingrid.utils.xpath.XPathUtils;
 
@@ -71,7 +71,7 @@ public class ScriptedDocumentMapper implements IRecordMapper {
             .getLogger(ScriptedDocumentMapper.class);
 
     @Override
-    public void map(SourceRecord record, Document doc) throws Exception {
+    public void map(SourceRecord record, ElasticDocument doc) throws Exception {
         if (mappingScript == null) {
             log.error("Mapping script is not set!");
             throw new IllegalArgumentException("Mapping script is not set!");

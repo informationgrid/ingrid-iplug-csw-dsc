@@ -28,8 +28,6 @@ import java.util.List;
 
 import junit.framework.TestCase;
 
-import org.apache.lucene.document.Document;
-import org.apache.lucene.document.Field;
 import org.springframework.core.io.FileSystemResource;
 
 import de.ingrid.iplug.csw.dsc.TestUtil;
@@ -47,6 +45,7 @@ import de.ingrid.iplug.csw.dsc.record.mapper.CswIdfMapper;
 import de.ingrid.iplug.csw.dsc.record.mapper.IIdfMapper;
 import de.ingrid.iplug.csw.dsc.record.producer.IdfRecordProducer;
 import de.ingrid.iplug.csw.dsc.tools.StringUtils;
+import de.ingrid.utils.ElasticDocument;
 import de.ingrid.utils.idf.IdfTool;
 import de.ingrid.utils.xml.IDFNamespaceContext;
 import de.ingrid.utils.xpath.XPathUtils;
@@ -102,14 +101,14 @@ public class IdfRecordCreatorTest extends TestCase {
         IdfRecordCreator idfRecordCreator = new IdfRecordCreator();
         idfRecordCreator.setRecordProducer(idfRecordProducer);
         
-        Document idxDoc = new Document();
+        ElasticDocument idxDoc = new ElasticDocument();
         
-        idxDoc.add(new Field("t01_object.obj_id", "33462e89-e5ab-11c3-737d-b3a61366d028", Field.Store.NO, Field.Index.ANALYZED));
+        idxDoc.put( "t01_object.obj_id", "33462e89-e5ab-11c3-737d-b3a61366d028" );
         org.w3c.dom.Node idfDoc = StringUtils.stringToDocument(IdfTool.getIdfDataFromRecord(idfRecordCreator.getRecord(idxDoc)));
         assertEquals("IDF Record 33462e89-e5ab-11c3-737d-b3a61366d028 exists.", "33462e89-e5ab-11c3-737d-b3a61366d028", xPathUtils.getString(idfDoc, "//gmd:fileIdentifier/gco:CharacterString"));
 
-        idxDoc = new Document();
-        idxDoc.add(new Field("t01_object.obj_id", "486d9622-c29d-44e5-b878-44389740011", Field.Store.NO, Field.Index.ANALYZED));
+        idxDoc = new ElasticDocument();
+        idxDoc.put( "t01_object.obj_id", "486d9622-c29d-44e5-b878-44389740011" );
         idfDoc = StringUtils.stringToDocument(IdfTool.getIdfDataFromRecord(idfRecordCreator.getRecord(idxDoc)));
         assertEquals("IDF Record 486d9622-c29d-44e5-b878-44389740011 exists.", "486d9622-c29d-44e5-b878-44389740011", xPathUtils.getString(idfDoc, "//gmd:fileIdentifier/gco:CharacterString"));
         

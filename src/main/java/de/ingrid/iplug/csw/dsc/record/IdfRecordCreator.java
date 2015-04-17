@@ -28,13 +28,13 @@ package de.ingrid.iplug.csw.dsc.record;
 import java.util.zip.GZIPOutputStream;
 
 import org.apache.log4j.Logger;
-import org.apache.lucene.document.Document;
 import org.w3c.dom.Node;
 
 import de.ingrid.iplug.csw.dsc.cswclient.CSWRecord;
 import de.ingrid.iplug.csw.dsc.om.CswCacheSourceRecord;
 import de.ingrid.iplug.csw.dsc.om.SourceRecord;
 import de.ingrid.iplug.csw.dsc.record.producer.IRecordProducer;
+import de.ingrid.utils.ElasticDocument;
 import de.ingrid.utils.dsc.Record;
 import de.ingrid.utils.idf.IdfTool;
 import de.ingrid.utils.xml.XMLUtils;
@@ -65,14 +65,14 @@ public class IdfRecordCreator {
      * "compressed" is set to "true" if the IDF document is compressed, "false"
      * if the IDF document is not compressed.
      * 
-     * @param idxDoc
+     * @param luceneDoc
      * @return
      * @throws Exception
      */
-    public Record getRecord(Document idxDoc) throws Exception {
+    public Record getRecord(ElasticDocument luceneDoc) throws Exception {
         try {
             recordProducer.openDatasource();
-            SourceRecord sourceRecord = recordProducer.getRecord(idxDoc);
+            SourceRecord sourceRecord = recordProducer.getRecord(luceneDoc);
             CSWRecord record = (CSWRecord) sourceRecord.get(CswCacheSourceRecord.CSW_RECORD);
 
             Node idfDoc = record.getOriginalResponse();

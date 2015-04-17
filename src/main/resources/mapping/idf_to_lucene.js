@@ -35,7 +35,6 @@ if (javaVersion.indexOf( "1.8" ) === 0) {
 	load("nashorn:mozilla_compat.js");
 }
 
-importPackage(Packages.org.apache.lucene.document);
 importPackage(Packages.de.ingrid.iplug.csw.dsc.tools);
 importPackage(Packages.de.ingrid.iplug.csw.dsc.index);
 importPackage(Packages.de.ingrid.utils.udk);
@@ -453,7 +452,7 @@ var transformationDescriptions = [
 		}
 	];
 
-document.add(new Field("datatype", "default", Field.Store.NO, Field.Index.ANALYZED));
+document.put( "datatype", "default" );
 	
 // iterate over all transformation descriptions
 var value;
@@ -928,18 +927,14 @@ function addToDoc(field, content, tokenized, additionalTokenize) {
           content = (""+content).replace(/^\s+|\s+$/gm,'');
         }
 
-		var analyzed = Field.Index.ANALYZED;
-		if (!tokenized) analyzed = Field.Index.NOT_ANALYZED;
-		document.add(new Field(field, content, Field.Store.YES, analyzed));
-		document.add(new Field("content", content, Field.Store.NO, analyzed));
-		document.add(new Field("content", LuceneTools.filterTerm(content), Field.Store.NO, Field.Index.ANALYZED));
+		document.put( field, content );
+		document.put( "content", content );
 
         if (hasValue(additionalTokenize)) {
           var newContent = doAdditionalTokenize(content, additionalTokenize);
           if (hasValue(newContent) && newContent != content) {
-            document.add(new Field(field, newContent, Field.Store.YES, analyzed));
-            document.add(new Field("content", newContent, Field.Store.NO, analyzed));
-            document.add(new Field("content", LuceneTools.filterTerm(newContent), Field.Store.NO, Field.Index.ANALYZED));
+            document.put( field, newContent );
+            document.put( "content", newContent );
           }
         }
 	}
@@ -965,7 +960,7 @@ function addNumericToDoc(field, content) {
     		if (log.isDebugEnabled()) {
     			log.debug("Add numeric '" + field + "'='" + content + "' to lucene index.");
     		}
-            document.add(new NumericField(field, Field.Store.YES, true).setDoubleValue(content));
+            document.put( field, content );
         } catch (e) {
             if (log.isDebugEnabled()) {
                 log.debug("Value '" + content + "' is not a number. Ignoring field '" + field + "'.");

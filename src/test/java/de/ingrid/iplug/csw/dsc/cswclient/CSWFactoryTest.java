@@ -74,7 +74,7 @@ public class CSWFactoryTest extends TestCase {
 
     	if (!desc.containsKey("CSWRequestImpl"))
     	{
-    		Map requestImpl = new Hashtable();
+    		Map<String, CSWRequest> requestImpl = new Hashtable<String, CSWRequest>();
     		requestImpl.put(Operation.GET_CAPABILITIES.toString(), cswRequestSoapImpl);
     		requestImpl.put(Operation.DESCRIBE_RECORD.toString(), cswRequestSoapImpl);
     		requestImpl.put(Operation.GET_DOMAIN.toString(), cswRequestSoapImpl);
