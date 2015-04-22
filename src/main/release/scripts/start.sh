@@ -27,8 +27,6 @@
 #
 #   INGRID_JAVA_HOME Overrides JAVA_HOME.
 #
-#   INGRID_HEAPSIZE  heap to use in mb, if not setted we use 1000.
-#
 #   INGRID_OPTS      addtional java runtime options
 #
 #   INGRID_USER      starting user, default ist "ingrid"
@@ -41,10 +39,11 @@ THIS_DIR=`dirname "$THIS"`
 INGRID_HOME=`cd "$THIS_DIR" ; pwd`
 PID=$INGRID_HOME/ingrid.pid
 
-# include a jmx script, if available, i.e. to specify jmx port, etc.
-# caution: the jmx script must echo the actual command to be able to work in the current environment
-if [ -f $INGRID_HOME/jmx.sh ]; then
-  eval `sh $INGRID_HOME/jmx.sh`
+# include default options, i.e. debug, jmx and jvm options
+if [ -f $INGRID_HOME/env.user.sh ]; then
+  eval `sh $INGRID_HOME/env.user.sh`
+elif [ -f $INGRID_HOME/env.sh ]; then
+  eval `sh $INGRID_HOME/env.sh`
 fi
 
 # functions
@@ -157,13 +156,6 @@ startIplug()
   fi
 
   JAVA=$JAVA_HOME/bin/java
-  JAVA_HEAP_MAX=-Xmx128m
-
-  # check envvars which might override default args
-  if [ "$INGRID_HEAPSIZE" != "" ]; then
-    JAVA_HEAP_MAX="-Xmx""$INGRID_HEAPSIZE""m"
-    echo "run with heapsize $JAVA_HEAP_MAX"
-  fi
 
   # so that filenames w/ spaces are handled correctly in loops below
   IFS=
@@ -182,10 +174,10 @@ startIplug()
 
   # run it
   export CLASSPATH="$CLASSPATH"
-  INGRID_OPTS="$INGRID_OPTS -Dingrid_home=$INGRID_HOME -Dfile.encoding=UTF8"
+  INGRID_OPTS="$INGRID_OPTS -Dingrid_home=$INGRID_HOME"
   CLASS=de.ingrid.iplug.csw.dsc.CswDscSearchPlug
 
-  exec nohup "$JAVA" $JAVA_HEAP_MAX $INGRID_OPTS $CLASS > console.log &
+  exec nohup "$JAVA" $INGRID_OPTS $CLASS > console.log &
 
   echo "jetty ($INGRID_HOME) started."
   echo $! > $PID
