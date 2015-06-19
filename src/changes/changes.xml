@@ -28,6 +28,12 @@
     <author email="joachim@wemove.com">Joachim Müller</author>
   </properties>
   <body>
+    <release version="3.6.0" date="2015-06-19" description="Release 3.6.0">
+      <action type="add" dev="wemove" issue="REDMINE-6">
+        Added elastic search as new indexing method.
+      </action>
+    </release>
+    
     <release version="3.5.1" date="2015-04-15" description="Release 3.5.1">
         <action type="add" dev="wemove">
              Added XMLPostRequest to use plain POST method as alternative to SOAP requests (set in spring.xml).
