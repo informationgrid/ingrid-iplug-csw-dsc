@@ -35,7 +35,7 @@ import de.ingrid.iplug.csw.dsc.cswclient.constants.TypeName;
 
 public enum TestServer {
 	
-	PORTALU ("http://www.portalu.de/csw202/", "http://www.portalu.de/csw202", 
+	PORTALU ("https://dev.informationgrid.eu/csw", "https://dev.informationgrid.eu/csw", 
 			Namespace.CSW_2_0_2, Namespace.CSW_PROFILE,
 			OutputFormat.TEXT_XML, "2.0.2", new TypeName[] { TypeName.MD_METADATA }, ResultType.RESULTS,
 			ElementSetName.FULL, "1.1.0"),

@@ -77,7 +77,7 @@
 		<gco:CharacterString>2003/Cor.1:2006</gco:CharacterString>
 	</gmd:metadataStandardVersion>
 	<gmd:identificationInfo>
-		<gmd:MD_DataIdentification uuid="http://portalu.de/igc_testNS#UDK_TEST-123">
+		<gmd:MD_DataIdentification uuid="http://informationgrid.eu/igc_testNS#UDK_TEST-123">
 			<gmd:citation>
 				<gmd:CI_Citation>
 					<gmd:title>
@@ -98,7 +98,7 @@
 					<gmd:identifier>
 						<gmd:MD_Identifier>
 							<gmd:code>
-								<gco:CharacterString>http://portalu.de/igc_testNS#UDK_TEST-123</gco:CharacterString>
+								<gco:CharacterString>http://informationgrid.eu/igc_testNS#UDK_TEST-123</gco:CharacterString>
 							</gmd:code>
 						</gmd:MD_Identifier>
 					</gmd:identifier>

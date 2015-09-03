@@ -27,7 +27,7 @@
 	xsi:schemaLocation="
 http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-2.5.xsd">
 
-	<!-- serviceUrl: http://www.portalu.de/csw -->
+	<!-- serviceUrl: http://dev.informationgrid.eu/csw -->
 
 	<bean id="cswFactory" class="de.ingrid.iplug.csw.dsc.cswclient.CSWFactory">
   		<property name="plugDescription" ref="plugDescription" />

@@ -80,7 +80,7 @@
 		</gmd:metadataStandardVersion>
 		<gmd:identificationInfo>
 			<srv:SV_ServiceIdentification
-				uuid="http://portalu.de/igc_testNS#f4d3e0a6-288e-35e3-b144-b141a3be538f">
+				uuid="http://informationgrid.eu/igc_testNS#f4d3e0a6-288e-35e3-b144-b141a3be538f">
 				<gmd:citation>
 					<gmd:CI_Citation>
 						<gmd:title>
@@ -275,7 +275,7 @@
 							<gco:CharacterString>GetCapabilities</gco:CharacterString>
 						</srv:operationName>
 						<srv:identifier>
-							<gco:CharacterString>http://portalu.de/igc_testNS#UDK_TEST-123
+							<gco:CharacterString>http://informationgrid.eu/igc_testNS#UDK_TEST-123
 							</gco:CharacterString>
 						</srv:identifier>
 					</srv:SV_CoupledResource>
@@ -286,7 +286,7 @@
 							<gco:CharacterString>GetCapabilities</gco:CharacterString>
 						</srv:operationName>
 						<srv:identifier>
-							<gco:CharacterString>http://portalu.de/igc_testNS#IGC-TEST-761AB6F0-C1B1-49D1-8551-0CE8F7D07171
+							<gco:CharacterString>http://informationgrid.eu/igc_testNS#IGC-TEST-761AB6F0-C1B1-49D1-8551-0CE8F7D07171
 							</gco:CharacterString>
 						</srv:identifier>
 					</srv:SV_CoupledResource>
@@ -297,7 +297,7 @@
 							<gco:CharacterString>GetCapabilities</gco:CharacterString>
 						</srv:operationName>
 						<srv:identifier>
-							<gco:CharacterString>http://portalu.de/igc_testNS#IGC-TEST-761AB6F0-C1B1-49D1-8551-0CE8F7D07171
+							<gco:CharacterString>http://informationgrid.eu/igc_testNS#IGC-TEST-761AB6F0-C1B1-49D1-8551-0CE8F7D07171
 							</gco:CharacterString>
 						</srv:identifier>
 					</srv:SV_CoupledResource>
@@ -308,7 +308,7 @@
 							<gco:CharacterString>GetCapabilities</gco:CharacterString>
 						</srv:operationName>
 						<srv:identifier>
-							<gco:CharacterString>http://portalu.de/igc_testNS#IGC-TEST-761AB6F0-C1B1-49D1-8551-0CE8F7D07171
+							<gco:CharacterString>http://informationgrid.eu/igc_testNS#IGC-TEST-761AB6F0-C1B1-49D1-8551-0CE8F7D07171
 							</gco:CharacterString>
 						</srv:identifier>
 					</srv:SV_CoupledResource>
@@ -319,7 +319,7 @@
 							<gco:CharacterString>GetCapabilities</gco:CharacterString>
 						</srv:operationName>
 						<srv:identifier>
-							<gco:CharacterString>http://portalu.de/igc_testNS#IGC-TEST-761AB6F0-C1B1-49D1-8551-0CE8F7D07171
+							<gco:CharacterString>http://informationgrid.eu/igc_testNS#IGC-TEST-761AB6F0-C1B1-49D1-8551-0CE8F7D07171
 							</gco:CharacterString>
 						</srv:identifier>
 					</srv:SV_CoupledResource>
@@ -330,7 +330,7 @@
 							<gco:CharacterString>GetMap</gco:CharacterString>
 						</srv:operationName>
 						<srv:identifier>
-							<gco:CharacterString>http://portalu.de/igc_testNS#UDK_TEST-123
+							<gco:CharacterString>http://informationgrid.eu/igc_testNS#UDK_TEST-123
 							</gco:CharacterString>
 						</srv:identifier>
 					</srv:SV_CoupledResource>
@@ -341,7 +341,7 @@
 							<gco:CharacterString>GetMap</gco:CharacterString>
 						</srv:operationName>
 						<srv:identifier>
-							<gco:CharacterString>http://portalu.de/igc_testNS#IGC-TEST-761AB6F0-C1B1-49D1-8551-0CE8F7D07171
+							<gco:CharacterString>http://informationgrid.eu/igc_testNS#IGC-TEST-761AB6F0-C1B1-49D1-8551-0CE8F7D07171
 							</gco:CharacterString>
 						</srv:identifier>
 					</srv:SV_CoupledResource>
@@ -352,7 +352,7 @@
 							<gco:CharacterString>GetMap</gco:CharacterString>
 						</srv:operationName>
 						<srv:identifier>
-							<gco:CharacterString>http://portalu.de/igc_testNS#IGC-TEST-761AB6F0-C1B1-49D1-8551-0CE8F7D07171
+							<gco:CharacterString>http://informationgrid.eu/igc_testNS#IGC-TEST-761AB6F0-C1B1-49D1-8551-0CE8F7D07171
 							</gco:CharacterString>
 						</srv:identifier>
 					</srv:SV_CoupledResource>
@@ -363,7 +363,7 @@
 							<gco:CharacterString>GetMap</gco:CharacterString>
 						</srv:operationName>
 						<srv:identifier>
-							<gco:CharacterString>http://portalu.de/igc_testNS#IGC-TEST-761AB6F0-C1B1-49D1-8551-0CE8F7D07171
+							<gco:CharacterString>http://informationgrid.eu/igc_testNS#IGC-TEST-761AB6F0-C1B1-49D1-8551-0CE8F7D07171
 							</gco:CharacterString>
 						</srv:identifier>
 					</srv:SV_CoupledResource>
@@ -374,7 +374,7 @@
 							<gco:CharacterString>GetMap</gco:CharacterString>
 						</srv:operationName>
 						<srv:identifier>
-							<gco:CharacterString>http://portalu.de/igc_testNS#IGC-TEST-761AB6F0-C1B1-49D1-8551-0CE8F7D07171
+							<gco:CharacterString>http://informationgrid.eu/igc_testNS#IGC-TEST-761AB6F0-C1B1-49D1-8551-0CE8F7D07171
 							</gco:CharacterString>
 						</srv:identifier>
 					</srv:SV_CoupledResource>
@@ -385,7 +385,7 @@
 							<gco:CharacterString>GetFeatureInfo</gco:CharacterString>
 						</srv:operationName>
 						<srv:identifier>
-							<gco:CharacterString>http://portalu.de/igc_testNS#UDK_TEST-123
+							<gco:CharacterString>http://informationgrid.eu/igc_testNS#UDK_TEST-123
 							</gco:CharacterString>
 						</srv:identifier>
 					</srv:SV_CoupledResource>
@@ -396,7 +396,7 @@
 							<gco:CharacterString>GetFeatureInfo</gco:CharacterString>
 						</srv:operationName>
 						<srv:identifier>
-							<gco:CharacterString>http://portalu.de/igc_testNS#IGC-TEST-761AB6F0-C1B1-49D1-8551-0CE8F7D07171
+							<gco:CharacterString>http://informationgrid.eu/igc_testNS#IGC-TEST-761AB6F0-C1B1-49D1-8551-0CE8F7D07171
 							</gco:CharacterString>
 						</srv:identifier>
 					</srv:SV_CoupledResource>
@@ -407,7 +407,7 @@
 							<gco:CharacterString>GetFeatureInfo</gco:CharacterString>
 						</srv:operationName>
 						<srv:identifier>
-							<gco:CharacterString>http://portalu.de/igc_testNS#IGC-TEST-761AB6F0-C1B1-49D1-8551-0CE8F7D07171
+							<gco:CharacterString>http://informationgrid.eu/igc_testNS#IGC-TEST-761AB6F0-C1B1-49D1-8551-0CE8F7D07171
 							</gco:CharacterString>
 						</srv:identifier>
 					</srv:SV_CoupledResource>
@@ -418,7 +418,7 @@
 							<gco:CharacterString>GetFeatureInfo</gco:CharacterString>
 						</srv:operationName>
 						<srv:identifier>
-							<gco:CharacterString>http://portalu.de/igc_testNS#IGC-TEST-761AB6F0-C1B1-49D1-8551-0CE8F7D07171
+							<gco:CharacterString>http://informationgrid.eu/igc_testNS#IGC-TEST-761AB6F0-C1B1-49D1-8551-0CE8F7D07171
 							</gco:CharacterString>
 						</srv:identifier>
 					</srv:SV_CoupledResource>
@@ -429,7 +429,7 @@
 							<gco:CharacterString>GetFeatureInfo</gco:CharacterString>
 						</srv:operationName>
 						<srv:identifier>
-							<gco:CharacterString>http://portalu.de/igc_testNS#IGC-TEST-761AB6F0-C1B1-49D1-8551-0CE8F7D07171
+							<gco:CharacterString>http://informationgrid.eu/igc_testNS#IGC-TEST-761AB6F0-C1B1-49D1-8551-0CE8F7D07171
 							</gco:CharacterString>
 						</srv:identifier>
 					</srv:SV_CoupledResource>
@@ -1385,37 +1385,37 @@
 					</srv:SV_OperationMetadata>
 				</srv:containsOperations>
 				<srv:operatesOn xmlns:xlink="http://www.w3.org/1999/xlink"
-					uuidref="51694F58-A681-45B9-8755-B9247940098B" xlink:href="http://portalu.de/igc_testNS#UDK_TEST-123" />
+					uuidref="51694F58-A681-45B9-8755-B9247940098B" xlink:href="http://informationgrid.eu/igc_testNS#UDK_TEST-123" />
 				<srv:operatesOn xmlns:xlink="http://www.w3.org/1999/xlink"
-					xlink:href="http://portalu.de/igc_testNS#IGC-TEST-761AB6F0-C1B1-49D1-8551-0CE8F7D07171" />
+					xlink:href="http://informationgrid.eu/igc_testNS#IGC-TEST-761AB6F0-C1B1-49D1-8551-0CE8F7D07171" />
 				<srv:operatesOn xmlns:xlink="http://www.w3.org/1999/xlink"
 					uuidref="3EEE46CF-B05E-44F8-83E8-B68A6E17FF1F"
-					xlink:href="http://portalu.de/igc_testNS#IGC-TEST-761AB6F0-C1B1-49D1-8551-0CE8F7D07171" />
+					xlink:href="http://informationgrid.eu/igc_testNS#IGC-TEST-761AB6F0-C1B1-49D1-8551-0CE8F7D07171" />
 				<srv:operatesOn xmlns:xlink="http://www.w3.org/1999/xlink"
 					uuidref="B3FECD1E-9FB4-4561-B6DF-14F226FB946D"
-					xlink:href="http://portalu.de/igc_testNS#IGC-TEST-761AB6F0-C1B1-49D1-8551-0CE8F7D07171" />
+					xlink:href="http://informationgrid.eu/igc_testNS#IGC-TEST-761AB6F0-C1B1-49D1-8551-0CE8F7D07171" />
 				<srv:operatesOn xmlns:xlink="http://www.w3.org/1999/xlink"
-					uuidref="51694F58-A681-45B9-8755-B9247940098B" xlink:href="http://portalu.de/igc_testNS#UDK_TEST-123" />
+					uuidref="51694F58-A681-45B9-8755-B9247940098B" xlink:href="http://informationgrid.eu/igc_testNS#UDK_TEST-123" />
 				<srv:operatesOn xmlns:xlink="http://www.w3.org/1999/xlink"
 					uuidref="0C12204F-5626-4A2E-94F4-514424F093A1"
-					xlink:href="http://portalu.de/igc_testNS#IGC-TEST-761AB6F0-C1B1-49D1-8551-0CE8F7D07171" />
+					xlink:href="http://informationgrid.eu/igc_testNS#IGC-TEST-761AB6F0-C1B1-49D1-8551-0CE8F7D07171" />
 				<srv:operatesOn xmlns:xlink="http://www.w3.org/1999/xlink"
 					uuidref="3EEE46CF-B05E-44F8-83E8-B68A6E17FF1F"
-					xlink:href="http://portalu.de/igc_testNS#IGC-TEST-761AB6F0-C1B1-49D1-8551-0CE8F7D07171" />
+					xlink:href="http://informationgrid.eu/igc_testNS#IGC-TEST-761AB6F0-C1B1-49D1-8551-0CE8F7D07171" />
 				<srv:operatesOn xmlns:xlink="http://www.w3.org/1999/xlink"
 					uuidref="B3FECD1E-9FB4-4561-B6DF-14F226FB946D"
-					xlink:href="http://portalu.de/igc_testNS#IGC-TEST-761AB6F0-C1B1-49D1-8551-0CE8F7D07171" />
+					xlink:href="http://informationgrid.eu/igc_testNS#IGC-TEST-761AB6F0-C1B1-49D1-8551-0CE8F7D07171" />
 				<srv:operatesOn xmlns:xlink="http://www.w3.org/1999/xlink"
-					uuidref="51694F58-A681-45B9-8755-B9247940098B" xlink:href="http://portalu.de/igc_testNS#UDK_TEST-123" />
+					uuidref="51694F58-A681-45B9-8755-B9247940098B" xlink:href="http://informationgrid.eu/igc_testNS#UDK_TEST-123" />
 				<srv:operatesOn xmlns:xlink="http://www.w3.org/1999/xlink"
 					uuidref="0C12204F-5626-4A2E-94F4-514424F093A1"
-					xlink:href="http://portalu.de/igc_testNS#IGC-TEST-761AB6F0-C1B1-49D1-8551-0CE8F7D07171" />
+					xlink:href="http://informationgrid.eu/igc_testNS#IGC-TEST-761AB6F0-C1B1-49D1-8551-0CE8F7D07171" />
 				<srv:operatesOn xmlns:xlink="http://www.w3.org/1999/xlink"
 					uuidref="3EEE46CF-B05E-44F8-83E8-B68A6E17FF1F"
-					xlink:href="http://portalu.de/igc_testNS#IGC-TEST-761AB6F0-C1B1-49D1-8551-0CE8F7D07171" />
+					xlink:href="http://informationgrid.eu/igc_testNS#IGC-TEST-761AB6F0-C1B1-49D1-8551-0CE8F7D07171" />
 				<srv:operatesOn xmlns:xlink="http://www.w3.org/1999/xlink"
 					uuidref="B3FECD1E-9FB4-4561-B6DF-14F226FB946D"
-					xlink:href="http://portalu.de/igc_testNS#IGC-TEST-761AB6F0-C1B1-49D1-8551-0CE8F7D07171" />
+					xlink:href="http://informationgrid.eu/igc_testNS#IGC-TEST-761AB6F0-C1B1-49D1-8551-0CE8F7D07171" />
 			</srv:SV_ServiceIdentification>
 		</gmd:identificationInfo>
 		<gmd:distributionInfo>
