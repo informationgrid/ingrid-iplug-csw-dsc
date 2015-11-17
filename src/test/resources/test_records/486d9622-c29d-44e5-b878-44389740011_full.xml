@@ -124,7 +124,7 @@
 	</gmd:referenceSystemInfo>
 	<gmd:identificationInfo>
 		<gmd:MD_DataIdentification
-			uuid="http://portalu.de/igc_testNS#IGC-TEST-761AB6F0-C1B1-49D1-8551-0CE8F7D07171">
+			uuid="http://informationgrid.eu/igc_testNS#IGC-TEST-761AB6F0-C1B1-49D1-8551-0CE8F7D07171">
 			<gmd:citation>
 				<gmd:CI_Citation>
 					<gmd:title>
@@ -160,7 +160,7 @@
 					<gmd:identifier>
 						<gmd:MD_Identifier>
 							<gmd:code>
-								<gco:CharacterString>http://portalu.de/igc_testNS#IGC-TEST-761AB6F0-C1B1-49D1-8551-0CE8F7D07171</gco:CharacterString>
+								<gco:CharacterString>http://informationgrid.eu/igc_testNS#IGC-TEST-761AB6F0-C1B1-49D1-8551-0CE8F7D07171</gco:CharacterString>
 							</gmd:code>
 						</gmd:MD_Identifier>
 					</gmd:identifier>

@@ -57,7 +57,7 @@
 	<string>motherIbusUrl</string>
 	<string>j</string>
 	<string>serviceUrl</string>
-	<string>http://www.portalu.de/csw</string>
+	<string>https://dev.informationgrid.eu/csw</string>
 	<string>updateStrategy</string>
 	<string>incremental</string> <!-- default|incremental -->
 	<string>directData</string>

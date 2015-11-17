@@ -117,9 +117,9 @@ public class CSWClientTestLocal extends TestCase {
 		CSWCapabilities cap = client.getCapabilities();
 		
 		// tests
-		assertTrue("GetRecords URL is correct",
-				"http://www.portalu.de:80/csw202".
-				equals(cap.getOperationUrl(Operation.GET_RECORDS)));
+		assertEquals("GetRecords URL is correct",
+				"http://dev.informationgrid.eu:80/csw",
+				cap.getOperationUrl(Operation.GET_RECORDS));
 	}
 	
 	public void localTestGetRecordsAndRecordByIdSoap() throws Exception {
