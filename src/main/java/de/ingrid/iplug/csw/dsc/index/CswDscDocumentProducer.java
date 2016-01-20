@@ -30,6 +30,7 @@ import java.util.List;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
+import de.ingrid.admin.elasticsearch.IndexInfo;
 import de.ingrid.admin.object.IDocumentProducer;
 import de.ingrid.iplug.csw.dsc.cache.Cache;
 import de.ingrid.iplug.csw.dsc.cache.UpdateJob;
@@ -217,6 +218,16 @@ public class CswDscDocumentProducer implements IDocumentProducer {
 
     public void setJob(UpdateJob job) {
         this.job = job;
+    }
+
+    @Override
+    public IndexInfo getIndexInfo() {
+        return null;
+    }
+
+    @Override
+    public Integer getDocumentCount() {
+        return null;
     }
     
 }

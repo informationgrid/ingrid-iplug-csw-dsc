@@ -41,7 +41,9 @@ import java.util.Set;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 
+import de.ingrid.admin.elasticsearch.StatusProvider;
 import de.ingrid.iplug.csw.dsc.cswclient.CSWFactory;
 
 /**
@@ -64,7 +66,10 @@ public class UpdateJob {
     private UpdateStrategy updateStrategy;
 
     private IdfTransformer idfTransformer;
-
+    
+    @Autowired
+    private StatusProvider statusProvider;
+    
     /**
      * Constructor
      */
@@ -123,6 +128,7 @@ public class UpdateJob {
         // summary
         Date end = new Date();
         long diff = end.getTime() - start.getTime();
+        statusProvider.addState( "FETCH", "Fetched " + allRecordIds.size() + " records of " + allRecordIds.size() + ". Duplicates: " + duplicates );
         log.info("Fetched " + allRecordIds.size() + " records of " + allRecordIds.size() + ". Duplicates: " + duplicates);
         log.info("Job executed within " + diff + " ms.");
     }
