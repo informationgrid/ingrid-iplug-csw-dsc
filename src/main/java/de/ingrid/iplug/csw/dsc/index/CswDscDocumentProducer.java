@@ -29,9 +29,13 @@ import java.util.List;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 
 import de.ingrid.admin.elasticsearch.IndexInfo;
+import de.ingrid.admin.elasticsearch.StatusProvider;
+import de.ingrid.admin.elasticsearch.StatusProvider.Classification;
 import de.ingrid.admin.object.IDocumentProducer;
+import de.ingrid.iplug.csw.dsc.CswDscSearchPlug;
 import de.ingrid.iplug.csw.dsc.cache.Cache;
 import de.ingrid.iplug.csw.dsc.cache.UpdateJob;
 import de.ingrid.iplug.csw.dsc.cswclient.CSWFactory;
@@ -58,6 +62,9 @@ public class CswDscDocumentProducer implements IDocumentProducer {
     CSWFactory factory;
     
     UpdateJob job;
+    
+    @Autowired
+    StatusProvider statusProvider;
     
     final private static Log log = LogFactory.getLog(CswDscDocumentProducer.class);
     
@@ -92,10 +99,12 @@ public class CswDscDocumentProducer implements IDocumentProducer {
                     
 
                 } catch (Exception e) {
+                    statusProvider.addState( "ERROR_FETCH", "Error harvesting CSW datasource with URL: " + CswDscSearchPlug.conf.serviceUrl, Classification.ERROR );
                     log.error("Error harvesting CSW datasource.", e);
                     if (tmpCache != null) {
                         tmpCache.rollbackTransaction();
                     }
+                    throw new RuntimeException("Error harvesting CSW datasource");
                 }
             }
             if (recordSetProducer.hasNext()) {
@@ -115,7 +124,7 @@ public class CswDscDocumentProducer implements IDocumentProducer {
             // make sure the tmp cache is released after exception occurs
             // otherwise the indexer will never "heal" from this exception
             tmpCache = null;
-            result = false;
+            throw new RuntimeException("Error harvesting CSW datasource");
         } finally {
             if (!result) {
                 tmpCache = null;
