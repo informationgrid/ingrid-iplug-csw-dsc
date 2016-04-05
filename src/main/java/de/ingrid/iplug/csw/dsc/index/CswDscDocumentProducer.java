@@ -32,11 +32,16 @@ import org.apache.commons.logging.LogFactory;
 
 import de.ingrid.admin.elasticsearch.IndexInfo;
 import de.ingrid.admin.object.IDocumentProducer;
+import de.ingrid.iplug.csw.dsc.analyze.CoupledResources;
+import de.ingrid.iplug.csw.dsc.analyze.IsoCacheCoupledResourcesAnalyzer;
 import de.ingrid.iplug.csw.dsc.cache.Cache;
 import de.ingrid.iplug.csw.dsc.cache.UpdateJob;
 import de.ingrid.iplug.csw.dsc.cswclient.CSWFactory;
+import de.ingrid.iplug.csw.dsc.cswclient.CSWRecord;
 import de.ingrid.iplug.csw.dsc.index.mapper.IRecordMapper;
 import de.ingrid.iplug.csw.dsc.index.producer.ICswCacheRecordSetProducer;
+import de.ingrid.iplug.csw.dsc.om.CswCacheSourceRecord;
+import de.ingrid.iplug.csw.dsc.om.CswCoupledResourcesCacheSourceRecord;
 import de.ingrid.iplug.csw.dsc.om.SourceRecord;
 import de.ingrid.utils.ElasticDocument;
 import de.ingrid.utils.PlugDescription;
@@ -58,6 +63,10 @@ public class CswDscDocumentProducer implements IDocumentProducer {
     CSWFactory factory;
     
     UpdateJob job;
+    
+    IsoCacheCoupledResourcesAnalyzer isoCacheCoupledResourcesAnalyzer;
+    
+    private CoupledResources coupledResources = null;
     
     final private static Log log = LogFactory.getLog(CswDscDocumentProducer.class);
     
@@ -89,6 +98,9 @@ public class CswDscDocumentProducer implements IDocumentProducer {
                     job.setCache(tmpCache);
                     job.init();
                     job.execute();
+                    
+                    // analyze records for coupling information
+                    coupledResources = isoCacheCoupledResourcesAnalyzer.analyze( tmpCache );
                     
 
                 } catch (Exception e) {
@@ -136,15 +148,17 @@ public class CswDscDocumentProducer implements IDocumentProducer {
     @Override
     public ElasticDocument next() {
         ElasticDocument doc = new ElasticDocument();
-        SourceRecord record = null;
+        CswCacheSourceRecord record = null;
         try {
-            record = recordSetProducer.next();
+            record = (CswCacheSourceRecord)recordSetProducer.next();
+            CSWRecord cswRecord = (CSWRecord) record.get( CswCacheSourceRecord.CSW_RECORD );
+            SourceRecord sourceRecord = new CswCoupledResourcesCacheSourceRecord(cswRecord, tmpCache, coupledResources.getCoupledRecordIds(cswRecord.getId()));
             for (IRecordMapper mapper : recordMapperList) {
                 long start = 0;
                 if (log.isDebugEnabled()) {
                     start = System.currentTimeMillis();
                 }
-                mapper.map(record, doc);
+                mapper.map(sourceRecord, doc);
                 if (log.isDebugEnabled()) {
                     log.debug("Mapping of source record with " + mapper + " took: " + (System.currentTimeMillis() - start) + " ms.");
                 }
@@ -157,15 +171,10 @@ public class CswDscDocumentProducer implements IDocumentProducer {
                 log.error("Error mapping record.", t);
         	}
 
-// DO NOT EMPTY CACHE !!! We want to continue indexing the fetched records !!!
-// if tmpCache is set to null the fetching process is started from scratch (see this.hasNext() method) !
-/*
-            if (tmpCache != null) {
-                tmpCache.rollbackTransaction();
-                tmpCache = null;
-            }
-*/
-            return null;
+            // DO NOT EMPTY CACHE !!! We want to continue indexing the fetched records !!!
+            // if tmpCache is set to null the fetching process is started from scratch (see this.hasNext() method) !
+
+        	return null;
         }
     }
 
@@ -218,6 +227,15 @@ public class CswDscDocumentProducer implements IDocumentProducer {
 
     public void setJob(UpdateJob job) {
         this.job = job;
+    }
+
+    
+    public IsoCacheCoupledResourcesAnalyzer getsoCacheCoupledResourcesAnalyzer() {
+        return isoCacheCoupledResourcesAnalyzer;
+    }
+
+    public void setsoCacheCoupledResourcesAnalyzer(IsoCacheCoupledResourcesAnalyzer isoCacheCoupledResourcesAnalyzer) {
+        this.isoCacheCoupledResourcesAnalyzer = isoCacheCoupledResourcesAnalyzer;
     }
 
     @Override

@@ -47,7 +47,7 @@ public class IsoCacheAnalyzerTest extends TestCase {
 
     /**
      * Test method for
-     * {@link de.ingrid.iplug.csw.dsc.analyze.IsoCacheAnalyzer#analyze(de.ingrid.iplug.csw.dsc.cache.Cache)}
+     * {@link de.ingrid.iplug.csw.dsc.analyze.IsoCacheCoupledResourcesAnalyzer#analyze(de.ingrid.iplug.csw.dsc.cache.Cache)}
      * .
      * 
      * @throws Exception
@@ -70,7 +70,7 @@ public class IsoCacheAnalyzerTest extends TestCase {
 
         DefaultFileCache cache = (DefaultFileCache) this.setupCache();
 
-        IsoCacheAnalyzer isoCacheAnalyzer = new IsoCacheAnalyzer();
+        IsoCacheCoupledResourcesAnalyzer isoCacheAnalyzer = new IsoCacheCoupledResourcesAnalyzer();
         CoupledResources result = isoCacheAnalyzer.analyze(cache);
 
         assertNull("Dataset 3B20D603-30D1-47D5-AC62-E10193CDE1D8 is coupled to service 33462e89-e5ab-11c3-737d-b3a61366d028, but does not exist in cache.",

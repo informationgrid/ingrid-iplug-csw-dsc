@@ -44,11 +44,11 @@ import de.ingrid.utils.xpath.XPathUtils;
  * @author joachim
  * 
  */
-public class IsoCacheAnalyzer {
+public class IsoCacheCoupledResourcesAnalyzer {
 
     final private XPathUtils xPathUtils = new XPathUtils(new IDFNamespaceContext());
 
-    protected static final Logger log = Logger.getLogger(IsoCacheAnalyzer.class);
+    protected static final Logger log = Logger.getLogger(IsoCacheCoupledResourcesAnalyzer.class);
 
     public CoupledResources analyze(Cache cache) throws Exception {
 

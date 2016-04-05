@@ -22,12 +22,27 @@
  */
 package de.ingrid.iplug.csw.dsc.index;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import org.springframework.core.io.FileSystemResource;
 import org.w3c.dom.Node;
 
+import de.ingrid.iplug.csw.dsc.analyze.CoupledResources;
+import de.ingrid.iplug.csw.dsc.analyze.IsoCacheCoupledResourcesAnalyzer;
 import de.ingrid.iplug.csw.dsc.cswclient.CSWRecord;
 import de.ingrid.iplug.csw.dsc.cswclient.constants.ElementSetName;
+import de.ingrid.iplug.csw.dsc.om.CswCoupledResourcesCacheSourceRecord;
+import de.ingrid.iplug.csw.dsc.record.IdfRecordCreator;
+import de.ingrid.iplug.csw.dsc.record.mapper.CouplingResourcesMapper;
+import de.ingrid.iplug.csw.dsc.record.mapper.CreateIdfMapper;
+import de.ingrid.iplug.csw.dsc.record.mapper.CswIdfMapper;
+import de.ingrid.iplug.csw.dsc.record.mapper.IIdfMapper;
 import de.ingrid.iplug.csw.dsc.record.mapper.ProcessIdfMapper;
+import de.ingrid.iplug.csw.dsc.record.producer.CswRecordProducer;
+import de.ingrid.iplug.csw.dsc.tools.StringUtils;
+import de.ingrid.utils.ElasticDocument;
+import de.ingrid.utils.idf.IdfTool;
 
 public class IdfTransformerWsvGeodatenkatalogTest extends BaseIndexTestCase {
 
@@ -37,21 +52,49 @@ public class IdfTransformerWsvGeodatenkatalogTest extends BaseIndexTestCase {
     public void testTransform() throws Exception {
 
         ProcessIdfMapper processIdfMapperWSV = new ProcessIdfMapper();
-        processIdfMapperWSV.setStyleSheetResource(new FileSystemResource("src/main/release/presets/wsv/mapping/post_process_idf_wsv_geodatenkatalog.xsl"));
-        
-        prepareCache(processIdfMapperWSV, "24265_wsv");
+        processIdfMapperWSV.setStyleSheetResource( new FileSystemResource( "src/main/release/presets/wsv/mapping/post_process_idf_wsv_geodatenkatalog.xsl" ) );
+
+        prepareCache( "24265_wsv" );
+
+        CswRecordProducer cswRecordProducer = new CswRecordProducer();
+
+        cswRecordProducer.setCache( cache );
+        cswRecordProducer.setFactory( factory );
+
+        List<IIdfMapper> record2IdfMapperList = new ArrayList<IIdfMapper>();
+
+        CreateIdfMapper m = new CreateIdfMapper();
+        record2IdfMapperList.add( m );
+        CswIdfMapper m1 = new CswIdfMapper();
+        m1.setStyleSheetResource( new FileSystemResource( "src/main/resources/mapping/iso_to_idf.xsl" ) );
+        record2IdfMapperList.add( m1 );
+        CouplingResourcesMapper m2 = new CouplingResourcesMapper();
+        record2IdfMapperList.add( m2 );
+        record2IdfMapperList.add( processIdfMapperWSV );
+
+        IdfRecordCreator idfRecordCreator = new IdfRecordCreator();
+        idfRecordCreator.setRecordProducer( cswRecordProducer );
+        idfRecordCreator.setRecord2IdfMapperList( record2IdfMapperList );
+
+        IsoCacheCoupledResourcesAnalyzer a = new IsoCacheCoupledResourcesAnalyzer();
+        CoupledResources cr = a.analyze( cache );
 
         for (String id : cache.getCachedRecordIds()) {
-            CSWRecord idfRecord = cache.getRecord(id, ElementSetName.IDF);
-            Node idfDoc = idfRecord.getOriginalResponse();
-            String[] urls = xPathUtils.getStringArray(idfDoc, "//gmd:URL");
-            assertTrue("Idf found.", idfDoc.hasChildNodes());
-            assertTrue("Metadata found.", xPathUtils.nodeExists(idfDoc, "//idf:idfMdMetadata"));
+            CSWRecord cswRecord = cache.getRecord( id, ElementSetName.FULL );
+            ElasticDocument doc = new ElasticDocument();
+
+            Node idfNode = StringUtils.stringToDocument(
+                    IdfTool.getIdfDataFromRecord( idfRecordCreator.getRecord( doc, new CswCoupledResourcesCacheSourceRecord( cswRecord, cache, cr.getCoupledRecordIds( id ) ) ) ) )
+                    .getDocumentElement();
+
+            String[] urls = xPathUtils.getStringArray( idfNode, "//gmd:URL" );
+            assertTrue( "Idf found.", idfNode.hasChildNodes() );
+            assertTrue( "Metadata found.", xPathUtils.nodeExists( idfNode, "//idf:idfMdMetadata" ) );
             for (String url : urls) {
-                assertTrue("All urls are absolute and start with 'http'.", url.startsWith("http"));
+                assertTrue( "All urls are absolute and start with 'http'.", url.startsWith( "http" ) );
             }
         }
-        
+
     }
 
 }

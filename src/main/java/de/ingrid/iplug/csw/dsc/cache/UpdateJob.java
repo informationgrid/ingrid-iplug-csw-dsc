@@ -65,8 +65,6 @@ public class UpdateJob {
 
     private UpdateStrategy updateStrategy;
 
-    private IdfTransformer idfTransformer;
-    
     @Autowired
     private StatusProvider statusProvider;
     
@@ -111,9 +109,6 @@ public class UpdateJob {
             if (!allRecordIds.contains(cachedRecordId))
                 this.cache.removeRecord(cachedRecordId);
         }
-
-        // transform ISO to IDF
-        idfTransformer.transform(cache);
 
         // write the execution date as last operation
         // this is the start date, to make sure that the next execution will
@@ -217,10 +212,6 @@ public class UpdateJob {
 
     public void setFilterStrSet(Set<String> filterStrSet) {
         this.filterStrSet = filterStrSet;
-    }
-
-    public void setIdfTransformer(IdfTransformer idfTransformer) {
-        this.idfTransformer = idfTransformer;
     }
 
 }

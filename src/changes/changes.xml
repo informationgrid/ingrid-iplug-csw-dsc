@@ -28,6 +28,11 @@
     <author email="joachim@wemove.com">Joachim Müller</author>
   </properties>
   <body>
+    <release version="3.6.2-SNAPSHOT" date="2016-xx-xx" description="Release 3.6.2">
+      <action type="add" dev="wemove" issue="REDMINE-267">
+        Create IDF details while indexing and add it to index document. Use IDF from index document if exists.
+      </action>
+    </release>
     <release version="3.6.1" date="2015-11-17" description="Release 3.6.1">
       <action type="update" dev="wemove" issue="REDMINE-15">
         Remove all references to PortalU.

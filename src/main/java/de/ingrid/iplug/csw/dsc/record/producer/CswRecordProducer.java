@@ -50,9 +50,9 @@ import de.ingrid.utils.PlugDescription;
  * @author joachim@wemove.com
  * 
  */
-public class IdfRecordProducer implements IRecordProducer {
+public class CswRecordProducer implements IRecordProducer {
 
-    final private static Log log = LogFactory.getLog(IdfRecordProducer.class);
+    final private static Log log = LogFactory.getLog(CswRecordProducer.class);
 
     Cache cache;
     
@@ -70,7 +70,7 @@ public class IdfRecordProducer implements IRecordProducer {
         // TODO make the field configurable
         String field = (String) doc.get("t01_object.obj_id");
         try {
-            return new CswCacheSourceRecord(cache.getRecord(field, ElementSetName.IDF));
+            return new CswCacheSourceRecord(cache.getRecord(field, ElementSetName.FULL));
         } catch (IOException e) {
             log.error("Error reading record '" + field + "' from cache '" + cache.toString() + "'.");
         }

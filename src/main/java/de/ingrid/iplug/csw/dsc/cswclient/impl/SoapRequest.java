@@ -291,8 +291,10 @@ public class SoapRequest implements CSWRequest {
         }
 
         // send the request
-        if (log.isDebugEnabled())
+        if (log.isDebugEnabled()) {
+            log.debug("Request URL: " + serverURL);
             log.debug("Request: " + serializeElement(payload.cloneOMElement()));
+        }
         OMElement result = null;
         if (preProcessor != null) {
             serviceClient = preProcessor.process(serviceClient);

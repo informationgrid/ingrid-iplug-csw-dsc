@@ -259,26 +259,23 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
         <property name="recordSetProducer" ref="recordSetProducer" />
         <property name="recordMapperList">
             <list>
+                <ref bean="idfProducerDocumentMapper"/>
                 <ref bean="recordMapper"/>
             </list>
         </property>
         <property name="cache" ref="cswCache" />
         <property name="factory" ref="cswFactory" />
         <property name="job" ref="updateJob" />
+        <property name="isoCacheCoupledResourcesAnalyzer" ref="coupledResourceAnalyzer" />
     </bean>
     
-    <bean id="idfTransformer" class="de.ingrid.iplug.csw.dsc.cache.IdfTransformer">
-        <property name="record2IdfMapperList">
-            <list>
-                <ref bean="createIdfMapper"/>
-                <ref bean="idfMapper"/>
-                <ref bean="couplingResourcesMapper"/>
-            </list>
-        </property>
-        <property name="isoCacheAnalyzer" ref="isoCacheAnalyzer" />
-    </bean>    
-
-    <bean id="isoCacheAnalyzer" class="de.ingrid.iplug.csw.dsc.analyze.IsoCacheAnalyzer"/>
+    <bean id="coupledResourceAnalyzer" class="de.ingrid.iplug.csw.dsc.analyze.IsoCacheCoupledResourcesAnalyzer"/>
+    
+    <bean id="idfProducerDocumentMapper" class="IdfProducerDocumentMapper">
+        <property name="idfRecordCreator" ref="dscRecordProducer"/>
+    </bean>
+    
+    <bean id="isoCacheAnalyzer" class="de.ingrid.iplug.csw.dsc.analyze.IsoCacheCoupledResourcesAnalyzer"/>
 
     <bean id="recordSetProducer" class="de.ingrid.iplug.csw.dsc.index.producer.CswRecordSetProducer"/>
 
@@ -286,6 +283,7 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
         <property name="mappingScript" value="classpath:mapping/idf_to_lucene.js" />
         <property name="codelistService" ref="codeListService" />
         <property name="compile" value="false" />
+        <property name="idfRecordCreator" ref="dscRecordProducer" />
     </bean>
     
     <bean id="cswDscSearchPlug" class="de.ingrid.iplug.csw.dsc.CswDscSearchPlug">
@@ -295,6 +293,13 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
     <bean id="dscRecordProducer" class="de.ingrid.iplug.csw.dsc.record.IdfRecordCreator">
         <property name="recordProducer" ref="recordProducer" />
         <property name="compressed" value="true" />
+        <property name="record2IdfMapperList">
+            <list>
+                <ref bean="createIdfMapper"/>
+                <ref bean="idfMapper"/>
+                <ref bean="couplingResourcesMapper"/>
+            </list>
+        </property>
     </bean>
     
     <bean id="recordProducer" class="de.ingrid.iplug.csw.dsc.record.producer.IdfRecordProducer">
