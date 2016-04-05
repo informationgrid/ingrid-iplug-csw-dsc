@@ -2,7 +2,7 @@
  * **************************************************-
  * ingrid-iplug-csw-dsc:war
  * ==================================================
- * Copyright (C) 2014 - 2015 wemove digital solutions GmbH
+ * Copyright (C) 2014 - 2016 wemove digital solutions GmbH
  * ==================================================
  * Licensed under the EUPL, Version 1.1 or – as soon they will be
  * approved by the European Commission - subsequent versions of the
@@ -29,11 +29,15 @@ import java.util.List;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 
 import de.ingrid.admin.elasticsearch.IndexInfo;
+import de.ingrid.admin.elasticsearch.StatusProvider;
+import de.ingrid.admin.elasticsearch.StatusProvider.Classification;
 import de.ingrid.admin.object.IDocumentProducer;
 import de.ingrid.iplug.csw.dsc.analyze.CoupledResources;
 import de.ingrid.iplug.csw.dsc.analyze.IsoCacheCoupledResourcesAnalyzer;
+import de.ingrid.iplug.csw.dsc.CswDscSearchPlug;
 import de.ingrid.iplug.csw.dsc.cache.Cache;
 import de.ingrid.iplug.csw.dsc.cache.UpdateJob;
 import de.ingrid.iplug.csw.dsc.cswclient.CSWFactory;
@@ -67,6 +71,9 @@ public class CswDscDocumentProducer implements IDocumentProducer {
     IsoCacheCoupledResourcesAnalyzer isoCacheCoupledResourcesAnalyzer;
     
     private CoupledResources coupledResources = null;
+
+    @Autowired
+    StatusProvider statusProvider;
     
     final private static Log log = LogFactory.getLog(CswDscDocumentProducer.class);
     
@@ -104,10 +111,12 @@ public class CswDscDocumentProducer implements IDocumentProducer {
                     
 
                 } catch (Exception e) {
+                    statusProvider.addState( "ERROR_FETCH", "Error harvesting CSW datasource with URL: " + CswDscSearchPlug.conf.serviceUrl, Classification.ERROR );
                     log.error("Error harvesting CSW datasource.", e);
                     if (tmpCache != null) {
                         tmpCache.rollbackTransaction();
                     }
+                    throw new RuntimeException("Error harvesting CSW datasource");
                 }
             }
             if (recordSetProducer.hasNext()) {
@@ -127,7 +136,7 @@ public class CswDscDocumentProducer implements IDocumentProducer {
             // make sure the tmp cache is released after exception occurs
             // otherwise the indexer will never "heal" from this exception
             tmpCache = null;
-            result = false;
+            throw new RuntimeException("Error harvesting CSW datasource");
         } finally {
             if (!result) {
                 tmpCache = null;

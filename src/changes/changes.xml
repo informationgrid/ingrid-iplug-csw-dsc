@@ -32,7 +32,14 @@
       <action type="add" dev="wemove" issue="REDMINE-267">
         Create IDF details while indexing and add it to index document. Use IDF from index document if exists.
       </action>
+      <action type="fix" dev="wemove" issue="REDMINE-264">
+        Do not index from cache if getCapabilities request failed.
+      </action>
+      <action type="fix" dev="wemove" issue="REDMINE-269">
+        Fixed redirect to welcome page for a logged in user.
+      </action>
     </release>
+    
     <release version="3.6.1" date="2015-11-17" description="Release 3.6.1">
       <action type="update" dev="wemove" issue="REDMINE-15">
         Remove all references to PortalU.
