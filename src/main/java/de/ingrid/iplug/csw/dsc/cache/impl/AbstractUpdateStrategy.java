@@ -226,7 +226,7 @@ public abstract class AbstractUpdateStrategy implements UpdateStrategy {
 							numLastFetch = result.getNumberOfRecords();
 						}
     					numRecordsFetched += numLastFetch;
-    					statusProvider.addState( "FETCH", "Fetching record " + (numRecordsFetched-numLastFetch+1) + "-" + numRecordsFetched + " / " + numRecordsTotal );
+    					statusProvider.addState( "FETCH", "Fetching record " + (numRecordsFetched-numLastFetch+1) + "-" + numRecordsFetched + " / " + numRecordsTotal + " from " + client.getFactory().getServiceUrl() );
 
     					query.setStartPosition(query.getStartPosition() + numLastFetch);
 

@@ -246,7 +246,6 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
     
     <bean id="updateJob" class="de.ingrid.iplug.csw.dsc.cache.UpdateJob" init-method="init">
         <property name="updateStrategy" ref="cswDefaultUpdateStrategy" />
-        <property name="idfTransformer" ref="idfTransformer" />
         <property name="filterStrSet" ref="cswHarvestFilter" />
         <property name="cache" ref="cswCache" />
         <property name="factory" ref="cswFactory" />
@@ -270,7 +269,7 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
 
     <bean id="coupledResourceAnalyzer" class="de.ingrid.iplug.csw.dsc.analyze.IsoCacheCoupledResourcesAnalyzer"/>
 
-    <bean id="idfProducerDocumentMapper" class="IdfProducerDocumentMapper">
+    <bean id="idfProducerDocumentMapper" class="de.ingrid.iplug.csw.dsc.index.mapper.IdfProducerDocumentMapper">
         <property name="idfRecordCreator" ref="dscRecordProducer"/>
     </bean>
     
@@ -309,7 +308,7 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
         </property>
     </bean>
     
-    <bean id="recordProducer" class="de.ingrid.iplug.csw.dsc.record.producer.IdfRecordProducer">
+    <bean id="recordProducer" class="de.ingrid.iplug.csw.dsc.record.producer.CswRecordProducer">
         <property name="cache" ref="cswCache" />
         <property name="factory" ref="cswFactory" />
     </bean>

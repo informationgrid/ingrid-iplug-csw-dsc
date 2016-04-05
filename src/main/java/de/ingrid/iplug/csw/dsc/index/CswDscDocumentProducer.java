@@ -239,11 +239,11 @@ public class CswDscDocumentProducer implements IDocumentProducer {
     }
 
     
-    public IsoCacheCoupledResourcesAnalyzer getsoCacheCoupledResourcesAnalyzer() {
+    public IsoCacheCoupledResourcesAnalyzer getIsoCacheCoupledResourcesAnalyzer() {
         return isoCacheCoupledResourcesAnalyzer;
     }
 
-    public void setsoCacheCoupledResourcesAnalyzer(IsoCacheCoupledResourcesAnalyzer isoCacheCoupledResourcesAnalyzer) {
+    public void setIsoCacheCoupledResourcesAnalyzer(IsoCacheCoupledResourcesAnalyzer isoCacheCoupledResourcesAnalyzer) {
         this.isoCacheCoupledResourcesAnalyzer = isoCacheCoupledResourcesAnalyzer;
     }
 
