@@ -25,10 +25,13 @@ package de.ingrid.iplug.csw.dsc.index;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.mockito.Mock;
+import org.mockito.MockitoAnnotations;
 import org.springframework.core.io.FileSystemResource;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 
+import de.ingrid.admin.elasticsearch.StatusProvider;
 import de.ingrid.codelists.CodeListService;
 import de.ingrid.iplug.csw.dsc.analyze.CoupledResources;
 import de.ingrid.iplug.csw.dsc.analyze.IsoCacheCoupledResourcesAnalyzer;
@@ -49,6 +52,13 @@ import de.ingrid.utils.tool.StringUtil;
 
 public class MapperToIndexTest extends BaseIndexTestCase {
 
+    @Mock StatusProvider statusProvider;
+    
+    public MapperToIndexTest() {
+        super();
+        MockitoAnnotations.initMocks( this );
+    }
+    
     /**
      * @throws Exception
      */
@@ -82,6 +92,7 @@ public class MapperToIndexTest extends BaseIndexTestCase {
         idfRecordCreator.setRecord2IdfMapperList( record2IdfMapperList );
 
         IsoCacheCoupledResourcesAnalyzer a = new IsoCacheCoupledResourcesAnalyzer();
+        a.setStatusProvider( statusProvider );
         CoupledResources cr = a.analyze( cache );
         
         mapper.setIdfRecordCreator( idfRecordCreator );

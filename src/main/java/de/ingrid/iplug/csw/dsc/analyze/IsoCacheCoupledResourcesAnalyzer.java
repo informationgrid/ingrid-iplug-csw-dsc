@@ -51,7 +51,7 @@ public class IsoCacheCoupledResourcesAnalyzer {
     
     @Autowired
     private StatusProvider statusProvider;
-    
+
     final private XPathUtils xPathUtils = new XPathUtils(new IDFNamespaceContext());
 
     protected static final Logger log = Logger.getLogger(IsoCacheCoupledResourcesAnalyzer.class);
@@ -136,6 +136,10 @@ public class IsoCacheCoupledResourcesAnalyzer {
         
         return result;
 
+    }
+
+    public void setStatusProvider(StatusProvider statusProvider) {
+        this.statusProvider = statusProvider;
     }
 
 }
