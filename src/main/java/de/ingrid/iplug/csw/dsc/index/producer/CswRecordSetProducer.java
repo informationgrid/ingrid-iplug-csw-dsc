@@ -2,7 +2,7 @@
  * **************************************************-
  * ingrid-iplug-csw-dsc:war
  * ==================================================
- * Copyright (C) 2014 - 2015 wemove digital solutions GmbH
+ * Copyright (C) 2014 - 2016 wemove digital solutions GmbH
  * ==================================================
  * Licensed under the EUPL, Version 1.1 or – as soon they will be
  * approved by the European Commission - subsequent versions of the
@@ -90,7 +90,7 @@ public class CswRecordSetProducer implements ICswCacheRecordSetProducer {
         try {
             recordId = recordIdIterator.next();
             return new CswCacheSourceRecord(cache.getRecord(recordId,
-                    ElementSetName.IDF));
+                    ElementSetName.FULL));
         } catch (Exception e) {
             log.error("Error reading record '" + recordId + "' from cache '"
                     + cache + "' -> WE RETURN NULL !");

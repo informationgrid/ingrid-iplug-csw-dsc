@@ -2,7 +2,7 @@
  * **************************************************-
  * ingrid-iplug-csw-dsc:war
  * ==================================================
- * Copyright (C) 2014 - 2015 wemove digital solutions GmbH
+ * Copyright (C) 2014 - 2016 wemove digital solutions GmbH
  * ==================================================
  * Licensed under the EUPL, Version 1.1 or – as soon they will be
  * approved by the European Commission - subsequent versions of the
@@ -43,9 +43,12 @@ import javax.xml.parsers.DocumentBuilderFactory;
 
 import org.apache.commons.lang.exception.ExceptionUtils;
 import org.apache.commons.logging.Log;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.w3c.dom.Document;
 import org.xml.sax.InputSource;
 
+import de.ingrid.admin.elasticsearch.StatusProvider;
+import de.ingrid.admin.elasticsearch.StatusProvider.Classification;
 import de.ingrid.iplug.csw.dsc.CswDscSearchPlug;
 import de.ingrid.iplug.csw.dsc.cache.Cache;
 import de.ingrid.iplug.csw.dsc.cache.ExecutionContext;
@@ -61,6 +64,9 @@ import de.ingrid.iplug.csw.dsc.tools.StringUtils;
 
 public abstract class AbstractUpdateStrategy implements UpdateStrategy {
 
+    @Autowired
+    protected StatusProvider statusProvider;
+    
 	DocumentBuilder docBuilder = null;
 
 	/** The time in msec the strategy pauses between different requests to the CSW server. */
@@ -179,7 +185,7 @@ public abstract class AbstractUpdateStrategy implements UpdateStrategy {
 			numRecordsTotal = result.getNumberOfRecordsTotal();
 			if (log.isInfoEnabled())
 				log.info(numRecordsTotal+" record(s) from filter "+filterIndex+":");
-
+			
 			if (numRecordsTotal > 0) {
 
 				if (log.isInfoEnabled()) {
@@ -198,12 +204,12 @@ public abstract class AbstractUpdateStrategy implements UpdateStrategy {
 				String logLostRecordChunks = "";
 				int numLostRecords = 0;
 				while (numRecordsFetched < numRecordsTotal) {
-
 					if (CswDscSearchPlug.conf.maxNumSkippedRequests > -1) {
 						// fetching should end when a maximum number of failures (in a row) is reached.
 						if (numSkippedRequests > CswDscSearchPlug.conf.maxNumSkippedRequests) {
 					    	log.error("Problems fetching records. Total number of skipped requests reached (" + CswDscSearchPlug.conf.maxNumSkippedRequests +
 					    		" requests without results). We end fetching process for this filter.");
+					    	statusProvider.addState( "ERROR_FETCH", "Error during fetch, since more than " + CswDscSearchPlug.conf.maxNumSkippedRequests + " records have been skipped.", Classification.ERROR );
 						    break;
 						}
 					}
@@ -220,6 +226,7 @@ public abstract class AbstractUpdateStrategy implements UpdateStrategy {
 							numLastFetch = result.getNumberOfRecords();
 						}
     					numRecordsFetched += numLastFetch;
+    					statusProvider.addState( "FETCH", "Fetching record " + (numRecordsFetched-numLastFetch+1) + "-" + numRecordsFetched + " / " + numRecordsTotal + " from " + client.getFactory().getServiceUrl() );
 
     					query.setStartPosition(query.getStartPosition() + numLastFetch);
 
@@ -260,12 +267,14 @@ public abstract class AbstractUpdateStrategy implements UpdateStrategy {
         					currentFetchedRecordIds.addAll(processResult(result, doCache));
     					}
 					} catch (Exception e) {
+					    statusProvider.addState( "ERROR_FETCH_PROCESS", "Error during processing record: " + logCurrRecordChunk, Classification.ERROR );
 					    log.error("Error processing records " + logCurrRecordChunk);
 					    log.error( ExceptionUtils.getStackTrace(e) );
 					}
 				}
 
 				if (numLostRecords > 0) {
+				    statusProvider.addState( "ERROR_FETCH_PROCESS", "Error during fetching of record: " + logLostRecordChunks, Classification.ERROR );
 				    log.error("\nWe had failed GetRecords requests !!!" +
 				    		"\nThe following " + numLostRecords + " records were NOT fetched and are \"lost\":" +
 				    		"\n" + logLostRecordChunks);

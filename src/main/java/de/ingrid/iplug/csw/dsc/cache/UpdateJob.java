@@ -2,7 +2,7 @@
  * **************************************************-
  * ingrid-iplug-csw-dsc:war
  * ==================================================
- * Copyright (C) 2014 - 2015 wemove digital solutions GmbH
+ * Copyright (C) 2014 - 2016 wemove digital solutions GmbH
  * ==================================================
  * Licensed under the EUPL, Version 1.1 or – as soon they will be
  * approved by the European Commission - subsequent versions of the
@@ -41,7 +41,9 @@ import java.util.Set;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 
+import de.ingrid.admin.elasticsearch.StatusProvider;
 import de.ingrid.iplug.csw.dsc.cswclient.CSWFactory;
 
 /**
@@ -63,8 +65,9 @@ public class UpdateJob {
 
     private UpdateStrategy updateStrategy;
 
-    private IdfTransformer idfTransformer;
-
+    @Autowired
+    private StatusProvider statusProvider;
+    
     /**
      * Constructor
      */
@@ -107,9 +110,6 @@ public class UpdateJob {
                 this.cache.removeRecord(cachedRecordId);
         }
 
-        // transform ISO to IDF
-        idfTransformer.transform(cache);
-
         // write the execution date as last operation
         // this is the start date, to make sure that the next execution will
         // fetch
@@ -123,6 +123,7 @@ public class UpdateJob {
         // summary
         Date end = new Date();
         long diff = end.getTime() - start.getTime();
+        statusProvider.addState( "FETCH", "Fetched " + allRecordIds.size() + " records of " + allRecordIds.size() + " from " + this.factory.getServiceUrl() + ". Duplicates: " + duplicates);
         log.info("Fetched " + allRecordIds.size() + " records of " + allRecordIds.size() + ". Duplicates: " + duplicates);
         log.info("Job executed within " + diff + " ms.");
     }
@@ -211,10 +212,6 @@ public class UpdateJob {
 
     public void setFilterStrSet(Set<String> filterStrSet) {
         this.filterStrSet = filterStrSet;
-    }
-
-    public void setIdfTransformer(IdfTransformer idfTransformer) {
-        this.idfTransformer = idfTransformer;
     }
 
 }

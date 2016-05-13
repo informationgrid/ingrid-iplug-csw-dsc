@@ -2,7 +2,7 @@
  * **************************************************-
  * ingrid-iplug-csw-dsc:war
  * ==================================================
- * Copyright (C) 2014 - 2015 wemove digital solutions GmbH
+ * Copyright (C) 2014 - 2016 wemove digital solutions GmbH
  * ==================================================
  * Licensed under the EUPL, Version 1.1 or – as soon they will be
  * approved by the European Commission - subsequent versions of the
@@ -27,7 +27,10 @@ package de.ingrid.iplug.csw.dsc.analyze;
 
 import java.io.File;
 
-import junit.framework.TestCase;
+import org.mockito.Mock;
+import org.mockito.MockitoAnnotations;
+
+import de.ingrid.admin.elasticsearch.StatusProvider;
 import de.ingrid.iplug.csw.dsc.TestUtil;
 import de.ingrid.iplug.csw.dsc.cache.Cache;
 import de.ingrid.iplug.csw.dsc.cache.impl.DefaultFileCache;
@@ -35,6 +38,7 @@ import de.ingrid.iplug.csw.dsc.cswclient.CSWFactory;
 import de.ingrid.iplug.csw.dsc.cswclient.CSWRecord;
 import de.ingrid.iplug.csw.dsc.cswclient.constants.ElementSetName;
 import de.ingrid.iplug.csw.dsc.cswclient.impl.GenericRecord;
+import junit.framework.TestCase;
 
 /**
  * @author joachim
@@ -44,10 +48,17 @@ public class IsoCacheAnalyzerTest extends TestCase {
 
     private final String cachePath = "./analyze_test_case_cache";
     private Cache cache = null;
+    
+    @Mock StatusProvider statusProvider;
+    
+    public IsoCacheAnalyzerTest() {
+        super();
+        MockitoAnnotations.initMocks( this );
+    }
 
     /**
      * Test method for
-     * {@link de.ingrid.iplug.csw.dsc.analyze.IsoCacheAnalyzer#analyze(de.ingrid.iplug.csw.dsc.cache.Cache)}
+     * {@link de.ingrid.iplug.csw.dsc.analyze.IsoCacheCoupledResourcesAnalyzer#analyze(de.ingrid.iplug.csw.dsc.cache.Cache)}
      * .
      * 
      * @throws Exception
@@ -70,7 +81,8 @@ public class IsoCacheAnalyzerTest extends TestCase {
 
         DefaultFileCache cache = (DefaultFileCache) this.setupCache();
 
-        IsoCacheAnalyzer isoCacheAnalyzer = new IsoCacheAnalyzer();
+        IsoCacheCoupledResourcesAnalyzer isoCacheAnalyzer = new IsoCacheCoupledResourcesAnalyzer();
+        isoCacheAnalyzer.setStatusProvider( statusProvider );
         CoupledResources result = isoCacheAnalyzer.analyze(cache);
 
         assertNull("Dataset 3B20D603-30D1-47D5-AC62-E10193CDE1D8 is coupled to service 33462e89-e5ab-11c3-737d-b3a61366d028, but does not exist in cache.",

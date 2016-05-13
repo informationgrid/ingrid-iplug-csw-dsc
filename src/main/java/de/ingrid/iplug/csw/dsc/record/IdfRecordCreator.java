@@ -2,7 +2,7 @@
  * **************************************************-
  * ingrid-iplug-csw-dsc:war
  * ==================================================
- * Copyright (C) 2014 - 2015 wemove digital solutions GmbH
+ * Copyright (C) 2014 - 2016 wemove digital solutions GmbH
  * ==================================================
  * Licensed under the EUPL, Version 1.1 or – as soon they will be
  * approved by the European Commission - subsequent versions of the
@@ -25,14 +25,17 @@
  */
 package de.ingrid.iplug.csw.dsc.record;
 
+import java.util.List;
 import java.util.zip.GZIPOutputStream;
 
-import org.apache.log4j.Logger;
-import org.w3c.dom.Node;
+import javax.xml.parsers.DocumentBuilder;
+import javax.xml.parsers.DocumentBuilderFactory;
 
-import de.ingrid.iplug.csw.dsc.cswclient.CSWRecord;
-import de.ingrid.iplug.csw.dsc.om.CswCacheSourceRecord;
+import org.apache.log4j.Logger;
+
+import de.ingrid.iplug.csw.dsc.index.mapper.IdfProducerDocumentMapper;
 import de.ingrid.iplug.csw.dsc.om.SourceRecord;
+import de.ingrid.iplug.csw.dsc.record.mapper.IIdfMapper;
 import de.ingrid.iplug.csw.dsc.record.producer.IRecordProducer;
 import de.ingrid.utils.ElasticDocument;
 import de.ingrid.utils.dsc.Record;
@@ -54,11 +57,13 @@ import de.ingrid.utils.xml.XMLUtils;
  */
 public class IdfRecordCreator {
 
-    protected static final Logger log = Logger.getLogger(IdfRecordCreator.class);
+    protected static final Logger log = Logger.getLogger( IdfRecordCreator.class );
 
     private IRecordProducer recordProducer = null;
 
     private boolean compressed = false;
+
+    private List<IIdfMapper> record2IdfMapperList = null;
 
     /**
      * Retrieves a record with an IDF document in property "data". The property
@@ -66,28 +71,58 @@ public class IdfRecordCreator {
      * if the IDF document is not compressed.
      * 
      * @param luceneDoc
+     * @param record
+     *            The SourceRecord
      * @return
      * @throws Exception
      */
-    public Record getRecord(ElasticDocument luceneDoc) throws Exception {
-        try {
-            recordProducer.openDatasource();
-            SourceRecord sourceRecord = recordProducer.getRecord(luceneDoc);
-            CSWRecord record = (CSWRecord) sourceRecord.get(CswCacheSourceRecord.CSW_RECORD);
+    public Record getRecord(ElasticDocument luceneDoc, SourceRecord record) throws Exception {
 
-            Node idfDoc = record.getOriginalResponse();
+        String data;
 
-            String data = XMLUtils.toString(idfDoc.getOwnerDocument());
+        if (luceneDoc.containsKey( IdfProducerDocumentMapper.DOCUMENT_FIELD_IDF ) && luceneDoc.get( IdfProducerDocumentMapper.DOCUMENT_FIELD_IDF ) != null) {
             if (log.isDebugEnabled()) {
-                log.debug("Resulting IDF document:\n" + data);
+                log.debug( "Use content of index field 'idf'." );
             }
-            return IdfTool.createIdfRecord(data, compressed);
-        } catch (Exception e) {
-            log.error("Error creating IDF document.", e);
-            throw e;
-        } finally {
-            recordProducer.closeDatasource();
+            data = (String) luceneDoc.get( IdfProducerDocumentMapper.DOCUMENT_FIELD_IDF );
+        } else {
+            try {
+
+                if (record == null) {
+                    throw new RuntimeException( "IDF could neither be obtained from elastic document field 'idf' nor from the source record." );
+                }
+
+                SourceRecord sourceRecord = record;
+
+                DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
+                DocumentBuilder docBuilder = dbf.newDocumentBuilder();
+                org.w3c.dom.Document idfDoc = docBuilder.newDocument();
+                for (IIdfMapper record2IdfMapper : this.record2IdfMapperList) {
+                    long start = 0;
+                    if (log.isDebugEnabled()) {
+                        start = System.currentTimeMillis();
+                    }
+                    record2IdfMapper.map( sourceRecord, idfDoc );
+                    if (log.isDebugEnabled()) {
+                        log.debug( "Mapping of source record with " + record2IdfMapper + " took: " + (System.currentTimeMillis() - start) + " ms." );
+                    }
+                }
+                data = XMLUtils.toString( idfDoc );
+            } catch (Exception e) {
+                log.error( "Error creating IDF document.", e );
+                throw e;
+            } finally {
+                this.recordProducer.closeDatasource();
+            }
         }
+        if (log.isDebugEnabled()) {
+            log.debug( "Resulting IDF document:\n" + data );
+        }
+        return IdfTool.createIdfRecord( data, this.compressed );
+    }
+
+    public Record getRecord(ElasticDocument luceneDoc) throws Exception {
+        return this.getRecord( luceneDoc, null );
     }
 
     public IRecordProducer getRecordProducer() {
@@ -104,6 +139,14 @@ public class IdfRecordCreator {
 
     public void setCompressed(boolean compressed) {
         this.compressed = compressed;
+    }
+
+    public List<IIdfMapper> getRecord2IdfMapperList() {
+        return record2IdfMapperList;
+    }
+
+    public void setRecord2IdfMapperList(List<IIdfMapper> record2IdfMapperList) {
+        this.record2IdfMapperList = record2IdfMapperList;
     }
 
 }

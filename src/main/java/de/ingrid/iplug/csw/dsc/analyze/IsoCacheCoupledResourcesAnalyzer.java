@@ -2,7 +2,7 @@
  * **************************************************-
  * ingrid-iplug-csw-dsc:war
  * ==================================================
- * Copyright (C) 2014 - 2015 wemove digital solutions GmbH
+ * Copyright (C) 2014 - 2016 wemove digital solutions GmbH
  * ==================================================
  * Licensed under the EUPL, Version 1.1 or – as soon they will be
  * approved by the European Commission - subsequent versions of the
@@ -29,8 +29,10 @@ import java.util.HashMap;
 import java.util.Map;
 
 import org.apache.log4j.Logger;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.w3c.dom.Node;
 
+import de.ingrid.admin.elasticsearch.StatusProvider;
 import de.ingrid.iplug.csw.dsc.cache.Cache;
 import de.ingrid.iplug.csw.dsc.cswclient.CSWRecord;
 import de.ingrid.iplug.csw.dsc.cswclient.constants.ElementSetName;
@@ -44,11 +46,15 @@ import de.ingrid.utils.xpath.XPathUtils;
  * @author joachim
  * 
  */
-public class IsoCacheAnalyzer {
+public class IsoCacheCoupledResourcesAnalyzer {
+
+    
+    @Autowired
+    private StatusProvider statusProvider;
 
     final private XPathUtils xPathUtils = new XPathUtils(new IDFNamespaceContext());
 
-    protected static final Logger log = Logger.getLogger(IsoCacheAnalyzer.class);
+    protected static final Logger log = Logger.getLogger(IsoCacheCoupledResourcesAnalyzer.class);
 
     public CoupledResources analyze(Cache cache) throws Exception {
 
@@ -60,6 +66,7 @@ public class IsoCacheAnalyzer {
         if (log.isInfoEnabled()) {
             log.info("Start analyzing " + cache.getCachedRecordIds().size() + " records for coupled resources.");
         }
+        statusProvider.addState( "ANALYZE_COUPLING", "Analyze for coupled resources..." );
 
         for (String id : cache.getCachedRecordIds()) {
             CSWRecord record = cache.getRecord(id, ElementSetName.FULL);
@@ -124,8 +131,15 @@ public class IsoCacheAnalyzer {
         if (log.isInfoEnabled()) {
             log.info("Found " + result.getSize() + " couplings between datasets and services.");
         }
+        
+        statusProvider.addState( "ANALYZE_COUPLING", "Analyze for coupled resources... found " + result.getSize() + " couplings between datasets and services.");
+        
         return result;
 
+    }
+
+    public void setStatusProvider(StatusProvider statusProvider) {
+        this.statusProvider = statusProvider;
     }
 
 }
