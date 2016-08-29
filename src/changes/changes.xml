@@ -28,6 +28,15 @@
     <author email="joachim@wemove.com">Joachim Müller</author>
   </properties>
   <body>
+    <release version="4.0.0" date="2016-08-29" description="Release 4.0.0">
+      <action type="update" dev="wemove" issue="REDMINE-408">
+        Updated codelist.
+      </action>
+      <action type="update" dev="wemove">
+        Updated webapp and start script info.
+      </action>
+    </release>
+    
     <release version="3.6.2" date="2016-05-13" description="Release 3.6.2">
       <action type="add" dev="wemove" issue="REDMINE-34">
         Improved status messages while indexing.
