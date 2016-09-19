@@ -28,6 +28,12 @@
     <author email="joachim@wemove.com">Joachim Müller</author>
   </properties>
   <body>
+    <release version="4.0.0.1" date="2016-09-19" description="Release 4.0.0.1">
+      <action type="fix" dev="wemove" issue="REDMINE-440">
+        Cannot consume documents with gmd:series element and resulting multiple gmd:fileIdentifier Elements.
+      </action>
+    </release>
+
     <release version="4.0.0" date="2016-08-29" description="Release 4.0.0">
       <action type="update" dev="wemove" issue="REDMINE-408">
         Updated codelist.

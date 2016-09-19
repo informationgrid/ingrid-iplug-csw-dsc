@@ -69,14 +69,14 @@ public class GenericRecord implements CSWRecord {
 
         // get the record id
         NodeList idNodes = xPathUtils
-                .getNodeList(this.node, "//gmd:fileIdentifier/gco:CharacterString");
+                .getNodeList(this.node, "/gmd:MD_Metadata/gmd:fileIdentifier/gco:CharacterString | /idf:html/idf:body/idf:idfMdMetadata/gmd:fileIdentifier/gco:CharacterString");
         if (idNodes == null || idNodes.item(0) == null)
             throw new RuntimeException(
-                    "CSWRecord does not contain an id (looking for //gmd:fileIdentifier/gco:CharacterString):\n"
+                    "CSWRecord does not contain an id (looking for /gmd:MD_Metadata/gmd:fileIdentifier/gco:CharacterString | /idf:html/idf:body/idf:idfMdMetadata/gmd:fileIdentifier/gco:CharacterString):\n"
                             + StringUtils.nodeToString(this.node));
         if (idNodes.getLength() > 1)
             throw new RuntimeException(
-                    "CSWRecord contains more than one id (looking for //gmd:fileIdentifier/gco:CharacterString):\n"
+                    "CSWRecord contains more than one id (looking for /gmd:MD_Metadata/gmd:fileIdentifier/gco:CharacterString | /idf:html/idf:body/idf:idfMdMetadata/gmd:fileIdentifier/gco:CharacterString):\n"
                             + StringUtils.nodeToString(this.node));
 
         this.id = idNodes.item(0).getTextContent().trim();

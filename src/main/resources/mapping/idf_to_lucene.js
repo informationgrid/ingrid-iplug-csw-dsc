@@ -479,7 +479,7 @@ for (var i in transformationDescriptions) {
 					log.debug("Found value '" + value + "'");
 				}
 				// check for transformation
-				if (hasValue(t.transform)) {
+				if (hasValue(t.transform) && hasValue(value)) {
 					var args = new Array(value);
 					if (hasValue(t.transform.params)) {
 						args = args.concat(t.transform.params);
@@ -501,7 +501,7 @@ for (var i in transformationDescriptions) {
 			if (t.defaultValue) {
 				value = t.defaultValue;
 				// check for transformation
-				if (hasValue(t.transform)) {
+				if (hasValue(t.transform) && hasValue(value)) {
 					var args = new Array(value);
 					if (hasValue(t.transform.params)) {
 						args = args.concat(t.transform.params);

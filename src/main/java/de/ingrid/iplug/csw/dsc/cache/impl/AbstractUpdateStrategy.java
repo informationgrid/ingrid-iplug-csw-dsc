@@ -348,8 +348,8 @@ public abstract class AbstractUpdateStrategy implements UpdateStrategy {
 		for (CSWRecord record : result.getRecordList()) {
 			String id = record.getId();
 
-			if (log.isDebugEnabled())
-				log.debug("Fetched record: "+id+" "+record.getElementSetName());
+			if (log.isInfoEnabled())
+				log.info("Fetched record: "+id+" "+record.getElementSetName());
 			if (fetchedRecordIds.contains(id)) {
 				log.warn("Duplicated id: "+id+". Overriding previous entry.");
 			}
