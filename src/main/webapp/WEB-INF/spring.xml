@@ -279,8 +279,8 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
     <bean id="recordSetProducer" class="de.ingrid.iplug.csw.dsc.index.producer.CswRecordSetProducer"/>
 
     <bean id="recordMapper" class="de.ingrid.iplug.csw.dsc.index.mapper.ScriptedDocumentMapper">
-        <property name="mappingScript" value="classpath:mapping/idf_to_lucene.js" />
-        <property name="codelistService" ref="codeListService" />
+        <property name="mappingScript" value="classpath:mapping/iso_to_ogd.js" />
+        <!-- <property name="codelistService" ref="codeListService" /> -->
         <property name="compile" value="false" />
         <property name="idfRecordCreator" ref="dscRecordProducer" />
     </bean>
@@ -342,7 +342,7 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
     
     <!-- Beans for codelist access and synchronisation -->
 
-    <bean id="ingridCommunication" class="de.ingrid.codelists.comm.IngridCLCommunication">
+    <!-- <bean id="ingridCommunication" class="de.ingrid.codelists.comm.IngridCLCommunication">
     </bean>
     
     <bean id="xmlPersistency" class="de.ingrid.codelists.persistency.XmlCodeListPersistency">
@@ -357,11 +357,11 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
             </list>
         </property>
         <property name="defaultPersistency" value="0" />
-    </bean>
+    </bean> -->
 
     <!-- Scheduler Factory -->
 
-    <bean id="scheduler" class="org.springframework.scheduling.quartz.SchedulerFactoryBean">
+    <!-- <bean id="scheduler" class="org.springframework.scheduling.quartz.SchedulerFactoryBean">
         <property name="triggers">
             <list>
                 <ref bean="simpleTriggerCodeLists" />
@@ -370,18 +370,18 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
         <property name="applicationContextSchedulerContextKey">  
             <value>applicationContext</value>  
         </property> 
-    </bean>
+    </bean> -->
     
     <!-- Mapper Factory -->
     
-    <bean name="updateCodeListsJobDetail" class="org.springframework.scheduling.quartz.JobDetailBean">
+    <!-- <bean name="updateCodeListsJobDetail" class="org.springframework.scheduling.quartz.JobDetailBean">
         <property name="jobClass" value="de.ingrid.codelists.quartz.jobs.UpdateCodeListsJob" />
-    </bean>
+    </bean> -->
     
-    <bean id="simpleTriggerCodeLists" class="org.springframework.scheduling.quartz.SimpleTriggerBean">
+    <!-- <bean id="simpleTriggerCodeLists" class="org.springframework.scheduling.quartz.SimpleTriggerBean">
         <property name="jobDetail" ref="updateCodeListsJobDetail" />
         <property name="startDelay" value="5000" />
         <property name="repeatInterval" value="300000" />
-    </bean>
+    </bean> -->
 
 </beans>
