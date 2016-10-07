@@ -1,51 +1,71 @@
-{ 
-    "_default_" : { 
-        "_source" : { "enabled" : true }, 
-        "properties": {
-            "t01_object.mod_time": {
-                "type": "string"
-            },
-            "t01_object.obj_id": {
-                "type": "string",
-                "index" : "not_analyzed"
-            },
-            "t01_object.org_obj_id": {
-                "type": "string",
-                "index" : "not_analyzed"
-            },
-            "boost": {
-                "type": "float",
-                "store": true,
-                "null_value" : 0.0
-            },
-            "title": {
-                "analyzer": "german",
-                "type": "string"
-            },
-            "summary": {
-                "analyzer": "german",
-                "type": "string"
-            },
-            "content": {
-                "analyzer": "german",
-                "type": "string"
-            },
-            "x1": {
-                "type": "double"
-            },
-            "x2": {
-                "type": "double"
-            },
-            "y1": {
-                "type": "double"
-            },
-            "y2": {
-                "type": "double"
-             },
-            "idf": {
-                "type": "string",
-                "index": "no"
-            }
-        }
-    } 
+{
+	"_source": {
+		"enabled": true
+	},
+	"properties": {
+		"title": {
+			"type": "string",
+			"analyzer": "german"
+		},
+		"notes": {
+			"type": "string",
+			"analyzer": "german"
+		},
+		"id": {
+			"type": "string",
+			"index": "not_analyzed"
+		},
+		"license_title": {
+			"type": "string",
+			"index": "not_analyzed"
+		},
+		"license": {
+			"type": "string",
+			"index": "not_analyzed"
+		},
+		"type": {
+			"type": "string",
+			"index": "not_analyzed"
+		},
+		"tags": {
+			"type": "object",
+			"properties": {
+				"name": {
+					"type": "string",
+					"index": "not_analyzed"
+				}
+			}
+		},
+		"groups": {
+			"type": "object",
+			"properties": {
+				"name": {
+					"type": "string",
+					"index": "not_analyzed"
+				}
+			}
+		},
+		"extras": {
+			"properties": {
+				"temporal_coverage_from": {
+					"type": "string"
+				},
+				"temporal_coverage_to": {
+					"type": "string"
+				}
+			}
+		},
+		"resources": {
+			"properties": {
+				"id": {
+					"type": "string",
+					"index": "not_analyzed"
+				},
+				"url": {
+					"type": "string",
+					"index": "not_analyzed"
+				}
+			}
+		}
+	}
 }
