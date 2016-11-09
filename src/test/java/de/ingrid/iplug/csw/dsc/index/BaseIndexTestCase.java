@@ -32,7 +32,6 @@ import de.ingrid.iplug.csw.dsc.cswclient.CSWFactory;
 import de.ingrid.iplug.csw.dsc.cswclient.CSWRecord;
 import de.ingrid.iplug.csw.dsc.cswclient.constants.ElementSetName;
 import de.ingrid.iplug.csw.dsc.cswclient.impl.GenericRecord;
-import de.ingrid.iplug.csw.dsc.record.mapper.IIdfMapper;
 import de.ingrid.utils.xml.IDFNamespaceContext;
 import de.ingrid.utils.xpath.XPathUtils;
 
@@ -72,6 +71,13 @@ public class BaseIndexTestCase extends TestCase {
 
     }
 
+    protected void prepareCacheWithUuids(String[] uuids) throws Exception {
+        for (String uuid : uuids) {
+            this.putRecord(uuid, ElementSetName.FULL);
+        }
+
+        Cache cache = this.setupCache();        
+    }
     
     private Cache setupCache() {
         if (this.cache == null) {
