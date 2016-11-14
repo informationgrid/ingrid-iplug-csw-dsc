@@ -47,6 +47,7 @@ import de.ingrid.iplug.csw.dsc.tools.StringUtils;
 import de.ingrid.utils.ElasticDocument;
 import de.ingrid.utils.dsc.Record;
 import de.ingrid.utils.idf.IdfTool;
+import de.ingrid.utils.index.IndexUtils;
 import de.ingrid.utils.xml.IDFNamespaceContext;
 import de.ingrid.utils.xpath.XPathUtils;
 
@@ -114,7 +115,9 @@ public class ScriptedDocumentMapper implements IRecordMapper {
                 }
             }
 
+            // create utils for script
             XPathUtils xpathUtils = new XPathUtils( new IDFNamespaceContext() );
+            IndexUtils idxUtils = new IndexUtils(doc);
 
             Bindings bindings = engine.createBindings();
             bindings.put( "cswRecord", idfRecord );
@@ -122,6 +125,7 @@ public class ScriptedDocumentMapper implements IRecordMapper {
             bindings.put( "log", log );
             bindings.put( "codelistService", codelistService );
             bindings.put( "XPathUtils", xpathUtils );
+            bindings.put("IDX", idxUtils);
             bindings.put( "javaVersion", System.getProperty( "java.version" ) );
 
             if (compiledScript != null) {

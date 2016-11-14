@@ -24,6 +24,7 @@ package de.ingrid.iplug.csw.dsc.index;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
@@ -100,7 +101,8 @@ public class MapperToOGDtoIndexTest extends BaseIndexTestCase {
             }
 
             assertTrue("Lucene doc found.", doc != null);
-            assertEquals(id, doc.get("id"));
+            assertEquals("FIXED", doc.get("author"));
+            assertEquals(id, ((Map)doc.get("extras")).get("metadata_original_id"));
         }
     }
 }
