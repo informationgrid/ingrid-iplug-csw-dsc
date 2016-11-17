@@ -76,20 +76,40 @@ var languageOGD = mapKeyValue(languageCSW, languageMap);
   
 
 var jsonTransformationDescriptions = [{
+        "jsonPath": "name",
+        "xpath": "//" + identification + "/gmd:citation/gmd:CI_Citation/gmd:title/gco:CharacterString"
+    }, {
+        "jsonPath": "title",
+        "xpath": "//" + identification + "/gmd:citation/gmd:CI_Citation/gmd:title/gco:CharacterString"
+    }, {
         "jsonPath": "author",
         "fixed": author
     }, {
         "jsonPath": "author_email",
         "fixed": author_email
     }, {
-        "jsonPath": "title",
-        "xpath": "//" + identification + "/gmd:citation/gmd:CI_Citation/gmd:title/gco:CharacterString"
+        "jsonPath": "maintaner",
+        // only select 'custodian' pointOfContact ?
+        "withParent": "//gmd:identificationInfo/" + identification + "/gmd:pointOfContact/idf:idfResponsibleParty/gmd:role/gmd:CI_RoleCode[@codeListValue='custodian']/../..",
+        "xpath": "./gmd:organisationName/gco:CharacterString"
     }, {
-        "jsonPath": "name",
-        "xpath": "//" + identification + "/gmd:citation/gmd:CI_Citation/gmd:title/gco:CharacterString"
+        "jsonPath": "maintaner_email",
+        // only select 'custodian' pointOfContact ?
+        "withParent": "//gmd:identificationInfo/" + identification + "/gmd:pointOfContact/idf:idfResponsibleParty/gmd:role/gmd:CI_RoleCode[@codeListValue='custodian']/../..",
+        "xpath": "./gmd:contactInfo/gmd:CI_Contact/gmd:address/gmd:CI_Address/gmd:electronicMailAddress/gco:CharacterString"
     }, {
         "jsonPath": "notes",
         "xpath": "//gmd:identificationInfo/" + identification + "/gmd:abstract/gco:CharacterString"
+    }, {
+        "jsonPath": "groups",
+        "multiples": true,
+        "withParent": "//gmd:identificationInfo/" + identification + "/gmd:descriptiveKeywords/gmd:MD_Keywords/gmd:thesaurusName/gmd:CI_Citation/gmd:title/gco:CharacterString[text()='OGDD-Kategorien']/../../../..",
+        "xpath": ".//gmd:keyword/gco:CharacterString"
+    }, {
+        "jsonPath": "tags",
+        "multiples": true,
+        "withParent": "//gmd:identificationInfo/" + identification + "/gmd:descriptiveKeywords/gmd:MD_Keywords/gmd:thesaurusName/gmd:CI_Citation/gmd:title/gco:CharacterString[text()='OGDD-Kategorien']/../../../..",
+        "xpath": "./gmd:keyword/gco:CharacterString"
     }, {
         "jsonPath": "url",
         "xpath": "//gmd:distributionInfo/gmd:MD_Distribution/gmd:transferOptions/gmd:MD_DigitalTransferOptions/gmd:onLine/gmd:CI_OnlineResource/gmd:linkage/gmd:URL"
@@ -102,67 +122,44 @@ var jsonTransformationDescriptions = [{
         "multiples": true,
         "xpath": "//gmd:distributionInfo/gmd:MD_Distribution"
     }, {
+        "jsonPath": "license_id",
+        "inJsonField": "id",
+        "xpath": "//" + identification + "/gmd:resourceConstraints/gmd:MD_LegalConstraints/gmd:otherConstraints/gco:CharacterString[contains(text(),'\"id\": ')]"
+    }, {
         "jsonPath": "extras/contacts",
         "isContactField": true,
         "multiples": true,
         "xpath": "//gmd:distributionInfo/gmd:MD_Distribution/gmd:distributor/gmd:MD_Distributor/gmd:distributorContact/idf:idfResponsibleParty"    	
-    },
-
-
-
-    {
-        "jsonPath": "extras/spatial/coordinates",
-        "xpath": "//gmd:identificationInfo/" + identification + "/gmd:extent/gmd:EX_Extent/gmd:geographicElement/gmd:EX_GeographicBoundingBox/gmd:westBoundLongitude/gco:Decimal"
     }, {
-        "jsonPath": "extras/metadata_original_id",
-        "xpath": "//gmd:fileIdentifier/gco:CharacterString"
-    },
-
-    {
-        "jsonPath": "maintaner",
-        "withParent": "//gmd:identificationInfo/" + identification + "/gmd:pointOfContact/idf:idfResponsibleParty/gmd:role/gmd:CI_RoleCode[@codeListValue='custodian']/../..",
-        "xpath": "./gmd:organisationName/gco:CharacterString"
-    }, {
-        "jsonPath": "maintaner_email",
-        "withParent": "//gmd:identificationInfo/" + identification + "/gmd:pointOfContact/idf:idfResponsibleParty/gmd:role/gmd:CI_RoleCode[@codeListValue='custodian']/../..",
-        "xpath": "./gmd:contactInfo/gmd:CI_Contact/gmd:address/gmd:CI_Address/gmd:electronicMailAddress/gco:CharacterString"
-    },
-    {
-        "jsonPath": "groups",
-        "multiples": true,
-        "withParent": "//gmd:identificationInfo/" + identification + "/gmd:descriptiveKeywords/gmd:MD_Keywords/gmd:thesaurusName/gmd:CI_Citation/gmd:title/gco:CharacterString[text()='OGDD-Kategorien']/../../../..",
-        "xpath": ".//gmd:keyword/gco:CharacterString"
-    },
-    {
-        "jsonPath": "tags",
-        "multiples": true,
-        "withParent": "//gmd:identificationInfo/" + identification + "/gmd:descriptiveKeywords/gmd:MD_Keywords/gmd:thesaurusName/gmd:CI_Citation/gmd:title/gco:CharacterString[text()='OGDD-Kategorien']/../../../..",
-        "xpath": "./gmd:keyword/gco:CharacterString"
-    },
-    {
-        "jsonPath": "extras/subgroups",
-        "multiples": true,
-        "xpath": ["//gmd:hierarchyLevelName/gco:CharacterString", "//" + identification + "/gmd:descriptiveKeywords/gmd:MD_Keywords/gmd:keyword/gco:CharacterString"]
-    },
-    {
-        "jsonPath": "license_id",
-        "inJsonField": "id",
-        "xpath": "//" + identification + "/gmd:resourceConstraints/gmd:MD_LegalConstraints/gmd:otherConstraints/gco:CharacterString[contains(text(),'\"id\": ')]"
-    },
-
-    {
         "jsonPath": "extras/dates",
         "isDateField": true,
         "multiples": true,
         "xpath": "//gmd:identificationInfo/" + identification + "/gmd:citation/gmd:CI_Citation/gmd:date/gmd:CI_Date/gmd:dateType/gmd:CI_DateTypeCode/@codeListValue"
-    },
+    }, {
+        "jsonPath": "extras/subgroups",
+        "multiples": true,
+        "xpath": ["//gmd:hierarchyLevelName/gco:CharacterString", "//" + identification + "/gmd:descriptiveKeywords/gmd:MD_Keywords/gmd:keyword/gco:CharacterString"]
+    }, {
+        "jsonPath": "extras/metadata_original_id",
+        "xpath": "//gmd:fileIdentifier/gco:CharacterString"
+    }, {
+        "jsonPath": "extras/spatial",
+        "isSpatialField": true,
+        "multiples": true,
+        "xpath": "//gmd:identificationInfo/" + identification + "/gmd:extent/gmd:EX_Extent/gmd:geographicElement/gmd:EX_GeographicBoundingBox"    	
+    }, {
+        "jsonPath": "ogd_version",
+        "fixed": "v1.1"
+    }
 ];
 
 var jsonObject = {};
 for (var i in jsonTransformationDescriptions) {
     var t = jsonTransformationDescriptions[i];
-    var value;
-    var valueArray;
+
+    var value = "";
+    var valueArray = [];
+    var err = false;
 
     if (t.fixed) {
         value = t.fixed;
@@ -188,11 +185,6 @@ for (var i in jsonTransformationDescriptions) {
             tempNode = recordNode;
         }
 
-        var err = false;
-        value = "";
-        if (t.multiples) {
-            valueArray = [];
-        }
         for (var i in t.xpath) {
             var nodeList = XPathUtils.getNodeList(tempNode, t.xpath[i]);
             if (nodeList && nodeList.getLength() > 0) {
@@ -247,6 +239,24 @@ for (var i in jsonTransformationDescriptions) {
                         if (address) contactObject["address"] = address;
 
                         valueArray.push(contactObject);
+
+                    } else if (t.isSpatialField) {
+                        var west = getFirstValueFromXPath(nodeList.item(x), "./gmd:westBoundLongitude/gco:Decimal");
+                        var east = getFirstValueFromXPath(nodeList.item(x), "./gmd:eastBoundLongitude/gco:Decimal");
+                        var south = getFirstValueFromXPath(nodeList.item(x), "./gmd:southBoundLatitude/gco:Decimal");
+                        var north = getFirstValueFromXPath(nodeList.item(x), "./gmd:northBoundLatitude/gco:Decimal");
+                        
+                        if (west && east && south && north) {
+                        	west = Number(west);
+                        	east = Number(east);
+                        	south = Number(south);
+                        	north = Number(north);
+                        	// no array, but does not matter, this one is used when "multiples":true is set !
+                        	valueArray = {
+                                type: "polygon",
+                                coordinates: [ [west,south], [west,north], [east,north], [east,south], [west,south] ]
+                            };
+                        }
                         
                     } else if (t.multiples) {
                         valueArray.push(nodeList.item(x).getTextContent());
