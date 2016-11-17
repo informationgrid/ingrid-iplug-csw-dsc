@@ -7,12 +7,12 @@
  * Licensed under the EUPL, Version 1.1 or – as soon they will be
  * approved by the European Commission - subsequent versions of the
  * EUPL (the "Licence");
- * 
+ *
  * You may not use this work except in compliance with the Licence.
  * You may obtain a copy of the Licence at:
- * 
+ *
  * http://ec.europa.eu/idabc/eupl5
- * 
+ *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the Licence is distributed on an "AS IS" basis,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -32,16 +32,23 @@
  * @param IDX utility for adding data to index
  *
  */
-if (javaVersion.indexOf( "1.8" ) === 0) {
-	load("nashorn:mozilla_compat.js");
+if (javaVersion.indexOf("1.8") === 0) {
+    load("nashorn:mozilla_compat.js");
 }
 
 if (log.isDebugEnabled()) {
-	log.debug("Mapping csw record "+cswRecord.getId()+" to ogd to lucene document");
+    log.debug("Mapping csw record " + cswRecord.getId() + " to ogd to lucene document");
 }
 
 // get the xml content of the record
 var recordNode = cswRecord.getOriginalResponse();
+
+var isService = true;
+var identification = "srv:SV_ServiceIdentification";
+if (XPathUtils.getNodeList(recordNode, "//gmd:MD_DataIdentification").length > 0) {
+    identification = "gmd:MD_DataIdentification";
+    isService = false;
+}
 
 
 var jsonTransformationDescriptions = [{
@@ -53,23 +60,23 @@ var jsonTransformationDescriptions = [{
     }, {
         "jsonPath": "extras/contacts/role",
         "fixed": "ANALOG? \"vertrieb\" oder \"autor\""
-    }, //"xpath": "//gmd:MD_DataIdentification/gmd:pointOfContact"},
+    }, //"xpath": "//" + identification + "/gmd:pointOfContact"},
 
     {
         "jsonPath": "title",
-        "xpath": "//gmd:MD_DataIdentification/gmd:citation/gmd:CI_Citation/gmd:title/gco:CharacterString"
+        "xpath": "//" + identification + "/gmd:citation/gmd:CI_Citation/gmd:title/gco:CharacterString"
     }, {
         "jsonPath": "name",
-        "xpath": "//gmd:MD_DataIdentification/gmd:citation/gmd:CI_Citation/gmd:title/gco:CharacterString"
+        "xpath": "//" + identification + "/gmd:citation/gmd:CI_Citation/gmd:title/gco:CharacterString"
     }, {
         "jsonPath": "notes",
-        "xpath": "//gmd:identificationInfo/gmd:MD_DataIdentification/gmd:abstract/gco:CharacterString"
+        "xpath": "//gmd:identificationInfo/" + identification + "/gmd:abstract/gco:CharacterString"
     }, {
         "jsonPath": "url",
         "xpath": "//gmd:distributionInfo/gmd:MD_Distribution/gmd:transferOptions/gmd:MD_DigitalTransferOptions/gmd:onLine/gmd:CI_OnlineResource/gmd:linkage/gmd:URL"
-//    }, {
-//        "jsonPath": "type",
-//        "xpath": "//gmd:identificationInfo/gmd:MD_DataIdentification"
+    }, {
+        "jsonPath": "type",
+        "fixed": isService ? "app" : "datensatz"
     }, {
         "jsonPath": "resources/url",
         "xpath": "//gmd:distributionInfo/gmd:MD_Distribution/gmd:transferOptions/gmd:MD_DigitalTransferOptions/gmd:onLine/gmd:CI_OnlineResource/gmd:linkage/gmd:URL"
@@ -78,10 +85,10 @@ var jsonTransformationDescriptions = [{
         "xpath": "//gmd:distributionInfo/gmd:MD_Distribution/gmd:distributionFormat/gmd:MD_Format/gmd:name/gco:CharacterString"
     }, {
         "jsonPath": "resources/description",
-        "xpath": "//gmd:MD_DataIdentification/gmd:abstract/gco:CharacterString"
+        "xpath": "//" + identification + "/gmd:abstract/gco:CharacterString"
     }, {
         "jsonPath": "resources/language",
-        "xpath": "//gmd:MD_DataIdentification/gmd:language/gmd:LanguageCode/@codeListValue"
+        "xpath": "//" + identification + "/gmd:language/gmd:LanguageCode/@codeListValue"
     }, {
         "jsonPath": "extras/contacts/name",
         "xpath": "//gmd:distributionInfo/gmd:MD_Distribution/gmd:distributor/gmd:MD_Distributor/gmd:distributorContact/idf:idfResponsibleParty/gmd:organisationName/gco:CharacterString"
@@ -93,7 +100,7 @@ var jsonTransformationDescriptions = [{
         "xpath": "//gmd:distributionInfo/gmd:MD_Distribution/gmd:distributor/gmd:MD_Distributor/gmd:distributorContact/idf:idfResponsibleParty/gmd:contactInfo/gmd:CI_Contact/gmd:onlineResource/gmd:CI_OnlineResource/gmd:linkage/gmd:URL"
     }, {
         "jsonPath": "extras/spatial/coordinates",
-        "xpath": "//gmd:identificationInfo/gmd:MD_DataIdentification/gmd:extent/gmd:EX_Extent/gmd:geographicElement/gmd:EX_GeographicBoundingBox/gmd:westBoundLongitude/gco:Decimal"
+        "xpath": "//gmd:identificationInfo/" + identification + "/gmd:extent/gmd:EX_Extent/gmd:geographicElement/gmd:EX_GeographicBoundingBox/gmd:westBoundLongitude/gco:Decimal"
     }, {
         "jsonPath": "extras/metadata_original_id",
         "xpath": "//gmd:fileIdentifier/gco:CharacterString"
@@ -101,7 +108,7 @@ var jsonTransformationDescriptions = [{
 
     {
         "jsonPath": "maintaner",
-        "withParent": "//gmd:identificationInfo/gmd:MD_DataIdentification/gmd:pointOfContact/idf:idfResponsibleParty/gmd:role/gmd:CI_RoleCode[@codeListValue='custodian']/../..",
+        "withParent": "//gmd:identificationInfo/" + identification + "/gmd:pointOfContact/idf:idfResponsibleParty/gmd:role/gmd:CI_RoleCode[@codeListValue='custodian']/../..",
         "xpath": "./gmd:organisationName/gco:CharacterString"
     }, {
         "jsonPath": "extras/contacts/address",
@@ -109,41 +116,45 @@ var jsonTransformationDescriptions = [{
         "xpath": ["./gmd:postalCode/gco:CharacterString", "./gmd:city/gco:CharacterString", "./gmd:deliveryPoint/gco:CharacterString"]
     }, {
         "jsonPath": "maintaner_email",
-        "withParent": "//gmd:identificationInfo/gmd:MD_DataIdentification/gmd:pointOfContact/idf:idfResponsibleParty/gmd:role/gmd:CI_RoleCode[@codeListValue='custodian']/../..",
+        "withParent": "//gmd:identificationInfo/" + identification + "/gmd:pointOfContact/idf:idfResponsibleParty/gmd:role/gmd:CI_RoleCode[@codeListValue='custodian']/../..",
         "xpath": "./gmd:contactInfo/gmd:CI_Contact/gmd:address/gmd:CI_Address/gmd:electronicMailAddress/gco:CharacterString"
     },
-/*
     {
         "jsonPath": "groups",
         "multiples": true,
-        "withParent": "//gmd:identificationInfo/gmd:MD_DataIdentification/gmd:descriptiveKeywords/gmd:MD_Keywords/gmd:thesaurusName/gmd:CI_Citation/gmd:title/gco:CharacterString[text()='OGDD-Kategorien']/../../../..",
+        "withParent": "//gmd:identificationInfo/" + identification + "/gmd:descriptiveKeywords/gmd:MD_Keywords/gmd:thesaurusName/gmd:CI_Citation/gmd:title/gco:CharacterString[text()='OGDD-Kategorien']/../../../..",
         "xpath": ".//gmd:keyword/gco:CharacterString"
     },
     {
         "jsonPath": "tags",
         "multiples": true,
-        "withParent": "//gmd:identificationInfo/gmd:MD_DataIdentification/gmd:descriptiveKeywords/gmd:MD_Keywords/gmd:thesaurusName/gmd:CI_Citation/gmd:title/gco:CharacterString[text()='OGDD-Kategorien']/../../../..",
+        "withParent": "//gmd:identificationInfo/" + identification + "/gmd:descriptiveKeywords/gmd:MD_Keywords/gmd:thesaurusName/gmd:CI_Citation/gmd:title/gco:CharacterString[text()='OGDD-Kategorien']/../../../..",
         "xpath": "./gmd:keyword/gco:CharacterString"
     },
     {
         "jsonPath": "extras/subgroups",
         "multiples": true,
-        "xpath": ["//gmd:hierarchyLevelName/gco:CharacterString", "//gmd:MD_DataIdentification/gmd:descriptiveKeywords/gmd:MD_Keywords/gmd:keyword/gco:CharacterString"]
+        "xpath": ["//gmd:hierarchyLevelName/gco:CharacterString", "//" + identification + "/gmd:descriptiveKeywords/gmd:MD_Keywords/gmd:keyword/gco:CharacterString"]
     },
-*/
     {
         "jsonPath": "license_id",
         "inJsonField": "id",
-        "xpath": "//gmd:MD_DataIdentification/gmd:resourceConstraints/gmd:MD_LegalConstraints/gmd:otherConstraints/gco:CharacterString[contains(text(),'\"id\": ')]"
+        "xpath": "//" + identification + "/gmd:resourceConstraints/gmd:MD_LegalConstraints/gmd:otherConstraints/gco:CharacterString[contains(text(),'\"id\": ')]"
     },
 
     {
         "jsonPath": "extras/dates",
         "isDateField": true,
         "multiples": true,
-        "xpath": "//gmd:identificationInfo/gmd:MD_DataIdentification/gmd:citation/gmd:CI_Citation/gmd:date/gmd:CI_Date/gmd:dateType/gmd:CI_DateTypeCode/@codeListValue"
+        "xpath": "//gmd:identificationInfo/" + identification + "/gmd:citation/gmd:CI_Citation/gmd:date/gmd:CI_Date/gmd:dateType/gmd:CI_DateTypeCode/@codeListValue"
     },
 ];
+
+var dateRoleMap = {
+    'creation': 'erstellt',
+	'publication': 'veroeffentlicht',
+	'revision': 'aktualisiert'
+};
 
 var jsonObject = {};
 for (var i in jsonTransformationDescriptions) {
@@ -186,12 +197,13 @@ for (var i in jsonTransformationDescriptions) {
                     if (t.inJsonField) {
                         value += JSON.parse(nodeList.item(x).getTextContent())[t.inJsonField] + " ";
                     } else if (t.isDateField) {
-                        name = nodeList.item(x).getTextContent();
-                        date = XPathUtils.getNode(nodeList.item(x), "./../../../gmd:date/gco:Date").getTextContent();
+                        var dateRole = nodeList.item(x).getTextContent();
+                        dateRole = mapKeyValue(dateRole, dateRoleMap)
+                        var date = XPathUtils.getNode(nodeList.item(x), "./../../../gmd:date/gco:Date").getTextContent();
                         date = date + "T00:00:00";
                         dateArray.push({
                             date: date,
-                            role: name
+                            role: dateRole
                         });
 
                     } else {
@@ -231,7 +243,29 @@ for (var i in jsonTransformationDescriptions) {
         }
     }
 }
-//log.debug("\n\nJSON String:");
-//log.debug(JSON.stringify(jsonObject, null, 2));
+log.info("\n\nJSON String:");
+log.info(JSON.stringify(jsonObject, null, 2));
 
 IDX.addAllFromJSON(JSON.stringify(jsonObject));
+
+function mapKeyValue(myKey, myMap) {
+	var myValue = myMap[myKey];
+    if (hasValue(myValue)) {
+        return myValue;
+    }
+    return myKey;
+}
+
+function hasValue(val) {
+	if (typeof val == "undefined") {
+		return false; 
+	} else if (val == null) {
+		return false; 
+	} else if (typeof val == "string" && val == "") {
+		return false;
+	} else if (typeof val == "object" && val.toString() == "") {
+		return false;
+	} else {
+	  return true;
+	}
+}
