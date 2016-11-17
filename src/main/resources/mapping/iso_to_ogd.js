@@ -50,13 +50,31 @@ if (XPathUtils.getNodeList(recordNode, "//gmd:MD_DataIdentification").length > 0
     isService = false;
 }
 
+//codelist Mapping
+var dateRoleMap = {
+    'creation': 'erstellt',
+    'publication': 'veroeffentlicht',
+    'revision': 'aktualisiert'
+};
+var languageMap = {
+    'ger': 'de'
+};
+
+// consts, ADAPT TO PROVIDER
+var author = "AUTHOR";
+var author_email = "AUTHOR EMAIL";
+
+// useful values
+var languageCSW = getFirstValueFromXPath(recordNode, "//" + identification + "/gmd:language/gmd:LanguageCode/@codeListValue");
+var languageOGD = mapKeyValue(languageCSW, languageMap);
+  
 
 var jsonTransformationDescriptions = [{
         "jsonPath": "author",
-        "fixed": "FIXED"
+        "fixed": author
     }, {
         "jsonPath": "author_email",
-        "fixed": "FIXED"
+        "fixed": author_email
     }, {
         "jsonPath": "extras/contacts/role",
         "fixed": "ANALOG? \"vertrieb\" oder \"autor\""
@@ -78,17 +96,10 @@ var jsonTransformationDescriptions = [{
         "jsonPath": "type",
         "fixed": isService ? "app" : "datensatz"
     }, {
-        "jsonPath": "resources/url",
-        "xpath": "//gmd:distributionInfo/gmd:MD_Distribution/gmd:transferOptions/gmd:MD_DigitalTransferOptions/gmd:onLine/gmd:CI_OnlineResource/gmd:linkage/gmd:URL"
-    }, {
-        "jsonPath": "resources/format",
-        "xpath": "//gmd:distributionInfo/gmd:MD_Distribution/gmd:distributionFormat/gmd:MD_Format/gmd:name/gco:CharacterString"
-    }, {
-        "jsonPath": "resources/description",
-        "xpath": "//" + identification + "/gmd:abstract/gco:CharacterString"
-    }, {
-        "jsonPath": "resources/language",
-        "xpath": "//" + identification + "/gmd:language/gmd:LanguageCode/@codeListValue"
+        "jsonPath": "resources",
+        "isResourceField": true,
+        "multiples": true,
+        "xpath": "//gmd:distributionInfo/gmd:MD_Distribution"
     }, {
         "jsonPath": "extras/contacts/name",
         "xpath": "//gmd:distributionInfo/gmd:MD_Distribution/gmd:distributor/gmd:MD_Distributor/gmd:distributorContact/idf:idfResponsibleParty/gmd:organisationName/gco:CharacterString"
@@ -150,16 +161,12 @@ var jsonTransformationDescriptions = [{
     },
 ];
 
-var dateRoleMap = {
-    'creation': 'erstellt',
-	'publication': 'veroeffentlicht',
-	'revision': 'aktualisiert'
-};
-
 var jsonObject = {};
 for (var i in jsonTransformationDescriptions) {
     var t = jsonTransformationDescriptions[i];
     var value;
+    var valueArray;
+
     if (t.fixed) {
         value = t.fixed;
     } else {
@@ -186,8 +193,8 @@ for (var i in jsonTransformationDescriptions) {
 
         var err = false;
         value = "";
-        if (t.isDateField) {
-            dateArray = [];
+        if (t.multiples) {
+            valueArray = [];
         }
         for (var i in t.xpath) {
             var nodeList = XPathUtils.getNodeList(tempNode, t.xpath[i]);
@@ -198,14 +205,29 @@ for (var i in jsonTransformationDescriptions) {
                         value += JSON.parse(nodeList.item(x).getTextContent())[t.inJsonField] + " ";
                     } else if (t.isDateField) {
                         var dateRole = nodeList.item(x).getTextContent();
-                        dateRole = mapKeyValue(dateRole, dateRoleMap)
+                        dateRole = mapKeyValue(dateRole, dateRoleMap);
                         var date = XPathUtils.getNode(nodeList.item(x), "./../../../gmd:date/gco:Date").getTextContent();
                         date = date + "T00:00:00";
-                        dateArray.push({
+                        valueArray.push({
                             date: date,
                             role: dateRole
                         });
 
+                    } else if (t.isResourceField) {
+                        var url = getFirstValueFromXPath(nodeList.item(x), "./gmd:transferOptions/gmd:MD_DigitalTransferOptions/gmd:onLine/gmd:CI_OnlineResource/gmd:linkage/gmd:URL");
+                        var description = getFirstValueFromXPath(nodeList.item(x), "./gmd:transferOptions/gmd:MD_DigitalTransferOptions/gmd:onLine/gmd:CI_OnlineResource/gmd:name/gco:CharacterString");
+                        var format = getFirstValueFromXPath(nodeList.item(x), "./gmd:distributionFormat/gmd:MD_Format/gmd:name/gco:CharacterString");
+
+                        var resourceObject = {};
+                        if (url) resourceObject["url"] = url;
+                        if (format) resourceObject["format"] = format;
+                        if (description) resourceObject["description"] = description;
+                        if (languageOGD) resourceObject["language"] = languageOGD;
+                       
+                        valueArray.push(resourceObject);
+
+                    } else if (t.multiples) {
+                        valueArray.push(nodeList.item(x).getTextContent());
                     } else {
                         value += nodeList.item(x).getTextContent() + " ";
                     }
@@ -222,8 +244,8 @@ for (var i in jsonTransformationDescriptions) {
             }
         }
         value = value.trim();
-        if (t.isDateField) {
-            value = dateArray;
+        if (t.multiples) {
+            value = valueArray;
         }
         if (err) continue;
 
@@ -247,6 +269,14 @@ log.info("\n\nJSON String:");
 log.info(JSON.stringify(jsonObject, null, 2));
 
 IDX.addAllFromJSON(JSON.stringify(jsonObject));
+
+function getFirstValueFromXPath(node, xpath) {
+    var nodeList = XPathUtils.getNodeList(node, xpath);
+    if (nodeList && nodeList.getLength() > 0) {
+    	return nodeList.item(0).getTextContent();
+    }
+    return null;
+}
 
 function mapKeyValue(myKey, myMap) {
 	var myValue = myMap[myKey];

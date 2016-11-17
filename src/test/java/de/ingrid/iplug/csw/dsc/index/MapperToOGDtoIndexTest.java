@@ -101,7 +101,7 @@ public class MapperToOGDtoIndexTest extends BaseIndexTestCase {
             }
 
             assertTrue("Lucene doc found.", doc != null);
-            assertEquals("FIXED", doc.get("author"));
+            assertEquals("geonutzv-de-2013-03-19", doc.get("license_id"));
             assertEquals(id, ((Map)doc.get("extras")).get("metadata_original_id"));
         }
     }
