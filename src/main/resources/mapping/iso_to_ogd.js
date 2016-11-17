@@ -59,6 +59,12 @@ var dateRoleMap = {
 var languageMap = {
     'ger': 'de'
 };
+var contactRoleMap = {
+    'custodian': 'autor',
+    'pointOfContact': 'vertrieb',
+    'principalInvestigator': 'autor',
+    'processor': 'autor'
+};
 
 // consts, ADAPT TO PROVIDER
 var author = "AUTHOR";
@@ -76,11 +82,6 @@ var jsonTransformationDescriptions = [{
         "jsonPath": "author_email",
         "fixed": author_email
     }, {
-        "jsonPath": "extras/contacts/role",
-        "fixed": "ANALOG? \"vertrieb\" oder \"autor\""
-    }, //"xpath": "//" + identification + "/gmd:pointOfContact"},
-
-    {
         "jsonPath": "title",
         "xpath": "//" + identification + "/gmd:citation/gmd:CI_Citation/gmd:title/gco:CharacterString"
     }, {
@@ -101,15 +102,15 @@ var jsonTransformationDescriptions = [{
         "multiples": true,
         "xpath": "//gmd:distributionInfo/gmd:MD_Distribution"
     }, {
-        "jsonPath": "extras/contacts/name",
-        "xpath": "//gmd:distributionInfo/gmd:MD_Distribution/gmd:distributor/gmd:MD_Distributor/gmd:distributorContact/idf:idfResponsibleParty/gmd:organisationName/gco:CharacterString"
-    }, {
-        "jsonPath": "extras/contacts/url",
-        "xpath": "//gmd:distributionInfo/gmd:MD_Distribution/gmd:distributor/gmd:MD_Distributor/gmd:distributorContact/idf:idfResponsibleParty/gmd:contactInfo/gmd:CI_Contact/gmd:onlineResource/gmd:CI_OnlineResource/gmd:linkage/gmd:URL"
-    }, {
-        "jsonPath": "extras/contacts/email",
-        "xpath": "//gmd:distributionInfo/gmd:MD_Distribution/gmd:distributor/gmd:MD_Distributor/gmd:distributorContact/idf:idfResponsibleParty/gmd:contactInfo/gmd:CI_Contact/gmd:onlineResource/gmd:CI_OnlineResource/gmd:linkage/gmd:URL"
-    }, {
+        "jsonPath": "extras/contacts",
+        "isContactField": true,
+        "multiples": true,
+        "xpath": "//gmd:distributionInfo/gmd:MD_Distribution/gmd:distributor/gmd:MD_Distributor/gmd:distributorContact/idf:idfResponsibleParty"    	
+    },
+
+
+
+    {
         "jsonPath": "extras/spatial/coordinates",
         "xpath": "//gmd:identificationInfo/" + identification + "/gmd:extent/gmd:EX_Extent/gmd:geographicElement/gmd:EX_GeographicBoundingBox/gmd:westBoundLongitude/gco:Decimal"
     }, {
@@ -121,10 +122,6 @@ var jsonTransformationDescriptions = [{
         "jsonPath": "maintaner",
         "withParent": "//gmd:identificationInfo/" + identification + "/gmd:pointOfContact/idf:idfResponsibleParty/gmd:role/gmd:CI_RoleCode[@codeListValue='custodian']/../..",
         "xpath": "./gmd:organisationName/gco:CharacterString"
-    }, {
-        "jsonPath": "extras/contacts/address",
-        "withParent": "//gmd:distributionInfo/gmd:MD_Distribution/gmd:distributor/gmd:MD_Distributor/gmd:distributorContact/idf:idfResponsibleParty/gmd:contactInfo/gmd:CI_Contact/gmd:address/gmd:CI_Address",
-        "xpath": ["./gmd:postalCode/gco:CharacterString", "./gmd:city/gco:CharacterString", "./gmd:deliveryPoint/gco:CharacterString"]
     }, {
         "jsonPath": "maintaner_email",
         "withParent": "//gmd:identificationInfo/" + identification + "/gmd:pointOfContact/idf:idfResponsibleParty/gmd:role/gmd:CI_RoleCode[@codeListValue='custodian']/../..",
@@ -226,6 +223,31 @@ for (var i in jsonTransformationDescriptions) {
                        
                         valueArray.push(resourceObject);
 
+                    } else if (t.isContactField) {
+//                        var role = getFirstValueFromXPath(nodeList.item(x), "./gmd:role/gmd:CI_RoleCode//@codeListValue");
+                        var name = getFirstValueFromXPath(nodeList.item(x), "./gmd:organisationName/gco:CharacterString");
+                        var url = getFirstValueFromXPath(nodeList.item(x), "./gmd:contactInfo/gmd:CI_Contact/gmd:onlineResource/gmd:CI_OnlineResource/gmd:linkage/gmd:URL");
+                        var email = getFirstValueFromXPath(nodeList.item(x), "./gmd:contactInfo/gmd:CI_Contact/gmd:address/gmd:CI_Address/gmd:electronicMailAddress/gco:CharacterString");
+                        var street = getFirstValueFromXPath(nodeList.item(x), "./gmd:contactInfo/gmd:CI_Contact/gmd:address/gmd:CI_Address/gmd:deliveryPoint/gco:CharacterString");
+                        var plz = getFirstValueFromXPath(nodeList.item(x), "./gmd:contactInfo/gmd:CI_Contact/gmd:address/gmd:CI_Address/gmd:postalCode/gco:CharacterString");
+                        var city = getFirstValueFromXPath(nodeList.item(x), "./gmd:contactInfo/gmd:CI_Contact/gmd:address/gmd:CI_Address/gmd:city/gco:CharacterString");
+                        
+                        var address = null;
+                        if (street) address = street;
+                        if (address && plz) address += ", " + plz;
+                        if (address && city) address += " " + city;
+                        
+                        var contactObject = {};
+                        // this is distributionInfo so it's always 'vertrieb' !
+//                        if (role) contactObject["role"] = mapKeyValue(role, contactRoleMap, 'vertrieb');
+                        contactObject["role"] = 'vertrieb';
+                        if (name) contactObject["name"] = name;
+                        if (url) contactObject["url"] = url;
+                        if (email) contactObject["email"] = email;
+                        if (address) contactObject["address"] = address;
+
+                        valueArray.push(contactObject);
+                        
                     } else if (t.multiples) {
                         valueArray.push(nodeList.item(x).getTextContent());
                     } else {
@@ -278,10 +300,13 @@ function getFirstValueFromXPath(node, xpath) {
     return null;
 }
 
-function mapKeyValue(myKey, myMap) {
+function mapKeyValue(myKey, myMap, defaultValue) {
 	var myValue = myMap[myKey];
     if (hasValue(myValue)) {
         return myValue;
+    }
+    if (defaultValue) {
+    	return defaultValue;
     }
     return myKey;
 }
