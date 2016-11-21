@@ -297,8 +297,8 @@ for (var i in jsonTransformationDescriptions) {
         }
     }
 }
-log.info("\n\nJSON String:");
-log.info(JSON.stringify(jsonObject, null, 2));
+log.debug("\n\nJSON String:");
+log.debug(JSON.stringify(jsonObject, null, 2));
 
 IDX.addAllFromJSON(JSON.stringify(jsonObject));
 
