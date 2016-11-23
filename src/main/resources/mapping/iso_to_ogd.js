@@ -207,13 +207,15 @@ for (var i in jsonTransformationDescriptions) {
                         var description = getFirstValueFromXPath(nodeList.item(x), "./gmd:transferOptions/gmd:MD_DigitalTransferOptions/gmd:onLine/gmd:CI_OnlineResource/gmd:name/gco:CharacterString");
                         var format = getFirstValueFromXPath(nodeList.item(x), "./gmd:distributionFormat/gmd:MD_Format/gmd:name/gco:CharacterString");
 
-                        var resourceObject = {};
-                        if (url) resourceObject["url"] = url;
-                        if (format) resourceObject["format"] = format;
-                        if (description) resourceObject["description"] = description;
-                        if (languageOGD) resourceObject["language"] = languageOGD;
-                       
-                        valueArray.push(resourceObject);
+                        if (url) {
+                            var resourceObject = {};
+                            if (url) resourceObject["url"] = url;
+                            if (format) resourceObject["format"] = format;
+                            if (description) resourceObject["description"] = description;
+                            if (languageOGD) resourceObject["language"] = languageOGD;
+                           
+                            valueArray.push(resourceObject);                        	
+                        }
 
                     } else if (t.isContactField) {
 //                        var role = getFirstValueFromXPath(nodeList.item(x), "./gmd:role/gmd:CI_RoleCode//@codeListValue");
