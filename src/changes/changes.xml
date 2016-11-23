@@ -32,6 +32,9 @@
       <action type="fix" dev="wemove" issue="REDMINE-465">
         Fixed wrong path to save data when using cygwin.
       </action>
+      <action type="fix" dev="wemove" issue="REDMINE-464">
+        Fixed showing old service URL after it has been changed.
+      </action>
     </release>
     
     <release version="4.0.0.1" date="2016-09-19" description="Release 4.0.0.1">

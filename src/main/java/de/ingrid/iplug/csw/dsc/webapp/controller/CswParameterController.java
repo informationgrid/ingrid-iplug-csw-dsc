@@ -100,10 +100,7 @@ public class CswParameterController extends AbstractController {
 
     private void mapConfigFromPD(CswConfiguration mapConfig,
             PlugdescriptionCommandObject commandObject) {
-        
-        if (commandObject.containsKey("serviceUrl")) {
-            mapConfig.setServiceUrl(commandObject.getString("serviceUrl"));
-        }
+        mapConfig.setServiceUrl(CswDscSearchPlug.conf.serviceUrl);
     }
     
 

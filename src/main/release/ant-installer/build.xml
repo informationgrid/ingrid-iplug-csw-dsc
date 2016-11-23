@@ -87,6 +87,7 @@
         </unzip>
 
         <delete dir="${installDir}/lib"/>
+        <delete dir="${installDir}/webapp/WEB-INF/work"/>
 
         <move toDir="${installDir}">
             <fileset dir="./${componentName}"/>
