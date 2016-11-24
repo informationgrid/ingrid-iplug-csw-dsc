@@ -67,12 +67,15 @@ var contactRoleMap = {
 };
 
 // consts, ADAPT TO PROVIDER
-var author = "AUTHOR";
-var author_email = "AUTHOR EMAIL";
+var author = "FIXED AUTHOR";
+var author_email = "FIXED AUTHOR EMAIL";
 
 // useful values
 var languageCSW = getFirstValueFromXPath(recordNode, "//" + identification + "/gmd:language/gmd:LanguageCode/@codeListValue");
 var languageOGD = mapKeyValue(languageCSW, languageMap);
+
+// xpath selectors
+var selectorMaintainer = "@codeListValue='custodian' or @codeListValue='pointOfContact' or @codeListValue='principalInvestigator' or @codeListValue='processor'"
   
 
 var jsonTransformationDescriptions = [{
@@ -88,14 +91,14 @@ var jsonTransformationDescriptions = [{
         "jsonPath": "author_email",
         "fixed": author_email
     }, {
-        "jsonPath": "maintaner",
-        // only select 'custodian' pointOfContact ?
-        "withParent": "//gmd:identificationInfo/" + identification + "/gmd:pointOfContact/idf:idfResponsibleParty/gmd:role/gmd:CI_RoleCode[@codeListValue='custodian']/../..",
+        "jsonPath": "maintainer",
+        // use maintainer selector only selecting special roles
+        "withParent": "//gmd:identificationInfo/" + identification + "/gmd:pointOfContact/idf:idfResponsibleParty/gmd:role/gmd:CI_RoleCode[" + selectorMaintainer + "]/../..",
         "xpath": "./gmd:organisationName/gco:CharacterString"
     }, {
-        "jsonPath": "maintaner_email",
-        // only select 'custodian' pointOfContact ?
-        "withParent": "//gmd:identificationInfo/" + identification + "/gmd:pointOfContact/idf:idfResponsibleParty/gmd:role/gmd:CI_RoleCode[@codeListValue='custodian']/../..",
+        "jsonPath": "maintainer_email",
+        // use maintainer selector only selecting special roles
+        "withParent": "//gmd:identificationInfo/" + identification + "/gmd:pointOfContact/idf:idfResponsibleParty/gmd:role/gmd:CI_RoleCode[" + selectorMaintainer + "]/../..",
         "xpath": "./gmd:contactInfo/gmd:CI_Contact/gmd:address/gmd:CI_Address/gmd:electronicMailAddress/gco:CharacterString"
     }, {
         "jsonPath": "notes",
@@ -103,13 +106,14 @@ var jsonTransformationDescriptions = [{
     }, {
         "jsonPath": "groups",
         "multiples": true,
+        // only keywords with thesaurus OGDD
         "withParent": "//gmd:identificationInfo/" + identification + "/gmd:descriptiveKeywords/gmd:MD_Keywords/gmd:thesaurusName/gmd:CI_Citation/gmd:title/gco:CharacterString[text()='OGDD-Kategorien']/../../../..",
         "xpath": ".//gmd:keyword/gco:CharacterString"
     }, {
         "jsonPath": "tags",
         "multiples": true,
-        "withParent": "//gmd:identificationInfo/" + identification + "/gmd:descriptiveKeywords/gmd:MD_Keywords/gmd:thesaurusName/gmd:CI_Citation/gmd:title/gco:CharacterString[text()='OGDD-Kategorien']/../../../..",
-        "xpath": "./gmd:keyword/gco:CharacterString"
+        // all keywords
+        "xpath": "//" + identification + "/gmd:descriptiveKeywords/gmd:MD_Keywords/gmd:keyword/gco:CharacterString"
     }, {
         "jsonPath": "url",
         "xpath": "//gmd:distributionInfo/gmd:MD_Distribution/gmd:transferOptions/gmd:MD_DigitalTransferOptions/gmd:onLine/gmd:CI_OnlineResource/gmd:linkage/gmd:URL"
@@ -138,6 +142,7 @@ var jsonTransformationDescriptions = [{
     }, {
         "jsonPath": "extras/subgroups",
         "multiples": true,
+        // all keywords and hierarchyLevelName (according to excel mapping instructions from codematix)
         "xpath": ["//gmd:hierarchyLevelName/gco:CharacterString", "//" + identification + "/gmd:descriptiveKeywords/gmd:MD_Keywords/gmd:keyword/gco:CharacterString"]
     }, {
         "jsonPath": "extras/metadata_original_id",
@@ -146,7 +151,15 @@ var jsonTransformationDescriptions = [{
         "jsonPath": "extras/spatial",
         "isSpatialField": true,
         "multiples": true,
-        "xpath": "//gmd:identificationInfo/" + identification + "/gmd:extent/gmd:EX_Extent/gmd:geographicElement/gmd:EX_GeographicBoundingBox"    	
+        "xpath": "//gmd:identificationInfo/" + identification + "/gmd:extent/gmd:EX_Extent/gmd:geographicElement/gmd:EX_GeographicBoundingBox"
+    }, {
+        "jsonPath": "extras/temporal_coverage_from",
+        "isTemporalCoverage": true,
+        "xpath": "//gmd:identificationInfo/" + identification + "/gmd:extent/gmd:EX_Extent/gmd:temporalElement/gmd:EX_TemporalExtent/gmd:extent/gml:TimePeriod/gml:beginPosition"
+    }, {
+        "jsonPath": "extras/temporal_coverage_to",
+        "isTemporalCoverage": true,
+        "xpath": "//gmd:identificationInfo/" + identification + "/gmd:extent/gmd:EX_Extent/gmd:temporalElement/gmd:EX_TemporalExtent/gmd:extent/gml:TimePeriod/gml:endPosition"
     }, {
         "jsonPath": "ogd_version",
         "fixed": "v1.1"
@@ -260,6 +273,10 @@ for (var i in jsonTransformationDescriptions) {
                             };
                         }
                         
+                    } else if (t.isTemporalCoverage) {
+                    	value = nodeList.item(x).getTextContent();
+                    	if (hasValue(value)) value = value + "T00:00:00";
+
                     } else if (t.multiples) {
                         valueArray.push(nodeList.item(x).getTextContent());
                     } else {
@@ -284,6 +301,8 @@ for (var i in jsonTransformationDescriptions) {
         if (err) continue;
 
     }
+    
+    if (!hasValue(value)) continue;
 
     var jPath = t.jsonPath.split("/");
     var current = jsonObject;

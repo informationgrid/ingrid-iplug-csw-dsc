@@ -49,8 +49,8 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
                 <value>
                     <![CDATA[<ogc:Filter xmlns:ogc="http://www.opengis.net/ogc">
                     <ogc:PropertyIsLike escapeChar="\\" singleChar="?" wildCard="*">
-                    <ogc:PropertyName>csw:Record/dc:identifier</ogc:PropertyName>
-                    <ogc:Literal>0f910bbc-e43d-4a56-bc09-49ab736a94d4</ogc:Literal>
+                    <ogc:PropertyName>AnyText</ogc:PropertyName>
+                    <ogc:Literal>opendata</ogc:Literal>
                     </ogc:PropertyIsLike>
                     </ogc:Filter>]]>
                 </value>
