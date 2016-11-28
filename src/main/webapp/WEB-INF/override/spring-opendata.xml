@@ -27,6 +27,12 @@
     xsi:schemaLocation="
 http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-4.0.xsd">
 
+    <bean id="recordMapper" class="de.ingrid.iplug.csw.dsc.index.mapper.ScriptedDocumentMapper">
+        <property name="mappingScript" value="classpath:mapping/iso_to_ogd.js" />
+        <property name="compile" value="false" />
+        <property name="idfRecordCreator" ref="dscRecordProducer" />
+    </bean>
+
     <!--
         Define the CSW filter queries to query the CSW data source. Duplicates resulting from
         the queries will be detected based on the Identifier and be removed.

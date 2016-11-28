@@ -279,8 +279,8 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
     <bean id="recordSetProducer" class="de.ingrid.iplug.csw.dsc.index.producer.CswRecordSetProducer"/>
 
     <bean id="recordMapper" class="de.ingrid.iplug.csw.dsc.index.mapper.ScriptedDocumentMapper">
-        <property name="mappingScript" value="classpath:mapping/iso_to_ogd.js" />
-        <!-- <property name="codelistService" ref="codeListService" /> -->
+        <property name="mappingScript" value="classpath:mapping/idf_to_lucene.js" />
+        <property name="codelistService" ref="codeListService" />
         <property name="compile" value="false" />
         <property name="idfRecordCreator" ref="dscRecordProducer" />
     </bean>
@@ -342,7 +342,7 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
     
     <!-- Beans for codelist access and synchronisation -->
 
-    <!-- <bean id="ingridCommunication" class="de.ingrid.codelists.comm.IngridCLCommunication">
+    <bean id="ingridCommunication" class="de.ingrid.codelists.comm.IngridCLCommunication">
     </bean>
     
     <bean id="xmlPersistency" class="de.ingrid.codelists.persistency.XmlCodeListPersistency">
@@ -357,7 +357,7 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
             </list>
         </property>
         <property name="defaultPersistency" value="0" />
-    </bean> -->
+    </bean>
 
     <!-- Scheduler Factory -->
 
