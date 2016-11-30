@@ -29,8 +29,8 @@
   </properties>
   <body>
     <release version="4.1.0-SNAPSHOT" date="????-??-??" description="??">
-      <action type="update" dev="wemove">
-        OGD extension: Harvest CSW open data records and map to OGD JSON.
+      <action type="add" dev="wemove" issue="REDMINE-497">
+        OpenData extension: Harvest CSW open data records and map to OGD JSON.
       </action>
     </release>
 
