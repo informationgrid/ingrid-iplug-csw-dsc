@@ -77,6 +77,8 @@
 
     <!-- enable Auto-detecting of components (annotation based configuration including autowire ...) -->
     <context:component-scan base-package="de.ingrid">
+      <context:exclude-filter type="regex" expression="de.ingrid.admin.object.DefaultDataType"/>
+      <context:exclude-filter type="regex" expression="de.ingrid.admin.object.BasePlug"/>
     </context:component-scan>
 
     <bean id="multipartResolver" class="org.springframework.web.multipart.commons.CommonsMultipartResolver"> 
