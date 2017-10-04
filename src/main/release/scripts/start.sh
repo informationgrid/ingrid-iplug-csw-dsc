@@ -39,6 +39,11 @@ THIS_DIR=`dirname "$THIS"`
 INGRID_HOME=`cd "$THIS_DIR" ; pwd`
 PID=$INGRID_HOME/ingrid.pid
 
+#create directories
+if [ ! -e $INGRID_HOME/logs ]; then
+   mkdir $INGRID_HOME/logs;
+fi 
+
 # include default options, i.e. debug, jmx and jvm options
 if [ -f $INGRID_HOME/env.user.sh ]; then
   eval "`sh $INGRID_HOME/env.user.sh`"
@@ -180,10 +185,15 @@ startIplug()
   fi
 
   prepareJavaStatement
-  
+
   CLASS=de.ingrid.iplug.csw.dsc.CswDscSearchPlug
 
-  exec nohup "$JAVA" $INGRID_OPTS $CLASS > console.log &
+  # run it
+  if [ "$RUN_DIRECTLY" ]; then
+    exec "$JAVA" $INGRID_OPTS $CLASS
+  else
+    exec nohup "$JAVA" $INGRID_OPTS $CLASS > logs/console.log &
+  fi
 
   echo "jetty ($INGRID_HOME) started."
   echo $! > $PID
