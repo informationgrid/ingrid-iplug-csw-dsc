@@ -98,6 +98,7 @@ public class MapperToIndexTest extends BaseIndexTestCase {
         mapper.setIdfRecordCreator( idfRecordCreator );
         
         
+        boolean wsvChecked = false;
 
         for (String id : cache.getCachedRecordIds()) {
             CSWRecord cswRecord = cache.getRecord(id, ElementSetName.FULL);
@@ -146,8 +147,21 @@ public class MapperToIndexTest extends BaseIndexTestCase {
                 assertEquals("Crossreference from dataset to service exists.", data, doc.getValues("refering_service_uuid")[0]);
             }
 
+            // GeoKatalog.WSV Tests
+            
+            if ("870043be-85e0-4f7d-9cdc-43fe293b0c90".equals( id )) {
+                // removed URLs of type 'localZipDownload'
+                // see https://redmine.wemove.com/issues/1745 / "AF-00448 GP4: GeoKatalog - iPlug - Download Link anzeigen"
+                
+                String[] mappedUrls = doc.getValues("t017_url_ref.url_link");
+                for (String mappedUrl : mappedUrls) {
+                    assertFalse("GeoKatalog.WSV: URLs of type 'localZipDownload' not mapped", mappedUrl.contains( "ascc_geoportal" ));
+                    assertTrue("GeoKatalog.WSV: URLs of type 'download' mapped", mappedUrl.contains("austausch.wsv.res.bund.de"));
+                    wsvChecked = true;
+                }
+            }
         }
-
+        
+        assertTrue("GeoKatalog.WSV: Checked URLs", wsvChecked);
     }
-
 }
