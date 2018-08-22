@@ -594,11 +594,19 @@ function mapOnlineResource(recordNode) {
 			// first check type of CI_OnlineResource and filter
 			// e.g. in GeoKatalog.WSV "localZipDownload" has to be filtered
 			// (see https://redmine.wemove.com/issues/1745 / "AF-00448 GP4: GeoKatalog - iPlug - Download Link anzeigen")
+
+			// NOTICE: Wrong downloads are already filtered by XSLT to IDF ! Index mapping receives IDF and not plain ISO !
+			// So check for wrong downloads not necessary, but we keep it ... 
 			var codeListValue = XPathUtils.getString(onlineResources.item(i), "gmd:function/gmd:CI_OnLineFunctionCode/@codeListValue");
-			if (hasValue(codeListValue) && codeListValue == 'localZipDownload') {
+			if (hasValue(codeListValue) && (
+					(codeListValue == 'localZipDownload') ||
+					(codeListValue == 'localImageDownloadTransform') )) {
+
 				if (log.isInfoEnabled()) {
-					log.info("found CI_OnlineResource of type 'localZipDownload', we skip !")
+					var id = XPathUtils.getString(recordNode, "//gmd:fileIdentifier/gco:CharacterString");
+					log.info("" + id + ": found CI_OnlineResource of type '" + codeListValue + "', we skip this one !");
 				}
+
 				continue;
 			}
 
