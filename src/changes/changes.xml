@@ -31,7 +31,7 @@
 
     <release version="4.4.0-SNAPSHOT" date="????-??-??" description="">
       <action type="update" dev="wemove" issue="REDMINE-1149">
-        Skip download URLs of type "localZipDownload" (GeoKatalog.WSV).
+        Skip offline download URLs e.g. of type "offlineAccess" (GeoKatalog.WSV).
       </action>
     </release>
 
