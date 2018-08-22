@@ -1,0 +1,499 @@
+<?xml version="1.0" encoding="UTF-8"?>
+                <gmd:MD_Metadata xmlns:gmd="http://www.isotc211.org/2005/gmd" 
+                    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                    xsi:schemaLocation="http://www.isotc211.org/2005/gmd http://schemas.opengis.net/csw/2.0.2/profiles/apiso/1.0.0/apiso.xsd">
+                    <gmd:fileIdentifier xmlns:gco="http://www.isotc211.org/2005/gco" xmlns:gml="http://www.opengis.net/gml">
+                        <gco:CharacterString>8e822fdd-f508-4d7a-a596-e60684dd0c97</gco:CharacterString>
+                    </gmd:fileIdentifier>
+                    <gmd:language xmlns:gco="http://www.isotc211.org/2005/gco" xmlns:gml="http://www.opengis.net/gml">
+                        <gmd:LanguageCode codeList="LanguageCode" codeListValue="ger">ger</gmd:LanguageCode>
+                    </gmd:language>
+                    <gmd:characterSet xmlns:gco="http://www.isotc211.org/2005/gco" xmlns:gml="http://www.opengis.net/gml">
+                        <gmd:MD_CharacterSetCode codeList="http://metadata.dgiwg.org/codelistRegistry?MD_CharacterSetCode" codeListValue="utf8"/>
+                    </gmd:characterSet>
+                    <gmd:hierarchyLevel xmlns:gco="http://www.isotc211.org/2005/gco" xmlns:gml="http://www.opengis.net/gml">
+                        <gmd:MD_ScopeCode codeList="http://metadata.dgiwg.org/codelistRegistry?MD_ScopeCode" codeListValue="series"/>
+                    </gmd:hierarchyLevel>
+                    <gmd:hierarchyLevelName xmlns:gco="http://www.isotc211.org/2005/gco" xmlns:gml="http://www.opengis.net/gml">
+                        <gco:CharacterString>Kacheln</gco:CharacterString>
+                    </gmd:hierarchyLevelName>
+                    <gmd:hierarchyLevelName xmlns:gco="http://www.isotc211.org/2005/gco" xmlns:gml="http://www.opengis.net/gml">
+                        <gco:CharacterString>DTK200K</gco:CharacterString>
+                    </gmd:hierarchyLevelName>
+                    <gmd:contact xmlns:gco="http://www.isotc211.org/2005/gco" xmlns:gml="http://www.opengis.net/gml">
+                        <gmd:CI_ResponsibleParty>
+                            <gmd:individualName>
+                                <gco:CharacterString>Abteilung III, Referat 1 Geomatik u. Verkehr, Sachgebiet IT-Systeme Geomatik u. Vermessung (GeoVerm)</gco:CharacterString>
+                            </gmd:individualName>
+                            <gmd:organisationName>
+                                <gco:CharacterString>Informationstechnikzentrum Bund (ITZBund)</gco:CharacterString>
+                            </gmd:organisationName>
+                            <gmd:positionName>
+                                <gco:CharacterString>GIS-/GDI-Spezialisten</gco:CharacterString>
+                            </gmd:positionName>
+                            <gmd:contactInfo>
+                                <gmd:CI_Contact>
+                                    <gmd:phone>
+                                        <gmd:CI_Telephone>
+                                            <gmd:voice>
+                                                <gco:CharacterString>+49 (22899) 680 - 0</gco:CharacterString>
+                                            </gmd:voice>
+                                            <gmd:facsimile>
+                                                <gco:CharacterString>-</gco:CharacterString>
+                                            </gmd:facsimile>
+                                        </gmd:CI_Telephone>
+                                    </gmd:phone>
+                                    <gmd:address>
+                                        <gmd:CI_Address>
+                                            <gmd:deliveryPoint>
+                                                <gco:CharacterString>Am Ehrenberg 8</gco:CharacterString>
+                                            </gmd:deliveryPoint>
+                                            <gmd:city>
+                                                <gco:CharacterString>Ilmenau</gco:CharacterString>
+                                            </gmd:city>
+                                            <gmd:administrativeArea>
+                                                <gco:CharacterString>TH</gco:CharacterString>
+                                            </gmd:administrativeArea>
+                                            <gmd:postalCode>
+                                                <gco:CharacterString>98693</gco:CharacterString>
+                                            </gmd:postalCode>
+                                            <gmd:country>
+                                                <gco:CharacterString>Deutschland</gco:CharacterString>
+                                            </gmd:country>
+                                            <gmd:electronicMailAddress>
+                                                <gco:CharacterString>gdi-wsv.support@ba-dlz-it.bund.de</gco:CharacterString>
+                                            </gmd:electronicMailAddress>
+                                        </gmd:CI_Address>
+                                    </gmd:address>
+                                </gmd:CI_Contact>
+                            </gmd:contactInfo>
+                            <gmd:role>
+                                <gmd:CI_RoleCode codeList="http://standards.iso.org/ittf/PubliclyAvailableStandards/ISO_19139_Schemas/resources/Codelist/ML_gmxCodelists.xml#MD_ScopeCode" codeListValue="pointOfContact">pointOfContact</gmd:CI_RoleCode>
+                            </gmd:role>
+                        </gmd:CI_ResponsibleParty>
+                    </gmd:contact>
+                    <gmd:dateStamp xmlns:gco="http://www.isotc211.org/2005/gco" xmlns:gml="http://www.opengis.net/gml">
+                        <gco:Date>2012-05-23</gco:Date>
+                    </gmd:dateStamp>
+                    <gmd:metadataStandardName xmlns:gco="http://www.isotc211.org/2005/gco" xmlns:gml="http://www.opengis.net/gml">
+                        <gco:CharacterString>ISO19115</gco:CharacterString>
+                    </gmd:metadataStandardName>
+                    <gmd:metadataStandardVersion xmlns:gco="http://www.isotc211.org/2005/gco" xmlns:gml="http://www.opengis.net/gml">
+                        <gco:CharacterString>2003/Cor.1:2006</gco:CharacterString>
+                    </gmd:metadataStandardVersion>
+                    <gmd:referenceSystemInfo xmlns:gco="http://www.isotc211.org/2005/gco" xmlns:gml="http://www.opengis.net/gml">
+                        <gmd:MD_ReferenceSystem>
+                            <gmd:referenceSystemIdentifier>
+                                <gmd:RS_Identifier>
+                                    <gmd:code>
+                                        <gco:CharacterString>31467</gco:CharacterString>
+                                    </gmd:code>
+                                    <gmd:codeSpace>
+                                        <gco:CharacterString>urn:ogc:def:crs:EPSG</gco:CharacterString>
+                                    </gmd:codeSpace>
+                                    <gmd:version>
+                                        <gco:CharacterString>6.11.2</gco:CharacterString>
+                                    </gmd:version>
+                                </gmd:RS_Identifier>
+                            </gmd:referenceSystemIdentifier>
+                        </gmd:MD_ReferenceSystem>
+                    </gmd:referenceSystemInfo>
+                    <gmd:identificationInfo xmlns:gco="http://www.isotc211.org/2005/gco" xmlns:gml="http://www.opengis.net/gml">
+                        <gmd:MD_DataIdentification>
+                            <gmd:citation>
+                                <gmd:CI_Citation>
+                                    <gmd:title>
+                                        <gco:CharacterString>DTK200K - DTK 200 blattschnittfrei (Kacheln) deutschlandweit</gco:CharacterString>
+                                    </gmd:title>
+                                    <gmd:date>
+                                        <gmd:CI_Date>
+                                            <gmd:date>
+                                                <gco:Date>2006-12-31</gco:Date>
+                                            </gmd:date>
+                                            <gmd:dateType>
+                                                <gmd:CI_DateTypeCode codeList="http://metadata.dgiwg.org/codelistRegistry?CI_DateTypeCode" codeListValue="creation"/>
+                                            </gmd:dateType>
+                                        </gmd:CI_Date>
+                                    </gmd:date>
+                                    <gmd:date>
+                                        <gmd:CI_Date>
+                                            <gmd:date>
+                                                <gco:Date>2012-04-27</gco:Date>
+                                            </gmd:date>
+                                            <gmd:dateType>
+                                                <gmd:CI_DateTypeCode codeList="CI_DateTypeCode" codeListValue="publication"/>
+                                            </gmd:dateType>
+                                        </gmd:CI_Date>
+                                    </gmd:date>
+                                    <gmd:date>
+                                        <gmd:CI_Date>
+                                            <gmd:date>
+                                                <gco:Date>2010-12-31</gco:Date>
+                                            </gmd:date>
+                                            <gmd:dateType>
+                                                <gmd:CI_DateTypeCode codeList="CI_DateTypeCode" codeListValue="revision"/>
+                                            </gmd:dateType>
+                                        </gmd:CI_Date>
+                                    </gmd:date>
+                                    <gmd:identifier>
+                                        <gmd:MD_Identifier>
+                                            <gmd:code>
+                                                <gco:CharacterString>DTK200K</gco:CharacterString>
+                                            </gmd:code>
+                                        </gmd:MD_Identifier>
+                                    </gmd:identifier>
+                                    <gmd:citedResponsibleParty>
+                                        <gmd:CI_ResponsibleParty>
+                                            <gmd:individualName>
+                                                <gco:CharacterString>Reiner Retzeck</gco:CharacterString>
+                                            </gmd:individualName>
+                                            <gmd:organisationName>
+                                                <gco:CharacterString>Bundesamt f&#xFC;r Kartographie Geod&#xE4;sie</gco:CharacterString>
+                                            </gmd:organisationName>
+                                            <gmd:positionName>
+                                                <gco:CharacterString>Dipl.-Geograph</gco:CharacterString>
+                                            </gmd:positionName>
+                                            <gmd:contactInfo>
+                                                <gmd:CI_Contact>
+                                                    <gmd:phone>
+                                                        <gmd:CI_Telephone>
+                                                            <gmd:voice>
+                                                                <gco:CharacterString>#49-(0)69-6333-349</gco:CharacterString>
+                                                            </gmd:voice>
+                                                            <gmd:facsimile>
+                                                                <gco:CharacterString>#49-(0)69-6333-441</gco:CharacterString>
+                                                            </gmd:facsimile>
+                                                        </gmd:CI_Telephone>
+                                                    </gmd:phone>
+                                                    <gmd:address>
+                                                        <gmd:CI_Address>
+                                                            <gmd:deliveryPoint>
+                                                                <gco:CharacterString>Richard-Strau&#xDF;-Allee 11</gco:CharacterString>
+                                                            </gmd:deliveryPoint>
+                                                            <gmd:city>
+                                                                <gco:CharacterString>Frankfurt</gco:CharacterString>
+                                                            </gmd:city>
+                                                            <gmd:postalCode>
+                                                                <gco:CharacterString>60598</gco:CharacterString>
+                                                            </gmd:postalCode>
+                                                            <gmd:country>
+                                                                <gco:CharacterString>Germany</gco:CharacterString>
+                                                            </gmd:country>
+                                                            <gmd:electronicMailAddress>
+                                                                <gco:CharacterString>mailbox@bkg.bund.de</gco:CharacterString>
+                                                            </gmd:electronicMailAddress>
+                                                        </gmd:CI_Address>
+                                                    </gmd:address>
+                                                    <gmd:onlineResource>
+                                                        <gmd:CI_OnlineResource>
+                                                            <gmd:linkage>
+                                                                <gmd:URL>http://www.geodatenzentrum.de</gmd:URL>
+                                                            </gmd:linkage>
+                                                        </gmd:CI_OnlineResource>
+                                                    </gmd:onlineResource>
+                                                </gmd:CI_Contact>
+                                            </gmd:contactInfo>
+                                            <gmd:role>
+                                                <gmd:CI_RoleCode codeList="http://metadata.dgiwg.org/codelistRegistry?CI_RoleCode" codeListValue="distributor"/>
+                                            </gmd:role>
+                                        </gmd:CI_ResponsibleParty>
+                                    </gmd:citedResponsibleParty>
+                                </gmd:CI_Citation>
+                            </gmd:citation>
+                            <gmd:abstract>
+                                <gco:CharacterString>Blattschnittfreies georeferenziertes Rasterbild der gescannten und teilweise digital fortgef&#xFC;hrten Topographischen Karte 1:200.000 (TK 200). Die TK200-Bl&#xE4;tter wurden zu einem blattschnittfreien Verband zusammengefasst und liegen in Form von 40 km x 40 km gro&#xDF;en Kacheln vor. Der Karteninhalt ist in Ebenen (Einzellayer, die im wesentlichen den Druckfarben entsprechen) und kombiniert aus diesen als Summenlayer (mit dem vollst&#xE4;ndigen Kartenbild) verf&#xFC;gbar. Zu beachten ist, dass teilweise bundesl&#xE4;nderspezifische Unterschiede in der Kartengraphik und in der Farbzuordnung bestehen. Siehe auch &lt;a href=&quot;/WsvDatenkatalog/docs/tk/dtk200-v.pdf&quot; target=&quot;new&quot;&gt;Dokumentation des BKG&lt;/a&gt;.</gco:CharacterString>
+                            </gmd:abstract>
+                            <gmd:status>
+                                <gmd:MD_ProgressCode codeList="http://metadata.dgiwg.org/codelistRegistry?MD_ProgressCode" codeListValue="onGoing"/>
+                            </gmd:status>
+                            <gmd:pointOfContact>
+                                <gmd:CI_ResponsibleParty>
+                                    <gmd:individualName>
+                                        <gco:CharacterString>Reiner Retzeck</gco:CharacterString>
+                                    </gmd:individualName>
+                                    <gmd:organisationName>
+                                        <gco:CharacterString>Bundesamt f&#xFC;r Kartographie Geod&#xE4;sie</gco:CharacterString>
+                                    </gmd:organisationName>
+                                    <gmd:positionName>
+                                        <gco:CharacterString>Dipl.-Geograph</gco:CharacterString>
+                                    </gmd:positionName>
+                                    <gmd:contactInfo>
+                                        <gmd:CI_Contact>
+                                            <gmd:phone>
+                                                <gmd:CI_Telephone>
+                                                    <gmd:voice>
+                                                        <gco:CharacterString>#49-(0)69-6333-349</gco:CharacterString>
+                                                    </gmd:voice>
+                                                    <gmd:facsimile>
+                                                        <gco:CharacterString>#49-(0)69-6333-441</gco:CharacterString>
+                                                    </gmd:facsimile>
+                                                </gmd:CI_Telephone>
+                                            </gmd:phone>
+                                            <gmd:address>
+                                                <gmd:CI_Address>
+                                                    <gmd:deliveryPoint>
+                                                        <gco:CharacterString>Richard-Strau&#xDF;-Allee 11</gco:CharacterString>
+                                                    </gmd:deliveryPoint>
+                                                    <gmd:city>
+                                                        <gco:CharacterString>Frankfurt</gco:CharacterString>
+                                                    </gmd:city>
+                                                    <gmd:administrativeArea>
+                                                        <gco:CharacterString/>
+                                                    </gmd:administrativeArea>
+                                                    <gmd:postalCode>
+                                                        <gco:CharacterString>60598</gco:CharacterString>
+                                                    </gmd:postalCode>
+                                                    <gmd:country>
+                                                        <gco:CharacterString>Germany</gco:CharacterString>
+                                                    </gmd:country>
+                                                    <gmd:electronicMailAddress>
+                                                        <gco:CharacterString>mailbox@bkg.bund.de</gco:CharacterString>
+                                                    </gmd:electronicMailAddress>
+                                                </gmd:CI_Address>
+                                            </gmd:address>
+                                            <gmd:onlineResource>
+                                                <gmd:CI_OnlineResource>
+                                                    <gmd:linkage>
+                                                        <gmd:URL>http://www.geodatenzentrum.de</gmd:URL>
+                                                    </gmd:linkage>
+                                                </gmd:CI_OnlineResource>
+                                            </gmd:onlineResource>
+                                        </gmd:CI_Contact>
+                                    </gmd:contactInfo>
+                                    <gmd:role>
+                                        <gmd:CI_RoleCode codeList="http://standards.iso.org/ittf/PubliclyAvailableStandards/ISO_19139_Schemas/resources/Codelist/ML_gmxCodelists.xml#MD_ScopeCode" codeListValue="distributor">distributor</gmd:CI_RoleCode>
+                                    </gmd:role>
+                                </gmd:CI_ResponsibleParty>
+                            </gmd:pointOfContact>
+                            <gmd:graphicOverview>
+                                <gmd:MD_BrowseGraphic>
+                                    <gmd:fileName>
+                                        <gco:CharacterString>https://geoportal.wsv.res.bund.de/smartEditor/preview/tk100.jpg</gco:CharacterString>
+                                    </gmd:fileName>
+                                    <gmd:fileDescription>
+                                        <gco:CharacterString>thumbnail</gco:CharacterString>
+                                    </gmd:fileDescription>
+                                    <gmd:fileType>
+                                        <gco:CharacterString>image/jpg</gco:CharacterString>
+                                    </gmd:fileType>
+                                </gmd:MD_BrowseGraphic>
+                            </gmd:graphicOverview>
+                            <gmd:descriptiveKeywords>
+                                <gmd:MD_Keywords>
+                                    <gmd:keyword>
+                                        <gco:CharacterString>topographische Karte</gco:CharacterString>
+                                    </gmd:keyword>
+                                    <gmd:keyword>
+                                        <gco:CharacterString>Topographische Karte</gco:CharacterString>
+                                    </gmd:keyword>
+                                    <gmd:keyword>
+                                        <gco:CharacterString>Tk200</gco:CharacterString>
+                                    </gmd:keyword>
+                                    <gmd:keyword>
+                                        <gco:CharacterString>TK200</gco:CharacterString>
+                                    </gmd:keyword>
+                                    <gmd:keyword>
+                                        <gco:CharacterString>DTK 200</gco:CharacterString>
+                                    </gmd:keyword>
+                                    <gmd:keyword>
+                                        <gco:CharacterString>DTK200</gco:CharacterString>
+                                    </gmd:keyword>
+                                    <gmd:keyword>
+                                        <gco:CharacterString>topografisch</gco:CharacterString>
+                                    </gmd:keyword>
+                                    <gmd:keyword>
+                                        <gco:CharacterString>Karte</gco:CharacterString>
+                                    </gmd:keyword>
+                                    <gmd:keyword>
+                                        <gco:CharacterString>Summenlayer</gco:CharacterString>
+                                    </gmd:keyword>
+                                    <gmd:keyword>
+                                        <gco:CharacterString>Einzellayer</gco:CharacterString>
+                                    </gmd:keyword>
+                                    <gmd:keyword>
+                                        <gco:CharacterString>BKG</gco:CharacterString>
+                                    </gmd:keyword>
+                                    <gmd:type>
+                                        <gmd:MD_KeywordTypeCode codeList="MD_KeywordTypeCode" codeListValue="theme"/>
+                                    </gmd:type>
+                                </gmd:MD_Keywords>
+                            </gmd:descriptiveKeywords>
+                            <gmd:spatialRepresentationType>
+                                <gmd:MD_SpatialRepresentationTypeCode codeList="http://metadata.dgiwg.org/codelistRegistry?MD_SpatialRepresentationTypeCode" codeListValue="grid"/>
+                            </gmd:spatialRepresentationType>
+                            <gmd:spatialResolution>
+                                <gmd:MD_Resolution>
+                                    <gmd:equivalentScale>
+                                        <gmd:MD_RepresentativeFraction>
+                                            <gmd:denominator>
+                                                <gco:Integer>200000</gco:Integer>
+                                            </gmd:denominator>
+                                        </gmd:MD_RepresentativeFraction>
+                                    </gmd:equivalentScale>
+                                </gmd:MD_Resolution>
+                            </gmd:spatialResolution>
+                            <gmd:language>
+                                <gmd:LanguageCode codeList="LanguageCode" codeListValue="ger">ger</gmd:LanguageCode>
+                            </gmd:language>
+                            <gmd:characterSet>
+                                <gmd:MD_CharacterSetCode codeList="http://metadata.dgiwg.org/codelistRegistry?MD_CharacterSetCode" codeListValue="8859part1"/>
+                            </gmd:characterSet>
+                            <gmd:topicCategory>
+                                <gmd:MD_TopicCategoryCode>imageryBaseMapsEarthCover</gmd:MD_TopicCategoryCode>
+                            </gmd:topicCategory>
+                            <gmd:extent>
+                                <gmd:EX_Extent>
+                                    <gmd:geographicElement>
+                                        <gmd:EX_GeographicBoundingBox>
+                                            <gmd:extentTypeCode>
+                                                <gco:Boolean>true</gco:Boolean>
+                                            </gmd:extentTypeCode>
+                                            <gmd:westBoundLongitude>
+                                                <gco:Decimal>5.83</gco:Decimal>
+                                            </gmd:westBoundLongitude>
+                                            <gmd:eastBoundLongitude>
+                                                <gco:Decimal>15.33</gco:Decimal>
+                                            </gmd:eastBoundLongitude>
+                                            <gmd:southBoundLatitude>
+                                                <gco:Decimal>47.2</gco:Decimal>
+                                            </gmd:southBoundLatitude>
+                                            <gmd:northBoundLatitude>
+                                                <gco:Decimal>55.2</gco:Decimal>
+                                            </gmd:northBoundLatitude>
+                                        </gmd:EX_GeographicBoundingBox>
+                                    </gmd:geographicElement>
+                                </gmd:EX_Extent>
+                            </gmd:extent>
+                            <gmd:extent>
+                                <gmd:EX_Extent>
+                                    <gmd:temporalElement>
+                                        <gmd:EX_TemporalExtent>
+                                            <gmd:extent>
+                                                <gml:TimePeriod gml:id="w2587aaa">
+                                                    <gml:beginPosition>2010-12-31</gml:beginPosition>
+                                                    <gml:endPosition>2013-12-31</gml:endPosition>
+                                                </gml:TimePeriod>
+                                            </gmd:extent>
+                                        </gmd:EX_TemporalExtent>
+                                    </gmd:temporalElement>
+                                </gmd:EX_Extent>
+                            </gmd:extent>
+                        </gmd:MD_DataIdentification>
+                    </gmd:identificationInfo>
+                    <gmd:distributionInfo xmlns:gco="http://www.isotc211.org/2005/gco" xmlns:gml="http://www.opengis.net/gml">
+                        <gmd:MD_Distribution>
+                            <gmd:distributionFormat>
+                                <gmd:MD_Format>
+                                    <gmd:name>
+                                        <gco:CharacterString>geoTiff</gco:CharacterString>
+                                    </gmd:name>
+                                    <gmd:version>
+                                        <gco:CharacterString>V1.0</gco:CharacterString>
+                                    </gmd:version>
+                                </gmd:MD_Format>
+                            </gmd:distributionFormat>
+                            <gmd:distributor>
+                                <gmd:MD_Distributor>
+                                    <gmd:distributorContact>
+                                        <gmd:CI_ResponsibleParty>
+                                            <gmd:individualName>
+                                                <gco:CharacterString>Geodatenzentrum.de</gco:CharacterString>
+                                            </gmd:individualName>
+                                            <gmd:organisationName>
+                                                <gco:CharacterString>Bundesamt f&#xFC;r Kartographie und Geod&#xE4;sie Abteilung GI (BKG), www.Geodatenzentrum.de</gco:CharacterString>
+                                            </gmd:organisationName>
+                                            <gmd:positionName>
+                                                <gco:CharacterString>GDI-Diensteanbieter f&#xFC;r die Bundesverwaltung</gco:CharacterString>
+                                            </gmd:positionName>
+                                            <gmd:contactInfo>
+                                                <gmd:CI_Contact>
+                                                    <gmd:phone>
+                                                        <gmd:CI_Telephone>
+                                                            <gmd:voice>
+                                                                <gco:CharacterString>069/6333 - 349 + 400</gco:CharacterString>
+                                                            </gmd:voice>
+                                                            <gmd:facsimile>
+                                                                <gco:CharacterString>069/6333 - 441</gco:CharacterString>
+                                                            </gmd:facsimile>
+                                                        </gmd:CI_Telephone>
+                                                    </gmd:phone>
+                                                    <gmd:address>
+                                                        <gmd:CI_Address>
+                                                            <gmd:deliveryPoint>
+                                                                <gco:CharacterString>Richard-Strauss-Allee 11</gco:CharacterString>
+                                                            </gmd:deliveryPoint>
+                                                            <gmd:city>
+                                                                <gco:CharacterString>Frankfurt am Main</gco:CharacterString>
+                                                            </gmd:city>
+                                                            <gmd:administrativeArea>
+                                                                <gco:CharacterString>60598</gco:CharacterString>
+                                                            </gmd:administrativeArea>
+                                                            <gmd:postalCode>
+                                                                <gco:CharacterString>60598</gco:CharacterString>
+                                                            </gmd:postalCode>
+                                                            <gmd:country>
+                                                                <gco:CharacterString>Deutschland</gco:CharacterString>
+                                                            </gmd:country>
+                                                            <gmd:electronicMailAddress>
+                                                                <gco:CharacterString>geodatenvertrieb@bkg.bund.de</gco:CharacterString>
+                                                            </gmd:electronicMailAddress>
+                                                        </gmd:CI_Address>
+                                                    </gmd:address>
+                                                    <gmd:onlineResource>
+                                                        <gmd:CI_OnlineResource>
+                                                            <gmd:linkage>
+                                                                <gmd:URL>http://www.wsv.de</gmd:URL>
+                                                            </gmd:linkage>
+                                                        </gmd:CI_OnlineResource>
+                                                    </gmd:onlineResource>
+                                                </gmd:CI_Contact>
+                                            </gmd:contactInfo>
+                                            <gmd:role>
+                                                <gmd:CI_RoleCode codeList="http://standards.iso.org/ittf/PubliclyAvailableStandards/ISO_19139_Schemas/resources/Codelist/ML_gmxCodelists.xml#MD_ScopeCode" codeListValue="pointOfContact">pointOfContact</gmd:CI_RoleCode>
+                                            </gmd:role>
+                                        </gmd:CI_ResponsibleParty>
+                                    </gmd:distributorContact>
+                                </gmd:MD_Distributor>
+                            </gmd:distributor>
+                            <gmd:transferOptions>
+                                <gmd:MD_DigitalTransferOptions>
+                                    <gmd:onLine>
+                                        <gmd:CI_OnlineResource>
+                                            <gmd:linkage>
+                                                <gmd:URL>/ascc_geoportal/geokatdaten/tk/tk200/kachel/</gmd:URL>
+                                            </gmd:linkage>
+                                            <gmd:function>
+                                                <gmd:CI_OnLineFunctionCode codeList="CI_OnlineFunctionCode" codeListValue="localImageDownloadTransform"/>
+                                            </gmd:function>
+                                        </gmd:CI_OnlineResource>
+                                    </gmd:onLine>
+                                </gmd:MD_DigitalTransferOptions>
+                            </gmd:transferOptions>
+                        </gmd:MD_Distribution>
+                    </gmd:distributionInfo>
+                    <gmd:dataQualityInfo xmlns:gco="http://www.isotc211.org/2005/gco" xmlns:gml="http://www.opengis.net/gml">
+                        <gmd:DQ_DataQuality>
+                            <gmd:scope>
+                                <gmd:DQ_Scope>
+                                    <gmd:level>
+                                        <gmd:MD_ScopeCode codeList="http://metadata.dgiwg.org/codelistRegistry?MD_ScopeCode" codeListValue="series"/>
+                                    </gmd:level>
+                                </gmd:DQ_Scope>
+                            </gmd:scope>
+                            <gmd:lineage>
+                                <gmd:LI_Lineage>
+                                    <gmd:statement>
+                                        <gco:CharacterString>Rasteraufl&#xF6;sung: 320 Pixel/cm (812,8 dpi)</gco:CharacterString>
+                                    </gmd:statement>
+                                    <gmd:processStep>
+                                        <gmd:LI_ProcessStep>
+                                            <gmd:description>
+                                                <gco:CharacterString>Gescannte und digital fortgef&#xFC;hrte Topographischen Karte 1:200.000 (TK200) der Vermessungsverwaltungen der Bundesl&#xE4;nder</gco:CharacterString>
+                                            </gmd:description>
+                                        </gmd:LI_ProcessStep>
+                                    </gmd:processStep>
+                                </gmd:LI_Lineage>
+                            </gmd:lineage>
+                        </gmd:DQ_DataQuality>
+                    </gmd:dataQualityInfo>
+                </gmd:MD_Metadata>

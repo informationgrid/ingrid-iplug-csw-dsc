@@ -64,7 +64,7 @@ public class IdfTransformerWsvGeodatenkatalogTest extends BaseIndexTestCase {
         ProcessIdfMapper processIdfMapperWSV = new ProcessIdfMapper();
         processIdfMapperWSV.setStyleSheetResource( new FileSystemResource( "src/main/release/presets/wsv/mapping/post_process_idf_wsv_geodatenkatalog.xsl" ) );
 
-        prepareCache( "24265_wsv" );
+        setupCache( new String[] { "24265_wsv" } );
 
         CswRecordProducer cswRecordProducer = new CswRecordProducer();
 
