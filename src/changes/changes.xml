@@ -29,6 +29,12 @@
   </properties>
   <body>
 
+    <release version="4.4.0-SNAPSHOT" date="????-??-??" description="">
+      <action type="update" dev="wemove" issue="REDMINE-1149">
+        Skip download URLs of type "localZipDownload" (GeoKatalog.WSV).
+      </action>
+    </release>
+
     <release version="4.3.0" date="2018-03-22" description="Release 4.3.0">
       <action type="update" dev="wemove">
         Updated dependencies (current jars).
