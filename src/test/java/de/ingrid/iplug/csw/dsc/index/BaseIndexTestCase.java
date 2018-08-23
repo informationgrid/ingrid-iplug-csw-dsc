@@ -67,9 +67,7 @@ public class BaseIndexTestCase extends TestCase {
     protected void prepareCache(String additionalUuid) throws Exception {
 
         String[] ids = new String[] { "33462e89-e5ab-11c3-737d-b3a61366d028", "0C12204F-5626-4A2E-94F4-514424F093A1", "486d9622-c29d-44e5-b878-44389740011", "77793F43-707A-4346-9A24-9F4E22213F54", "CF902C59-D50B-42F6-ADE4-F3CEC39A3259",
-                "CFA384AB-028F-476B-AC95-EB75CCEFB296"
-                , "geokatalogWSV_870043be-85e0-4f7d-9cdc-43fe293b0c90" , "geokatalogWSV_191fc9e5-eaa9-4dda-b45d-5c9534246012" , "geokatalogWSV_8e822fdd-f508-4d7a-a596-e60684dd0c97"
-                };
+                "CFA384AB-028F-476B-AC95-EB75CCEFB296" };
 
         for (String id : ids) {
             this.putRecord(id, ElementSetName.FULL);

@@ -596,11 +596,13 @@ function mapOnlineResource(recordNode) {
 			// (see https://redmine.wemove.com/issues/1745 / "AF-00448 GP4: GeoKatalog - iPlug - Download Link anzeigen")
 
 			// NOTICE: Wrong downloads are already filtered by XSLT to IDF ! Index mapping receives IDF and not plain ISO !
-			// So check for wrong downloads not necessary, but we keep it ... 
+			// So check for wrong downloads not necessary, we comment to avoid side effects with other catalogs ...
+/*
 			var codeListValue = XPathUtils.getString(onlineResources.item(i), "gmd:function/gmd:CI_OnLineFunctionCode/@codeListValue");
 			if (hasValue(codeListValue) && (
 					(codeListValue == 'localZipDownload') ||
-					(codeListValue == 'localImageDownloadTransform') )) {
+					(codeListValue == 'localImageDownloadTransform') ||
+					(codeListValue == 'offlineAccess') )) {
 
 				if (log.isInfoEnabled()) {
 					var id = XPathUtils.getString(recordNode, "//gmd:fileIdentifier/gco:CharacterString");
@@ -609,7 +611,7 @@ function mapOnlineResource(recordNode) {
 
 				continue;
 			}
-
+*/
 			// map CI_OnlineResource
 			addToDoc("t017_url_ref.url_link", XPathUtils.getString(onlineResources.item(i), "gmd:linkage/gmd:URL"), true);
 			addToDoc("t017_url_ref.content", XPathUtils.getString(onlineResources.item(i), "name/gco:CharacterString"), true);

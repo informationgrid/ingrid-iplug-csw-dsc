@@ -46,11 +46,11 @@ import de.ingrid.iplug.csw.dsc.tools.StringUtils;
 import de.ingrid.utils.ElasticDocument;
 import de.ingrid.utils.idf.IdfTool;
 
-public class IdfTransformerTest extends BaseIndexTestCase {
+public class IdfTransformerWsvRemoveOfflineLinksTest extends BaseIndexTestCase {
 
     @Mock StatusProvider statusProvider;
     
-    public IdfTransformerTest() {
+    public IdfTransformerWsvRemoveOfflineLinksTest() {
         super();
         MockitoAnnotations.initMocks( this );
     }
@@ -60,7 +60,10 @@ public class IdfTransformerTest extends BaseIndexTestCase {
      */
     public void testTransform() throws Exception {
 
-        prepareCache( null );
+        setupCache( new String[] {
+                "geokatalogWSV_870043be-85e0-4f7d-9cdc-43fe293b0c90" ,
+                "geokatalogWSV_191fc9e5-eaa9-4dda-b45d-5c9534246012" ,
+                "geokatalogWSV_8e822fdd-f508-4d7a-a596-e60684dd0c97" } );
 
         CswRecordProducer cswRecordProducer = new CswRecordProducer();
 
@@ -72,7 +75,7 @@ public class IdfTransformerTest extends BaseIndexTestCase {
         CreateIdfMapper m = new CreateIdfMapper();
         record2IdfMapperList.add( m );
         CswIdfMapper m1 = new CswIdfMapper();
-        m1.setStyleSheetResource( new FileSystemResource( "src/main/resources/mapping/iso_to_idf.xsl" ) );
+        m1.setStyleSheetResource( new FileSystemResource( "src/main/resources/mapping/iso_to_idf_geokatalogWSV.xsl" ) );
         record2IdfMapperList.add( m1 );
         CouplingResourcesMapper m2 = new CouplingResourcesMapper();
         record2IdfMapperList.add( m2 );
@@ -85,48 +88,23 @@ public class IdfTransformerTest extends BaseIndexTestCase {
         a.setStatusProvider( statusProvider );
         CoupledResources cr = a.analyze( cache );
 
-        CSWRecord record = cache.getRecord( "CF902C59-D50B-42F6-ADE4-F3CEC39A3259", ElementSetName.FULL );
-        ElasticDocument doc = new ElasticDocument();
+        // GeoKatalog.WSV Tests
 
+        // remove offline URLs
+        // see https://redmine.wemove.com/issues/1745 / "AF-00448 GP4: GeoKatalog - iPlug - Download Link anzeigen"
+        
+        CSWRecord record = cache.getRecord( "870043be-85e0-4f7d-9cdc-43fe293b0c90", ElementSetName.FULL );
+        ElasticDocument doc = new ElasticDocument();
         Node n = StringUtils
                 .stringToDocument(
                         IdfTool.getIdfDataFromRecord( idfRecordCreator.getRecord( doc,
                                 new CswCoupledResourcesCacheSourceRecord( record, cache, cr.getCoupledRecordIds( record.getId() ) ) ) ) ).getDocumentElement();
 
-        assertNotNull( "Dataset IDF record CF902C59-D50B-42F6-ADE4-F3CEC39A3259 exists in cache.", n );
-        assertEquals( "Dataset IDF record CF902C59-D50B-42F6-ADE4-F3CEC39A3259 has reference to service CFA384AB-028F-476B-AC95-EB75CCEFB296.",
-                "CFA384AB-028F-476B-AC95-EB75CCEFB296", xPathUtils.getString( n, "//idf:idfMdMetadata/idf:crossReference/@uuid" ) );
-
-        record = cache.getRecord( "CFA384AB-028F-476B-AC95-EB75CCEFB296", ElementSetName.FULL );
-        doc = new ElasticDocument();
-        n = StringUtils
-                .stringToDocument(
-                        IdfTool.getIdfDataFromRecord( idfRecordCreator.getRecord( doc,
-                                new CswCoupledResourcesCacheSourceRecord( record, cache, cr.getCoupledRecordIds( record.getId() ) ) ) ) ).getDocumentElement();
-
-        assertNotNull( "Service IDF record CFA384AB-028F-476B-AC95-EB75CCEFB296 exists in cache.", record );
-        assertEquals( "Service IDF record CFA384AB-028F-476B-AC95-EB75CCEFB296 has reference to dataset CF902C59-D50B-42F6-ADE4-F3CEC39A3259.",
-                "CF902C59-D50B-42F6-ADE4-F3CEC39A3259", xPathUtils.getString( n, "//idf:idfMdMetadata/idf:crossReference/@uuid" ) );
-
-        record = cache.getRecord( "0C12204F-5626-4A2E-94F4-514424F093A1", ElementSetName.FULL );
-        doc = new ElasticDocument();
-        n = StringUtils
-                .stringToDocument(
-                        IdfTool.getIdfDataFromRecord( idfRecordCreator.getRecord( doc,
-                                new CswCoupledResourcesCacheSourceRecord( record, cache, cr.getCoupledRecordIds( record.getId() ) ) ) ) ).getDocumentElement();
-        assertNotNull( "Dataset IDF record 0C12204F-5626-4A2E-94F4-514424F093A1 exists in cache.", record );
-        assertEquals( "Dataset IDF record 0C12204F-5626-4A2E-94F4-514424F093A1 has reference to service 77793F43-707A-4346-9A24-9F4E22213F54.",
-                "77793F43-707A-4346-9A24-9F4E22213F54", xPathUtils.getString( n, "//idf:idfMdMetadata/idf:crossReference/@uuid" ) );
-
-        record = cache.getRecord( "486d9622-c29d-44e5-b878-44389740011", ElementSetName.FULL );
-        doc = new ElasticDocument();
-        n = StringUtils
-                .stringToDocument(
-                        IdfTool.getIdfDataFromRecord( idfRecordCreator.getRecord( doc,
-                                new CswCoupledResourcesCacheSourceRecord( record, cache, cr.getCoupledRecordIds( record.getId() ) ) ) ) ).getDocumentElement();
-        assertNotNull( "Dataset IDF record 486d9622-c29d-44e5-b878-44389740011 exists in cache.", record );
-        assertEquals( "Dataset IDF record 486d9622-c29d-44e5-b878-44389740011 has reference to service 77793F43-707A-4346-9A24-9F4E22213F54.",
-                "77793F43-707A-4346-9A24-9F4E22213F54", xPathUtils.getString( n, "//idf:idfMdMetadata/idf:crossReference/@uuid" ) );
+        assertNotNull( "GeoKatalog.WSV: IDF record 870043be-85e0-4f7d-9cdc-43fe293b0c90 exists in cache.", n );
+        assertEquals( "GeoKatalog.WSV: URLs of type 'localZipDownload' REMOVED",
+                0, xPathUtils.getNodeList( n, "//gmd:transferOptions/gmd:MD_DigitalTransferOptions/gmd:onLine/gmd:CI_OnlineResource/gmd:function/gmd:CI_OnLineFunctionCode[@codeListValue='localZipDownload']" ).getLength() );
+        assertEquals( "GeoKatalog.WSV: URLs of type 'download' exist",
+                1, xPathUtils.getNodeList( n, "//gmd:transferOptions/gmd:MD_DigitalTransferOptions/gmd:onLine/gmd:CI_OnlineResource/gmd:function/gmd:CI_OnLineFunctionCode[@codeListValue='download']" ).getLength() );
 
     }
 
