@@ -50,11 +50,15 @@ import de.ingrid.iplug.csw.dsc.tools.StringUtils;
 import de.ingrid.utils.ElasticDocument;
 import de.ingrid.utils.tool.StringUtil;
 
-public class MapperToIndexTest extends BaseIndexTestCase {
+/**
+ * GeoKatalog.WSV: Remove all offline links
+ * see https://redmine.wemove.com/issues/1745 / "AF-00448 GP4: GeoKatalog - iPlug - Download Link anzeigen"
+ */
+public class MapperToIndexWsvRemoveOfflineLinksTest extends BaseIndexTestCase {
 
     @Mock StatusProvider statusProvider;
     
-    public MapperToIndexTest() {
+    public MapperToIndexWsvRemoveOfflineLinksTest() {
         super();
         MockitoAnnotations.initMocks( this );
     }
@@ -64,7 +68,10 @@ public class MapperToIndexTest extends BaseIndexTestCase {
      */
     public void testMapper() throws Exception {
 
-        prepareCache(null);
+        setupCache( new String[] {
+                "geokatalogWSV_870043be-85e0-4f7d-9cdc-43fe293b0c90" ,
+                "geokatalogWSV_191fc9e5-eaa9-4dda-b45d-5c9534246012" ,
+                "geokatalogWSV_8e822fdd-f508-4d7a-a596-e60684dd0c97" } );
 
         ScriptedDocumentMapper mapper = new ScriptedDocumentMapper();
         mapper.setCompile(false);
@@ -81,7 +88,7 @@ public class MapperToIndexTest extends BaseIndexTestCase {
         CreateIdfMapper m = new CreateIdfMapper();
         record2IdfMapperList.add( m );
         CswIdfMapper m1 = new CswIdfMapper();
-        m1.setStyleSheetResource( new FileSystemResource("src/main/resources/mapping/iso_to_idf.xsl") );
+        m1.setStyleSheetResource( new FileSystemResource("src/main/resources/mapping/iso_to_idf_geokatalogWSV.xsl") );
         record2IdfMapperList.add( m1 );
         CouplingResourcesMapper m2 = new CouplingResourcesMapper();
         record2IdfMapperList.add( m2 );
@@ -98,6 +105,8 @@ public class MapperToIndexTest extends BaseIndexTestCase {
         mapper.setIdfRecordCreator( idfRecordCreator );
         
         
+        boolean wsvChecked = false;
+
         for (String id : cache.getCachedRecordIds()) {
             CSWRecord cswRecord = cache.getRecord(id, ElementSetName.FULL);
             ElasticDocument doc = new ElasticDocument();
@@ -144,6 +153,22 @@ public class MapperToIndexTest extends BaseIndexTestCase {
                         + xPathUtils.getString(idfNode, "//gmd:identificationInfo/*/gmd:citation/*/gmd:identifier/*/gmd:code/gco:CharacterString").trim();
                 assertEquals("Crossreference from dataset to service exists.", data, doc.getValues("refering_service_uuid")[0]);
             }
+
+            // GeoKatalog.WSV Tests
+            
+            if ("870043be-85e0-4f7d-9cdc-43fe293b0c90".equals( id )) {
+                // removed offline URLs
+                // see https://redmine.wemove.com/issues/1745 / "AF-00448 GP4: GeoKatalog - iPlug - Download Link anzeigen"
+                
+                String[] mappedUrls = doc.getValues("t017_url_ref.url_link");
+                for (String mappedUrl : mappedUrls) {
+                    assertFalse("GeoKatalog.WSV: URLs of type 'localZipDownload' not mapped", mappedUrl.contains( "ascc_geoportal" ));
+                    assertTrue("GeoKatalog.WSV: URLs of type 'download' mapped", mappedUrl.contains("austausch.wsv.res.bund.de"));
+                    wsvChecked = true;
+                }
+            }
         }
+        
+        assertTrue("GeoKatalog.WSV: Checked URLs", wsvChecked);
     }
 }

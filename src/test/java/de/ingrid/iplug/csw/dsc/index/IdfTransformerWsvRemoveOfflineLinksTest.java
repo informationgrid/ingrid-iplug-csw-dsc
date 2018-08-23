@@ -41,17 +41,16 @@ import de.ingrid.iplug.csw.dsc.record.mapper.CouplingResourcesMapper;
 import de.ingrid.iplug.csw.dsc.record.mapper.CreateIdfMapper;
 import de.ingrid.iplug.csw.dsc.record.mapper.CswIdfMapper;
 import de.ingrid.iplug.csw.dsc.record.mapper.IIdfMapper;
-import de.ingrid.iplug.csw.dsc.record.mapper.ProcessIdfMapper;
 import de.ingrid.iplug.csw.dsc.record.producer.CswRecordProducer;
 import de.ingrid.iplug.csw.dsc.tools.StringUtils;
 import de.ingrid.utils.ElasticDocument;
 import de.ingrid.utils.idf.IdfTool;
 
-public class IdfTransformerWsvGeodatenkatalogTest extends BaseIndexTestCase {
+public class IdfTransformerWsvRemoveOfflineLinksTest extends BaseIndexTestCase {
 
     @Mock StatusProvider statusProvider;
     
-    public IdfTransformerWsvGeodatenkatalogTest() {
+    public IdfTransformerWsvRemoveOfflineLinksTest() {
         super();
         MockitoAnnotations.initMocks( this );
     }
@@ -61,10 +60,10 @@ public class IdfTransformerWsvGeodatenkatalogTest extends BaseIndexTestCase {
      */
     public void testTransform() throws Exception {
 
-        ProcessIdfMapper processIdfMapperWSV = new ProcessIdfMapper();
-        processIdfMapperWSV.setStyleSheetResource( new FileSystemResource( "src/main/release/presets/wsv/mapping/post_process_idf_wsv_geodatenkatalog.xsl" ) );
-
-        setupCache( new String[] { "24265_wsv" } );
+        setupCache( new String[] {
+                "geokatalogWSV_870043be-85e0-4f7d-9cdc-43fe293b0c90" ,
+                "geokatalogWSV_191fc9e5-eaa9-4dda-b45d-5c9534246012" ,
+                "geokatalogWSV_8e822fdd-f508-4d7a-a596-e60684dd0c97" } );
 
         CswRecordProducer cswRecordProducer = new CswRecordProducer();
 
@@ -76,11 +75,10 @@ public class IdfTransformerWsvGeodatenkatalogTest extends BaseIndexTestCase {
         CreateIdfMapper m = new CreateIdfMapper();
         record2IdfMapperList.add( m );
         CswIdfMapper m1 = new CswIdfMapper();
-        m1.setStyleSheetResource( new FileSystemResource( "src/main/resources/mapping/iso_to_idf.xsl" ) );
+        m1.setStyleSheetResource( new FileSystemResource( "src/main/resources/mapping/iso_to_idf_geokatalogWSV.xsl" ) );
         record2IdfMapperList.add( m1 );
         CouplingResourcesMapper m2 = new CouplingResourcesMapper();
         record2IdfMapperList.add( m2 );
-        record2IdfMapperList.add( processIdfMapperWSV );
 
         IdfRecordCreator idfRecordCreator = new IdfRecordCreator();
         idfRecordCreator.setRecordProducer( cswRecordProducer );
@@ -90,21 +88,23 @@ public class IdfTransformerWsvGeodatenkatalogTest extends BaseIndexTestCase {
         a.setStatusProvider( statusProvider );
         CoupledResources cr = a.analyze( cache );
 
-        for (String id : cache.getCachedRecordIds()) {
-            CSWRecord cswRecord = cache.getRecord( id, ElementSetName.FULL );
-            ElasticDocument doc = new ElasticDocument();
+        // GeoKatalog.WSV Tests
 
-            Node idfNode = StringUtils.stringToDocument(
-                    IdfTool.getIdfDataFromRecord( idfRecordCreator.getRecord( doc, new CswCoupledResourcesCacheSourceRecord( cswRecord, cache, cr.getCoupledRecordIds( id ) ) ) ) )
-                    .getDocumentElement();
+        // remove offline URLs
+        // see https://redmine.wemove.com/issues/1745 / "AF-00448 GP4: GeoKatalog - iPlug - Download Link anzeigen"
+        
+        CSWRecord record = cache.getRecord( "870043be-85e0-4f7d-9cdc-43fe293b0c90", ElementSetName.FULL );
+        ElasticDocument doc = new ElasticDocument();
+        Node n = StringUtils
+                .stringToDocument(
+                        IdfTool.getIdfDataFromRecord( idfRecordCreator.getRecord( doc,
+                                new CswCoupledResourcesCacheSourceRecord( record, cache, cr.getCoupledRecordIds( record.getId() ) ) ) ) ).getDocumentElement();
 
-            String[] urls = xPathUtils.getStringArray( idfNode, "//gmd:URL" );
-            assertTrue( "Idf found.", idfNode.hasChildNodes() );
-            assertTrue( "Metadata found.", xPathUtils.nodeExists( idfNode, "//idf:idfMdMetadata" ) );
-            for (String url : urls) {
-                assertTrue( "All urls are absolute and start with 'http'.", url.startsWith( "http" ) );
-            }
-        }
+        assertNotNull( "GeoKatalog.WSV: IDF record 870043be-85e0-4f7d-9cdc-43fe293b0c90 exists in cache.", n );
+        assertEquals( "GeoKatalog.WSV: URLs of type 'localZipDownload' REMOVED",
+                0, xPathUtils.getNodeList( n, "//gmd:transferOptions/gmd:MD_DigitalTransferOptions/gmd:onLine/gmd:CI_OnlineResource/gmd:function/gmd:CI_OnLineFunctionCode[@codeListValue='localZipDownload']" ).getLength() );
+        assertEquals( "GeoKatalog.WSV: URLs of type 'download' exist",
+                1, xPathUtils.getNodeList( n, "//gmd:transferOptions/gmd:MD_DigitalTransferOptions/gmd:onLine/gmd:CI_OnlineResource/gmd:function/gmd:CI_OnLineFunctionCode[@codeListValue='download']" ).getLength() );
 
     }
 

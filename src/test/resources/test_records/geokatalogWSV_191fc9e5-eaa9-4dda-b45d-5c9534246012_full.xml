@@ -1,0 +1,494 @@
+<?xml version="1.0" encoding="UTF-8"?>
+                <gmd:MD_Metadata xmlns:gmd="http://www.isotc211.org/2005/gmd"
+                    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                    xsi:schemaLocation="http://www.isotc211.org/2005/gmd http://schemas.opengis.net/csw/2.0.2/profiles/apiso/1.0.0/apiso.xsd">
+                    <gmd:fileIdentifier xmlns:gco="http://www.isotc211.org/2005/gco">
+                        <gco:CharacterString>191fc9e5-eaa9-4dda-b45d-5c9534246012</gco:CharacterString>
+                    </gmd:fileIdentifier>
+                    <gmd:language xmlns:gco="http://www.isotc211.org/2005/gco">
+                        <gmd:LanguageCode codeList="LanguageCode" codeListValue="ger">ger</gmd:LanguageCode>
+                    </gmd:language>
+                    <gmd:characterSet xmlns:gco="http://www.isotc211.org/2005/gco">
+                        <gmd:MD_CharacterSetCode codeList="http://metadata.dgiwg.org/codelistRegistry?MD_CharacterSetCode" codeListValue="utf8"/>
+                    </gmd:characterSet>
+                    <gmd:hierarchyLevel xmlns:gco="http://www.isotc211.org/2005/gco">
+                        <gmd:MD_ScopeCode codeList="http://metadata.dgiwg.org/codelistRegistry?MD_ScopeCode" codeListValue="series"/>
+                    </gmd:hierarchyLevel>
+                    <gmd:hierarchyLevelName xmlns:gco="http://www.isotc211.org/2005/gco">
+                        <gco:CharacterString>WSVLUFT</gco:CharacterString>
+                    </gmd:hierarchyLevelName>
+                    <gmd:contact xmlns:gco="http://www.isotc211.org/2005/gco">
+                        <gmd:CI_ResponsibleParty>
+                            <gmd:individualName>
+                                <gco:CharacterString>Abteilung III, Referat 1 Geomatik u. Verkehr, Sachgebiet IT-Systeme Geomatik u. Vermessung (GeoVerm)</gco:CharacterString>
+                            </gmd:individualName>
+                            <gmd:organisationName>
+                                <gco:CharacterString>Informationstechnikzentrum Bund (ITZBund)</gco:CharacterString>
+                            </gmd:organisationName>
+                            <gmd:positionName>
+                                <gco:CharacterString>GIS-/GDI-Spezialisten</gco:CharacterString>
+                            </gmd:positionName>
+                            <gmd:contactInfo>
+                                <gmd:CI_Contact>
+                                    <gmd:phone>
+                                        <gmd:CI_Telephone>
+                                            <gmd:voice>
+                                                <gco:CharacterString>+49 (22899) 680 - 0</gco:CharacterString>
+                                            </gmd:voice>
+                                            <gmd:facsimile>
+                                                <gco:CharacterString>-</gco:CharacterString>
+                                            </gmd:facsimile>
+                                        </gmd:CI_Telephone>
+                                    </gmd:phone>
+                                    <gmd:address>
+                                        <gmd:CI_Address>
+                                            <gmd:deliveryPoint>
+                                                <gco:CharacterString>Am Ehrenberg 8</gco:CharacterString>
+                                            </gmd:deliveryPoint>
+                                            <gmd:city>
+                                                <gco:CharacterString>Ilmenau</gco:CharacterString>
+                                            </gmd:city>
+                                            <gmd:administrativeArea>
+                                                <gco:CharacterString>TH</gco:CharacterString>
+                                            </gmd:administrativeArea>
+                                            <gmd:postalCode>
+                                                <gco:CharacterString>98693</gco:CharacterString>
+                                            </gmd:postalCode>
+                                            <gmd:country>
+                                                <gco:CharacterString>Deutschland</gco:CharacterString>
+                                            </gmd:country>
+                                            <gmd:electronicMailAddress>
+                                                <gco:CharacterString>gdi-wsv.support@ba-dlz-it.bund.de</gco:CharacterString>
+                                            </gmd:electronicMailAddress>
+                                        </gmd:CI_Address>
+                                    </gmd:address>
+                                </gmd:CI_Contact>
+                            </gmd:contactInfo>
+                            <gmd:role>
+                                <gmd:CI_RoleCode codeList="http://standards.iso.org/ittf/PubliclyAvailableStandards/ISO_19139_Schemas/resources/Codelist/ML_gmxCodelists.xml#MD_ScopeCode" codeListValue="pointOfContact">pointOfContact</gmd:CI_RoleCode>
+                            </gmd:role>
+                        </gmd:CI_ResponsibleParty>
+                    </gmd:contact>
+                    <gmd:dateStamp xmlns:gco="http://www.isotc211.org/2005/gco">
+                        <gco:Date>2014-01-14</gco:Date>
+                    </gmd:dateStamp>
+                    <gmd:metadataStandardName xmlns:gco="http://www.isotc211.org/2005/gco">
+                        <gco:CharacterString>ISO19115</gco:CharacterString>
+                    </gmd:metadataStandardName>
+                    <gmd:metadataStandardVersion xmlns:gco="http://www.isotc211.org/2005/gco">
+                        <gco:CharacterString>2003/Cor.1:2006</gco:CharacterString>
+                    </gmd:metadataStandardVersion>
+                    <gmd:referenceSystemInfo xmlns:gco="http://www.isotc211.org/2005/gco">
+                        <gmd:MD_ReferenceSystem>
+                            <gmd:referenceSystemIdentifier>
+                                <gmd:RS_Identifier>
+                                    <gmd:code>
+                                        <gco:CharacterString>31467</gco:CharacterString>
+                                    </gmd:code>
+                                    <gmd:codeSpace>
+                                        <gco:CharacterString>urn:ogc:def:crs:EPSG</gco:CharacterString>
+                                    </gmd:codeSpace>
+                                    <gmd:version>
+                                        <gco:CharacterString>6.11.2</gco:CharacterString>
+                                    </gmd:version>
+                                </gmd:RS_Identifier>
+                            </gmd:referenceSystemIdentifier>
+                        </gmd:MD_ReferenceSystem>
+                    </gmd:referenceSystemInfo>
+                    <gmd:identificationInfo xmlns:gco="http://www.isotc211.org/2005/gco">
+                        <gmd:MD_DataIdentification>
+                            <gmd:citation>
+                                <gmd:CI_Citation>
+                                    <gmd:title>
+                                        <gco:CharacterString>Digitale Orthophotos ( DOP010 ) WSDNW</gco:CharacterString>
+                                    </gmd:title>
+                                    <gmd:date>
+                                        <gmd:CI_Date>
+                                            <gmd:date>
+                                                <gco:Date>2007-12-18</gco:Date>
+                                            </gmd:date>
+                                            <gmd:dateType>
+                                                <gmd:CI_DateTypeCode codeList="http://metadata.dgiwg.org/codelistRegistry?CI_DateTypeCode" codeListValue="revision"/>
+                                            </gmd:dateType>
+                                        </gmd:CI_Date>
+                                    </gmd:date>
+                                    <gmd:date>
+                                        <gmd:CI_Date>
+                                            <gmd:date>
+                                                <gco:Date>2007-12-31</gco:Date>
+                                            </gmd:date>
+                                            <gmd:dateType>
+                                                <gmd:CI_DateTypeCode codeList="CI_DateTypeCode" codeListValue="creation"/>
+                                            </gmd:dateType>
+                                        </gmd:CI_Date>
+                                    </gmd:date>
+                                    <gmd:date>
+                                        <gmd:CI_Date>
+                                            <gmd:date>
+                                                <gco:Date>2009-11-20</gco:Date>
+                                            </gmd:date>
+                                            <gmd:dateType>
+                                                <gmd:CI_DateTypeCode codeList="CI_DateTypeCode" codeListValue="publication"/>
+                                            </gmd:dateType>
+                                        </gmd:CI_Date>
+                                    </gmd:date>
+                                    <gmd:identifier>
+                                        <gmd:MD_Identifier>
+                                            <gmd:code>
+                                                <gco:CharacterString>LUFT_WSDNW</gco:CharacterString>
+                                            </gmd:code>
+                                        </gmd:MD_Identifier>
+                                    </gmd:identifier>
+                                    <gmd:citedResponsibleParty>
+                                        <gmd:CI_ResponsibleParty>
+                                            <gmd:individualName>
+                                                <gco:CharacterString>Dipl.-Ing. Axel Woldenga</gco:CharacterString>
+                                            </gmd:individualName>
+                                            <gmd:organisationName>
+                                                <gco:CharacterString>Vermessungs- und Kartenstelle bei der WSD Nordwest</gco:CharacterString>
+                                            </gmd:organisationName>
+                                            <gmd:contactInfo>
+                                                <gmd:CI_Contact>
+                                                    <gmd:phone>
+                                                        <gmd:CI_Telephone>
+                                                            <gmd:voice>
+                                                                <gco:CharacterString>+49 (0) 4941 602-486</gco:CharacterString>
+                                                            </gmd:voice>
+                                                            <gmd:facsimile>
+                                                                <gco:CharacterString>+49 (0) 4941 602-378</gco:CharacterString>
+                                                            </gmd:facsimile>
+                                                        </gmd:CI_Telephone>
+                                                    </gmd:phone>
+                                                    <gmd:address>
+                                                        <gmd:CI_Address>
+                                                            <gmd:deliveryPoint>
+                                                                <gco:CharacterString>Schlo&#xDF;platz 9</gco:CharacterString>
+                                                            </gmd:deliveryPoint>
+                                                            <gmd:city>
+                                                                <gco:CharacterString>Aurich</gco:CharacterString>
+                                                            </gmd:city>
+                                                            <gmd:postalCode>
+                                                                <gco:CharacterString>26603</gco:CharacterString>
+                                                            </gmd:postalCode>
+                                                            <gmd:country>
+                                                                <gco:CharacterString>Deutschland</gco:CharacterString>
+                                                            </gmd:country>
+                                                            <gmd:electronicMailAddress>
+                                                                <gco:CharacterString>Axel.Woldenga@wsv.bund.de</gco:CharacterString>
+                                                            </gmd:electronicMailAddress>
+                                                        </gmd:CI_Address>
+                                                    </gmd:address>
+                                                    <gmd:onlineResource>
+                                                        <gmd:CI_OnlineResource>
+                                                            <gmd:linkage>
+                                                                <gmd:URL>www.wsd-nw.wsv.de/</gmd:URL>
+                                                            </gmd:linkage>
+                                                        </gmd:CI_OnlineResource>
+                                                    </gmd:onlineResource>
+                                                </gmd:CI_Contact>
+                                            </gmd:contactInfo>
+                                            <gmd:role>
+                                                <gmd:CI_RoleCode codeList="http://metadata.dgiwg.org/codelistRegistry?CI_RoleCode" codeListValue="principalInvestigator"/>
+                                            </gmd:role>
+                                        </gmd:CI_ResponsibleParty>
+                                    </gmd:citedResponsibleParty>
+                                </gmd:CI_Citation>
+                            </gmd:citation>
+                            <gmd:abstract>
+                                <gco:CharacterString>Digitale Orthophotos (DOP) sind hochaufl&#xF6;sende, verzerrungsfreie Abbildungen der Erdoberfl&#xE4;che. Im Land Niedersachsen werden digitale Orthophotos mit Hilfe eines rechnergest&#xFC;tzen Entzerrungsverfahrens auf der Grundlage des Luftbildmaterials der aktuellen Befliegungen seit 2001 hergestellt. Sie liegen mit einer geometrischen Genauigkeit von etwa +/- 0,1 m im Ma&#xDF;stab 1:5000 im Blattschnitt der DGK5 vor. Sie sind farbig, gestochen scharf und so pr&#xE4;zise wie eine Karte. Digitale Orthophotos sind ma&#xDF;stabstreu und k&#xF6;nnen so direkt mit Karten gleichen Ma&#xDF;stabs verglichen oder mit Fachdaten, zum Beispiel Stra&#xDF;enplanungen, digital zusammengef&#xFC;gt werden. Die DOP-Daten liegen im TIFF-Datenformat vor. Im Dateinamen enthalten ist die Blattnummer der DGK5. Sie haben eine standardm&#xE4;&#xDF;ige Kachelgr&#xF6;&#xDF;e von 2 km x 2 km. Das Datenvolumen der farbigen DOP (TIFF unkomprimiert) betr&#xE4;gt ca. 1,2 GB pro Rasterdatei und ist deshalb nicht &#xFC;ber den Warenkorb des GeoKatalog.WSV herunterladbar. Die Daten unterliegen den &lt;a href=&quot;/WsvDatenkatalog/docs/nutzbed/verwbed-vkv-ni.pdf&quot; target=&quot;new&quot;&gt;Nutzungsbedingungen&lt;/a&gt; der Vermessungs- und Katasterverwaltung Niedersachsen! Bezugsquelle ist die WSD Nordwest, siehe Vertriebsmetadaten.</gco:CharacterString>
+                            </gmd:abstract>
+                            <gmd:status>
+                                <gmd:MD_ProgressCode codeList="http://metadata.dgiwg.org/codelistRegistry?MD_ProgressCode" codeListValue="completed"/>
+                            </gmd:status>
+                            <gmd:pointOfContact>
+                                <gmd:CI_ResponsibleParty>
+                                    <gmd:individualName>
+                                        <gco:CharacterString>Dipl.-Ing. Axel Woldenga</gco:CharacterString>
+                                    </gmd:individualName>
+                                    <gmd:organisationName>
+                                        <gco:CharacterString>Vermessungs- und Kartenstelle bei der WSD Nordwest</gco:CharacterString>
+                                    </gmd:organisationName>
+                                    <gmd:positionName>
+                                        <gco:CharacterString/>
+                                    </gmd:positionName>
+                                    <gmd:contactInfo>
+                                        <gmd:CI_Contact>
+                                            <gmd:phone>
+                                                <gmd:CI_Telephone>
+                                                    <gmd:voice>
+                                                        <gco:CharacterString>+49 (0) 4941 602-486</gco:CharacterString>
+                                                    </gmd:voice>
+                                                    <gmd:facsimile>
+                                                        <gco:CharacterString>+49 (0) 4941 602-378</gco:CharacterString>
+                                                    </gmd:facsimile>
+                                                </gmd:CI_Telephone>
+                                            </gmd:phone>
+                                            <gmd:address>
+                                                <gmd:CI_Address>
+                                                    <gmd:deliveryPoint>
+                                                        <gco:CharacterString>Schlo&#xDF;platz 9</gco:CharacterString>
+                                                    </gmd:deliveryPoint>
+                                                    <gmd:city>
+                                                        <gco:CharacterString>Aurich</gco:CharacterString>
+                                                    </gmd:city>
+                                                    <gmd:administrativeArea>
+                                                        <gco:CharacterString/>
+                                                    </gmd:administrativeArea>
+                                                    <gmd:postalCode>
+                                                        <gco:CharacterString>26603</gco:CharacterString>
+                                                    </gmd:postalCode>
+                                                    <gmd:country>
+                                                        <gco:CharacterString>Deutschland</gco:CharacterString>
+                                                    </gmd:country>
+                                                    <gmd:electronicMailAddress>
+                                                        <gco:CharacterString>Axel.Woldenga@wsv.bund.de</gco:CharacterString>
+                                                    </gmd:electronicMailAddress>
+                                                </gmd:CI_Address>
+                                            </gmd:address>
+                                            <gmd:onlineResource>
+                                                <gmd:CI_OnlineResource>
+                                                    <gmd:linkage>
+                                                        <gmd:URL>www.wsd-nw.wsv.de/</gmd:URL>
+                                                    </gmd:linkage>
+                                                </gmd:CI_OnlineResource>
+                                            </gmd:onlineResource>
+                                        </gmd:CI_Contact>
+                                    </gmd:contactInfo>
+                                    <gmd:role>
+                                        <gmd:CI_RoleCode codeList="http://standards.iso.org/ittf/PubliclyAvailableStandards/ISO_19139_Schemas/resources/Codelist/ML_gmxCodelists.xml#MD_ScopeCode" codeListValue="principalInvestigator">principalInvestigator</gmd:CI_RoleCode>
+                                    </gmd:role>
+                                </gmd:CI_ResponsibleParty>
+                            </gmd:pointOfContact>
+                            <gmd:graphicOverview>
+                                <gmd:MD_BrowseGraphic>
+                                    <gmd:fileName>
+                                        <gco:CharacterString>https://geoportal.wsv.res.bund.de/smartEditor/preview/thumbs/luftbilder/wsd-nw/DOP010-WSAHB-DGK5-3440_5886_thb.jpg</gco:CharacterString>
+                                    </gmd:fileName>
+                                    <gmd:fileDescription>
+                                        <gco:CharacterString>thumbnail</gco:CharacterString>
+                                    </gmd:fileDescription>
+                                    <gmd:fileType>
+                                        <gco:CharacterString>image/jpg</gco:CharacterString>
+                                    </gmd:fileType>
+                                </gmd:MD_BrowseGraphic>
+                            </gmd:graphicOverview>
+                            <gmd:descriptiveKeywords>
+                                <gmd:MD_Keywords>
+                                    <gmd:keyword>
+                                        <gco:CharacterString>Hunte</gco:CharacterString>
+                                    </gmd:keyword>
+                                    <gmd:keyword>
+                                        <gco:CharacterString>Bremen</gco:CharacterString>
+                                    </gmd:keyword>
+                                    <gmd:type>
+                                        <gmd:MD_KeywordTypeCode codeList="MD_KeywordTypeCode" codeListValue="place"/>
+                                    </gmd:type>
+                                </gmd:MD_Keywords>
+                            </gmd:descriptiveKeywords>
+                            <gmd:descriptiveKeywords>
+                                <gmd:MD_Keywords>
+                                    <gmd:keyword>
+                                        <gco:CharacterString>Planung</gco:CharacterString>
+                                    </gmd:keyword>
+                                    <gmd:keyword>
+                                        <gco:CharacterString>Unterhaltung</gco:CharacterString>
+                                    </gmd:keyword>
+                                    <gmd:type>
+                                        <gmd:MD_KeywordTypeCode codeList="MD_KeywordTypeCode" codeListValue="discipline"/>
+                                    </gmd:type>
+                                </gmd:MD_Keywords>
+                            </gmd:descriptiveKeywords>
+                            <gmd:descriptiveKeywords>
+                                <gmd:MD_Keywords>
+                                    <gmd:keyword>
+                                        <gco:CharacterString>Orthophoto</gco:CharacterString>
+                                    </gmd:keyword>
+                                    <gmd:keyword>
+                                        <gco:CharacterString>Luftbild</gco:CharacterString>
+                                    </gmd:keyword>
+                                    <gmd:keyword>
+                                        <gco:CharacterString>WSV</gco:CharacterString>
+                                    </gmd:keyword>
+                                    <gmd:keyword>
+                                        <gco:CharacterString>WSA</gco:CharacterString>
+                                    </gmd:keyword>
+                                    <gmd:keyword>
+                                        <gco:CharacterString>WSD</gco:CharacterString>
+                                    </gmd:keyword>
+                                    <gmd:type>
+                                        <gmd:MD_KeywordTypeCode codeList="MD_KeywordTypeCode" codeListValue="theme"/>
+                                    </gmd:type>
+                                </gmd:MD_Keywords>
+                            </gmd:descriptiveKeywords>
+                            <gmd:descriptiveKeywords>
+                                <gmd:MD_Keywords>
+                                    <gmd:keyword>
+                                        <gco:CharacterString/>
+                                    </gmd:keyword>
+                                </gmd:MD_Keywords>
+                            </gmd:descriptiveKeywords>
+                            <gmd:resourceConstraints>
+                                <gmd:MD_LegalConstraints>
+                                    <gmd:useConstraints>
+                                        <gmd:MD_RestrictionCode codeList="http://metadata.dgiwg.org/codelistRegistry?MD_RestrictionCode" codeListValue="copyright"/>
+                                    </gmd:useConstraints>
+                                    <gmd:otherConstraints>
+                                        <gco:CharacterString>Die bereitgestellten Daten d&#xFC;rfen im internen Bereich des Nutzungsberechtigten ( Wasser- und Schifffahrtsdirektion Nordwest) sowie im internen Bereich anderer WSV - Dienststellen genutzt werden.</gco:CharacterString>
+                                    </gmd:otherConstraints>
+                                </gmd:MD_LegalConstraints>
+                            </gmd:resourceConstraints>
+                            <gmd:spatialRepresentationType>
+                                <gmd:MD_SpatialRepresentationTypeCode codeList="http://metadata.dgiwg.org/codelistRegistry?MD_SpatialRepresentationTypeCode" codeListValue="grid"/>
+                            </gmd:spatialRepresentationType>
+                            <gmd:spatialResolution>
+                                <gmd:MD_Resolution>
+                                    <gmd:equivalentScale>
+                                        <gmd:MD_RepresentativeFraction>
+                                            <gmd:denominator>
+                                                <gco:Integer>5000</gco:Integer>
+                                            </gmd:denominator>
+                                        </gmd:MD_RepresentativeFraction>
+                                    </gmd:equivalentScale>
+                                </gmd:MD_Resolution>
+                            </gmd:spatialResolution>
+                            <gmd:language>
+                                <gmd:LanguageCode codeList="LanguageCode" codeListValue="ger">ger</gmd:LanguageCode>
+                            </gmd:language>
+                            <gmd:characterSet>
+                                <gmd:MD_CharacterSetCode codeList="http://metadata.dgiwg.org/codelistRegistry?MD_CharacterSetCode" codeListValue="8859part1"/>
+                            </gmd:characterSet>
+                            <gmd:topicCategory>
+                                <gmd:MD_TopicCategoryCode>inlandWaters</gmd:MD_TopicCategoryCode>
+                            </gmd:topicCategory>
+                            <gmd:extent>
+                                <gmd:EX_Extent>
+                                    <gmd:geographicElement>
+                                        <gmd:EX_GeographicBoundingBox>
+                                            <gmd:extentTypeCode>
+                                                <gco:Boolean>true</gco:Boolean>
+                                            </gmd:extentTypeCode>
+                                            <gmd:westBoundLongitude>
+                                                <gco:Decimal>8.1</gco:Decimal>
+                                            </gmd:westBoundLongitude>
+                                            <gmd:eastBoundLongitude>
+                                                <gco:Decimal>8.25</gco:Decimal>
+                                            </gmd:eastBoundLongitude>
+                                            <gmd:southBoundLatitude>
+                                                <gco:Decimal>53.1</gco:Decimal>
+                                            </gmd:southBoundLatitude>
+                                            <gmd:northBoundLatitude>
+                                                <gco:Decimal>53.16</gco:Decimal>
+                                            </gmd:northBoundLatitude>
+                                        </gmd:EX_GeographicBoundingBox>
+                                    </gmd:geographicElement>
+                                </gmd:EX_Extent>
+                            </gmd:extent>
+                        </gmd:MD_DataIdentification>
+                    </gmd:identificationInfo>
+                    <gmd:distributionInfo xmlns:gco="http://www.isotc211.org/2005/gco">
+                        <gmd:MD_Distribution>
+                            <gmd:distributionFormat>
+                                <gmd:MD_Format>
+                                    <gmd:name>
+                                        <gco:CharacterString>GeoTiff</gco:CharacterString>
+                                    </gmd:name>
+                                    <gmd:version>
+                                        <gco:CharacterString>1.0</gco:CharacterString>
+                                    </gmd:version>
+                                </gmd:MD_Format>
+                            </gmd:distributionFormat>
+                            <gmd:distributor>
+                                <gmd:MD_Distributor>
+                                    <gmd:distributorContact>
+                                        <gmd:CI_ResponsibleParty>
+                                            <gmd:individualName>
+                                                <gco:CharacterString>Abteilung III, Referat 1 Geomatik u. Verkehr, Sachgebiet IT-Systeme Geomatik u. Vermessung (GeoVerm)</gco:CharacterString>
+                                            </gmd:individualName>
+                                            <gmd:organisationName>
+                                                <gco:CharacterString>Informationstechnikzentrum Bund (ITZBund)</gco:CharacterString>
+                                            </gmd:organisationName>
+                                            <gmd:positionName>
+                                                <gco:CharacterString>GIS-/GDI-Spezialisten</gco:CharacterString>
+                                            </gmd:positionName>
+                                            <gmd:contactInfo>
+                                                <gmd:CI_Contact>
+                                                    <gmd:phone>
+                                                        <gmd:CI_Telephone>
+                                                            <gmd:voice>
+                                                                <gco:CharacterString>+49 (22899) 680 - 0</gco:CharacterString>
+                                                            </gmd:voice>
+                                                            <gmd:facsimile>
+                                                                <gco:CharacterString>-</gco:CharacterString>
+                                                            </gmd:facsimile>
+                                                        </gmd:CI_Telephone>
+                                                    </gmd:phone>
+                                                    <gmd:address>
+                                                        <gmd:CI_Address>
+                                                            <gmd:deliveryPoint>
+                                                                <gco:CharacterString>Am Ehrenberg 8</gco:CharacterString>
+                                                            </gmd:deliveryPoint>
+                                                            <gmd:city>
+                                                                <gco:CharacterString>Ilmenau</gco:CharacterString>
+                                                            </gmd:city>
+                                                            <gmd:administrativeArea>
+                                                                <gco:CharacterString>TH</gco:CharacterString>
+                                                            </gmd:administrativeArea>
+                                                            <gmd:postalCode>
+                                                                <gco:CharacterString>98693</gco:CharacterString>
+                                                            </gmd:postalCode>
+                                                            <gmd:country>
+                                                                <gco:CharacterString>Deutschland</gco:CharacterString>
+                                                            </gmd:country>
+                                                            <gmd:electronicMailAddress>
+                                                                <gco:CharacterString>gdi-wsv.support@ba-dlz-it.bund.de</gco:CharacterString>
+                                                            </gmd:electronicMailAddress>
+                                                        </gmd:CI_Address>
+                                                    </gmd:address>
+                                                </gmd:CI_Contact>
+                                            </gmd:contactInfo>
+                                            <gmd:role>
+                                                <gmd:CI_RoleCode codeList="http://standards.iso.org/ittf/PubliclyAvailableStandards/ISO_19139_Schemas/resources/Codelist/ML_gmxCodelists.xml#MD_ScopeCode" codeListValue="distributor">distributor</gmd:CI_RoleCode>
+                                            </gmd:role>
+                                        </gmd:CI_ResponsibleParty>
+                                    </gmd:distributorContact>
+                                </gmd:MD_Distributor>
+                            </gmd:distributor>
+                            <gmd:transferOptions>
+                                <gmd:MD_DigitalTransferOptions>
+                                    <gmd:onLine>
+                                        <gmd:CI_OnlineResource>
+                                            <gmd:linkage>
+                                                <gmd:URL>/ascc_geoportal/geokatdaten/luftbilder/wsd-nw/</gmd:URL>
+                                            </gmd:linkage>
+                                            <gmd:function>
+                                                <gmd:CI_OnLineFunctionCode codeList="CI_OnlineFunctionCode" codeListValue="offlineAccess"/>
+                                            </gmd:function>
+                                        </gmd:CI_OnlineResource>
+                                    </gmd:onLine>
+                                </gmd:MD_DigitalTransferOptions>
+                            </gmd:transferOptions>
+                        </gmd:MD_Distribution>
+                    </gmd:distributionInfo>
+                    <gmd:dataQualityInfo xmlns:gco="http://www.isotc211.org/2005/gco">
+                        <gmd:DQ_DataQuality>
+                            <gmd:scope>
+                                <gmd:DQ_Scope>
+                                    <gmd:level>
+                                        <gmd:MD_ScopeCode codeList="http://metadata.dgiwg.org/codelistRegistry?MD_ScopeCode" codeListValue="series"/>
+                                    </gmd:level>
+                                </gmd:DQ_Scope>
+                            </gmd:scope>
+                            <gmd:lineage>
+                                <gmd:LI_Lineage>
+                                    <gmd:processStep>
+                                        <gmd:LI_ProcessStep>
+                                            <gmd:description>
+                                                <gco:CharacterString>Digitale Orthophotos sind digital entzerrte Luftbilder und bilden alle zum Aufnahmezeitpunkt luftsichtbaren Objekte und Sachverhalte parallelperspektivisch ab. Die Bodenaufl&#xF6;sung bzw. Pixelgr&#xF6;&#xDF;e betr&#xE4;gt 0.1m x 0.1 m.</gco:CharacterString>
+                                            </gmd:description>
+                                        </gmd:LI_ProcessStep>
+                                    </gmd:processStep>
+                                </gmd:LI_Lineage>
+                            </gmd:lineage>
+                        </gmd:DQ_DataQuality>
+                    </gmd:dataQualityInfo>
+                </gmd:MD_Metadata>
