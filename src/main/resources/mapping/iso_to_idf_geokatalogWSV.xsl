@@ -51,6 +51,6 @@
 
 <!-- GeoKatalog.WSV: Remove all offline links -->
 <!-- see https://redmine.wemove.com/issues/1745 / "AF-00448 GP4: GeoKatalog - iPlug - Download Link anzeigen" -->
-  <xsl:template match="gmd:transferOptions[gmd:MD_DigitalTransferOptions/gmd:onLine/gmd:CI_OnlineResource/gmd:function/gmd:CI_OnLineFunctionCode[@codeListValue='localZipDownload' or @codeListValue='localImageDownloadTransform' or @codeListValue='offlineAccess']]"/>
+  <xsl:template match="gmd:transferOptions[gmd:MD_DigitalTransferOptions/gmd:onLine/gmd:CI_OnlineResource/gmd:function/gmd:CI_OnLineFunctionCode[not(@codeListValue='download')]]"/>
 
 </xsl:stylesheet>
