@@ -31,7 +31,7 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 
-import de.ingrid.admin.elasticsearch.IndexInfo;
+import de.ingrid.elasticsearch.IndexInfo;
 import de.ingrid.admin.elasticsearch.StatusProvider;
 import de.ingrid.admin.elasticsearch.StatusProvider.Classification;
 import de.ingrid.admin.object.IDocumentProducer;
@@ -74,6 +74,9 @@ public class CswDscDocumentProducer implements IDocumentProducer {
 
     @Autowired
     StatusProvider statusProvider;
+
+    @Autowired
+    IndexInfo indexInfo;
     
     final private static Log log = LogFactory.getLog(CswDscDocumentProducer.class);
     
@@ -249,7 +252,7 @@ public class CswDscDocumentProducer implements IDocumentProducer {
 
     @Override
     public IndexInfo getIndexInfo() {
-        return null;
+        return indexInfo;
     }
 
     @Override
