@@ -390,14 +390,10 @@ var transformationDescriptions = [
 			"xpath":"//gmd:spatialRepresentationInfo/gmd:MD_VectorSpatialRepresentation/gmd:geometricObjects/gmd:MD_GeometricObjects/gmd:geometricObjectCount/gco:Integer"
 		},
 		// t017_url_ref
-		{	"indexField":"t017_url_ref.url_link",
-			"xpath":"//gmd:distributionInfo/gmd:MD_Distribution/gmd:transferOptions/gmd:MD_DigitalTransferOptions/gmd:onLine/gmd:CI_OnlineResource/gmd:linkage/gmd:URL"
-		},
-		{	"indexField":"t017_url_ref.content",
-			"xpath":"//gmd:distributionInfo/gmd:MD_Distribution/gmd:transferOptions/gmd:MD_DigitalTransferOptions/gmd:onLine/gmd:CI_OnlineResource/name/gco:CharacterString"
-		},
-		{	"indexField":"t017_url_ref.descr",
-			"xpath":"//gmd:distributionInfo/gmd:MD_Distribution/gmd:transferOptions/gmd:MD_DigitalTransferOptions/gmd:onLine/gmd:CI_OnlineResource/gmd:description/gco:CharacterString"
+		{	"execute":{
+				"funct":mapOnlineResource,
+				"params":[recordNode]
+			}
 		},
 		// add MD_BrowseGraphic as additional html
 		{	"indexField":"additional_html_1",
@@ -586,6 +582,40 @@ function mapAddresses(recordNode) {
 				}
 			}
 			
+		}
+	}
+}
+
+function mapOnlineResource(recordNode) {
+	var onlineResources = XPathUtils.getNodeList(recordNode, "//gmd:distributionInfo/gmd:MD_Distribution/gmd:transferOptions/gmd:MD_DigitalTransferOptions/gmd:onLine/gmd:CI_OnlineResource");
+	if (hasValue(onlineResources)) {
+		for (i=0; i<onlineResources.getLength(); i++ ) {
+
+			// first check type of CI_OnlineResource and filter
+			// e.g. in GeoKatalog.WSV "localZipDownload" has to be filtered
+			// (see https://redmine.wemove.com/issues/1745 / "AF-00448 GP4: GeoKatalog - iPlug - Download Link anzeigen")
+
+			// NOTICE: Wrong downloads are already filtered by XSLT to IDF ! Index mapping receives IDF and not plain ISO !
+			// So check for wrong downloads not necessary, we comment to avoid side effects with other catalogs ...
+/*
+			var codeListValue = XPathUtils.getString(onlineResources.item(i), "gmd:function/gmd:CI_OnLineFunctionCode/@codeListValue");
+			if (hasValue(codeListValue) && (
+					(codeListValue == 'localZipDownload') ||
+					(codeListValue == 'localImageDownloadTransform') ||
+					(codeListValue == 'offlineAccess') )) {
+
+				if (log.isInfoEnabled()) {
+					var id = XPathUtils.getString(recordNode, "//gmd:fileIdentifier/gco:CharacterString");
+					log.info("" + id + ": found CI_OnlineResource of type '" + codeListValue + "', we skip this one !");
+				}
+
+				continue;
+			}
+*/
+			// map CI_OnlineResource
+			addToDoc("t017_url_ref.url_link", XPathUtils.getString(onlineResources.item(i), "gmd:linkage/gmd:URL"), true);
+			addToDoc("t017_url_ref.content", XPathUtils.getString(onlineResources.item(i), "name/gco:CharacterString"), true);
+			addToDoc("t017_url_ref.descr", XPathUtils.getString(onlineResources.item(i), "gmd:description/gco:CharacterString"), true);			
 		}
 	}
 }
