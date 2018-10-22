@@ -26,8 +26,7 @@
 
 package de.ingrid.iplug.csw.dsc;
 
-import java.io.IOException;
-
+import de.ingrid.admin.elasticsearch.IndexScheduler;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -74,11 +73,13 @@ public class CswDscSearchPlug extends HeartBeatPlug implements IRecordLoader {
     private final IndexImpl _indexSearcher;
 
     public static Configuration conf;
-	
+    private final IndexScheduler indexScheduler;
+
     @Autowired
-    public CswDscSearchPlug(final IndexImpl indexSearcher, IPlugdescriptionFieldFilter[] fieldFilters, IMetadataInjector[] injector, IPreProcessor[] preProcessors, IPostProcessor[] postProcessors) throws IOException {
+    public CswDscSearchPlug(final IndexImpl indexSearcher, IPlugdescriptionFieldFilter[] fieldFilters, IMetadataInjector[] injector, IPreProcessor[] preProcessors, IPostProcessor[] postProcessors, IndexScheduler indexScheduler) {
         super(60000, new PlugDescriptionFieldFilters(fieldFilters), injector, preProcessors, postProcessors);
         _indexSearcher = indexSearcher;
+        this.indexScheduler = indexScheduler;
     }
 
     /*
@@ -114,7 +115,7 @@ public class CswDscSearchPlug extends HeartBeatPlug implements IRecordLoader {
      * @see de.ingrid.iplug.HeartBeatPlug#close()
      */
     @Override
-    public void close() throws Exception {
+    public void close() {
         _indexSearcher.close();
     }
 
@@ -133,7 +134,7 @@ public class CswDscSearchPlug extends HeartBeatPlug implements IRecordLoader {
             if (log.isDebugEnabled()) {
                 log.debug("Request for direct CSW Data found. (" + ConfigurationKeys.REQUEST_KEY_CSW_DIRECT_RESPONSE + ":" + elementSetName + ")");
             }
-            this.setDirectData(detail, elementSetName);
+            this.setDirectData(detail);
         }
 
         return detail;
@@ -166,7 +167,7 @@ public class CswDscSearchPlug extends HeartBeatPlug implements IRecordLoader {
     /**
      * Get the ElementSetName of the requested original csw data, if any
      * 
-     * @param document
+     * @param document is the document to add original csw data to
      * @return The ElementSetName or ElementSetName.FULL
      */
     protected ElementSetName getDirectDataElementSetName(IngridDocument document) {
@@ -182,11 +183,10 @@ public class CswDscSearchPlug extends HeartBeatPlug implements IRecordLoader {
     /**
      * Set the original idf data in an IngridHitDetail
      * 
-     * @param document
-     * @param elementSetName
-     * @throws Exception
+     * @param document is the document to add idf data to
+     * @throws Exception if record could not be found
      */
-    protected void setDirectData(IngridHitDetail document, ElementSetName elementSetName) throws Exception {
+    protected void setDirectData(IngridHitDetail document) throws Exception {
         ElasticDocument luceneDoc = _indexSearcher.getDocById( document.getDocumentId() );
         long startTime = 0;
         if (log.isDebugEnabled()) {
@@ -200,12 +200,21 @@ public class CswDscSearchPlug extends HeartBeatPlug implements IRecordLoader {
     }
 
     public static void main(String[] args) throws Exception {
-        conf = new ConfigBuilder<Configuration>(Configuration.class).withCommandLineArgs(args).build();
+        conf = new ConfigBuilder<>(Configuration.class).withCommandLineArgs(args).build();
         new JettyStarter( conf );
     }
 
     @Override
-    public IngridDocument call(IngridCall targetInfo) throws Exception {
-        throw new RuntimeException( "call-function not implemented in DSC-iPlug" );
+    public IngridDocument call(IngridCall info) {
+        IngridDocument doc = null;
+
+        if ("index".equals(info.getMethod())) {
+            indexScheduler.triggerManually();
+            doc = new IngridDocument();
+            doc.put("success", true);
+        }
+        log.warn("The following method is not supported: " + info.getMethod());
+
+        return doc;
     }
 }
