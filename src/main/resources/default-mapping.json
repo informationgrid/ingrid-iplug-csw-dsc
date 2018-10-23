@@ -2,6 +2,22 @@
     "_default_" : { 
         "_source" : { "enabled" : true }, 
         "properties": {
+            "partner": {
+                "type": "keyword",
+                "store": true
+            },
+            "provider": {
+                "type": "keyword",
+                "store": true
+            },
+            "datatype": {
+                "type": "keyword",
+                "store": true
+            },
+            "dataSourceName": {
+                "type": "keyword",
+                "store": true
+            },
             "t01_object.mod_time": {
                 "type": "string"
             },
