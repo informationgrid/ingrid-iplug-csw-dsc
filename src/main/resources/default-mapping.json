@@ -35,12 +35,13 @@
                 "null_value" : 0.0
             },
             "title": {
-                "analyzer": "german",
-                "type": "string"
+                "type": "text",
+                "store": true
             },
             "summary": {
                 "analyzer": "german",
-                "type": "string"
+                "type": "string",
+                "store": true
             },
             "content": {
                 "analyzer": "german",
