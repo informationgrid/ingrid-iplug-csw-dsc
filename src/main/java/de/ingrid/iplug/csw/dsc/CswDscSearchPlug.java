@@ -30,6 +30,7 @@ import de.ingrid.admin.elasticsearch.IndexScheduler;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.PropertySource;
 import org.springframework.stereotype.Service;
 
 import com.tngtech.configbuilder.ConfigBuilder;
@@ -60,6 +61,8 @@ import de.ingrid.utils.query.IngridQuery;
  * @author joachim@wemove.com
  * 
  */
+@org.springframework.context.annotation.Configuration
+@PropertySource(value = {"classpath:config.properties", "classpath:config.override.properties"})
 @Service
 public class CswDscSearchPlug extends HeartBeatPlug implements IRecordLoader {
 
