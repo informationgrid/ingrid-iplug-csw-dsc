@@ -25,19 +25,13 @@
  */
 package de.ingrid.iplug.csw.dsc.index;
 
-import java.util.List;
-
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
-import org.springframework.beans.factory.annotation.Autowired;
-
-import de.ingrid.elasticsearch.IndexInfo;
 import de.ingrid.admin.elasticsearch.StatusProvider;
 import de.ingrid.admin.elasticsearch.StatusProvider.Classification;
 import de.ingrid.admin.object.IDocumentProducer;
+import de.ingrid.elasticsearch.IndexInfo;
+import de.ingrid.iplug.csw.dsc.Configuration;
 import de.ingrid.iplug.csw.dsc.analyze.CoupledResources;
 import de.ingrid.iplug.csw.dsc.analyze.IsoCacheCoupledResourcesAnalyzer;
-import de.ingrid.iplug.csw.dsc.CswDscSearchPlug;
 import de.ingrid.iplug.csw.dsc.cache.Cache;
 import de.ingrid.iplug.csw.dsc.cache.UpdateJob;
 import de.ingrid.iplug.csw.dsc.cswclient.CSWFactory;
@@ -49,6 +43,11 @@ import de.ingrid.iplug.csw.dsc.om.CswCoupledResourcesCacheSourceRecord;
 import de.ingrid.iplug.csw.dsc.om.SourceRecord;
 import de.ingrid.utils.ElasticDocument;
 import de.ingrid.utils.PlugDescription;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+
+import java.util.List;
 
 /**
  * @author joachim
@@ -77,6 +76,9 @@ public class CswDscDocumentProducer implements IDocumentProducer {
 
     @Autowired
     IndexInfo indexInfo;
+
+    @Autowired
+    private Configuration cswConfig;
     
     final private static Log log = LogFactory.getLog(CswDscDocumentProducer.class);
     
@@ -114,7 +116,7 @@ public class CswDscDocumentProducer implements IDocumentProducer {
                     
 
                 } catch (Exception e) {
-                    statusProvider.addState( "ERROR_FETCH", "Error harvesting CSW datasource with URL: " + CswDscSearchPlug.conf.serviceUrl, Classification.ERROR );
+                    statusProvider.addState( "ERROR_FETCH", "Error harvesting CSW datasource with URL: " + cswConfig.serviceUrl, Classification.ERROR );
                     log.error("Error harvesting CSW datasource.", e);
                     if (tmpCache != null) {
                         tmpCache.rollbackTransaction();

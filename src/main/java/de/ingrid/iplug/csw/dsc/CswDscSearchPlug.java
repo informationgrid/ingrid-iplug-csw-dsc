@@ -26,34 +26,24 @@
 
 package de.ingrid.iplug.csw.dsc;
 
-import de.ingrid.admin.elasticsearch.IndexScheduler;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.PropertySource;
-import org.springframework.stereotype.Service;
-
-import com.tngtech.configbuilder.ConfigBuilder;
-
 import de.ingrid.admin.JettyStarter;
+import de.ingrid.admin.elasticsearch.IndexScheduler;
 import de.ingrid.elasticsearch.search.IndexImpl;
 import de.ingrid.iplug.HeartBeatPlug;
 import de.ingrid.iplug.IPlugdescriptionFieldFilter;
 import de.ingrid.iplug.PlugDescriptionFieldFilters;
 import de.ingrid.iplug.csw.dsc.cswclient.constants.ElementSetName;
 import de.ingrid.iplug.csw.dsc.record.IdfRecordCreator;
-import de.ingrid.utils.ElasticDocument;
-import de.ingrid.utils.IRecordLoader;
-import de.ingrid.utils.IngridCall;
-import de.ingrid.utils.IngridDocument;
-import de.ingrid.utils.IngridHit;
-import de.ingrid.utils.IngridHitDetail;
-import de.ingrid.utils.IngridHits;
+import de.ingrid.utils.*;
 import de.ingrid.utils.dsc.Record;
 import de.ingrid.utils.metadata.IMetadataInjector;
 import de.ingrid.utils.processor.IPostProcessor;
 import de.ingrid.utils.processor.IPreProcessor;
 import de.ingrid.utils.query.IngridQuery;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 /**
  * This iPlug connects to the iBus delivers search results based on a index.
@@ -61,8 +51,6 @@ import de.ingrid.utils.query.IngridQuery;
  * @author joachim@wemove.com
  * 
  */
-@org.springframework.context.annotation.Configuration
-@PropertySource(value = {"classpath:config.properties", "classpath:config.override.properties"})
 @Service
 public class CswDscSearchPlug extends HeartBeatPlug implements IRecordLoader {
 
@@ -203,8 +191,7 @@ public class CswDscSearchPlug extends HeartBeatPlug implements IRecordLoader {
     }
 
     public static void main(String[] args) throws Exception {
-        conf = new ConfigBuilder<>(Configuration.class).withCommandLineArgs(args).build();
-        new JettyStarter( conf );
+        new JettyStarter();
     }
 
     @Override

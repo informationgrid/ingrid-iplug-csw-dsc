@@ -26,46 +26,38 @@
 
 package de.ingrid.iplug.csw.dsc.cache.impl;
 
-import java.io.StringReader;
-import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.HashSet;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Set;
-import java.util.concurrent.CopyOnWriteArrayList;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
-
-import javax.xml.parsers.DocumentBuilder;
-import javax.xml.parsers.DocumentBuilderFactory;
-
+import de.ingrid.admin.elasticsearch.StatusProvider;
+import de.ingrid.admin.elasticsearch.StatusProvider.Classification;
+import de.ingrid.iplug.csw.dsc.Configuration;
+import de.ingrid.iplug.csw.dsc.cache.Cache;
+import de.ingrid.iplug.csw.dsc.cache.ExecutionContext;
+import de.ingrid.iplug.csw.dsc.cache.UpdateStrategy;
+import de.ingrid.iplug.csw.dsc.cswclient.*;
+import de.ingrid.iplug.csw.dsc.cswclient.constants.ElementSetName;
+import de.ingrid.iplug.csw.dsc.cswclient.constants.ResultType;
+import de.ingrid.iplug.csw.dsc.tools.StringUtils;
 import org.apache.commons.lang.exception.ExceptionUtils;
 import org.apache.commons.logging.Log;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.w3c.dom.Document;
 import org.xml.sax.InputSource;
 
-import de.ingrid.admin.elasticsearch.StatusProvider;
-import de.ingrid.admin.elasticsearch.StatusProvider.Classification;
-import de.ingrid.iplug.csw.dsc.CswDscSearchPlug;
-import de.ingrid.iplug.csw.dsc.cache.Cache;
-import de.ingrid.iplug.csw.dsc.cache.ExecutionContext;
-import de.ingrid.iplug.csw.dsc.cache.UpdateStrategy;
-import de.ingrid.iplug.csw.dsc.cswclient.CSWClient;
-import de.ingrid.iplug.csw.dsc.cswclient.CSWFactory;
-import de.ingrid.iplug.csw.dsc.cswclient.CSWQuery;
-import de.ingrid.iplug.csw.dsc.cswclient.CSWRecord;
-import de.ingrid.iplug.csw.dsc.cswclient.CSWSearchResult;
-import de.ingrid.iplug.csw.dsc.cswclient.constants.ElementSetName;
-import de.ingrid.iplug.csw.dsc.cswclient.constants.ResultType;
-import de.ingrid.iplug.csw.dsc.tools.StringUtils;
+import javax.xml.parsers.DocumentBuilder;
+import javax.xml.parsers.DocumentBuilderFactory;
+import java.io.StringReader;
+import java.text.SimpleDateFormat;
+import java.util.*;
+import java.util.concurrent.CopyOnWriteArrayList;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 public abstract class AbstractUpdateStrategy implements UpdateStrategy {
 
     @Autowired
     protected StatusProvider statusProvider;
+
+    @Autowired
+	private Configuration cswConfig;
     
 	DocumentBuilder docBuilder = null;
 
@@ -192,9 +184,9 @@ public abstract class AbstractUpdateStrategy implements UpdateStrategy {
 					log.info("\nPARAMETERS OF FETCHING PROCESS:" +
 							"\nrecords per chunk (request): " + recordsPerCall +
 							"\ngeneral pause between requesting next chunk (msec): " + requestPause +
-							"\nnum retries per chunk: " + CswDscSearchPlug.conf.numRetriesPerRequest +
-							"\npause between retries (msec): " + CswDscSearchPlug.conf.timeBetweenRetries +
-							"\nmax number of lost chunks: " + CswDscSearchPlug.conf.maxNumSkippedRequests);
+							"\nnum retries per chunk: " + cswConfig.numRetriesPerRequest +
+							"\npause between retries (msec): " + cswConfig.timeBetweenRetries +
+							"\nmax number of lost chunks: " + cswConfig.maxNumSkippedRequests);
 				}
 
 				// process
@@ -204,12 +196,12 @@ public abstract class AbstractUpdateStrategy implements UpdateStrategy {
 				String logLostRecordChunks = "";
 				int numLostRecords = 0;
 				while (numRecordsFetched < numRecordsTotal) {
-					if (CswDscSearchPlug.conf.maxNumSkippedRequests > -1) {
+					if (cswConfig.maxNumSkippedRequests > -1) {
 						// fetching should end when a maximum number of failures (in a row) is reached.
-						if (numSkippedRequests > CswDscSearchPlug.conf.maxNumSkippedRequests) {
-					    	log.error("Problems fetching records. Total number of skipped requests reached (" + CswDscSearchPlug.conf.maxNumSkippedRequests +
+						if (numSkippedRequests > cswConfig.maxNumSkippedRequests) {
+					    	log.error("Problems fetching records. Total number of skipped requests reached (" + cswConfig.maxNumSkippedRequests +
 					    		" requests without results). We end fetching process for this filter.");
-					    	statusProvider.addState( "ERROR_FETCH", "Error during fetch, since more than " + CswDscSearchPlug.conf.maxNumSkippedRequests + " records have been skipped.", Classification.ERROR );
+					    	statusProvider.addState( "ERROR_FETCH", "Error during fetch, since more than " + cswConfig.maxNumSkippedRequests + " records have been skipped.", Classification.ERROR );
 						    break;
 						}
 					}
@@ -242,13 +234,13 @@ public abstract class AbstractUpdateStrategy implements UpdateStrategy {
             					break;
 
         					} catch (Exception e) {
-        						if (numRetries == CswDscSearchPlug.conf.numRetriesPerRequest) {
+        						if (numRetries == cswConfig.numRetriesPerRequest) {
         						    log.error("Retried " + numRetries + " times ! We skip records " + logCurrRecordChunk, e);
         							break;
         						}
 
         						numRetries++;
-        						int timeBetweenRetry = numRetries * CswDscSearchPlug.conf.timeBetweenRetries;
+        						int timeBetweenRetry = numRetries * cswConfig.timeBetweenRetries;
     						    log.error("Error fetching records " + logCurrRecordChunk + ". We retry " +
     						    		numRetries + ". time after " + timeBetweenRetry + " msec !", e);
         						Thread.sleep(timeBetweenRetry);
