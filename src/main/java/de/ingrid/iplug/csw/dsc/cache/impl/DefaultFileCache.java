@@ -119,7 +119,7 @@ public class DefaultFileCache implements Cache, Serializable {
 			// check if the original path exists and create it if not
 			File cacheLocation = new File(originalPath);
 			if (!cacheLocation.exists())
-				cacheLocation.mkdir();
+				cacheLocation.mkdirs();
 			
 			this.isInitialized = true;
 		}
