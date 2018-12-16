@@ -7,6 +7,7 @@ ADD ingrid-iplug-csw-dsc*-installer.jar /
 RUN unzip ingrid-*.jar -d /tmp \
     && mkdir -p /opt/ingrid/ingrid-iplug-csw-dsc \
     && cp -R /tmp/ingrid-iplug-csw-dsc-*/* /opt/ingrid/ingrid-iplug-csw-dsc/ \
+    && touch /opt/ingrid/ingrid-iplug-csw-dsc/pattern \
     && rm -Rf /tmp/* \
     && rm ingrid-*.jar
 
