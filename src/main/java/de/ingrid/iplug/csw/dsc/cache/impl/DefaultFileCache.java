@@ -422,8 +422,18 @@ public class DefaultFileCache implements Cache, Serializable {
 			// move content of this instance to the original cache
 			File originalDir = new File(this.getCachePath());
 			File tmpDir = new File(this.getWorkPath());
+			if (log.isInfoEnabled()) {
+			    log.info( "Remove cache: " + originalDir.getAbsolutePath() );
+			}
+			
 			FileUtils.deleteRecursive(originalDir);
-			tmpDir.renameTo(originalDir);
+
+            if (log.isInfoEnabled()) {
+                log.info( "Rename temp cache: " + tmpDir.getAbsolutePath() + " to " + originalDir.getAbsolutePath());
+            }
+			if (!tmpDir.renameTo(originalDir)) {
+			    log.error( "Failed  to rename " + tmpDir.getAbsolutePath() + " to " + originalDir.getAbsolutePath());
+			}
 			
 			this.inTransaction = false;
 		}
