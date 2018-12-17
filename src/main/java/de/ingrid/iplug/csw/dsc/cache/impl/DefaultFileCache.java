@@ -248,8 +248,8 @@ public class DefaultFileCache implements Cache, Serializable {
 
 			// check if the cache path exists and create it if not
 			if (!newPath.exists())
-				newPath.mkdir();
-			this.tmpPath = newPath.getName();
+				newPath.mkdirs();
+			this.tmpPath = newPath.getAbsolutePath();
 		}
 		return this.tmpPath;
 	}
