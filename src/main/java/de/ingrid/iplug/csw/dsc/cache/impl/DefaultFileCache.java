@@ -119,7 +119,7 @@ public class DefaultFileCache implements Cache, Serializable {
 			// check if the original path exists and create it if not
 			File cacheLocation = new File(originalPath);
 			if (!cacheLocation.exists())
-				cacheLocation.mkdir();
+				cacheLocation.mkdirs();
 			
 			this.isInitialized = true;
 		}
@@ -248,8 +248,8 @@ public class DefaultFileCache implements Cache, Serializable {
 
 			// check if the cache path exists and create it if not
 			if (!newPath.exists())
-				newPath.mkdir();
-			this.tmpPath = newPath.getName();
+				newPath.mkdirs();
+			this.tmpPath = newPath.getAbsolutePath();
 		}
 		return this.tmpPath;
 	}
@@ -422,8 +422,18 @@ public class DefaultFileCache implements Cache, Serializable {
 			// move content of this instance to the original cache
 			File originalDir = new File(this.getCachePath());
 			File tmpDir = new File(this.getWorkPath());
+			if (log.isInfoEnabled()) {
+			    log.info( "Remove cache: " + originalDir.getAbsolutePath() );
+			}
+			
 			FileUtils.deleteRecursive(originalDir);
-			tmpDir.renameTo(originalDir);
+
+            if (log.isInfoEnabled()) {
+                log.info( "Rename temp cache: " + tmpDir.getAbsolutePath() + " to " + originalDir.getAbsolutePath());
+            }
+			if (!tmpDir.renameTo(originalDir)) {
+			    log.error( "Failed  to rename " + tmpDir.getAbsolutePath() + " to " + originalDir.getAbsolutePath());
+			}
 			
 			this.inTransaction = false;
 		}

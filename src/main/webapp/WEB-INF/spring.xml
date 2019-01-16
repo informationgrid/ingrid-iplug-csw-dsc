@@ -86,7 +86,7 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
     </bean>
 
     <bean id="cswCache" class="de.ingrid.iplug.csw.dsc.cache.impl.DefaultFileCache">
-        <property name="cachePath" value="./csw_cache" />
+        <property name="cachePath" value="./data/csw_cache" />
     </bean>
 
     <!--
