@@ -26,10 +26,12 @@
                 "type": "text"
             },
             "t01_object.obj_id": {
-                "type": "keyword"
+                "type": "keyword",
+                "store": true
             },
             "t01_object.org_obj_id": {
-                "type": "keyword"
+                "type": "keyword",
+                "store": true
             },
             "boost": {
                 "type": "float",
