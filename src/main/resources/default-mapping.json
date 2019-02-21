@@ -1,72 +1,72 @@
-{ 
-    "_default_" : { 
-        "_source" : { "enabled" : true }, 
-        "properties": {
-            "iPlugId": {
-                "type": "keyword",
-                "store": true
-            },
-            "partner": {
-                "type": "keyword",
-                "store": true
-            },
-            "provider": {
-                "type": "keyword",
-                "store": true
-            },
-            "datatype": {
-                "type": "keyword",
-                "store": true
-            },
-            "dataSourceName": {
-                "type": "keyword",
-                "store": true
-            },
-            "t01_object.mod_time": {
-                "type": "text"
-            },
-            "t01_object.obj_id": {
-                "type": "keyword",
-                "store": true
-            },
-            "t01_object.org_obj_id": {
-                "type": "keyword",
-                "store": true
-            },
-            "boost": {
-                "type": "float",
-                "store": true,
-                "null_value" : 0.0
-            },
-            "title": {
-                "type": "text",
-                "store": true
-            },
-            "summary": {
-                "analyzer": "german",
-                "type": "text",
-                "store": true
-            },
-            "content": {
-                "analyzer": "german",
-                "type": "text"
-            },
-            "x1": {
-                "type": "double"
-            },
-            "x2": {
-                "type": "double"
-            },
-            "y1": {
-                "type": "double"
-            },
-            "y2": {
-                "type": "double"
-             },
-            "idf": {
-                "type": "text",
-                "index": false
-            }
-        }
-    } 
+{
+  "_source": {
+    "enabled": true
+  },
+  "properties": {
+    "iPlugId": {
+      "type": "keyword",
+      "store": true
+    },
+    "partner": {
+      "type": "keyword",
+      "store": true
+    },
+    "provider": {
+      "type": "keyword",
+      "store": true
+    },
+    "datatype": {
+      "type": "keyword",
+      "store": true
+    },
+    "dataSourceName": {
+      "type": "keyword",
+      "store": true
+    },
+    "t01_object.mod_time": {
+      "type": "text"
+    },
+    "t01_object.obj_id": {
+      "type": "keyword",
+      "store": true
+    },
+    "t01_object.org_obj_id": {
+      "type": "keyword",
+      "store": true
+    },
+    "boost": {
+      "type": "float",
+      "store": true,
+      "null_value": 0.0
+    },
+    "title": {
+      "type": "text",
+      "store": true
+    },
+    "summary": {
+      "analyzer": "german",
+      "type": "text",
+      "store": true
+    },
+    "content": {
+      "analyzer": "german",
+      "type": "text"
+    },
+    "x1": {
+      "type": "double"
+    },
+    "x2": {
+      "type": "double"
+    },
+    "y1": {
+      "type": "double"
+    },
+    "y2": {
+      "type": "double"
+    },
+    "idf": {
+      "type": "text",
+      "index": false
+    }
+  }
 }
