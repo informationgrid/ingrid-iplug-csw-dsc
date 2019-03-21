@@ -22,6 +22,11 @@
  */
 package de.ingrid.iplug.csw.dsc.webapp.controller;
 
+import de.ingrid.admin.command.PlugdescriptionCommandObject;
+import de.ingrid.admin.controller.AbstractController;
+import de.ingrid.iplug.csw.dsc.Configuration;
+import de.ingrid.iplug.csw.dsc.webapp.object.CswConfiguration;
+import de.ingrid.iplug.csw.dsc.webapp.validation.CswParameterValidator;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
@@ -30,12 +35,6 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.SessionAttributes;
-
-import de.ingrid.admin.command.PlugdescriptionCommandObject;
-import de.ingrid.admin.controller.AbstractController;
-import de.ingrid.iplug.csw.dsc.CswDscSearchPlug;
-import de.ingrid.iplug.csw.dsc.webapp.object.CswConfiguration;
-import de.ingrid.iplug.csw.dsc.webapp.validation.CswParameterValidator;
 
 /**
  * Control the csw parameter page.
@@ -48,9 +47,12 @@ import de.ingrid.iplug.csw.dsc.webapp.validation.CswParameterValidator;
 public class CswParameterController extends AbstractController {
     private final CswParameterValidator _validator;
 
+    private final Configuration cswConfig;
+
     @Autowired
-    public CswParameterController(CswParameterValidator validator) {
+    public CswParameterController(CswParameterValidator validator, Configuration cswConfig) {
         _validator = validator;
+        this.cswConfig = cswConfig;
     }
 
     @RequestMapping(value = { "/iplug-pages/welcome.html",
@@ -89,7 +91,7 @@ public class CswParameterController extends AbstractController {
     private void mapParamsToPD(CswConfiguration commandObject,
             PlugdescriptionCommandObject pdCommandObject) {
 
-        CswDscSearchPlug.conf.serviceUrl= commandObject.getServiceUrl();
+        cswConfig.serviceUrl= commandObject.getServiceUrl();
 
         // add required datatypes to PD
         // -> is added in GeneralController with forced added datatype!
@@ -100,7 +102,7 @@ public class CswParameterController extends AbstractController {
 
     private void mapConfigFromPD(CswConfiguration mapConfig,
             PlugdescriptionCommandObject commandObject) {
-        mapConfig.setServiceUrl(CswDscSearchPlug.conf.serviceUrl);
+        mapConfig.setServiceUrl(cswConfig.serviceUrl);
     }
     
 

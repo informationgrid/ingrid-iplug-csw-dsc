@@ -374,11 +374,11 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
     
     <!-- Mapper Factory -->
     
-    <bean name="updateCodeListsJobDetail" class="org.springframework.scheduling.quartz.JobDetailBean">
+    <bean name="updateCodeListsJobDetail" class="org.springframework.scheduling.quartz.JobDetailFactoryBean">
         <property name="jobClass" value="de.ingrid.codelists.quartz.jobs.UpdateCodeListsJob" />
     </bean>
     
-    <bean id="simpleTriggerCodeLists" class="org.springframework.scheduling.quartz.SimpleTriggerBean">
+    <bean id="simpleTriggerCodeLists" class="org.springframework.scheduling.quartz.SimpleTriggerFactoryBean">
         <property name="jobDetail" ref="updateCodeListsJobDetail" />
         <property name="startDelay" value="5000" />
         <property name="repeatInterval" value="300000" />
