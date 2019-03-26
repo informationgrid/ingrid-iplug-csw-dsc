@@ -103,7 +103,7 @@ public class CswDscSearchPlug extends HeartBeatPlug implements IRecordLoader {
         if (elasticConfig.esCommunicationThroughIBus) {
 
             ClauseQuery cq = new ClauseQuery(true, false);
-            cq.addField(new FieldQuery(true, false, "iPlugId", elasticConfig.communicationProxyUrl));
+            cq.addField(new FieldQuery(true, false, "iPlugId", JettyStarter.baseConfig.communicationProxyUrl));
             query.addClause(cq);
             return this.iBusIndexManager.search(query, start, length);
         }
