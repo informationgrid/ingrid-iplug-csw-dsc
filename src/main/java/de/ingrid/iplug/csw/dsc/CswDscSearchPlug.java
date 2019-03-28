@@ -69,6 +69,9 @@ public class CswDscSearchPlug extends HeartBeatPlug implements IRecordLoader {
     @Autowired
     private IBusIndexManager iBusIndexManager;
 
+    @Autowired
+    private IBusIndexManager indexManager;
+
     private IdfRecordCreator dscRecordProducer = null;
 
     private final IndexImpl _indexSearcher;
@@ -118,7 +121,13 @@ public class CswDscSearchPlug extends HeartBeatPlug implements IRecordLoader {
      */
     @Override
     public Record getRecord(IngridHit hit) throws Exception {
-        ElasticDocument document = _indexSearcher.getDocById( hit.getDocumentId() );
+        ElasticDocument document;
+        if (elasticConfig.esCommunicationThroughIBus) {
+            document = this.iBusIndexManager.getDocById(hit.getDocumentId());
+        } else {
+            document = indexManager.getDocById(hit.getDocumentId());
+        }
+
         return dscRecordProducer.getRecord(document);
     }
 
@@ -209,7 +218,13 @@ public class CswDscSearchPlug extends HeartBeatPlug implements IRecordLoader {
      * @throws Exception if record could not be found
      */
     protected void setDirectData(IngridHitDetail document) throws Exception {
-        ElasticDocument luceneDoc = _indexSearcher.getDocById( document.getDocumentId() );
+        ElasticDocument luceneDoc;
+        if (elasticConfig.esCommunicationThroughIBus) {
+            luceneDoc = this.iBusIndexManager.getDocById(document.getDocumentId());
+        } else {
+            luceneDoc = indexManager.getDocById(document.getDocumentId());
+        }
+
         long startTime = 0;
         if (log.isDebugEnabled()) {
             startTime = System.currentTimeMillis();
