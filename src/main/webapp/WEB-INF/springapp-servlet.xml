@@ -78,7 +78,7 @@
 
   <bean id="indexInfo" class="de.ingrid.elasticsearch.IndexInfo">
     <property name="toAlias" value="ingrid"/>
-    <property name="toIndex" value="csw-dsc-test"/>
+    <property name="toIndex" value="csw-dsc"/>
     <property name="toType" value="default"/>
     <!--<property name="docIdField" value="" />-->
   </bean>
