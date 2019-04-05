@@ -26,34 +26,28 @@
 
 package de.ingrid.iplug.csw.dsc;
 
-import java.io.IOException;
-
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
-
-import com.tngtech.configbuilder.ConfigBuilder;
-
 import de.ingrid.admin.JettyStarter;
-import de.ingrid.admin.elasticsearch.IndexImpl;
+import de.ingrid.admin.elasticsearch.IndexScheduler;
+import de.ingrid.elasticsearch.ElasticConfig;
+import de.ingrid.elasticsearch.IBusIndexManager;
+import de.ingrid.elasticsearch.search.IndexImpl;
 import de.ingrid.iplug.HeartBeatPlug;
 import de.ingrid.iplug.IPlugdescriptionFieldFilter;
 import de.ingrid.iplug.PlugDescriptionFieldFilters;
 import de.ingrid.iplug.csw.dsc.cswclient.constants.ElementSetName;
 import de.ingrid.iplug.csw.dsc.record.IdfRecordCreator;
-import de.ingrid.utils.ElasticDocument;
-import de.ingrid.utils.IRecordLoader;
-import de.ingrid.utils.IngridCall;
-import de.ingrid.utils.IngridDocument;
-import de.ingrid.utils.IngridHit;
-import de.ingrid.utils.IngridHitDetail;
-import de.ingrid.utils.IngridHits;
+import de.ingrid.utils.*;
 import de.ingrid.utils.dsc.Record;
 import de.ingrid.utils.metadata.IMetadataInjector;
 import de.ingrid.utils.processor.IPostProcessor;
 import de.ingrid.utils.processor.IPreProcessor;
+import de.ingrid.utils.query.ClauseQuery;
+import de.ingrid.utils.query.FieldQuery;
 import de.ingrid.utils.query.IngridQuery;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 /**
  * This iPlug connects to the iBus delivers search results based on a index.
@@ -69,16 +63,27 @@ public class CswDscSearchPlug extends HeartBeatPlug implements IRecordLoader {
      */
     private static Log log = LogFactory.getLog(CswDscSearchPlug.class);
 
+    @Autowired
+    private ElasticConfig elasticConfig;
+
+    @Autowired
+    private IBusIndexManager iBusIndexManager;
+
+    @Autowired
+    private IBusIndexManager indexManager;
+
     private IdfRecordCreator dscRecordProducer = null;
 
     private final IndexImpl _indexSearcher;
 
     public static Configuration conf;
-	
+    private final IndexScheduler indexScheduler;
+
     @Autowired
-    public CswDscSearchPlug(final IndexImpl indexSearcher, IPlugdescriptionFieldFilter[] fieldFilters, IMetadataInjector[] injector, IPreProcessor[] preProcessors, IPostProcessor[] postProcessors) throws IOException {
+    public CswDscSearchPlug(final IndexImpl indexSearcher, IPlugdescriptionFieldFilter[] fieldFilters, IMetadataInjector[] injector, IPreProcessor[] preProcessors, IPostProcessor[] postProcessors, IndexScheduler indexScheduler) {
         super(60000, new PlugDescriptionFieldFilters(fieldFilters), injector, preProcessors, postProcessors);
         _indexSearcher = indexSearcher;
+        this.indexScheduler = indexScheduler;
     }
 
     /*
@@ -94,6 +99,18 @@ public class CswDscSearchPlug extends HeartBeatPlug implements IRecordLoader {
             log.debug("Incoming query: " + query.toString() + ", start=" + start + ", length=" + length);
         }
         preProcess(query);
+
+        // request iBus directly to get search results from within this iPlug
+        // adapt query to only get results coming from this iPlug and activated in iBus
+        // But when not connected to an iBus then use direct connection to Elasticsearch
+        if (elasticConfig.esCommunicationThroughIBus) {
+
+            ClauseQuery cq = new ClauseQuery(true, false);
+            cq.addField(new FieldQuery(true, false, "iPlugId", JettyStarter.baseConfig.communicationProxyUrl));
+            query.addClause(cq);
+            return this.iBusIndexManager.search(query, start, length);
+        }
+
         return _indexSearcher.search(query, start, length);
     }
 
@@ -104,7 +121,13 @@ public class CswDscSearchPlug extends HeartBeatPlug implements IRecordLoader {
      */
     @Override
     public Record getRecord(IngridHit hit) throws Exception {
-        ElasticDocument document = _indexSearcher.getDocById( hit.getDocumentId() );
+        ElasticDocument document;
+        if (elasticConfig.esCommunicationThroughIBus) {
+            document = this.iBusIndexManager.getDocById(hit.getDocumentId());
+        } else {
+            document = indexManager.getDocById(hit.getDocumentId());
+        }
+
         return dscRecordProducer.getRecord(document);
     }
 
@@ -114,7 +137,7 @@ public class CswDscSearchPlug extends HeartBeatPlug implements IRecordLoader {
      * @see de.ingrid.iplug.HeartBeatPlug#close()
      */
     @Override
-    public void close() throws Exception {
+    public void close() {
         _indexSearcher.close();
     }
 
@@ -125,7 +148,16 @@ public class CswDscSearchPlug extends HeartBeatPlug implements IRecordLoader {
      */
     @Override
     public IngridHitDetail getDetail(IngridHit hit, IngridQuery query, String[] fields) throws Exception {
-        final IngridHitDetail detail = _indexSearcher.getDetail(hit, query, fields);
+
+        IngridHitDetail detail;
+        // request iBus directly to get search results from within this iPlug
+        // adapt query to only get results coming from this iPlug and activated in iBus
+        // But when not connected to an iBus then use direct connection to Elasticsearch
+        if (elasticConfig.esCommunicationThroughIBus) {
+            detail = this.iBusIndexManager.getDetail(hit, query, fields);
+        } else {
+            detail = _indexSearcher.getDetail(hit, query, fields);
+        }
 
         // add original idf data (including the original response), if requested
         ElementSetName elementSetName = this.getDirectDataElementSetName(query);
@@ -133,7 +165,7 @@ public class CswDscSearchPlug extends HeartBeatPlug implements IRecordLoader {
             if (log.isDebugEnabled()) {
                 log.debug("Request for direct CSW Data found. (" + ConfigurationKeys.REQUEST_KEY_CSW_DIRECT_RESPONSE + ":" + elementSetName + ")");
             }
-            this.setDirectData(detail, elementSetName);
+            this.setDirectData(detail);
         }
 
         return detail;
@@ -166,7 +198,7 @@ public class CswDscSearchPlug extends HeartBeatPlug implements IRecordLoader {
     /**
      * Get the ElementSetName of the requested original csw data, if any
      * 
-     * @param document
+     * @param document is the document to add original csw data to
      * @return The ElementSetName or ElementSetName.FULL
      */
     protected ElementSetName getDirectDataElementSetName(IngridDocument document) {
@@ -182,12 +214,17 @@ public class CswDscSearchPlug extends HeartBeatPlug implements IRecordLoader {
     /**
      * Set the original idf data in an IngridHitDetail
      * 
-     * @param document
-     * @param elementSetName
-     * @throws Exception
+     * @param document is the document to add idf data to
+     * @throws Exception if record could not be found
      */
-    protected void setDirectData(IngridHitDetail document, ElementSetName elementSetName) throws Exception {
-        ElasticDocument luceneDoc = _indexSearcher.getDocById( document.getDocumentId() );
+    protected void setDirectData(IngridHitDetail document) throws Exception {
+        ElasticDocument luceneDoc;
+        if (elasticConfig.esCommunicationThroughIBus) {
+            luceneDoc = this.iBusIndexManager.getDocById(document.getDocumentId());
+        } else {
+            luceneDoc = indexManager.getDocById(document.getDocumentId());
+        }
+
         long startTime = 0;
         if (log.isDebugEnabled()) {
             startTime = System.currentTimeMillis();
@@ -200,12 +237,20 @@ public class CswDscSearchPlug extends HeartBeatPlug implements IRecordLoader {
     }
 
     public static void main(String[] args) throws Exception {
-        conf = new ConfigBuilder<Configuration>(Configuration.class).withCommandLineArgs(args).build();
-        new JettyStarter( conf );
+        new JettyStarter(Configuration.class);
     }
 
     @Override
-    public IngridDocument call(IngridCall targetInfo) throws Exception {
-        throw new RuntimeException( "call-function not implemented in DSC-iPlug" );
+    public IngridDocument call(IngridCall info) {
+        IngridDocument doc = null;
+
+        if ("index".equals(info.getMethod())) {
+            indexScheduler.triggerManually();
+            doc = new IngridDocument();
+            doc.put("success", true);
+        }
+        log.warn("The following method is not supported: " + info.getMethod());
+
+        return doc;
     }
 }

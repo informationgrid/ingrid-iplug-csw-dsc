@@ -3,23 +3,23 @@
   <parent>
     <groupId>de.ingrid</groupId>
     <artifactId>ingrid-releases-pom</artifactId>
-    <version>4.2.2</version>
+    <version>5.0.0</version>
   </parent>
   <modelVersion>4.0.0</modelVersion>
   <artifactId>ingrid-iplug-csw-dsc</artifactId>
-  <version>4.6.0</version>
+  <version>5.0.0</version>
   <packaging>jar</packaging>
-  <name>InGrid iPlug-csw-dsc</name>
+  <name>InGrid iPlug CSW-DSC</name>
   <description>This iPlug indexes documents from a CSW-interface and can be requested by the iBus.</description>
+
+  <!-- ==================== Source Code Management ==================== -->
   <scm>
     <connection>scm:git:git@github.com:informationgrid/ingrid-iplug-csw-dsc.git</connection>
     <developerConnection>scm:git:git@github.com:informationgrid/ingrid-iplug-csw-dsc.git</developerConnection>
     <tag>HEAD</tag>
   </scm>
-  <properties>
-    <!-- since spring 4.1 the quartz library 1.x is not supported anymore -->
-    <spring.version>4.0.9.RELEASE</spring.version>
-  </properties>
+
+  <!-- ==================== REPOSITORIES ==================== -->
   <repositories>
     <!-- Repo of parent pom needed, parent pom may not be installed locally yet -->
     <repository>
@@ -28,6 +28,17 @@
       <url>https://nexus.informationgrid.eu/repository/maven-public</url>
     </repository>
   </repositories>
+
+  <!-- ==================== PROPERTIES ==================== -->
+  <properties>
+    <iplug.type>IPLUG_CSW_DSC</iplug.type>
+    <!-- since spring 4.1 the quartz library 1.x is not supported anymore -->
+    <spring.version>4.3.20.RELEASE</spring.version>
+    <ingrid-base-webapp.version>5.0.0</ingrid-base-webapp.version>
+    <log4j2.version>2.8.2</log4j2.version>
+  </properties>
+
+  <!-- ==================== DEPENDENCY MANAGEMENT ==================== -->
   <dependencyManagement>
     <dependencies>
       <dependency>
@@ -47,6 +58,8 @@
       </dependency>
     </dependencies>
   </dependencyManagement>
+
+  <!-- ==================== DEPENDENCIES ==================== -->
   <dependencies>
     <dependency>
       <groupId>org.springframework</groupId>
@@ -61,12 +74,12 @@
     <dependency>
       <groupId>de.ingrid</groupId>
       <artifactId>ingrid-utils</artifactId>
-      <version>4.2.2</version>
+      <version>5.0.0</version>
     </dependency>
     <dependency>
       <groupId>de.ingrid</groupId>
       <artifactId>ingrid-codelist-service</artifactId>
-      <version>4.5.2</version>
+      <version>5.0.0</version>
       <exclusions>
         <exclusion>
           <groupId>org.springframework</groupId>
@@ -77,19 +90,31 @@
     <dependency>
       <groupId>de.ingrid</groupId>
       <artifactId>ingrid-base-webapp</artifactId>
-      <version>4.5.0</version>
+      <version>${ingrid-base-webapp.version}</version>
+      <exclusions>
+        <exclusion>
+          <artifactId>log4j</artifactId>
+          <groupId>log4j</groupId>
+        </exclusion>
+      </exclusions>
     </dependency>
     <dependency>
       <groupId>de.ingrid</groupId>
       <artifactId>ingrid-base-webapp</artifactId>
-      <version>4.5.0</version>
+      <version>${ingrid-base-webapp.version}</version>
       <classifier>res</classifier>
+      <exclusions>
+        <exclusion>
+          <artifactId>log4j</artifactId>
+          <groupId>log4j</groupId>
+        </exclusion>
+      </exclusions>
       <type>zip</type>
     </dependency>
     <dependency>
       <groupId>de.ingrid</groupId>
       <artifactId>ingrid-iplug</artifactId>
-      <version>3.6.2</version>
+      <version>5.0.0</version>
       <exclusions>
         <exclusion>
           <groupId>ant</groupId>
@@ -118,6 +143,10 @@
         <exclusion>
           <groupId>axis</groupId>
           <artifactId>axis</artifactId>
+        </exclusion>
+        <exclusion>
+          <artifactId>log4j</artifactId>
+          <groupId>log4j</groupId>
         </exclusion>
       </exclusions>
     </dependency>
@@ -233,6 +262,25 @@
         </exclusion>
       </exclusions>
     </dependency>
+
+    <!-- backward compatible -->
+    <dependency>
+      <groupId>org.apache.logging.log4j</groupId>
+      <artifactId>log4j-1.2-api</artifactId>
+      <version>${log4j2.version}</version>
+    </dependency>
+    <!-- end -->
+    <dependency>
+      <groupId>org.apache.logging.log4j</groupId>
+      <artifactId>log4j-api</artifactId>
+      <version>${log4j2.version}</version>
+    </dependency>
+    <dependency>
+      <groupId>org.apache.logging.log4j</groupId>
+      <artifactId>log4j-core</artifactId>
+      <version>${log4j2.version}</version>
+    </dependency>
+
     <!-- The two following dependencies are needed for Jetty -->
     <dependency>
       <groupId>org.mortbay.jetty</groupId>
@@ -264,31 +312,16 @@
       <scope>test</scope>
     </dependency>
     <dependency>
-        <groupId>org.mockito</groupId>
-        <artifactId>mockito-core</artifactId>
-        <version>2.0.44-beta</version>
+      <groupId>org.mockito</groupId>
+      <artifactId>mockito-core</artifactId>
+      <version>2.0.44-beta</version>
     </dependency>
   </dependencies>
+
+  <!-- ==================== Build Configuration ==================== -->
   <build>
     <finalName>${project.artifactId}-${project.version}</finalName>
-    <resources>
-      <resource>
-        <directory>src/main/resources</directory>
-        <excludes>
-          <exclude>**/*</exclude>
-        </excludes>
-      </resource>
-    </resources>
     <plugins>
-      <plugin>
-        <groupId>org.apache.maven.plugins</groupId>
-        <artifactId>maven-eclipse-plugin</artifactId>
-        <version>2.9</version>
-        <inherited>true</inherited>
-        <configuration>
-          <useProjectReferences>false</useProjectReferences>
-        </configuration>
-      </plugin>
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-surefire-plugin</artifactId>
@@ -298,79 +331,14 @@
           </includes>
         </configuration>
       </plugin>
-      <plugin>
-        <groupId>org.apache.maven.plugins</groupId>
-        <artifactId>maven-dependency-plugin</artifactId>
-        <executions>
-          <execution>
-            <id>unpack-base-webapp</id>
-            <phase>compile</phase>
-            <goals>
-              <goal>unpack</goal>
-            </goals>
-            <configuration>
-              <artifactItems>
-                <artifactItem>
-                  <groupId>de.ingrid</groupId>
-                  <artifactId>ingrid-base-webapp</artifactId>
-                  <classifier>res</classifier>
-                  <type>zip</type>
-                  <outputDirectory>${project.build.directory}/base-webapp</outputDirectory>
-                </artifactItem>
-              </artifactItems>
-            </configuration>
-          </execution>
-        </executions>
-      </plugin>
-      <plugin>
-        <groupId>org.apache.maven.plugins</groupId>
-        <artifactId>maven-jar-plugin</artifactId>
-        <configuration>
-          <archive>
-            <manifestEntries>
-              <!-- see ingrid-utils:de.ingrid.utils.metadata.IPlugType-->
-              <iPlug-Type>IPLUG_CSW_DSC</iPlug-Type>
-            </manifestEntries>
-          </archive>
-        </configuration>
-      </plugin>
+
+      <!-- Activate maven-assembly-plugin from release pom to build installer -->
       <plugin>
         <artifactId>maven-assembly-plugin</artifactId>
-        <configuration>
-          <archive>
-            <manifestEntries>
-              <ingridComponentType>IPLUG_CSW_DSC</ingridComponentType>
-            </manifestEntries>
-          </archive>
-        </configuration>
-        <executions>
-          <execution>
-            <id>make-installer</id>
-            <phase>package</phase>
-            <goals>
-              <goal>single</goal>
-            </goals>
-          </execution>
-        </executions>
       </plugin>
-      <plugin>
-        <groupId>org.apache.maven.plugins</groupId>
-        <artifactId>maven-war-plugin</artifactId>
-        <configuration>
-          <archiveClasses>false</archiveClasses>
-          <archive>
-            <manifestEntries>
-              <!-- see ingrid-utils:de.ingrid.utils.metadata.IPlugType -->
-              <iPlug-Type>IPLUG_CSW_DSC</iPlug-Type>
-            </manifestEntries>
-          </archive>
-          <webResources>
-            <resource>
-              <directory>target/base-webapp</directory>
-            </resource>
-          </webResources>
-        </configuration>
-      </plugin>
+      <!--
+        This plugin configures the git-flow for this project
+      -->
       <plugin>
         <groupId>external.atlassian.jgitflow</groupId>
         <artifactId>jgitflow-maven-plugin</artifactId>

@@ -22,44 +22,34 @@
  */
 package de.ingrid.iplug.csw.dsc;
 
-import java.util.Properties;
-
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
-
-import com.tngtech.configbuilder.annotation.propertyloaderconfiguration.PropertiesFiles;
-import com.tngtech.configbuilder.annotation.propertyloaderconfiguration.PropertyLocations;
-import com.tngtech.configbuilder.annotation.valueextractor.DefaultValue;
-import com.tngtech.configbuilder.annotation.valueextractor.PropertyValue;
-
 import de.ingrid.admin.IConfig;
 import de.ingrid.admin.command.PlugdescriptionCommandObject;
 import de.ingrid.utils.PlugDescription;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
+import org.springframework.beans.factory.annotation.Value;
 
-@PropertiesFiles({ "config" })
-@PropertyLocations(directories = { "conf" }, fromClassLoader = true)
+import java.util.Properties;
+
+@org.springframework.context.annotation.Configuration
 public class Configuration implements IConfig {
 
     @SuppressWarnings("unused")
     private static Log log = LogFactory.getLog( Configuration.class );
 
-    @PropertyValue("plugdescription.fields")
+    @Value("${plugdescription.fields}")
     public String fields;
 
-    @PropertyValue("plugdescription.serviceUrl")
-    @DefaultValue("")
+    @Value("${plugdescription.serviceUrl:}")
     public String serviceUrl;
 
-    @PropertyValue("numRetriesPerRequest")
-    @DefaultValue("3")
+    @Value("${numRetriesPerRequest:3}")
     public Integer numRetriesPerRequest;
 
-    @PropertyValue("timeBetweenRetries")
-    @DefaultValue("1000")
+    @Value("${timeBetweenRetries:1000}")
     public Integer timeBetweenRetries;
 
-    @PropertyValue("maxNumSkippedRequests")
-    @DefaultValue("0")
+    @Value("${maxNumSkippedRequests:0}")
     public Integer maxNumSkippedRequests;
 
     @Override
