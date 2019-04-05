@@ -29,6 +29,12 @@
   </properties>
   <body>
 
+    <release version="5.0.0" date="2019-04-05" description="Release 5.0.0">
+      <action type="update" dev="wemove" issue="835">
+        Use central index for indexing data.
+      </action>
+    </release>
+
     <release version="4.6.0" date="2019-01-16" description="Release 4.6.0">
       <action type="update" dev="wemove" issue="">
         Improve docker compatibility: move csw cache and elastic search data into a sub directory 'data',
