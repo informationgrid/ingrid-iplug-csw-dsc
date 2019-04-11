@@ -9,6 +9,7 @@ RUN unzip ingrid-*.jar -d /tmp \
     && cp -R /tmp/ingrid-iplug-csw-dsc-*/* /opt/ingrid/ingrid-iplug-csw-dsc/ \
     && touch /opt/ingrid/ingrid-iplug-csw-dsc/pattern \
     && rm -Rf /tmp/* \
+    && sed -i -r 's/(<AppenderRef.*\/>)/\1<AppenderRef ref="Console" \/>/g' /opt/ingrid/ingrid-iplug-csw-dsc/conf/log4j2.xml \
     && rm ingrid-*.jar
 
 RUN echo jetty.port=80 > /opt/ingrid/ingrid-iplug-csw-dsc/conf/config.override.properties
