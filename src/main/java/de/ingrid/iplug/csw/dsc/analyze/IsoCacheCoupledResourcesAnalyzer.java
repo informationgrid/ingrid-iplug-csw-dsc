@@ -32,10 +32,10 @@ import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.w3c.dom.Node;
 
-import de.ingrid.admin.elasticsearch.StatusProvider;
 import de.ingrid.iplug.csw.dsc.cache.Cache;
 import de.ingrid.iplug.csw.dsc.cswclient.CSWRecord;
 import de.ingrid.iplug.csw.dsc.cswclient.constants.ElementSetName;
+import de.ingrid.utils.statusprovider.StatusProviderService;
 import de.ingrid.utils.xml.IDFNamespaceContext;
 import de.ingrid.utils.xpath.XPathUtils;
 
@@ -50,7 +50,7 @@ public class IsoCacheCoupledResourcesAnalyzer {
 
     
     @Autowired
-    private StatusProvider statusProvider;
+    private StatusProviderService statusProviderService;
 
     final private XPathUtils xPathUtils = new XPathUtils(new IDFNamespaceContext());
 
@@ -66,7 +66,7 @@ public class IsoCacheCoupledResourcesAnalyzer {
         if (log.isInfoEnabled()) {
             log.info("Start analyzing " + cache.getCachedRecordIds().size() + " records for coupled resources.");
         }
-        statusProvider.addState( "ANALYZE_COUPLING", "Analyze for coupled resources..." );
+        statusProviderService.getDefaultStatusProvider().addState( "ANALYZE_COUPLING", "Analyze for coupled resources..." );
 
         for (String id : cache.getCachedRecordIds()) {
             CSWRecord record = cache.getRecord(id, ElementSetName.FULL);
@@ -132,14 +132,14 @@ public class IsoCacheCoupledResourcesAnalyzer {
             log.info("Found " + result.getSize() + " couplings between datasets and services.");
         }
         
-        statusProvider.addState( "ANALYZE_COUPLING", "Analyze for coupled resources... found " + result.getSize() + " couplings between datasets and services.");
+        statusProviderService.getDefaultStatusProvider().addState( "ANALYZE_COUPLING", "Analyze for coupled resources... found " + result.getSize() + " couplings between datasets and services.");
         
         return result;
 
     }
 
-    public void setStatusProvider(StatusProvider statusProvider) {
-        this.statusProvider = statusProvider;
+    public void setStatusProviderService(StatusProviderService statusProviderService) {
+        this.statusProviderService = statusProviderService;
     }
 
 }

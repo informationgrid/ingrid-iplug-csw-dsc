@@ -25,12 +25,9 @@ package de.ingrid.iplug.csw.dsc.index;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.mockito.Mock;
-import org.mockito.MockitoAnnotations;
 import org.springframework.core.io.FileSystemResource;
 import org.w3c.dom.Node;
 
-import de.ingrid.admin.elasticsearch.StatusProvider;
 import de.ingrid.iplug.csw.dsc.analyze.CoupledResources;
 import de.ingrid.iplug.csw.dsc.analyze.IsoCacheCoupledResourcesAnalyzer;
 import de.ingrid.iplug.csw.dsc.cswclient.CSWRecord;
@@ -45,14 +42,15 @@ import de.ingrid.iplug.csw.dsc.record.producer.CswRecordProducer;
 import de.ingrid.iplug.csw.dsc.tools.StringUtils;
 import de.ingrid.utils.ElasticDocument;
 import de.ingrid.utils.idf.IdfTool;
+import de.ingrid.utils.statusprovider.StatusProviderService;
 
 public class IdfTransformerWsvRemoveOfflineLinksTest extends BaseIndexTestCase {
 
-    @Mock StatusProvider statusProvider;
+    StatusProviderService statusProviderService;
     
     public IdfTransformerWsvRemoveOfflineLinksTest() {
         super();
-        MockitoAnnotations.initMocks( this );
+        statusProviderService = new StatusProviderService();
     }
     
     /**
@@ -85,7 +83,7 @@ public class IdfTransformerWsvRemoveOfflineLinksTest extends BaseIndexTestCase {
         idfRecordCreator.setRecord2IdfMapperList( record2IdfMapperList );
 
         IsoCacheCoupledResourcesAnalyzer a = new IsoCacheCoupledResourcesAnalyzer();
-        a.setStatusProvider( statusProvider );
+        a.setStatusProviderService( statusProviderService );
         CoupledResources cr = a.analyze( cache );
 
         // GeoKatalog.WSV Tests
