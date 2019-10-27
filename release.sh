@@ -12,7 +12,7 @@ read
 # since during a switch branch it can happen that the script
 # is not there or modified and cannot be executed
 tail -n +17 ./release.sh > ./_release-copy.sh
-sh ./_release-copy.sh $@ &
+bash ./_release-copy.sh $@ &
 exit
 
 # idiomatic parameter and option handling in sh
