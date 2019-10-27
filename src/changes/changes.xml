@@ -25,9 +25,15 @@
 <document>
   <properties>
     <title>Changes Ingrid iPlug CSW AP ISO 1.0 (ingrid-iplug-csw-dsc)</title>
-    <author email="joachim@wemove.com">Joachim Müller</author>
+    <author email="joachim.mueller@wemove.com">Joachim Müller</author>
   </properties>
   <body>
+    <release version="5.2.0" date="2019-10-25" description="Release 5.2.0">
+      <action type="fix" dev="wemove">
+        Fix problem with display in portal detail view. Object class was not accessible.
+      </action>
+    </release>
+
     <release version="5.0.1" date="2019-04-11" description="Release 5.0.1">
       <action type="fix" dev="wemove">
         Fix index name generation.
