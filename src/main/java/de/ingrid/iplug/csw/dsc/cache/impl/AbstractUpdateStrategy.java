@@ -26,8 +26,6 @@
 
 package de.ingrid.iplug.csw.dsc.cache.impl;
 
-import de.ingrid.admin.elasticsearch.StatusProvider;
-import de.ingrid.admin.elasticsearch.StatusProvider.Classification;
 import de.ingrid.iplug.csw.dsc.Configuration;
 import de.ingrid.iplug.csw.dsc.cache.Cache;
 import de.ingrid.iplug.csw.dsc.cache.ExecutionContext;
@@ -36,6 +34,9 @@ import de.ingrid.iplug.csw.dsc.cswclient.*;
 import de.ingrid.iplug.csw.dsc.cswclient.constants.ElementSetName;
 import de.ingrid.iplug.csw.dsc.cswclient.constants.ResultType;
 import de.ingrid.iplug.csw.dsc.tools.StringUtils;
+import de.ingrid.utils.statusprovider.StatusProviderService;
+import de.ingrid.utils.statusprovider.StatusProvider.Classification;
+
 import org.apache.commons.lang.exception.ExceptionUtils;
 import org.apache.commons.logging.Log;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -54,7 +55,7 @@ import java.util.regex.Pattern;
 public abstract class AbstractUpdateStrategy implements UpdateStrategy {
 
     @Autowired
-    protected StatusProvider statusProvider;
+    protected StatusProviderService statusProviderService;
 
     @Autowired
 	private Configuration cswConfig;
@@ -201,7 +202,7 @@ public abstract class AbstractUpdateStrategy implements UpdateStrategy {
 						if (numSkippedRequests > cswConfig.maxNumSkippedRequests) {
 					    	log.error("Problems fetching records. Total number of skipped requests reached (" + cswConfig.maxNumSkippedRequests +
 					    		" requests without results). We end fetching process for this filter.");
-					    	statusProvider.addState( "ERROR_FETCH", "Error during fetch, since more than " + cswConfig.maxNumSkippedRequests + " records have been skipped.", Classification.ERROR );
+					    	statusProviderService.getDefaultStatusProvider().addState( "ERROR_FETCH", "Error during fetch, since more than " + cswConfig.maxNumSkippedRequests + " records have been skipped.", Classification.ERROR );
 						    break;
 						}
 					}
@@ -218,7 +219,7 @@ public abstract class AbstractUpdateStrategy implements UpdateStrategy {
 							numLastFetch = result.getNumberOfRecords();
 						}
     					numRecordsFetched += numLastFetch;
-    					statusProvider.addState( "FETCH", "Fetching record " + (numRecordsFetched-numLastFetch+1) + "-" + numRecordsFetched + " / " + numRecordsTotal + " from " + client.getFactory().getServiceUrl() );
+    					statusProviderService.getDefaultStatusProvider().addState( "FETCH", "Fetching record " + (numRecordsFetched-numLastFetch+1) + "-" + numRecordsFetched + " / " + numRecordsTotal + " from " + client.getFactory().getServiceUrl() );
 
     					query.setStartPosition(query.getStartPosition() + numLastFetch);
 
@@ -259,14 +260,14 @@ public abstract class AbstractUpdateStrategy implements UpdateStrategy {
         					currentFetchedRecordIds.addAll(processResult(result, doCache));
     					}
 					} catch (Exception e) {
-					    statusProvider.addState( "ERROR_FETCH_PROCESS", "Error during processing record: " + logCurrRecordChunk, Classification.ERROR );
+					    statusProviderService.getDefaultStatusProvider().addState( "ERROR_FETCH_PROCESS", "Error during processing record: " + logCurrRecordChunk, Classification.ERROR );
 					    log.error("Error processing records " + logCurrRecordChunk);
 					    log.error( ExceptionUtils.getStackTrace(e) );
 					}
 				}
 
 				if (numLostRecords > 0) {
-				    statusProvider.addState( "ERROR_FETCH_PROCESS", "Error during fetching of record: " + logLostRecordChunks, Classification.ERROR );
+				    statusProviderService.getDefaultStatusProvider().addState( "ERROR_FETCH_PROCESS", "Error during fetching of record: " + logLostRecordChunks, Classification.ERROR );
 				    log.error("\nWe had failed GetRecords requests !!!" +
 				    		"\nThe following " + numLostRecords + " records were NOT fetched and are \"lost\":" +
 				    		"\n" + logLostRecordChunks);

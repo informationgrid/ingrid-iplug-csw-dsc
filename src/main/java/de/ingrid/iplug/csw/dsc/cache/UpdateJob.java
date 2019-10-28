@@ -43,8 +43,8 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 
-import de.ingrid.admin.elasticsearch.StatusProvider;
 import de.ingrid.iplug.csw.dsc.cswclient.CSWFactory;
+import de.ingrid.utils.statusprovider.StatusProviderService;
 
 /**
  * The update job.
@@ -66,7 +66,7 @@ public class UpdateJob {
     private UpdateStrategy updateStrategy;
 
     @Autowired
-    private StatusProvider statusProvider;
+    private StatusProviderService statusProviderService;
     
     /**
      * Constructor
@@ -123,7 +123,7 @@ public class UpdateJob {
         // summary
         Date end = new Date();
         long diff = end.getTime() - start.getTime();
-        statusProvider.addState( "FETCH", "Fetched " + allRecordIds.size() + " records of " + allRecordIds.size() + " from " + this.factory.getServiceUrl() + ". Duplicates: " + duplicates);
+        statusProviderService.getDefaultStatusProvider().addState( "FETCH", "Fetched " + allRecordIds.size() + " records of " + allRecordIds.size() + " from " + this.factory.getServiceUrl() + ". Duplicates: " + duplicates);
         log.info("Fetched " + allRecordIds.size() + " records of " + allRecordIds.size() + ". Duplicates: " + duplicates);
         log.info("Job executed within " + diff + " ms.");
     }

@@ -25,13 +25,10 @@ package de.ingrid.iplug.csw.dsc.index;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.mockito.Mock;
-import org.mockito.MockitoAnnotations;
 import org.springframework.core.io.FileSystemResource;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 
-import de.ingrid.admin.elasticsearch.StatusProvider;
 import de.ingrid.codelists.CodeListService;
 import de.ingrid.iplug.csw.dsc.analyze.CoupledResources;
 import de.ingrid.iplug.csw.dsc.analyze.IsoCacheCoupledResourcesAnalyzer;
@@ -48,6 +45,7 @@ import de.ingrid.iplug.csw.dsc.record.mapper.IIdfMapper;
 import de.ingrid.iplug.csw.dsc.record.producer.CswRecordProducer;
 import de.ingrid.iplug.csw.dsc.tools.StringUtils;
 import de.ingrid.utils.ElasticDocument;
+import de.ingrid.utils.statusprovider.StatusProviderService;
 import de.ingrid.utils.tool.StringUtil;
 
 /**
@@ -56,11 +54,11 @@ import de.ingrid.utils.tool.StringUtil;
  */
 public class MapperToIndexWsvRemoveOfflineLinksTest extends BaseIndexTestCase {
 
-    @Mock StatusProvider statusProvider;
+    StatusProviderService statusProviderService;
     
     public MapperToIndexWsvRemoveOfflineLinksTest() {
         super();
-        MockitoAnnotations.initMocks( this );
+        statusProviderService = new StatusProviderService();
     }
     
     /**
@@ -99,7 +97,7 @@ public class MapperToIndexWsvRemoveOfflineLinksTest extends BaseIndexTestCase {
         idfRecordCreator.setRecord2IdfMapperList( record2IdfMapperList );
 
         IsoCacheCoupledResourcesAnalyzer a = new IsoCacheCoupledResourcesAnalyzer();
-        a.setStatusProvider( statusProvider );
+        a.setStatusProviderService( statusProviderService );
         CoupledResources cr = a.analyze( cache );
         
         mapper.setIdfRecordCreator( idfRecordCreator );

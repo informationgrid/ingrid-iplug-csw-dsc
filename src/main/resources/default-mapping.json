@@ -30,6 +30,10 @@
       "type": "keyword",
       "store": true
     },
+    "t01_object.obj_class": {
+      "type": "keyword",
+      "store": true
+    },
     "t01_object.org_obj_id": {
       "type": "keyword",
       "store": true

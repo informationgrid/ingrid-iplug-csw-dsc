@@ -25,8 +25,6 @@
  */
 package de.ingrid.iplug.csw.dsc.index;
 
-import de.ingrid.admin.elasticsearch.StatusProvider;
-import de.ingrid.admin.elasticsearch.StatusProvider.Classification;
 import de.ingrid.admin.object.IDocumentProducer;
 import de.ingrid.elasticsearch.IndexInfo;
 import de.ingrid.iplug.csw.dsc.Configuration;
@@ -43,6 +41,9 @@ import de.ingrid.iplug.csw.dsc.om.CswCoupledResourcesCacheSourceRecord;
 import de.ingrid.iplug.csw.dsc.om.SourceRecord;
 import de.ingrid.utils.ElasticDocument;
 import de.ingrid.utils.PlugDescription;
+import de.ingrid.utils.statusprovider.StatusProviderService;
+import de.ingrid.utils.statusprovider.StatusProvider.Classification;
+
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -72,7 +73,7 @@ public class CswDscDocumentProducer implements IDocumentProducer {
     private CoupledResources coupledResources = null;
 
     @Autowired
-    StatusProvider statusProvider;
+    StatusProviderService statusProviderService;
 
     @Autowired
     IndexInfo indexInfo;
@@ -116,7 +117,7 @@ public class CswDscDocumentProducer implements IDocumentProducer {
                     
 
                 } catch (Exception e) {
-                    statusProvider.addState( "ERROR_FETCH", "Error harvesting CSW datasource with URL: " + cswConfig.serviceUrl, Classification.ERROR );
+                    statusProviderService.getDefaultStatusProvider().addState( "ERROR_FETCH", "Error harvesting CSW datasource with URL: " + cswConfig.serviceUrl, Classification.ERROR );
                     log.error("Error harvesting CSW datasource.", e);
                     if (tmpCache != null) {
                         tmpCache.rollbackTransaction();
