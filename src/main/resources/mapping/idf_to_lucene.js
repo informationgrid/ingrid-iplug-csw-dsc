@@ -172,6 +172,12 @@ var transformationDescriptions = [
 				"funct":UtilsCSWDate.mapDateFromIso8601ToIndex
 			}
 		},
+        {   "indexField":"modified",
+            "xpath":"//gmd:dateStamp/gco:DateTime | //gmd:dateStamp/gco:Date[not(../gco:DateTime)]",
+            "transform":{
+              "funct":UtilsCSWDate.mapDateFromIso8601ToIndex
+            }
+        },
 		// object_access
 		{	"indexField":"object_access.restriction_key",
 			"xpath":"//gmd:identificationInfo//gmd:resourceConstraints//gmd:otherConstraints/gco:CharacterString",
