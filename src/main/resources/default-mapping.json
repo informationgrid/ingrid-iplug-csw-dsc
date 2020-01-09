@@ -24,7 +24,8 @@
       "store": true
     },
     "t01_object.mod_time": {
-      "type": "text"
+      "type": "keyword",
+      "store": true
     },
     "t01_object.obj_id": {
       "type": "keyword",
@@ -71,6 +72,10 @@
     "idf": {
       "type": "text",
       "index": false
+    },
+    "modified": {
+      "type": "date",
+      "store": true
     }
   }
 }

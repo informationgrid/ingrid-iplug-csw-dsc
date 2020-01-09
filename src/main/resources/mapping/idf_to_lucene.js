@@ -2,7 +2,7 @@
  * **************************************************-
  * ingrid-iplug-csw-dsc:war
  * ==================================================
- * Copyright (C) 2014 - 2019 wemove digital solutions GmbH
+ * Copyright (C) 2014 - 2020 wemove digital solutions GmbH
  * ==================================================
  * Licensed under the EUPL, Version 1.1 or – as soon they will be
  * approved by the European Commission - subsequent versions of the
@@ -172,6 +172,12 @@ var transformationDescriptions = [
 				"funct":UtilsCSWDate.mapDateFromIso8601ToIndex
 			}
 		},
+        {   "indexField":"modified",
+            "xpath":"//gmd:dateStamp/gco:DateTime | //gmd:dateStamp/gco:Date[not(../gco:DateTime)]",
+            "transform":{
+              "funct":UtilsCSWDate.mapDateFromIso8601ToIndex
+            }
+        },
 		// object_access
 		{	"indexField":"object_access.restriction_key",
 			"xpath":"//gmd:identificationInfo//gmd:resourceConstraints//gmd:otherConstraints/gco:CharacterString",

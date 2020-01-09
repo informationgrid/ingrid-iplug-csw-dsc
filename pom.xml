@@ -7,7 +7,7 @@
   </parent>
   <modelVersion>4.0.0</modelVersion>
   <artifactId>ingrid-iplug-csw-dsc</artifactId>
-  <version>5.2.0</version>
+  <version>5.3.0</version>
   <packaging>jar</packaging>
   <name>InGrid iPlug CSW-DSC</name>
   <description>This iPlug indexes documents from a CSW-interface and can be requested by the iBus.</description>
@@ -74,12 +74,12 @@
     <dependency>
       <groupId>de.ingrid</groupId>
       <artifactId>ingrid-utils</artifactId>
-      <version>5.2.0</version>
+      <version>5.3.0</version>
     </dependency>
     <dependency>
       <groupId>de.ingrid</groupId>
       <artifactId>ingrid-codelist-service</artifactId>
-      <version>5.0.0</version>
+      <version>5.3.0</version>
       <exclusions>
         <exclusion>
           <groupId>org.springframework</groupId>
@@ -114,7 +114,7 @@
     <dependency>
       <groupId>de.ingrid</groupId>
       <artifactId>ingrid-iplug</artifactId>
-      <version>5.0.0</version>
+      <version>5.3.0</version>
       <exclusions>
         <exclusion>
           <groupId>ant</groupId>
