@@ -28,12 +28,15 @@
     <author email="joachim.mueller@wemove.com">Joachim Müller</author>
   </properties>
   <body>
-    <release version="5.3.0" date="2020-01-09" description="Release 5.3.0">
+    <release version="5.3.0" date="2020-01-13" description="Release 5.3.0">
       <action type="update" dev="wemove">
         Updated dependencies (iplug, utils, codelist-service).
       </action>
       <action type="update" dev="wemove">
         Add mod_time and modified to index.
+      </action>
+      <action type="fix" dev="wemove" issue="1598">
+        Fix mapping of capabilities URL.
       </action>
     </release>
 
