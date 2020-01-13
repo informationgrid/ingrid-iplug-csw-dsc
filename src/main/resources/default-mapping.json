@@ -76,6 +76,14 @@
     "modified": {
       "type": "date",
       "store": true
+    },
+    "t011_obj_serv_op_connpoint.connect_point": {
+      "type": "keyword",
+      "store": true
+    },
+    "capabilities_url": {
+      "type": "keyword",
+      "store": true
     }
   }
 }
