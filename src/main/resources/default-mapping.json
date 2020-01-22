@@ -84,6 +84,10 @@
     "capabilities_url": {
       "type": "keyword",
       "store": true
+    },
+    "additional_html_1": {
+      "type": "text",
+      "store": true
     }
   }
 }
