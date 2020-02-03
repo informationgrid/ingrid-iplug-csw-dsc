@@ -80,6 +80,9 @@ var transformationDescriptions = [
         "tokenized":true,
         "xpath":"//gmd:identificationInfo//gmd:citation/gmd:CI_Citation/gmd:title/gco:CharacterString"
     },
+    {   "indexField":"alternatetitle",
+        "xpath":"//gmd:identificationInfo//gmd:citation/gmd:CI_Citation/gmd:alternateTitle/gco:CharacterString"
+    },
     {   "indexField":"t01_object.org_obj_id",
         "tokenized":true,
         "xpath":"//gmd:fileIdentifier/gco:CharacterString"
@@ -102,6 +105,9 @@ var transformationDescriptions = [
             "funct":transformToIgcDomainId,
             "params":[523]
         }
+    },
+    {   "indexField":"hierarchylevel",
+        "xpath":"//gmd:hierarchyLevel/gmd:MD_ScopeCode/@codeListValue",
     },
     {   "execute":{
             "funct":mapObjectClass,
@@ -550,6 +556,7 @@ function mapAddresses(recordNode) {
                 addToDoc("t02_address.street", XPathUtils.getString(addresses.item(i), "gmd:contactInfo/gmd:CI_Contact/gmd:address/gmd:CI_Address/gmd:deliveryPoint/gco:CharacterString"), true);
                 addToDoc("t02_address.postcode", XPathUtils.getString(addresses.item(i), "gmd:contactInfo/gmd:CI_Contact/gmd:address/gmd:CI_Address/gmd:postalCode/gco:CharacterString"), true);
                 addToDoc("t02_address.city", XPathUtils.getString(addresses.item(i), "gmd:contactInfo/gmd:CI_Contact/gmd:address/gmd:CI_Address/gmd:city/gco:CharacterString"), true);
+                addToDoc("t02_address.administrative_area_value", XPathUtils.getString(addresses.item(i), "gmd:contactInfo/gmd:CI_Contact/gmd:address/gmd:CI_Address/gmd:administrativeArea/gco:CharacterString"), false);
                 addToDoc("t02_address.country_code", XPathUtils.getString(addresses.item(i), "gmd:contactInfo/gmd:CI_Contact/gmd:address/gmd:CI_Address/gmd:country/gco:CharacterString"), true);
                 addToDoc("t02_address.job", XPathUtils.getString(addresses.item(i), "positionName/gco:CharacterString"), true);
                 addToDoc("t02_address.descr", XPathUtils.getString(addresses.item(i), "gmd:contactInfo/gmd:CI_Contact/contactInstructions/gco:CharacterString"), true);
@@ -702,6 +709,19 @@ function mapKeywords(recordNode) {
     }
 }
 
+function mapKeywordsThesaurusName(recordNode) {
+    var usedKeywords = "";
+    var keywords = XPathUtils.getNodeList(recordNode, "//gmd:identificationInfo//gmd:descriptiveKeywords/gmd:MD_Keywords/gmd:thesaurusName/gmd:CI_Citation/gmd:title/gco:CharacterString");
+    if (hasValue(keywords)) {
+        for (i=0; i<keywords.getLength(); i++ ) {
+            var value = keywords.item(i).getTextContent().trim()
+            if (hasValue(value) && usedKeywords.indexOf(value) == -1) {
+                addToDoc("thesaurusname", value, false);
+                usedKeywords+=value+";"
+            }
+        }
+    }
+}
 
 function mapReferences(recordNode) {
     // check for coupled resources, bound to a specific operation in services
@@ -1040,5 +1060,3 @@ function call_f(f,args)
     return f();
   }
 }
-
-
