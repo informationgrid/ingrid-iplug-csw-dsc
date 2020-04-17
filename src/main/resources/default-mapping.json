@@ -39,6 +39,18 @@
       "type": "keyword",
       "store": true
     },
+    "hierarchylevel": {
+      "type": "keyword",
+      "store": true
+    },
+    "alternatetitle": {
+      "type": "keyword",
+      "store": true
+    },
+    "t02_address.administrative_area_value": {
+      "type": "keyword",
+      "store": true
+    },
     "boost": {
       "type": "float",
       "store": true,
@@ -83,6 +95,10 @@
     },
     "capabilities_url": {
       "type": "keyword",
+      "store": true
+    },
+    "additional_html_1": {
+      "type": "text",
       "store": true
     }
   }
