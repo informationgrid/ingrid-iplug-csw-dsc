@@ -32,6 +32,8 @@ import java.net.URL;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 
+import de.ingrid.iplug.csw.dsc.Configuration;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.w3c.dom.Document;
 
 import de.ingrid.iplug.csw.dsc.cswclient.CSWConstants;
@@ -41,12 +43,15 @@ import de.ingrid.iplug.csw.dsc.cswclient.constants.Operation;
 
 public class KVPGetRequest implements CSWRequest {
 
+	@Autowired
+	private Configuration cswConfig;
+
 	/**
 	 * CSWRequest implementation
 	 */
 	
 	/**
-	 * @see OpenGIS Catalogue Services Specification 2.0.2 - ISO Metadata Application Profile 8.2.1.1
+	 * see OpenGIS Catalogue Services Specification 2.0.2 - ISO Metadata Application Profile 8.2.1.1
 	 */
 	@Override
 	public Document doGetCapabilitiesRequest(String serverURL) throws Exception {
@@ -75,7 +80,7 @@ public class KVPGetRequest implements CSWRequest {
 	}
 
 	/**
-	 * @see OpenGIS Catalogue Services Specification 2.0.2 - ISO Metadata Application Profile 8.2.2.1
+	 *  OpenGIS Catalogue Services Specification 2.0.2 - ISO Metadata Application Profile 8.2.2.1
 	 */
 	@Override
 	public Document doGetRecords(String serverURL, CSWQuery query) throws Exception {
@@ -83,7 +88,7 @@ public class KVPGetRequest implements CSWRequest {
 	}
 
 	/**
-	 * @see OpenGIS Catalogue Services Specification 2.0.2 - ISO Metadata Application Profile 8.2.2.2
+	 * see OpenGIS Catalogue Services Specification 2.0.2 - ISO Metadata Application Profile 8.2.2.2
 	 */
 	@Override
 	public Document doGetRecordById(String serverURL, CSWQuery query) throws Exception {
@@ -109,8 +114,7 @@ public class KVPGetRequest implements CSWRequest {
 	
 	/**
 	 * Send the given request to the server.
-	 * @param serverURL
-	 * @param payload
+	 * @param requestURL
 	 * @return Document
 	 * @throws Exception 
 	 */
@@ -123,7 +127,7 @@ public class KVPGetRequest implements CSWRequest {
 			conn = (HttpURLConnection)url.openConnection();
 			conn.setRequestMethod("GET");
 			conn.setAllowUserInteraction(false);
-			conn.setReadTimeout(10000);
+			conn.setReadTimeout(cswConfig.httpReadTimeout);
 			conn.setDoOutput(true);
 			conn.setRequestProperty("Content-type", "text/xml");
 			conn.connect();
