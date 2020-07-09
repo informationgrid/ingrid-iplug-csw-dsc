@@ -37,6 +37,7 @@ import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.stream.XMLStreamException;
 
+import de.ingrid.iplug.csw.dsc.Configuration;
 import org.apache.axiom.om.OMAbstractFactory;
 import org.apache.axiom.om.OMElement;
 import org.apache.axiom.om.OMFactory;
@@ -44,6 +45,7 @@ import org.apache.axiom.om.OMNamespace;
 import org.apache.axis2.util.XMLUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.w3c.dom.Document;
 
 import de.ingrid.iplug.csw.dsc.cswclient.CSWConstants;
@@ -62,6 +64,9 @@ import de.ingrid.iplug.csw.dsc.tools.StringUtils;
 public class XMLPostRequest implements CSWRequest {
 
     final protected static Log log = LogFactory.getLog(CSWRequest.class);
+
+    @Autowired
+    private Configuration cswConfig;
 
     /**
      * CSWRequest implementation
@@ -248,7 +253,7 @@ public class XMLPostRequest implements CSWRequest {
 			conn = (HttpURLConnection)url.openConnection();
 			conn.setRequestMethod("POST");
 			conn.setAllowUserInteraction(false);
-			conn.setReadTimeout(10000);
+			conn.setReadTimeout(cswConfig.httpReadTimeout);
 			conn.setDoOutput(true);
 			conn.setRequestProperty("Content-type", "text/xml");
 			conn.connect();

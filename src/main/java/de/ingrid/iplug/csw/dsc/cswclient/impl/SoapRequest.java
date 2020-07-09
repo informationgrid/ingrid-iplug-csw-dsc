@@ -32,6 +32,7 @@ import java.util.List;
 import javax.xml.namespace.QName;
 import javax.xml.stream.XMLStreamException;
 
+import de.ingrid.iplug.csw.dsc.Configuration;
 import org.apache.axiom.om.OMAbstractFactory;
 import org.apache.axiom.om.OMElement;
 import org.apache.axiom.om.OMFactory;
@@ -45,6 +46,7 @@ import org.apache.axis2.context.ConfigurationContextFactory;
 import org.apache.axis2.util.XMLUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.ClassPathResource;
 import org.w3c.dom.Document;
 
@@ -71,12 +73,15 @@ public class SoapRequest implements CSWRequest {
 
     private CSWRequestPreprocessor<ServiceClient> preProcessor = null;
 
+    @Autowired
+    private Configuration cswConfig;
+
     /**
      * CSWRequest implementation
      */
 
     /**
-     * @see OpenGIS Catalogue Services Specification 2.0.2 - ISO Metadata
+     * OpenGIS Catalogue Services Specification 2.0.2 - ISO Metadata
      *      Application Profile 8.2.1.1
      */
     @Override
@@ -117,7 +122,7 @@ public class SoapRequest implements CSWRequest {
     }
 
     /**
-     * @see OpenGIS Catalogue Services Specification 2.0.2 - ISO Metadata
+     * OpenGIS Catalogue Services Specification 2.0.2 - ISO Metadata
      *      Application Profile 8.2.2.1
      */
     @Override
@@ -190,7 +195,7 @@ public class SoapRequest implements CSWRequest {
     }
 
     /**
-     * @see OpenGIS Catalogue Services Specification 2.0.2 - ISO Metadata
+     * OpenGIS Catalogue Services Specification 2.0.2 - ISO Metadata
      *      Application Profile 8.2.2.2
      */
     @Override
@@ -261,6 +266,7 @@ public class SoapRequest implements CSWRequest {
         opts.setTo(new EndpointReference(serverURL));
         opts.setProperty(org.apache.axis2.transport.http.HTTPConstants.CHUNKED, false);
         opts.setProperty(org.apache.axis2.Constants.Configuration.CHARACTER_SET_ENCODING, "UTF-8");
+        opts.setTimeOutInMilliSeconds(cswConfig.httpReadTimeout);
         /*
          * opts.setProperty(org.apache.axis2.transport.http.HTTPConstants.HTTP_PROTOCOL_VERSION
          * , org.apache.axis2.transport.http.HTTPConstants.HEADER_PROTOCOL_10);
