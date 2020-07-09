@@ -28,6 +28,12 @@
     <author email="joachim.mueller@wemove.com">Joachim Müller</author>
   </properties>
   <body>
+    <release version="5.3.11-SNAPSHOT" date="2020-xx-xx" description="Release 5.3.11">
+      <action type="add" dev="wemove" issue="1988">
+        Make HTTP read timeout configurable.
+      </action>
+    </release>
+
     <release version="5.3.0" date="2020-01-13" description="Release 5.3.0">
       <action type="update" dev="wemove">
         Updated dependencies (iplug, utils, codelist-service).
