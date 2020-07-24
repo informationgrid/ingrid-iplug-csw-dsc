@@ -52,6 +52,9 @@ public class Configuration implements IConfig {
     @Value("${maxNumSkippedRequests:0}")
     public Integer maxNumSkippedRequests;
 
+    @Value("${httpReadTimeout:10000}")
+    public Integer httpReadTimeout;
+
     @Override
     public void initialize() {}
 

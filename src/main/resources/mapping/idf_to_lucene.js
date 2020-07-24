@@ -408,10 +408,9 @@ var transformationDescriptions = [
         }
     },
     // add MD_BrowseGraphic as additional html
-    {   "indexField":"additional_html_1",
-        "xpath":"//gmd:identificationInfo//gmd:graphicOverview/gmd:MD_BrowseGraphic/gmd:fileName/gco:CharacterString",
-        "transform":{
-            "funct":transformToPreviewGraphic
+    {   "execute":{
+            "funct":transformToPreviewGraphic,
+            "params":[recordNode]
         }
     },
     {   "indexField":"t017_url_ref.content",
@@ -854,12 +853,24 @@ function transformISO639_2ToISO639_1(val) {
     
 } 
 
-function transformToPreviewGraphic(val) {
-    if (hasValue(val)) {
-        var previewImageHtmlTag = "<img src='" + val + "' height='100' class='preview_image' />";
-        return previewImageHtmlTag;
+function transformToPreviewGraphic() {
+    var mdBrowseGraphics = XPathUtils.getNodeList(recordNode, "//gmd:identificationInfo//gmd:graphicOverview/gmd:MD_BrowseGraphic")
+    if (hasValue(mdBrowseGraphics)) {
+        for (i=0; i<mdBrowseGraphics.getLength(); i++ ) {
+          var mdBrowseGraphic = mdBrowseGraphics.item(i);
+          var fileName = XPathUtils.getString(mdBrowseGraphic, "./gmd:fileName/gco:CharacterString");
+          var fileDescription = XPathUtils.getString(mdBrowseGraphic, "./gmd:fileDescription/gco:CharacterString");
+          if (hasValue(fileName)) {
+              var previewImageHtmlTag = "<img src='" + fileName + "' height='100' class='preview_image' ";
+              if (hasValue(fileDescription)) {
+                  previewImageHtmlTag += "alt='" + fileDescription + "' title='" + fileDescription + "' >";
+              } else {
+                  previewImageHtmlTag += "alt='"+ fileName + "' >";
+              }
+              addToDoc("additional_html_1", previewImageHtmlTag, false);
+          }
+        }
     }
-    return "";
 } 
 
 
