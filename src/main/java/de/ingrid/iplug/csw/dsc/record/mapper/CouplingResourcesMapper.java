@@ -93,6 +93,7 @@ public class CouplingResourcesMapper implements IIdfMapper {
                             crossReference.addElement("idf:serviceType").addText(serviceType);
                             crossReference.addElement("idf:serviceOperation").addText(operationName);
                             crossReference.addElement("idf:serviceUrl").addText(operationServiceUrl);
+                            crossReference.addElement("idf:graphicOverview").addText(xPathUtils.getString(coupledResourceNode, "//gmd:graphicOverview/gmd:MD_BrowseGraphic/gmd:fileName/gco:CharacterString"));
                         }
                     }
                 } else {
@@ -102,6 +103,7 @@ public class CouplingResourcesMapper implements IIdfMapper {
                     crossReference.addElement("idf:objectType").addText("1");
                     crossReference.addElement("idf:attachedToField").addAttribute("entry-id", "3600").addAttribute("list-id", "2000").addText("Gekoppelte Daten");
                     crossReference.addElement("idf:description").addText(xPathUtils.getString(coupledResourceNode, "//gmd:identificationInfo/*/gmd:abstract/gco:CharacterString"));
+                    crossReference.addElement("idf:graphicOverview").addText(xPathUtils.getString(coupledResourceNode, "//gmd:graphicOverview/gmd:MD_BrowseGraphic/gmd:fileName/gco:CharacterString"));
                 }
             }
         }
