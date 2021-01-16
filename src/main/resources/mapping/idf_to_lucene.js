@@ -417,9 +417,6 @@ var transformationDescriptions = [
             "params":[recordNode]
         }
     },
-    {   "indexField":"t017_url_ref.content",
-        "xpath":"//gmd:identificationInfo//gmd:graphicOverview/gmd:MD_BrowseGraphic/gmd:fileDescription/gco:CharacterString"
-    },
     // object_references
     {   "execute":{
             "funct":mapReferences,
@@ -639,9 +636,25 @@ function mapOnlineResource(recordNode) {
             }
 */
             // map CI_OnlineResource
-            addToDoc("t017_url_ref.url_link", XPathUtils.getString(onlineResources.item(i), "gmd:linkage/gmd:URL"), true);
-            addToDoc("t017_url_ref.content", XPathUtils.getString(onlineResources.item(i), "name/gco:CharacterString"), true);
-            addToDoc("t017_url_ref.descr", XPathUtils.getString(onlineResources.item(i), "gmd:description/gco:CharacterString"), true);            
+            var urlLink = "";
+            var content = "";
+            var descr = "";
+            
+            if(XPathUtils.getString(onlineResources.item(i), "gmd:linkage/gmd:URL") != null) {
+              urlLink = XPathUtils.getString(onlineResources.item(i), "gmd:linkage/gmd:URL");
+            }
+
+            if(hasValue(urlLink)) {
+                if(XPathUtils.getString(onlineResources.item(i), "gmd:name/gco:CharacterString") != null) {
+                    content = XPathUtils.getString(onlineResources.item(i), "gmd:name/gco:CharacterString");
+                }
+                if(XPathUtils.getString(onlineResources.item(i), "gmd:description/gco:CharacterString") != null) {
+                    descr = XPathUtils.getString(onlineResources.item(i), "gmd:description/gco:CharacterString");
+                }
+                addToDoc("t017_url_ref.url_link", urlLink, true);
+                addToDoc("t017_url_ref.content", content, true);
+                addToDoc("t017_url_ref.descr", descr, true);
+            }
         }
     }
 }
