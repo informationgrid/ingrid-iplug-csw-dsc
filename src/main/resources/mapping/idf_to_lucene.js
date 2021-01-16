@@ -937,7 +937,7 @@ function addResourceMaintenance() {
 function addTimeConstraints() {
     var t1 = UtilsCSWDate.mapDateFromIso8601ToIndex(XPathUtils.getString(recordNode, "//gmd:identificationInfo//gmd:EX_Extent/gmd:temporalElement/gmd:EX_TemporalExtent/gmd:extent/gml:TimePeriod/gml:beginPosition"));
     var t2 = UtilsCSWDate.mapDateFromIso8601ToIndex(XPathUtils.getString(recordNode, "//gmd:identificationInfo//gmd:EX_Extent/gmd:temporalElement/gmd:EX_TemporalExtent/gmd:extent/gml:TimePeriod/gml:endPosition"));
-    var timeType;
+
     if (hasValue(t1) && hasValue(t2)) {
         if (t1 == t2) {
             addToDoc("t01_object.time_type", "am", false);
