@@ -2,7 +2,7 @@
  * **************************************************-
  * ingrid-iplug-csw-dsc:war
  * ==================================================
- * Copyright (C) 2014 - 2020 wemove digital solutions GmbH
+ * Copyright (C) 2014 - 2021 wemove digital solutions GmbH
  * ==================================================
  * Licensed under the EUPL, Version 1.1 or – as soon they will be
  * approved by the European Commission - subsequent versions of the
@@ -238,6 +238,10 @@ var transformationDescriptions = [
     // t011_obj_serv_op_connpoint
     {   "indexField":"t011_obj_serv_op_connpoint.connect_point",
         "xpath":"//gmd:identificationInfo//srv:containsOperations/srv:SV_OperationMetadata/srv:connectPoint/gmd:CI_OnlineResource/gmd:linkage/gmd:URL",
+        "additionalTokenize":"SPLIT_URL"
+    },
+    {   "indexField":"capabilities_url",
+        "xpath":"//gmd:identificationInfo/srv:SV_ServiceIdentification[./srv:serviceType/gco:LocalName/text() = 'WMS' or ./srv:serviceType/gco:LocalName/text() = 'view']//srv:containsOperations/srv:SV_OperationMetadata/srv:operationName/gco:CharacterString[text() = 'GetCapabilities']/../../srv:connectPoint//gmd:URL",
         "additionalTokenize":"SPLIT_URL"
     },
     // t011_obj_serv_op_depends
@@ -634,7 +638,7 @@ function mapOnlineResource(recordNode) {
 
 
 function mapGeographicElements(recordNode) {
-    var geographicElements = XPathUtils.getNodeList(recordNode, "//gmd:identificationInfo//gmd:extent/gmd:EX_Extent/gmd:geographicElement");
+    var geographicElements = XPathUtils.getNodeList(recordNode, "//gmd:identificationInfo//*/gmd:EX_Extent/gmd:geographicElement");
     if (hasValue(geographicElements)) {
         for (i=0; i<geographicElements.getLength(); i++ ) {
             var value = XPathUtils.getString(geographicElements.item(i), "gmd:EX_GeographicDescription/gmd:geographicIdentifier/gmd:MD_Identifier/gmd:code/gco:CharacterString");
