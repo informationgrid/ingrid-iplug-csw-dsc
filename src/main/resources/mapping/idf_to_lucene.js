@@ -639,6 +639,8 @@ function mapOnlineResource(recordNode) {
             var urlLink = "";
             var content = "";
             var descr = "";
+            var codeListValue = "";
+            var specialRef = "";
             
             if(XPathUtils.getString(onlineResources.item(i), "gmd:linkage/gmd:URL") != null) {
               urlLink = XPathUtils.getString(onlineResources.item(i), "gmd:linkage/gmd:URL");
@@ -651,9 +653,16 @@ function mapOnlineResource(recordNode) {
                 if(XPathUtils.getString(onlineResources.item(i), "gmd:description/gco:CharacterString") != null) {
                     descr = XPathUtils.getString(onlineResources.item(i), "gmd:description/gco:CharacterString");
                 }
+                if(XPathUtils.getString(onlineResources.item(i), "gmd:function/gmd:CI_OnLineFunctionCode/@codeListValue") != null) {
+                    codeListValue = XPathUtils.getString(onlineResources.item(i), "gmd:function/gmd:CI_OnLineFunctionCode/@codeListValue");
+                    if(transformToIgcDomainId(codeListValue, "2000")) {
+                        specialRef = transformToIgcDomainId(codeListValue, "2000");
+                    }
+                }
                 addToDoc("t017_url_ref.url_link", urlLink, true);
                 addToDoc("t017_url_ref.content", content, true);
                 addToDoc("t017_url_ref.descr", descr, true);
+                addToDoc("t017_url_ref.special_ref", specialRef, true);
             }
         }
     }

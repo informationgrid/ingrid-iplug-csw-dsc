@@ -125,6 +125,10 @@
       "type": "keyword",
       "store": true
     },
+    "t017_url_ref.special_ref": {
+      "type": "keyword",
+      "store": true
+    },
     "object_reference.obj_to_uuid": {
       "type": "keyword"
     },
