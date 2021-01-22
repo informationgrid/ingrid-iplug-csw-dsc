@@ -186,17 +186,25 @@ var transformationDescriptions = [
     },
     // object_access
     {   "indexField":"object_access.restriction_key",
-        "xpath":"//gmd:identificationInfo//gmd:resourceConstraints//gmd:otherConstraints/gco:CharacterString",
+        "xpath":"//gmd:identificationInfo//gmd:resourceConstraints//gmd:otherConstraints[../gmd:accessConstraints]/gco:CharacterString",
         "transform":{
             "funct":transformToIgcDomainId,
             "params":[6010]
         }
     },
     {   "indexField":"object_access.restriction_value",
-        "xpath":"//gmd:identificationInfo//gmd:resourceConstraints//gmd:otherConstraints/gco:CharacterString"
+        "xpath":"//gmd:identificationInfo//gmd:resourceConstraints//gmd:otherConstraints[../gmd:accessConstraints]/gco:CharacterString"
     },
     {   "indexField":"object_access.terms_of_use",
         "xpath":"//gmd:identificationInfo//gmd:resourceConstraints//gmd:useLimitation/gco:CharacterString"
+    },
+    // object_use
+    {   "indexField":"object_use.terms_of_use_value",
+        "xpath":"//gmd:identificationInfo//gmd:resourceConstraints//gmd:otherConstraints[../gmd:useLimitation]/gco:CharacterString"
+    },
+    // object_use_constraint
+    {   "indexField":"object_use_constraint.license_value",
+        "xpath":"//gmd:identificationInfo//gmd:resourceConstraints//gmd:otherConstraints[../gmd:useConstraints]/gco:CharacterString"
     },
     // t0110_avail_format
     {   "indexField":"t0110_avail_format.name",
@@ -767,11 +775,12 @@ function mapReferences(recordNode) {
             var value = coupledResources.item(i).getTextContent()
             if (hasValue(value) && usedUuids.indexOf(value+"3345") == -1) {
                 addToDoc("object_reference.obj_to_uuid", value, true);
-                addToDoc("object_reference.obj_uuid", value, true);
+                addToDoc("object_reference.obj_uuid", value, false);
                 addToDoc("object_reference.obj_name", "", false);
                 addToDoc("object_reference.obj_class", "", false);
                 addToDoc("object_reference.type", "", false);
                 addToDoc("object_reference.special_ref", "3345", true);
+                addToDoc("object_reference.special_name", "", false);
                 usedUuids+=value+"3345;"
             }
         }
@@ -783,11 +792,12 @@ function mapReferences(recordNode) {
             var value = operatesOn.item(i).getTextContent()
             if (hasValue(value) && usedUuids.indexOf(value+"3345") == -1) {
                 addToDoc("object_reference.obj_to_uuid", value, true);
-                addToDoc("object_reference.obj_uuid", value, true);
+                addToDoc("object_reference.obj_uuid", value, false);
                 addToDoc("object_reference.obj_name", "", false);
                 addToDoc("object_reference.obj_class", "", false);
                 addToDoc("object_reference.type", "", false);
                 addToDoc("object_reference.special_ref", "3345", true);
+                addToDoc("object_reference.special_name", "", false);
                 usedUuids+=value+"3345;"
             }
         }
@@ -799,11 +809,12 @@ function mapReferences(recordNode) {
             var value = operatesOn.item(i).getTextContent()
             if (hasValue(value) && usedUuids.indexOf(value+"3535") == -1) {
                 addToDoc("object_reference.obj_to_uuid", value, true);
-                addToDoc("object_reference.obj_uuid", value, true);
+                addToDoc("object_reference.obj_uuid", value, false);
                 addToDoc("object_reference.obj_name", "", false);
                 addToDoc("object_reference.obj_class", "", false);
                 addToDoc("object_reference.type", "", false);
                 addToDoc("object_reference.special_ref", "3535", true);
+                addToDoc("object_reference.special_name", "", false);
                 usedUuids+=value+"3535;"
             }
         }
@@ -815,11 +826,12 @@ function mapReferences(recordNode) {
             var value = operatesOn.item(i).getTextContent()
             if (hasValue(value) && usedUuids.indexOf(value+"3555") == -1) {
                 addToDoc("object_reference.obj_to_uuid", value, true);
-                addToDoc("object_reference.obj_uuid", value, true);
+                addToDoc("object_reference.obj_uuid", value, false);
                 addToDoc("object_reference.obj_name", "", false);
                 addToDoc("object_reference.obj_class", "", false);
                 addToDoc("object_reference.type", "", false);
                 addToDoc("object_reference.special_ref", "3555", true);
+                addToDoc("object_reference.special_name", "", false);
                 usedUuids+=value+"3555;"
             }
         }
@@ -1039,12 +1051,12 @@ function addObjectReference() {
             var objSpecialRef = XPathUtils.getString(crossReference, "idf:attachedToField/@entry-id");
             var objSpecialName = XPathUtils.getString(crossReference, "idf:attachedToField");
             var objServiceType = XPathUtils.getString(crossReference, "idf:serviceType");
-            addToDoc("refering.object_reference.obj_uuid", objUuid, false);
-            addToDoc("refering.object_reference.obj_name", objName, false);
-            addToDoc("refering.object_reference.obj_class", objClass, false);
-            addToDoc("refering.object_reference.type", objServiceType, false);
-            addToDoc("refering.object_reference.special_ref", objSpecialRef, false);
-            addToDoc("refering.object_reference.special_name", objSpecialName, false);
+            addToDoc("refering.object_reference.obj_uuid", objUuid || "", false);
+            addToDoc("refering.object_reference.obj_name", objName || "", false);
+            addToDoc("refering.object_reference.obj_class", objClass || "", false);
+            addToDoc("refering.object_reference.type", objServiceType || "", false);
+            addToDoc("refering.object_reference.special_ref", objSpecialRef || "", false);
+            addToDoc("refering.object_reference.special_name", objSpecialName || "", false);
         }
     }
 }
@@ -1060,13 +1072,13 @@ function addObjectReferenceTo() {
           var objSpecialRef = XPathUtils.getString(crossReference, "idf:attachedToField/@entry-id");
           var objSpecialName = XPathUtils.getString(crossReference, "idf:attachedToField");
           var objServiceType = XPathUtils.getString(crossReference, "idf:serviceType");
-          addToDoc("object_reference.obj_to_uuid", objUuid, false);
-          addToDoc("object_reference.obj_uuid", objUuid, true);
-          addToDoc("object_reference.obj_name", objName, false);
-          addToDoc("object_reference.obj_class", objClass, false);
-          addToDoc("object_reference.type", objServiceType, false);
-          addToDoc("object_reference.special_ref", objSpecialRef, false);
-          addToDoc("object_reference.special_name", objSpecialName, false);
+          addToDoc("object_reference.obj_to_uuid", objUuid || "", false);
+          addToDoc("object_reference.obj_uuid", objUuid || "", false);
+          addToDoc("object_reference.obj_name", objName || "", false);
+          addToDoc("object_reference.obj_class", objClass || "", false);
+          addToDoc("object_reference.type", objServiceType || "", false);
+          addToDoc("object_reference.special_ref", objSpecialRef || "", false);
+          addToDoc("object_reference.special_name", objSpecialName || "", false);
       }
   }
 }

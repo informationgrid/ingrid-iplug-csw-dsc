@@ -133,7 +133,8 @@
       "type": "keyword"
     },
     "object_reference.obj_uuid": {
-      "type": "keyword"
+      "type": "keyword",
+      "store": true
     },
     "object_reference.obj_name": {
       "type": "keyword",
@@ -176,6 +177,14 @@
       "store": true
     },
     "t2": {
+      "type": "keyword",
+      "store": true
+    },
+    "object_use_constraint.license_key": {
+      "type": "keyword",
+      "store": true
+    },
+    "object_use_constraint.license_value": {
       "type": "keyword",
       "store": true
     }
