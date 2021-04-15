@@ -5,6 +5,12 @@
     <author email="joachim.mueller@wemove.com">Joachim Müller</author>
   </properties>
   <body>
+    <release version="5.8.0" date="2021-04-15" description="Release 5.8.0">
+      <action type="fix" dev="wemove" issue="2287">
+        Fix map area search
+      </action>
+    </release>
+
     <release version="5.7.0" date="2021-01-19" description="Release 5.7.0">
       <action type="fix" dev="wemove" issue="2197">
         Fix broken connection after IOException
@@ -95,7 +101,7 @@
         Added docker integration.
       </action>
     </release>
-    
+
     <release version="4.1.0" date="2017-10-04" description="Release 4.1.0">
       <action type="update" dev="wemove" issue="563">
         Added syslist 6010 accessConstraints to codelist service.
@@ -116,7 +122,7 @@
         Fixed showing old service URL after it has been changed.
       </action>
     </release>
-    
+
     <release version="4.0.0.1" date="2016-09-19" description="Release 4.0.0.1">
       <action type="fix" dev="wemove" issue="REDMINE-440">
         Cannot consume documents with gmd:series element and resulting multiple gmd:fileIdentifier Elements.
@@ -131,7 +137,7 @@
         Updated webapp and start script info.
       </action>
     </release>
-    
+
     <release version="3.6.2" date="2016-05-13" description="Release 3.6.2">
       <action type="add" dev="wemove" issue="REDMINE-34">
         Improved status messages while indexing.
@@ -146,7 +152,7 @@
         Fixed redirect to welcome page for a logged in user.
       </action>
     </release>
-    
+
     <release version="3.6.1" date="2015-11-17" description="Release 3.6.1">
       <action type="update" dev="wemove" issue="REDMINE-15">
         Remove all references to PortalU.
@@ -167,13 +173,13 @@
         Fixed query generation and request of index fields.
       </action>
     </release>
-    
+
     <release version="3.6.0" date="2015-06-19" description="Release 3.6.0">
       <action type="add" dev="wemove" issue="REDMINE-6">
         Added elastic search as new indexing method.
       </action>
     </release>
-    
+
     <release version="3.5.1" date="2015-04-15" description="Release 3.5.1">
         <action type="add" dev="wemove">
              Added XMLPostRequest to use plain POST method as alternative to SOAP requests (set in spring.xml).

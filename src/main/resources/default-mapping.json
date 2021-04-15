@@ -70,16 +70,20 @@
       "type": "text"
     },
     "x1": {
-      "type": "double"
+      "type": "double",
+      "store": true
     },
     "x2": {
-      "type": "double"
+      "type": "double",
+      "store": true
     },
     "y1": {
-      "type": "double"
+      "type": "double",
+      "store": true
     },
     "y2": {
-      "type": "double"
+      "type": "double",
+      "store": true
     },
     "idf": {
       "type": "text",
@@ -99,6 +103,18 @@
     },
     "additional_html_1": {
       "type": "text",
+      "store": true
+    },
+    "t04_search.searchterm": {
+      "type": "keyword",
+      "store": true
+    },
+    "t011_obj_serv.type": {
+      "type": "keyword",
+      "store": true
+    },
+    "t011_obj_serv.type_key": {
+      "type": "keyword",
       "store": true
     }
   }
