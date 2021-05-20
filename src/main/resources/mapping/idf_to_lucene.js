@@ -204,7 +204,7 @@ var transformationDescriptions = [
     },
     // object_use_constraint
     {   "indexField":"object_use_constraint.license_value",
-        "xpath":"//gmd:identificationInfo//gmd:resourceConstraints//gmd:otherConstraints[../gmd:useConstraints]/(gmx:Anchor|gco:CharacterString)"
+        "xpath":"//gmd:identificationInfo//gmd:resourceConstraints//gmd:otherConstraints[../gmd:useConstraints]/gmx:Anchor | //gmd:identificationInfo//gmd:resourceConstraints//gmd:otherConstraints[../gmd:useConstraints]/gco:CharacterString"
     },
     // t0110_avail_format
     {   "indexField":"t0110_avail_format.name",
@@ -400,7 +400,7 @@ var transformationDescriptions = [
         }
     },
     {   "indexField":"t011_obj_geo_symc.edition",
-        "xpath":"//gmd:portrayalCatalogueInfo/gmd:MD_PortrayalCatalogueReference/gmd:portrayalCatalogueCitation/gmd:CI_Citation    /gco:CharacterString"
+        "xpath":"//gmd:portrayalCatalogueInfo/gmd:MD_PortrayalCatalogueReference/gmd:portrayalCatalogueCitation/gmd:CI_Citation/gco:CharacterString"
     },
     // t011_obj_geo_vector
     {   "indexField":"t011_obj_geo_vector.geometric_object_type",
