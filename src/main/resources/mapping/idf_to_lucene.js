@@ -204,7 +204,7 @@ var transformationDescriptions = [
     },
     // object_use_constraint
     {   "indexField":"object_use_constraint.license_value",
-        "xpath":"//gmd:identificationInfo//gmd:resourceConstraints//gmd:otherConstraints[../gmd:useConstraints]/gco:CharacterString"
+        "xpath":"//gmd:identificationInfo//gmd:resourceConstraints//gmd:otherConstraints[../gmd:useConstraints]/(gmx:Anchor|gco:CharacterString)"
     },
     // t0110_avail_format
     {   "indexField":"t0110_avail_format.name",
