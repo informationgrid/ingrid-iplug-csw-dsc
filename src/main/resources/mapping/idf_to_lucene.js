@@ -156,14 +156,16 @@ var transformationDescriptions = [
         "xpath":"//gmd:identificationInfo//gmd:extent/gmd:EX_Extent/gmd:verticalElement/gmd:EX_VerticalExtent/gmd:maximumValue/gco:Real"
     },
     {   "indexField":"t01_object.vertical_extent_unit",
-        "xpath":"//gmd:identificationInfo//gmd:EX_Extent/gmd:verticalElement/gmd:EX_VerticalExtent/gmd:verticalCRS/gmd:verticalCRS/gml:verticalCS/gml:VerticalCS/gml:axis/gml:CoordinateSystemAxis/@uom",
+        "xpath":"//gmd:identificationInfo//gmd:EX_Extent/gmd:verticalElement/gmd:EX_VerticalExtent/gmd:verticalCRS/gmd:verticalCRS/gml:verticalCS/gml:VerticalCS/gml:axis/gml:CoordinateSystemAxis/@uom" +
+            " | //gmd:identificationInfo//gmd:EX_Extent/gmd:verticalElement/gmd:EX_VerticalExtent/gmd:verticalCRS/gmd:verticalCRS/gml311:verticalCS/gml311:VerticalCS/gml311:axis/gml311:CoordinateSystemAxis/@uom",
         "transform":{
             "funct":transformToIgcDomainId,
             "params":[102]
         }
     },
     {   "indexField":"t01_object.vertical_extent_vdatum",
-        "xpath":"//gmd:identificationInfo//gmd:EX_Extent/gmd:verticalElement/gmd:EX_VerticalExtent/gmd:verticalCRS/gml:verticalCRS/gml:verticalDatum/gml:VerticalDatum/gml:identifier",
+        "xpath":"//gmd:identificationInfo//gmd:EX_Extent/gmd:verticalElement/gmd:EX_VerticalExtent/gmd:verticalCRS/gml:verticalCRS/gml:verticalDatum/gml:VerticalDatum/gml:identifier" +
+            " | //gmd:identificationInfo//gmd:EX_Extent/gmd:verticalElement/gmd:EX_VerticalExtent/gmd:verticalCRS/gml311:verticalCRS/gml311:verticalDatum/gml311:VerticalDatum/gml311:identifier",
         "transform":{
             "funct":transformToIgcDomainId,
             "params":[101]
@@ -969,9 +971,11 @@ function addResourceMaintenance() {
  * 
  */
 function addTimeConstraints() {
-    var t1 = UtilsCSWDate.mapDateFromIso8601ToIndex(XPathUtils.getString(recordNode, "//gmd:identificationInfo//gmd:EX_Extent/gmd:temporalElement/gmd:EX_TemporalExtent/gmd:extent/gml:TimePeriod/gml:beginPosition"));
-    var t2 = UtilsCSWDate.mapDateFromIso8601ToIndex(XPathUtils.getString(recordNode, "//gmd:identificationInfo//gmd:EX_Extent/gmd:temporalElement/gmd:EX_TemporalExtent/gmd:extent/gml:TimePeriod/gml:endPosition"));
-
+    var t1 = UtilsCSWDate.mapDateFromIso8601ToIndex(XPathUtils.getString(recordNode, "//gmd:identificationInfo//gmd:EX_Extent/gmd:temporalElement/gmd:EX_TemporalExtent/gmd:extent/gml:TimePeriod/gml:beginPosition" +
+        " | //gmd:identificationInfo//gmd:EX_Extent/gmd:temporalElement/gmd:EX_TemporalExtent/gmd:extent/gml311:TimePeriod/gml311:beginPosition"));
+    var t2 = UtilsCSWDate.mapDateFromIso8601ToIndex(XPathUtils.getString(recordNode, "//gmd:identificationInfo//gmd:EX_Extent/gmd:temporalElement/gmd:EX_TemporalExtent/gmd:extent/gml:TimePeriod/gml:endPosition" +
+        " | //gmd:identificationInfo//gmd:EX_Extent/gmd:temporalElement/gmd:EX_TemporalExtent/gmd:extent/gml311:TimePeriod/gml311:endPosition"));
+    var timeType;
     if (hasValue(t1) && hasValue(t2)) {
         if (t1 == t2) {
             addToDoc("t01_object.time_type", "am", false);
