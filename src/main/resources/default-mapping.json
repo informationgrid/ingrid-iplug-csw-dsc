@@ -58,16 +58,54 @@
     },
     "title": {
       "type": "text",
-      "store": true
+      "analyzer": "german",
+      "store": true,
+      "fields": {
+        "ngram": {
+          "type":  "text",
+          "analyzer": "ngram",
+          "search_analyzer": "german"
+        },
+        "edge_ngram": {
+          "type":  "text",
+          "analyzer": "edge_ngram",
+          "search_analyzer": "german"
+        }
+      }
     },
     "summary": {
-      "analyzer": "german",
       "type": "text",
-      "store": true
+      "analyzer": "german",
+      "store": true,
+      "fields": {
+        "ngram": {
+          "type":  "text",
+          "analyzer": "ngram",
+          "search_analyzer": "german"
+        },
+        "edge_ngram": {
+          "type":  "text",
+          "analyzer": "edge_ngram",
+          "search_analyzer": "german"
+        }
+      }
     },
     "content": {
+      "type": "text",
       "analyzer": "german",
-      "type": "text"
+      "store": true,
+      "fields": {
+        "ngram": {
+          "type":  "text",
+          "analyzer": "ngram",
+          "search_analyzer": "german"
+        },
+        "edge_ngram": {
+          "type":  "text",
+          "analyzer": "edge_ngram",
+          "search_analyzer": "german"
+        }
+      }
     },
     "x1": {
       "type": "double",
@@ -187,6 +225,9 @@
     "object_use_constraint.license_value": {
       "type": "keyword",
       "store": true
+    },
+    "sort_hash": {
+      "type": "keyword"
     }
   }
 }
