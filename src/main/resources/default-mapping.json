@@ -107,7 +107,11 @@
         }
       }
     },
-    "x1": {
+    "location": {
+      "type": "keyword",
+      "store": true
+    },
+     "x1": {
       "type": "double",
       "store": true
     },
