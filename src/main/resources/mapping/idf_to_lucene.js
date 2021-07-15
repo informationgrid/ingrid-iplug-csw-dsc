@@ -156,14 +156,16 @@ var transformationDescriptions = [
         "xpath":"//gmd:identificationInfo//gmd:extent/gmd:EX_Extent/gmd:verticalElement/gmd:EX_VerticalExtent/gmd:maximumValue/gco:Real"
     },
     {   "indexField":"t01_object.vertical_extent_unit",
-        "xpath":"//gmd:identificationInfo//gmd:EX_Extent/gmd:verticalElement/gmd:EX_VerticalExtent/gmd:verticalCRS/gmd:verticalCRS/gml:verticalCS/gml:VerticalCS/gml:axis/gml:CoordinateSystemAxis/@uom",
+        "xpath":"//gmd:identificationInfo//gmd:EX_Extent/gmd:verticalElement/gmd:EX_VerticalExtent/gmd:verticalCRS/gmd:verticalCRS/gml:verticalCS/gml:VerticalCS/gml:axis/gml:CoordinateSystemAxis/@uom" +
+            " | //gmd:identificationInfo//gmd:EX_Extent/gmd:verticalElement/gmd:EX_VerticalExtent/gmd:verticalCRS/gmd:verticalCRS/gml311:verticalCS/gml311:VerticalCS/gml311:axis/gml311:CoordinateSystemAxis/@uom",
         "transform":{
             "funct":transformToIgcDomainId,
             "params":[102]
         }
     },
     {   "indexField":"t01_object.vertical_extent_vdatum",
-        "xpath":"//gmd:identificationInfo//gmd:EX_Extent/gmd:verticalElement/gmd:EX_VerticalExtent/gmd:verticalCRS/gml:verticalCRS/gml:verticalDatum/gml:VerticalDatum/gml:identifier",
+        "xpath":"//gmd:identificationInfo//gmd:EX_Extent/gmd:verticalElement/gmd:EX_VerticalExtent/gmd:verticalCRS/gml:verticalCRS/gml:verticalDatum/gml:VerticalDatum/gml:identifier" +
+            " | //gmd:identificationInfo//gmd:EX_Extent/gmd:verticalElement/gmd:EX_VerticalExtent/gmd:verticalCRS/gml311:verticalCRS/gml311:verticalDatum/gml311:VerticalDatum/gml311:identifier",
         "transform":{
             "funct":transformToIgcDomainId,
             "params":[101]
@@ -186,17 +188,25 @@ var transformationDescriptions = [
     },
     // object_access
     {   "indexField":"object_access.restriction_key",
-        "xpath":"//gmd:identificationInfo//gmd:resourceConstraints//gmd:otherConstraints/gco:CharacterString",
+        "xpath":"//gmd:identificationInfo//gmd:resourceConstraints//gmd:otherConstraints[../gmd:accessConstraints]/gco:CharacterString",
         "transform":{
             "funct":transformToIgcDomainId,
             "params":[6010]
         }
     },
     {   "indexField":"object_access.restriction_value",
-        "xpath":"//gmd:identificationInfo//gmd:resourceConstraints//gmd:otherConstraints/gco:CharacterString"
+        "xpath":"//gmd:identificationInfo//gmd:resourceConstraints//gmd:otherConstraints[../gmd:accessConstraints]/gco:CharacterString"
     },
     {   "indexField":"object_access.terms_of_use",
         "xpath":"//gmd:identificationInfo//gmd:resourceConstraints//gmd:useLimitation/gco:CharacterString"
+    },
+    // object_use
+    {   "indexField":"object_use.terms_of_use_value",
+        "xpath":"//gmd:identificationInfo//gmd:resourceConstraints//gmd:otherConstraints[../gmd:useLimitation]/gco:CharacterString"
+    },
+    // object_use_constraint
+    {   "indexField":"object_use_constraint.license_value",
+        "xpath":"//gmd:identificationInfo//gmd:resourceConstraints//gmd:otherConstraints[../gmd:useConstraints]/gmx:Anchor | //gmd:identificationInfo//gmd:resourceConstraints//gmd:otherConstraints[../gmd:useConstraints]/gco:CharacterString"
     },
     // t0110_avail_format
     {   "indexField":"t0110_avail_format.name",
@@ -392,7 +402,7 @@ var transformationDescriptions = [
         }
     },
     {   "indexField":"t011_obj_geo_symc.edition",
-        "xpath":"//gmd:portrayalCatalogueInfo/gmd:MD_PortrayalCatalogueReference/gmd:portrayalCatalogueCitation/gmd:CI_Citation    /gco:CharacterString"
+        "xpath":"//gmd:portrayalCatalogueInfo/gmd:MD_PortrayalCatalogueReference/gmd:portrayalCatalogueCitation/gmd:CI_Citation/gco:CharacterString"
     },
     // t011_obj_geo_vector
     {   "indexField":"t011_obj_geo_vector.geometric_object_type",
@@ -416,9 +426,6 @@ var transformationDescriptions = [
             "funct":transformToPreviewGraphic,
             "params":[recordNode]
         }
-    },
-    {   "indexField":"t017_url_ref.content",
-        "xpath":"//gmd:identificationInfo//gmd:graphicOverview/gmd:MD_BrowseGraphic/gmd:fileDescription/gco:CharacterString"
     },
     // object_references
     {   "execute":{
@@ -458,6 +465,16 @@ var transformationDescriptions = [
     },
     {   "execute":{
             "funct":addCoupledServices,
+            "params":[recordNode]
+        }
+    },
+    {   "execute":{
+            "funct":addObjectReference,
+            "params":[recordNode]
+        }
+    },
+    {   "execute":{
+            "funct":addObjectReferenceTo,
             "params":[recordNode]
         }
     }
@@ -629,9 +646,34 @@ function mapOnlineResource(recordNode) {
             }
 */
             // map CI_OnlineResource
-            addToDoc("t017_url_ref.url_link", XPathUtils.getString(onlineResources.item(i), "gmd:linkage/gmd:URL"), true);
-            addToDoc("t017_url_ref.content", XPathUtils.getString(onlineResources.item(i), "name/gco:CharacterString"), true);
-            addToDoc("t017_url_ref.descr", XPathUtils.getString(onlineResources.item(i), "gmd:description/gco:CharacterString"), true);            
+            var urlLink = "";
+            var content = "";
+            var descr = "";
+            var codeListValue = "";
+            var specialRef = "";
+            
+            if(XPathUtils.getString(onlineResources.item(i), "gmd:linkage/gmd:URL") != null) {
+              urlLink = XPathUtils.getString(onlineResources.item(i), "gmd:linkage/gmd:URL");
+            }
+
+            if(hasValue(urlLink)) {
+                if(XPathUtils.getString(onlineResources.item(i), "gmd:name/gco:CharacterString") != null) {
+                    content = XPathUtils.getString(onlineResources.item(i), "gmd:name/gco:CharacterString");
+                }
+                if(XPathUtils.getString(onlineResources.item(i), "gmd:description/gco:CharacterString") != null) {
+                    descr = XPathUtils.getString(onlineResources.item(i), "gmd:description/gco:CharacterString");
+                }
+                if(XPathUtils.getString(onlineResources.item(i), "gmd:function/gmd:CI_OnLineFunctionCode/@codeListValue") != null) {
+                    codeListValue = XPathUtils.getString(onlineResources.item(i), "gmd:function/gmd:CI_OnLineFunctionCode/@codeListValue");
+                    if(transformToIgcDomainId(codeListValue, "2000")) {
+                        specialRef = transformToIgcDomainId(codeListValue, "2000");
+                    }
+                }
+                addToDoc("t017_url_ref.url_link", urlLink, true);
+                addToDoc("t017_url_ref.content", content, true);
+                addToDoc("t017_url_ref.descr", descr, true);
+                addToDoc("t017_url_ref.special_ref", specialRef, true);
+            }
         }
     }
 }
@@ -735,7 +777,12 @@ function mapReferences(recordNode) {
             var value = coupledResources.item(i).getTextContent()
             if (hasValue(value) && usedUuids.indexOf(value+"3345") == -1) {
                 addToDoc("object_reference.obj_to_uuid", value, true);
+                addToDoc("object_reference.obj_uuid", value, false);
+                addToDoc("object_reference.obj_name", "", false);
+                addToDoc("object_reference.obj_class", "", false);
+                addToDoc("object_reference.type", "", false);
                 addToDoc("object_reference.special_ref", "3345", true);
+                addToDoc("object_reference.special_name", "", false);
                 usedUuids+=value+"3345;"
             }
         }
@@ -747,7 +794,12 @@ function mapReferences(recordNode) {
             var value = operatesOn.item(i).getTextContent()
             if (hasValue(value) && usedUuids.indexOf(value+"3345") == -1) {
                 addToDoc("object_reference.obj_to_uuid", value, true);
+                addToDoc("object_reference.obj_uuid", value, false);
+                addToDoc("object_reference.obj_name", "", false);
+                addToDoc("object_reference.obj_class", "", false);
+                addToDoc("object_reference.type", "", false);
                 addToDoc("object_reference.special_ref", "3345", true);
+                addToDoc("object_reference.special_name", "", false);
                 usedUuids+=value+"3345;"
             }
         }
@@ -759,7 +811,12 @@ function mapReferences(recordNode) {
             var value = operatesOn.item(i).getTextContent()
             if (hasValue(value) && usedUuids.indexOf(value+"3535") == -1) {
                 addToDoc("object_reference.obj_to_uuid", value, true);
+                addToDoc("object_reference.obj_uuid", value, false);
+                addToDoc("object_reference.obj_name", "", false);
+                addToDoc("object_reference.obj_class", "", false);
+                addToDoc("object_reference.type", "", false);
                 addToDoc("object_reference.special_ref", "3535", true);
+                addToDoc("object_reference.special_name", "", false);
                 usedUuids+=value+"3535;"
             }
         }
@@ -771,7 +828,12 @@ function mapReferences(recordNode) {
             var value = operatesOn.item(i).getTextContent()
             if (hasValue(value) && usedUuids.indexOf(value+"3555") == -1) {
                 addToDoc("object_reference.obj_to_uuid", value, true);
+                addToDoc("object_reference.obj_uuid", value, false);
+                addToDoc("object_reference.obj_name", "", false);
+                addToDoc("object_reference.obj_class", "", false);
+                addToDoc("object_reference.type", "", false);
                 addToDoc("object_reference.special_ref", "3555", true);
+                addToDoc("object_reference.special_name", "", false);
                 usedUuids+=value+"3555;"
             }
         }
@@ -909,8 +971,10 @@ function addResourceMaintenance() {
  * 
  */
 function addTimeConstraints() {
-    var t1 = UtilsCSWDate.mapDateFromIso8601ToIndex(XPathUtils.getString(recordNode, "//gmd:identificationInfo//gmd:EX_Extent/gmd:temporalElement/gmd:EX_TemporalExtent/gmd:extent/gml:TimePeriod/gml:beginPosition"));
-    var t2 = UtilsCSWDate.mapDateFromIso8601ToIndex(XPathUtils.getString(recordNode, "//gmd:identificationInfo//gmd:EX_Extent/gmd:temporalElement/gmd:EX_TemporalExtent/gmd:extent/gml:TimePeriod/gml:endPosition"));
+    var t1 = UtilsCSWDate.mapDateFromIso8601ToIndex(XPathUtils.getString(recordNode, "//gmd:identificationInfo//gmd:EX_Extent/gmd:temporalElement/gmd:EX_TemporalExtent/gmd:extent/gml:TimePeriod/gml:beginPosition" +
+        " | //gmd:identificationInfo//gmd:EX_Extent/gmd:temporalElement/gmd:EX_TemporalExtent/gmd:extent/gml311:TimePeriod/gml311:beginPosition"));
+    var t2 = UtilsCSWDate.mapDateFromIso8601ToIndex(XPathUtils.getString(recordNode, "//gmd:identificationInfo//gmd:EX_Extent/gmd:temporalElement/gmd:EX_TemporalExtent/gmd:extent/gml:TimePeriod/gml:endPosition" +
+        " | //gmd:identificationInfo//gmd:EX_Extent/gmd:temporalElement/gmd:EX_TemporalExtent/gmd:extent/gml311:TimePeriod/gml311:endPosition"));
     var timeType;
     if (hasValue(t1) && hasValue(t2)) {
         if (t1 == t2) {
@@ -980,7 +1044,48 @@ function addCoupledServices() {
     }
 }
 
+function addObjectReference() {
+    var crossReferences = XPathUtils.getNodeList(recordNode, "//idf:crossReference[@direction='IN']");
+    if (hasValue(crossReferences)) {
+        for (i=0; i<crossReferences.getLength(); i++ ) {
+            var crossReference = crossReferences.item(i);
+            var objUuid = XPathUtils.getString(crossReference, "./@uuid");
+            var objName = XPathUtils.getString(crossReference, "idf:objectName");
+            var objClass = XPathUtils.getString(crossReference, "idf:objectType");
+            var objSpecialRef = XPathUtils.getString(crossReference, "idf:attachedToField/@entry-id");
+            var objSpecialName = XPathUtils.getString(crossReference, "idf:attachedToField");
+            var objServiceType = XPathUtils.getString(crossReference, "idf:serviceType");
+            addToDoc("refering.object_reference.obj_uuid", objUuid || "", false);
+            addToDoc("refering.object_reference.obj_name", objName || "", false);
+            addToDoc("refering.object_reference.obj_class", objClass || "", false);
+            addToDoc("refering.object_reference.type", objServiceType || "", false);
+            addToDoc("refering.object_reference.special_ref", objSpecialRef || "", false);
+            addToDoc("refering.object_reference.special_name", objSpecialName || "", false);
+        }
+    }
+}
 
+function addObjectReferenceTo() {
+  var crossReferences = XPathUtils.getNodeList(recordNode, "//idf:crossReference[@direction='OUT']");
+  if (hasValue(crossReferences)) {
+      for (i=0; i<crossReferences.getLength(); i++ ) {
+          var crossReference = crossReferences.item(i);
+          var objUuid = XPathUtils.getString(crossReference, "./@uuid");
+          var objName = XPathUtils.getString(crossReference, "idf:objectName");
+          var objClass = XPathUtils.getString(crossReference, "idf:objectType");
+          var objSpecialRef = XPathUtils.getString(crossReference, "idf:attachedToField/@entry-id");
+          var objSpecialName = XPathUtils.getString(crossReference, "idf:attachedToField");
+          var objServiceType = XPathUtils.getString(crossReference, "idf:serviceType");
+          addToDoc("object_reference.obj_to_uuid", objUuid || "", false);
+          addToDoc("object_reference.obj_uuid", objUuid || "", false);
+          addToDoc("object_reference.obj_name", objName || "", false);
+          addToDoc("object_reference.obj_class", objClass || "", false);
+          addToDoc("object_reference.type", objServiceType || "", false);
+          addToDoc("object_reference.special_ref", objSpecialRef || "", false);
+          addToDoc("object_reference.special_name", objSpecialName || "", false);
+      }
+  }
+}
 
 function addToDoc(field, content, tokenized, additionalTokenize) {
     if (typeof content != "undefined" && content != null) {
