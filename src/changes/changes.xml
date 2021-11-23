@@ -5,6 +5,13 @@
     <author email="joachim.mueller@wemove.com">Joachim Müller</author>
   </properties>
   <body>
+
+    <release version="5.10.1" date="2021-11-23" description="Release 5.10.1">
+      <action type="update" dev="wemove" issue="2903">
+        Adapt mapping to match new time constraints
+      </action>
+    </release>
+
     <release version="5.10.0" date="2021-10-20" description="Release 5.10.0">
       <action type="add" dev="wemove" issue="2085">
         Improve InGrid Search - Add ngram Analyzer and additional sort hash.
