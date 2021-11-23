@@ -971,12 +971,17 @@ function addResourceMaintenance() {
  * 
  */
 function addTimeConstraints() {
+    var t0 = UtilsCSWDate.mapDateFromIso8601ToIndex(XPathUtils.getString(recordNode, "//gmd:identificationInfo//gmd:EX_Extent/gmd:temporalElement/gmd:EX_TemporalExtent/gmd:extent/gml:TimeInstant/gml:timePosition" +
+        " | //gmd:identificationInfo//gmd:EX_Extent/gmd:temporalElement/gmd:EX_TemporalExtent/gmd:extent/gml311:TimeInstant/gml311:timePosition"));
     var t1 = UtilsCSWDate.mapDateFromIso8601ToIndex(XPathUtils.getString(recordNode, "//gmd:identificationInfo//gmd:EX_Extent/gmd:temporalElement/gmd:EX_TemporalExtent/gmd:extent/gml:TimePeriod/gml:beginPosition" +
         " | //gmd:identificationInfo//gmd:EX_Extent/gmd:temporalElement/gmd:EX_TemporalExtent/gmd:extent/gml311:TimePeriod/gml311:beginPosition"));
     var t2 = UtilsCSWDate.mapDateFromIso8601ToIndex(XPathUtils.getString(recordNode, "//gmd:identificationInfo//gmd:EX_Extent/gmd:temporalElement/gmd:EX_TemporalExtent/gmd:extent/gml:TimePeriod/gml:endPosition" +
         " | //gmd:identificationInfo//gmd:EX_Extent/gmd:temporalElement/gmd:EX_TemporalExtent/gmd:extent/gml311:TimePeriod/gml311:endPosition"));
     var timeType;
-    if (hasValue(t1) && hasValue(t2)) {
+    if (hasValue(t0)) {
+        addToDoc("t01_object.time_type", "am", false);
+        addToDoc("t0", t0, false);
+    } else if (hasValue(t1) && hasValue(t2)) {
         if (t1 == t2) {
             addToDoc("t01_object.time_type", "am", false);
             addToDoc("t0", t1, false);
