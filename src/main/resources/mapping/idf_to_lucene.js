@@ -297,7 +297,7 @@ var transformationDescriptions = [
         "xpath":"//gmd:identificationInfo//srv:containsOperations/srv:SV_OperationMetadata/srv:invocationName/gco:CharacterString"
     },
     // t011_obj_serv_version
-    {   "indexField":"t011_obj_serv_version.serv_version",
+    {   "indexField":"t011_obj_serv_version.version_value",
         "xpath":"//gmd:identificationInfo//srv:serviceTypeVersion/gco:CharacterString"
     },
     // t011_obj_topic_cat

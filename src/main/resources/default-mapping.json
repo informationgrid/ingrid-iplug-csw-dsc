@@ -159,7 +159,7 @@
       "type": "keyword",
       "store": true
     },
-    "t011_obj_serv_version.serv_version": {
+    "t011_obj_serv_version.version_value": {
       "type": "keyword",
       "store": true
     },
