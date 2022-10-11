@@ -159,6 +159,10 @@
       "type": "keyword",
       "store": true
     },
+    "t011_obj_serv_version.serv_version": {
+      "type": "keyword",
+      "store": true
+    },
     "t017_url_ref.url_link": {
       "type": "keyword",
       "store": true
