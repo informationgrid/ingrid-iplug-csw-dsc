@@ -1060,10 +1060,12 @@ function addObjectReference() {
             var objSpecialRef = XPathUtils.getString(crossReference, "idf:attachedToField/@entry-id");
             var objSpecialName = XPathUtils.getString(crossReference, "idf:attachedToField");
             var objServiceType = XPathUtils.getString(crossReference, "idf:serviceType");
+            var objServiceVersion = XPathUtils.getString(crossReference, "idf:serviceVersion");
             addToDoc("refering.object_reference.obj_uuid", objUuid || "", false);
             addToDoc("refering.object_reference.obj_name", objName || "", false);
             addToDoc("refering.object_reference.obj_class", objClass || "", false);
             addToDoc("refering.object_reference.type", objServiceType || "", false);
+            addToDoc("refering.object_reference.version", objServiceVersion || "", false);
             addToDoc("refering.object_reference.special_ref", objSpecialRef || "", false);
             addToDoc("refering.object_reference.special_name", objSpecialName || "", false);
         }
@@ -1081,11 +1083,13 @@ function addObjectReferenceTo() {
           var objSpecialRef = XPathUtils.getString(crossReference, "idf:attachedToField/@entry-id");
           var objSpecialName = XPathUtils.getString(crossReference, "idf:attachedToField");
           var objServiceType = XPathUtils.getString(crossReference, "idf:serviceType");
+          var objServiceVersion = XPathUtils.getString(crossReference, "idf:serviceVersion");
           addToDoc("object_reference.obj_to_uuid", objUuid || "", false);
           addToDoc("object_reference.obj_uuid", objUuid || "", false);
           addToDoc("object_reference.obj_name", objName || "", false);
           addToDoc("object_reference.obj_class", objClass || "", false);
           addToDoc("object_reference.type", objServiceType || "", false);
+          addToDoc("object_reference.version", objServiceVersion || "", false);
           addToDoc("object_reference.special_ref", objSpecialRef || "", false);
           addToDoc("object_reference.special_name", objSpecialName || "", false);
       }
