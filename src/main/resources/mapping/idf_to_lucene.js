@@ -781,6 +781,7 @@ function mapReferences(recordNode) {
                 addToDoc("object_reference.obj_name", "", false);
                 addToDoc("object_reference.obj_class", "", false);
                 addToDoc("object_reference.type", "", false);
+                addToDoc("object_reference.version", "", false);
                 addToDoc("object_reference.special_ref", "3345", true);
                 addToDoc("object_reference.special_name", "", false);
                 usedUuids+=value+"3345;"
@@ -798,6 +799,7 @@ function mapReferences(recordNode) {
                 addToDoc("object_reference.obj_name", "", false);
                 addToDoc("object_reference.obj_class", "", false);
                 addToDoc("object_reference.type", "", false);
+                addToDoc("object_reference.version", "", false);
                 addToDoc("object_reference.special_ref", "3345", true);
                 addToDoc("object_reference.special_name", "", false);
                 usedUuids+=value+"3345;"
@@ -815,6 +817,7 @@ function mapReferences(recordNode) {
                 addToDoc("object_reference.obj_name", "", false);
                 addToDoc("object_reference.obj_class", "", false);
                 addToDoc("object_reference.type", "", false);
+                addToDoc("object_reference.version", "", false);
                 addToDoc("object_reference.special_ref", "3535", true);
                 addToDoc("object_reference.special_name", "", false);
                 usedUuids+=value+"3535;"
@@ -832,6 +835,7 @@ function mapReferences(recordNode) {
                 addToDoc("object_reference.obj_name", "", false);
                 addToDoc("object_reference.obj_class", "", false);
                 addToDoc("object_reference.type", "", false);
+                addToDoc("object_reference.version", "", false);
                 addToDoc("object_reference.special_ref", "3555", true);
                 addToDoc("object_reference.special_name", "", false);
                 usedUuids+=value+"3555;"
