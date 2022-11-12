@@ -151,7 +151,6 @@
     <dependency>
       <groupId>commons-codec</groupId>
       <artifactId>commons-codec</artifactId>
-      <version>1.15</version>
     </dependency>
     <dependency>
       <groupId>org.apache.axis2</groupId>
@@ -297,15 +296,14 @@
       <version>${log4j2.version}</version>
     </dependency>
     <dependency>
-      <groupId>junit</groupId>
-      <artifactId>junit</artifactId>
-      <version>4.13.1</version>
-      <scope>test</scope>
-    </dependency>
-    <dependency>
       <groupId>org.mockito</groupId>
       <artifactId>mockito-core</artifactId>
-      <version>2.0.44-beta</version>
+      <version>4.8.1</version>
+    </dependency>
+    <dependency>
+      <groupId>org.junit.jupiter</groupId>
+      <artifactId>junit-jupiter</artifactId>
+      <scope>test</scope>
     </dependency>
   </dependencies>
 
@@ -338,36 +336,6 @@
           <defaultOriginUrl>https://github.com/informationgrid/ingrid-iplug-csw-dsc</defaultOriginUrl>
           <noDeploy>true</noDeploy>
         </configuration>
-      </plugin>
-
-      <plugin>
-        <groupId>org.openrewrite.maven</groupId>
-        <artifactId>rewrite-maven-plugin</artifactId>
-        <version>4.36.0</version>
-        <configuration>
-          <activeRecipes>
-            <recipe>org.openrewrite.java.testing.junit5.JUnit5BestPractices</recipe>
-            <!--            <recipe>org.openrewrite.java.spring.framework.UpgradeSpringFramework_5_3</recipe>-->
-            <!--            <recipe>org.openrewrite.java.migrate.JavaxServletToJakartaServlet</recipe>-->
-          </activeRecipes>
-        </configuration>
-        <dependencies>
-          <dependency>
-            <groupId>org.openrewrite.recipe</groupId>
-            <artifactId>rewrite-spring</artifactId>
-            <version>4.29.0</version>
-          </dependency>
-          <dependency>
-            <groupId>org.openrewrite.recipe</groupId>
-            <artifactId>rewrite-testing-frameworks</artifactId>
-            <version>1.30.0</version>
-          </dependency>
-          <dependency>
-            <groupId>org.openrewrite.recipe</groupId>
-            <artifactId>rewrite-migrate-java</artifactId>
-            <version>1.13.0</version>
-          </dependency>
-        </dependencies>
       </plugin>
 
     </plugins>

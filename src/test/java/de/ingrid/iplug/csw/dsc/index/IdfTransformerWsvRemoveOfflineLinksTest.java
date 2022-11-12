@@ -25,6 +25,7 @@ package de.ingrid.iplug.csw.dsc.index;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.junit.jupiter.api.Test;
 import org.springframework.core.io.FileSystemResource;
 import org.w3c.dom.Node;
 
@@ -44,6 +45,9 @@ import de.ingrid.utils.ElasticDocument;
 import de.ingrid.utils.idf.IdfTool;
 import de.ingrid.utils.statusprovider.StatusProviderService;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+
 public class IdfTransformerWsvRemoveOfflineLinksTest extends BaseIndexTestCase {
 
     StatusProviderService statusProviderService;
@@ -52,10 +56,11 @@ public class IdfTransformerWsvRemoveOfflineLinksTest extends BaseIndexTestCase {
         super();
         statusProviderService = new StatusProviderService();
     }
-    
+
     /**
      * @throws Exception
      */
+    @Test
     public void testTransform() throws Exception {
 
         setupCache( new String[] {
@@ -98,11 +103,9 @@ public class IdfTransformerWsvRemoveOfflineLinksTest extends BaseIndexTestCase {
                         IdfTool.getIdfDataFromRecord( idfRecordCreator.getRecord( doc,
                                 new CswCoupledResourcesCacheSourceRecord( record, cache, cr.getCoupledRecordIds( record.getId() ) ) ) ) ).getDocumentElement();
 
-        assertNotNull( "GeoKatalog.WSV: IDF record 870043be-85e0-4f7d-9cdc-43fe293b0c90 exists in cache.", n );
-        assertEquals( "GeoKatalog.WSV: URLs of type 'localZipDownload' REMOVED",
-                0, xPathUtils.getNodeList( n, "//gmd:transferOptions/gmd:MD_DigitalTransferOptions/gmd:onLine/gmd:CI_OnlineResource/gmd:function/gmd:CI_OnLineFunctionCode[@codeListValue='localZipDownload']" ).getLength() );
-        assertEquals( "GeoKatalog.WSV: URLs of type 'download' exist",
-                1, xPathUtils.getNodeList( n, "//gmd:transferOptions/gmd:MD_DigitalTransferOptions/gmd:onLine/gmd:CI_OnlineResource/gmd:function/gmd:CI_OnLineFunctionCode[@codeListValue='download']" ).getLength() );
+        assertNotNull( n , "GeoKatalog.WSV: IDF record 870043be-85e0-4f7d-9cdc-43fe293b0c90 exists in cache.");
+        assertEquals( 0, xPathUtils.getNodeList( n, "//gmd:transferOptions/gmd:MD_DigitalTransferOptions/gmd:onLine/gmd:CI_OnlineResource/gmd:function/gmd:CI_OnLineFunctionCode[@codeListValue='localZipDownload']" ).getLength() , "GeoKatalog.WSV: URLs of type 'localZipDownload' REMOVED");
+        assertEquals( 1, xPathUtils.getNodeList( n, "//gmd:transferOptions/gmd:MD_DigitalTransferOptions/gmd:onLine/gmd:CI_OnlineResource/gmd:function/gmd:CI_OnLineFunctionCode[@codeListValue='download']" ).getLength() , "GeoKatalog.WSV: URLs of type 'download' exist");
 
     }
 

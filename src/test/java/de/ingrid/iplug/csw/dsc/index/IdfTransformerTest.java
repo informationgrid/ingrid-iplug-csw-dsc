@@ -25,6 +25,7 @@ package de.ingrid.iplug.csw.dsc.index;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.junit.jupiter.api.Test;
 import org.springframework.core.io.FileSystemResource;
 import org.w3c.dom.Node;
 
@@ -44,6 +45,9 @@ import de.ingrid.utils.ElasticDocument;
 import de.ingrid.utils.idf.IdfTool;
 import de.ingrid.utils.statusprovider.StatusProviderService;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+
 public class IdfTransformerTest extends BaseIndexTestCase {
 
     StatusProviderService statusProviderService;
@@ -52,10 +56,11 @@ public class IdfTransformerTest extends BaseIndexTestCase {
         super();
         statusProviderService = new StatusProviderService();
     }
-    
+
     /**
      * @throws Exception
      */
+    @Test
     public void testTransform() throws Exception {
 
         prepareCache( null );
@@ -91,9 +96,8 @@ public class IdfTransformerTest extends BaseIndexTestCase {
                         IdfTool.getIdfDataFromRecord( idfRecordCreator.getRecord( doc,
                                 new CswCoupledResourcesCacheSourceRecord( record, cache, cr.getCoupledRecordIds( record.getId() ) ) ) ) ).getDocumentElement();
 
-        assertNotNull( "Dataset IDF record CF902C59-D50B-42F6-ADE4-F3CEC39A3259 exists in cache.", n );
-        assertEquals( "Dataset IDF record CF902C59-D50B-42F6-ADE4-F3CEC39A3259 has reference to service CFA384AB-028F-476B-AC95-EB75CCEFB296.",
-                "CFA384AB-028F-476B-AC95-EB75CCEFB296", xPathUtils.getString( n, "//idf:idfMdMetadata/idf:crossReference/@uuid" ) );
+        assertNotNull( n , "Dataset IDF record CF902C59-D50B-42F6-ADE4-F3CEC39A3259 exists in cache.");
+        assertEquals( "CFA384AB-028F-476B-AC95-EB75CCEFB296", xPathUtils.getString( n, "//idf:idfMdMetadata/idf:crossReference/@uuid" ) , "Dataset IDF record CF902C59-D50B-42F6-ADE4-F3CEC39A3259 has reference to service CFA384AB-028F-476B-AC95-EB75CCEFB296.");
 
         record = cache.getRecord( "CFA384AB-028F-476B-AC95-EB75CCEFB296", ElementSetName.FULL );
         doc = new ElasticDocument();
@@ -102,9 +106,8 @@ public class IdfTransformerTest extends BaseIndexTestCase {
                         IdfTool.getIdfDataFromRecord( idfRecordCreator.getRecord( doc,
                                 new CswCoupledResourcesCacheSourceRecord( record, cache, cr.getCoupledRecordIds( record.getId() ) ) ) ) ).getDocumentElement();
 
-        assertNotNull( "Service IDF record CFA384AB-028F-476B-AC95-EB75CCEFB296 exists in cache.", record );
-        assertEquals( "Service IDF record CFA384AB-028F-476B-AC95-EB75CCEFB296 has reference to dataset CF902C59-D50B-42F6-ADE4-F3CEC39A3259.",
-                "CF902C59-D50B-42F6-ADE4-F3CEC39A3259", xPathUtils.getString( n, "//idf:idfMdMetadata/idf:crossReference/@uuid" ) );
+        assertNotNull( record , "Service IDF record CFA384AB-028F-476B-AC95-EB75CCEFB296 exists in cache.");
+        assertEquals( "CF902C59-D50B-42F6-ADE4-F3CEC39A3259", xPathUtils.getString( n, "//idf:idfMdMetadata/idf:crossReference/@uuid" ) , "Service IDF record CFA384AB-028F-476B-AC95-EB75CCEFB296 has reference to dataset CF902C59-D50B-42F6-ADE4-F3CEC39A3259.");
 
         record = cache.getRecord( "0C12204F-5626-4A2E-94F4-514424F093A1", ElementSetName.FULL );
         doc = new ElasticDocument();
@@ -112,9 +115,8 @@ public class IdfTransformerTest extends BaseIndexTestCase {
                 .stringToDocument(
                         IdfTool.getIdfDataFromRecord( idfRecordCreator.getRecord( doc,
                                 new CswCoupledResourcesCacheSourceRecord( record, cache, cr.getCoupledRecordIds( record.getId() ) ) ) ) ).getDocumentElement();
-        assertNotNull( "Dataset IDF record 0C12204F-5626-4A2E-94F4-514424F093A1 exists in cache.", record );
-        assertEquals( "Dataset IDF record 0C12204F-5626-4A2E-94F4-514424F093A1 has reference to service 77793F43-707A-4346-9A24-9F4E22213F54.",
-                "77793F43-707A-4346-9A24-9F4E22213F54", xPathUtils.getString( n, "//idf:idfMdMetadata/idf:crossReference/@uuid" ) );
+        assertNotNull( record , "Dataset IDF record 0C12204F-5626-4A2E-94F4-514424F093A1 exists in cache.");
+        assertEquals( "77793F43-707A-4346-9A24-9F4E22213F54", xPathUtils.getString( n, "//idf:idfMdMetadata/idf:crossReference/@uuid" ) , "Dataset IDF record 0C12204F-5626-4A2E-94F4-514424F093A1 has reference to service 77793F43-707A-4346-9A24-9F4E22213F54.");
 
         record = cache.getRecord( "486d9622-c29d-44e5-b878-44389740011", ElementSetName.FULL );
         doc = new ElasticDocument();
@@ -122,9 +124,8 @@ public class IdfTransformerTest extends BaseIndexTestCase {
                 .stringToDocument(
                         IdfTool.getIdfDataFromRecord( idfRecordCreator.getRecord( doc,
                                 new CswCoupledResourcesCacheSourceRecord( record, cache, cr.getCoupledRecordIds( record.getId() ) ) ) ) ).getDocumentElement();
-        assertNotNull( "Dataset IDF record 486d9622-c29d-44e5-b878-44389740011 exists in cache.", record );
-        assertEquals( "Dataset IDF record 486d9622-c29d-44e5-b878-44389740011 has reference to service 77793F43-707A-4346-9A24-9F4E22213F54.",
-                "77793F43-707A-4346-9A24-9F4E22213F54", xPathUtils.getString( n, "//idf:idfMdMetadata/idf:crossReference/@uuid" ) );
+        assertNotNull( record , "Dataset IDF record 486d9622-c29d-44e5-b878-44389740011 exists in cache.");
+        assertEquals( "77793F43-707A-4346-9A24-9F4E22213F54", xPathUtils.getString( n, "//idf:idfMdMetadata/idf:crossReference/@uuid" ) , "Dataset IDF record 486d9622-c29d-44e5-b878-44389740011 has reference to service 77793F43-707A-4346-9A24-9F4E22213F54.");
 
     }
 

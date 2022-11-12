@@ -46,7 +46,7 @@ public class SamlTicketSoapRequestPreprocessor implements CSWRequestPreprocessor
 
         try {
 
-            soapHeaderTemplate = soapHeaderTemplate.replaceAll("\\$###SAML_TICKET###", samlTicket);
+            soapHeaderTemplate = soapHeaderTemplate.replaceAll("###SAML_TICKET###", samlTicket);
 
             param.addHeader(AXIOMUtil.stringToOM(soapHeaderTemplate));
         } catch (Exception e) {
