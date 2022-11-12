@@ -3,11 +3,11 @@
   <parent>
     <groupId>de.ingrid</groupId>
     <artifactId>ingrid-releases-pom</artifactId>
-    <version>5.11.0</version>
+    <version>5.15.0.3324-SNAPSHOT</version>
   </parent>
   <modelVersion>4.0.0</modelVersion>
   <artifactId>ingrid-iplug-csw-dsc</artifactId>
-  <version>5.15.0-SNAPSHOT</version>
+  <version>5.15.0.3324-SNAPSHOT</version>
   <packaging>jar</packaging>
   <name>InGrid iPlug CSW-DSC</name>
   <description>This iPlug indexes documents from a CSW-interface and can be requested by the iBus.</description>
@@ -32,10 +32,13 @@
   <!-- ==================== PROPERTIES ==================== -->
   <properties>
     <iplug.type>IPLUG_CSW_DSC</iplug.type>
+    <java.version>17</java.version>
+    <maven.compiler.source>17</maven.compiler.source>
+    <maven.compiler.target>17</maven.compiler.target>
     <!-- since spring 4.1 the quartz library 1.x is not supported anymore -->
-    <spring.version>4.3.20.RELEASE</spring.version>
-    <ingrid-base-webapp.version>5.12.0</ingrid-base-webapp.version>
-    <log4j2.version>2.17.1</log4j2.version>
+    <spring.version>2.7.5</spring.version>
+    <ingrid-base-webapp.version>5.15.0.3324-SNAPSHOT</ingrid-base-webapp.version>
+    <log4j2.version>2.19.0</log4j2.version>
   </properties>
 
   <!-- ==================== DEPENDENCY MANAGEMENT ==================== -->
@@ -47,14 +50,14 @@
         <version>1.1.1</version>
       </dependency>
       <dependency>
-        <groupId>org.springframework</groupId>
-        <artifactId>spring-web</artifactId>
+        <!-- Import dependency management from Spring Boot -->
+        <groupId>org.springframework.boot</groupId>
+        <artifactId>spring-boot-starter-parent</artifactId>
         <version>${spring.version}</version>
-      </dependency>
-      <dependency>
-        <groupId>org.springframework</groupId>
-        <artifactId>spring-webmvc</artifactId>
-        <version>${spring.version}</version>
+        <!-- <relativePath />-->
+        <!-- lookup parent from repository -->
+        <type>pom</type>
+        <scope>import</scope>
       </dependency>
     </dependencies>
   </dependencyManagement>
@@ -62,24 +65,14 @@
   <!-- ==================== DEPENDENCIES ==================== -->
   <dependencies>
     <dependency>
-      <groupId>org.springframework</groupId>
-      <artifactId>spring-context-support</artifactId>
-      <version>${spring.version}</version>
-    </dependency>
-    <dependency>
-      <groupId>org.springframework</groupId>
-      <artifactId>spring-tx</artifactId>
-      <version>${spring.version}</version>
-    </dependency>
-    <dependency>
       <groupId>de.ingrid</groupId>
       <artifactId>ingrid-utils</artifactId>
-      <version>5.9.0</version>
+      <version>5.15.0.3324-SNAPSHOT</version>
     </dependency>
     <dependency>
       <groupId>de.ingrid</groupId>
       <artifactId>ingrid-codelist-service</artifactId>
-      <version>5.11.0</version>
+      <version>5.14.0</version>
       <exclusions>
         <exclusion>
           <groupId>org.springframework</groupId>
@@ -114,7 +107,7 @@
     <dependency>
       <groupId>de.ingrid</groupId>
       <artifactId>ingrid-iplug</artifactId>
-      <version>5.3.0</version>
+      <version>5.15.0.3324-SNAPSHOT</version>
       <exclusions>
         <exclusion>
           <groupId>ant</groupId>
@@ -158,12 +151,12 @@
     <dependency>
       <groupId>commons-codec</groupId>
       <artifactId>commons-codec</artifactId>
-      <version>1.4</version>
+      <version>1.15</version>
     </dependency>
     <dependency>
       <groupId>org.apache.axis2</groupId>
       <artifactId>axis2-kernel</artifactId>
-      <version>1.4.1</version>
+      <version>1.8.2</version>
       <exclusions>
         <exclusion>
           <groupId>javax.servlet</groupId>
@@ -174,7 +167,7 @@
     <dependency>
       <groupId>org.apache.axis2</groupId>
       <artifactId>axis2-jaxws</artifactId>
-      <version>1.4.1</version>
+      <version>1.8.2</version>
       <exclusions>
         <exclusion>
           <groupId>commons-io</groupId>
@@ -263,6 +256,29 @@
       </exclusions>
     </dependency>
 
+    <dependency>
+      <groupId>org.apache.axis2</groupId>
+      <artifactId>axis2-adb</artifactId>
+      <version>1.8.2</version>
+    </dependency>
+    <dependency>
+      <groupId>org.apache.axis2</groupId>
+      <artifactId>axis2-transport-local</artifactId>
+      <version>1.8.2</version>
+    </dependency>
+    
+    <!-- JS support -->
+    <dependency>
+      <groupId>org.graalvm.js</groupId>
+      <artifactId>js</artifactId>
+      <version>22.2.0</version>
+    </dependency>
+    <dependency>
+      <groupId>org.graalvm.js</groupId>
+      <artifactId>js-scriptengine</artifactId>
+      <version>22.2.0</version>
+    </dependency>
+
     <!-- backward compatible -->
     <dependency>
       <groupId>org.apache.logging.log4j</groupId>
@@ -280,31 +296,6 @@
       <artifactId>log4j-core</artifactId>
       <version>${log4j2.version}</version>
     </dependency>
-
-    <!-- The two following dependencies are needed for Jetty -->
-    <dependency>
-      <groupId>org.mortbay.jetty</groupId>
-      <artifactId>jetty</artifactId>
-      <version>6.1.26</version>
-    </dependency>
-    <dependency>
-      <groupId>org.mortbay.jetty</groupId>
-      <artifactId>jsp-2.1</artifactId>
-      <version>6.1.14</version>
-      <exclusions>
-        <!-- already included in axis2-kernel -->
-        <exclusion>
-          <groupId>ant</groupId>
-          <artifactId>ant</artifactId>
-        </exclusion>
-        <!-- already included in jetty -->
-        <exclusion>
-          <groupId>org.mortbay.jetty</groupId>
-          <artifactId>servlet-api-2.5</artifactId>
-        </exclusion>
-      </exclusions>
-    </dependency>
-    <!-- End of Jetty - Dependencies -->
     <dependency>
       <groupId>junit</groupId>
       <artifactId>junit</artifactId>
@@ -348,6 +339,37 @@
           <noDeploy>true</noDeploy>
         </configuration>
       </plugin>
+
+      <plugin>
+        <groupId>org.openrewrite.maven</groupId>
+        <artifactId>rewrite-maven-plugin</artifactId>
+        <version>4.36.0</version>
+        <configuration>
+          <activeRecipes>
+            <recipe>org.openrewrite.java.testing.junit5.JUnit5BestPractices</recipe>
+            <!--            <recipe>org.openrewrite.java.spring.framework.UpgradeSpringFramework_5_3</recipe>-->
+            <!--            <recipe>org.openrewrite.java.migrate.JavaxServletToJakartaServlet</recipe>-->
+          </activeRecipes>
+        </configuration>
+        <dependencies>
+          <dependency>
+            <groupId>org.openrewrite.recipe</groupId>
+            <artifactId>rewrite-spring</artifactId>
+            <version>4.29.0</version>
+          </dependency>
+          <dependency>
+            <groupId>org.openrewrite.recipe</groupId>
+            <artifactId>rewrite-testing-frameworks</artifactId>
+            <version>1.30.0</version>
+          </dependency>
+          <dependency>
+            <groupId>org.openrewrite.recipe</groupId>
+            <artifactId>rewrite-migrate-java</artifactId>
+            <version>1.13.0</version>
+          </dependency>
+        </dependencies>
+      </plugin>
+
     </plugins>
   </build>
 </project>

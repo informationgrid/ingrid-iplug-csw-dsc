@@ -31,22 +31,8 @@
  * @param log A Log instance
  *
  */
-if (javaVersion.indexOf( "1.8" ) === 0) {
-    load("nashorn:mozilla_compat.js");
-}
 
-importPackage(Packages.de.ingrid.iplug.csw.dsc.tools);
-importPackage(Packages.de.ingrid.iplug.csw.dsc.index);
-importPackage(Packages.de.ingrid.utils.udk);
-importPackage(Packages.de.ingrid.utils.xml);
-importPackage(Packages.de.ingrid.admin);
-importPackage(Packages.org.w3c.dom);
-
-
-
-if (log.isDebugEnabled()) {
-	log.debug("WSV Geodatenkatalog post processing of lucene document !");
-}
+log.debug("WSV Geodatenkatalog post processing of lucene document !");
 
 // Replace wrong path "urls" with domain
 // see https://dev2.wemove.com/jira/browse/GEOPORTALWSV-39
@@ -76,9 +62,7 @@ function transformToValidUrl(oldUrl, urlDomain) {
             newUrl = urlDomain;
             replaceField = true;
 
-            if (log.isDebugEnabled()) {
-               log.debug("Replaced URL  '" + oldUrl + "' with URL '" + newUrl + "'");
-            }
+		   log.debug("Replaced URL  '" + oldUrl + "' with URL '" + newUrl + "'");
         }
     }
     
@@ -87,9 +71,7 @@ function transformToValidUrl(oldUrl, urlDomain) {
 
 function addToDoc(field, content, tokenized) {
 	if (typeof content != "undefined" && content != null) {
-		if (log.isDebugEnabled()) {
-			log.debug("Add '" + field + "'='" + content + "' to lucene index");
-		}
+		log.debug("Add '" + field + "'='" + content + "' to lucene index");
 		Utils.addToDoc( document, field, content );
 		Utils.addToDoc( document, "content", content );
 	}
