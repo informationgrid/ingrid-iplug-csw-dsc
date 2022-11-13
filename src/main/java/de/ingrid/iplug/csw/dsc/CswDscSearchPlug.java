@@ -60,7 +60,7 @@ import java.io.IOException;
  *
  * @author joachim@wemove.com
  */
-@ImportResource("/springapp-servlet.xml")
+@ImportResource({"/springapp-servlet.xml", "/override/*.xml"})
 @SpringBootApplication(scanBasePackages = "de.ingrid")
 @ComponentScan(
         basePackages = "de.ingrid",

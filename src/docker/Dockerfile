@@ -1,7 +1,7 @@
 FROM alpine AS builder
 
 COPY ingrid-iplug-csw-dsc*-installer.jar /
-RUN unzip ingrid-*.jar -d /tmp \
+RUN unzip -q ingrid-*.jar -d /tmp \
     && export INSTALL_DIR=`ls -d1 /tmp/ingrid-*` \
     && touch $INSTALL_DIR/pattern \
     && mkdir -p $INSTALL_DIR/conf \
