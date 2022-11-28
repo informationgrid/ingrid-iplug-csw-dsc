@@ -57,10 +57,6 @@ public class CSWFactory implements IConfigurable, Serializable {
 
 	private CSWQuery queryTemplate;
 	
-	public CSWFactory() {
-		System.out.println("csw factory");
-	}
-	
 	/**
 	 * get the service url.
 	 * @return The service url
