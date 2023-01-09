@@ -33,8 +33,7 @@ import java.util.Map;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 
-import junit.framework.TestCase;
-
+import org.junit.jupiter.api.Test;
 import org.w3c.dom.Document;
 import org.xml.sax.InputSource;
 
@@ -42,12 +41,17 @@ import de.ingrid.iplug.csw.dsc.TestServer;
 import de.ingrid.iplug.csw.dsc.cswclient.constants.Operation;
 import de.ingrid.utils.PlugDescription;
 
-public class CSWClientTestLocal extends TestCase {
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+
+public class CSWClientTestLocal {
     
     String storedRecordId = null;
-    
-	
-	public void testGetCapabilitiesKVPGet() throws Exception {
+
+
+    @Test
+    public void testGetCapabilitiesKVPGet() throws Exception {
 		
 		TestServer server = TestServer.PORTALU;
 		
@@ -67,15 +71,16 @@ public class CSWClientTestLocal extends TestCase {
 		CSWCapabilities cap = client.getCapabilities();
 		
 		// tests
-		assertFalse("Server does not support MyFunction",
-				cap.isSupportingOperations(new String[] { "MyFunction" }));
+		assertFalse(cap.isSupportingOperations(new String[] { "MyFunction" }),
+				"Server does not support MyFunction");
 		
-		assertTrue("Server supports GetRecords and GetRecordById",
-				cap.isSupportingOperations(new String[] { Operation.GET_RECORDS.toString(), 
-						Operation.GET_RECORD_BY_ID.toString() }));
+		assertTrue(cap.isSupportingOperations(new String[] { Operation.GET_RECORDS.toString(), 
+						Operation.GET_RECORD_BY_ID.toString() }),
+				"Server supports GetRecords and GetRecordById");
 	}
-	
-	public void testGetCapabilitiesSoap() throws Exception {
+
+    @Test
+    public void testGetCapabilitiesSoap() throws Exception {
 		
 		TestServer server = TestServer.PORTALU;
 		
@@ -92,15 +97,16 @@ public class CSWClientTestLocal extends TestCase {
 		CSWCapabilities cap = client.getCapabilities();
 		
 		// tests
-		assertFalse("Server does not support MyFunction",
-				cap.isSupportingOperations(new String[] { "MyFunction" }));
+		assertFalse(cap.isSupportingOperations(new String[] { "MyFunction" }),
+				"Server does not support MyFunction");
 		
-		assertTrue("Server supports GetRecords and GetRecordById",
-				cap.isSupportingOperations(new String[] { Operation.GET_RECORDS.toString(), 
-						Operation.GET_RECORD_BY_ID.toString() }));
+		assertTrue(cap.isSupportingOperations(new String[] { Operation.GET_RECORDS.toString(), 
+						Operation.GET_RECORD_BY_ID.toString() }),
+				"Server supports GetRecords and GetRecordById");
 	}
 
-	public void testGetOperationUrl() throws Exception {
+    @Test
+    public void testGetOperationUrl() throws Exception {
 		
 		TestServer server = TestServer.PORTALU;
 		
@@ -117,9 +123,9 @@ public class CSWClientTestLocal extends TestCase {
 		CSWCapabilities cap = client.getCapabilities();
 		
 		// tests
-		assertEquals("GetRecords URL is correct",
-				"http://dev.informationgrid.eu:80/csw",
-				cap.getOperationUrl(Operation.GET_RECORDS));
+		assertEquals("http://dev.informationgrid.eu:80/csw",
+				cap.getOperationUrl(Operation.GET_RECORDS),
+				"GetRecords URL is correct");
 	}
 	
 	public void localTestGetRecordsAndRecordByIdSoap() throws Exception {
@@ -154,10 +160,9 @@ public class CSWClientTestLocal extends TestCase {
 
 		// do request
 		CSWSearchResult result = client.getRecords(query);
-		
-		// tests
-		assertTrue("Fetched "+recordCount+" records from the server",
-				recordCount == result.getNumberOfRecords());
+
+        // tests
+        assertEquals(recordCount, result.getNumberOfRecords(), "Fetched " + recordCount + " records from the server");
 		
         // create the query
         String recordId1 = result.getRecordList().get(0).getId();
@@ -167,10 +172,9 @@ public class CSWClientTestLocal extends TestCase {
 
         // do request
         CSWRecord resultById = client.getRecordById(query);
-        
+
         // tests
-        assertTrue("Fetched "+recordId1+" from the server",
-                recordId1.equals(resultById.getId()));
+        assertEquals(recordId1, resultById.getId(), "Fetched " + recordId1 + " from the server");
 		
 	}
 	

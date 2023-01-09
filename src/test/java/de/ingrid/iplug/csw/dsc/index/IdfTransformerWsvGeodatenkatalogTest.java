@@ -25,6 +25,7 @@ package de.ingrid.iplug.csw.dsc.index;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.junit.jupiter.api.Test;
 import org.springframework.core.io.FileSystemResource;
 import org.w3c.dom.Node;
 
@@ -45,6 +46,8 @@ import de.ingrid.utils.ElasticDocument;
 import de.ingrid.utils.idf.IdfTool;
 import de.ingrid.utils.statusprovider.StatusProviderService;
 
+import static org.junit.jupiter.api.Assertions.assertTrue;
+
 public class IdfTransformerWsvGeodatenkatalogTest extends BaseIndexTestCase {
 
     StatusProviderService statusProviderService;
@@ -53,10 +56,11 @@ public class IdfTransformerWsvGeodatenkatalogTest extends BaseIndexTestCase {
         super();
         statusProviderService = new StatusProviderService();
     }
-    
+
     /**
      * @throws Exception
      */
+    @Test
     public void testTransform() throws Exception {
 
         ProcessIdfMapper processIdfMapperWSV = new ProcessIdfMapper();
@@ -97,10 +101,10 @@ public class IdfTransformerWsvGeodatenkatalogTest extends BaseIndexTestCase {
                     .getDocumentElement();
 
             String[] urls = xPathUtils.getStringArray( idfNode, "//gmd:URL" );
-            assertTrue( "Idf found.", idfNode.hasChildNodes() );
-            assertTrue( "Metadata found.", xPathUtils.nodeExists( idfNode, "//idf:idfMdMetadata" ) );
+            assertTrue( idfNode.hasChildNodes() , "Idf found.");
+            assertTrue( xPathUtils.nodeExists( idfNode, "//idf:idfMdMetadata" ) , "Metadata found.");
             for (String url : urls) {
-                assertTrue( "All urls are absolute and start with 'http'.", url.startsWith( "http" ) );
+                assertTrue( url.startsWith( "http" ) , "All urls are absolute and start with 'http'.");
             }
         }
 

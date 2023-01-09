@@ -24,8 +24,11 @@ package de.ingrid.iplug.csw.dsc.record;
 
 import java.io.File;
 
-import junit.framework.TestCase;
 import de.ingrid.iplug.csw.dsc.TestUtil;
+
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.Test;
+
 import de.ingrid.iplug.csw.dsc.cache.Cache;
 import de.ingrid.iplug.csw.dsc.cache.impl.DefaultFileCache;
 import de.ingrid.iplug.csw.dsc.cswclient.CSWFactory;
@@ -41,7 +44,9 @@ import de.ingrid.utils.xml.IDFNamespaceContext;
 import de.ingrid.utils.xml.XMLUtils;
 import de.ingrid.utils.xpath.XPathUtils;
 
-public class IdfRecordCreatorTest extends TestCase {
+import static org.junit.jupiter.api.Assertions.assertEquals;
+
+public class IdfRecordCreatorTest {
 
     final private XPathUtils xPathUtils = new XPathUtils( new IDFNamespaceContext() );
 
@@ -49,12 +54,13 @@ public class IdfRecordCreatorTest extends TestCase {
     private Cache cache = null;
     private CSWFactory factory = null;
 
-    @Override
-    protected void tearDown() throws Exception {
+    @AfterEach
+    public void tearDown() throws Exception {
         // delete cache
         TestUtil.deleteDirectory( new File( cachePath ) );
     }
 
+    @Test
     public void testGetRecord() throws Exception {
 
         String[] ids = new String[] { "33462e89-e5ab-11c3-737d-b3a61366d028", "0C12204F-5626-4A2E-94F4-514424F093A1", "486d9622-c29d-44e5-b878-44389740011",
@@ -79,15 +85,17 @@ public class IdfRecordCreatorTest extends TestCase {
         idxDoc.put( "t01_object.obj_id", "33462e89-e5ab-11c3-737d-b3a61366d028" );
         idxDoc.put( IdfProducerDocumentMapper.DOCUMENT_FIELD_IDF, XMLUtils.toString(cache.getRecord( "33462e89-e5ab-11c3-737d-b3a61366d028", ElementSetName.FULL ).getOriginalResponse().getOwnerDocument()) );
         org.w3c.dom.Node idfDoc = StringUtils.stringToDocument( IdfTool.getIdfDataFromRecord( idfRecordCreator.getRecord( idxDoc ) ) );
-        assertEquals( "IDF Record 33462e89-e5ab-11c3-737d-b3a61366d028 exists.", "33462e89-e5ab-11c3-737d-b3a61366d028",
-                xPathUtils.getString( idfDoc, "//gmd:fileIdentifier/gco:CharacterString" ) );
+        assertEquals( "33462e89-e5ab-11c3-737d-b3a61366d028",
+                xPathUtils.getString( idfDoc, "//gmd:fileIdentifier/gco:CharacterString" ) ,
+                "IDF Record 33462e89-e5ab-11c3-737d-b3a61366d028 exists.");
 
         idxDoc = new ElasticDocument();
         idxDoc.put( "t01_object.obj_id", "486d9622-c29d-44e5-b878-44389740011" );
         idxDoc.put( IdfProducerDocumentMapper.DOCUMENT_FIELD_IDF, XMLUtils.toString(cache.getRecord( "486d9622-c29d-44e5-b878-44389740011", ElementSetName.FULL ).getOriginalResponse().getOwnerDocument()) );
         idfDoc = StringUtils.stringToDocument( IdfTool.getIdfDataFromRecord( idfRecordCreator.getRecord( idxDoc ) ) );
-        assertEquals( "IDF Record 486d9622-c29d-44e5-b878-44389740011 exists.", "486d9622-c29d-44e5-b878-44389740011",
-                xPathUtils.getString( idfDoc, "//gmd:fileIdentifier/gco:CharacterString" ) );
+        assertEquals( "486d9622-c29d-44e5-b878-44389740011",
+                xPathUtils.getString( idfDoc, "//gmd:fileIdentifier/gco:CharacterString" ) ,
+                "IDF Record 486d9622-c29d-44e5-b878-44389740011 exists.");
 
     }
 

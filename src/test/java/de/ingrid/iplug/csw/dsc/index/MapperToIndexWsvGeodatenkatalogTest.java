@@ -25,6 +25,7 @@ package de.ingrid.iplug.csw.dsc.index;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.junit.jupiter.api.Test;
 import org.springframework.core.io.FileSystemResource;
 
 import de.ingrid.codelists.CodeListService;
@@ -44,6 +45,10 @@ import de.ingrid.iplug.csw.dsc.record.producer.CswRecordProducer;
 import de.ingrid.utils.ElasticDocument;
 import de.ingrid.utils.statusprovider.StatusProviderService;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+
 public class MapperToIndexWsvGeodatenkatalogTest extends BaseIndexTestCase {
 
     StatusProviderService statusProviderService;
@@ -52,10 +57,11 @@ public class MapperToIndexWsvGeodatenkatalogTest extends BaseIndexTestCase {
         super();
         statusProviderService = new StatusProviderService();
     }
-    
+
     /**
      * @throws Exception
      */
+    @Test
     public void testMapper() throws Exception {
 
         prepareCache(null);
@@ -122,12 +128,12 @@ public class MapperToIndexWsvGeodatenkatalogTest extends BaseIndexTestCase {
                  */
             }
 
-            assertTrue("Lucene doc found.", doc != null);
+            assertTrue(doc != null, "Lucene doc found.");
             assertEquals(id, doc.get("t01_object.obj_id"));
 
             // check valid URLs
             for (String url : doc.getValues("t017_url_ref.url_link")) {
-                assertTrue(!url.startsWith("/"));
+                assertFalse(url.startsWith("/"));
             }
         }
     }

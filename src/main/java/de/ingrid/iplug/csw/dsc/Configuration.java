@@ -37,7 +37,7 @@ public class Configuration implements IConfig {
     @SuppressWarnings("unused")
     private static Log log = LogFactory.getLog( Configuration.class );
 
-    @Value("${plugdescription.fields}")
+    @Value("${plugdescription.fields:}")
     public String fields;
 
     @Value("${plugdescription.serviceUrl:}")

@@ -29,13 +29,16 @@ package de.ingrid.iplug.csw.dsc.cswclient;
 import java.util.Hashtable;
 import java.util.Map;
 
-import junit.framework.TestCase;
 import de.ingrid.iplug.csw.dsc.cswclient.constants.Operation;
+
+import org.junit.jupiter.api.Test;
 import de.ingrid.iplug.csw.dsc.cswclient.impl.KVPGetRequest;
 import de.ingrid.iplug.csw.dsc.cswclient.impl.SoapRequest;
 import de.ingrid.utils.PlugDescription;
 
-public class CSWFactoryTest extends TestCase {
+import static org.junit.jupiter.api.Assertions.assertTrue;
+
+public class CSWFactoryTest {
 	
 	public static final String cswClientImpl = "de.ingrid.iplug.csw.dsc.cswclient.impl.GenericClient";
 	public static final String cswCapabilitiesImpl = "de.ingrid.iplug.csw.dsc.cswclient.impl.GenericCapabilities";
@@ -103,31 +106,32 @@ public class CSWFactoryTest extends TestCase {
     	f.configure(desc);
     	
 		return f;
-    } 
+    }
 
-	public void testCreation() throws Exception {
+    @Test
+    public void testCreation() throws Exception {
     	CSWFactory f = createFactory(new PlugDescription());
 		
 		// tests
-		assertTrue("createClient returns a CSWClient implementation",
-				f.createClient() instanceof CSWClient);
+		assertTrue(f.createClient() instanceof CSWClient,
+				"createClient returns a CSWClient implementation");
 
-		assertTrue("createCapabilities returns a CSWCapabilities implementation",
-				f.createCapabilities() instanceof CSWCapabilities);
+		assertTrue(f.createCapabilities() instanceof CSWCapabilities,
+				"createCapabilities returns a CSWCapabilities implementation");
 		
-		assertTrue("createRecordDescription returns a CSWRecordDescription implementation",
-				f.createRecordDescription() instanceof CSWRecordDescription);
+		assertTrue(f.createRecordDescription() instanceof CSWRecordDescription,
+				"createRecordDescription returns a CSWRecordDescription implementation");
 		
-		assertTrue("createRequest returns a CSWRequest implementation",
-				f.createRequest(Operation.GET_CAPABILITIES) instanceof CSWRequest);
+		assertTrue(f.createRequest(Operation.GET_CAPABILITIES) instanceof CSWRequest,
+				"createRequest returns a CSWRequest implementation");
 
-		assertTrue("createQuery returns a CSWQuery implementation",
-				f.createQuery() instanceof CSWQuery);
+		assertTrue(f.createQuery() instanceof CSWQuery,
+				"createQuery returns a CSWQuery implementation");
 		
-		assertTrue("createQuery returns a CSWSearchResult implementation",
-				f.createSearchResult() instanceof CSWSearchResult);
+		assertTrue(f.createSearchResult() instanceof CSWSearchResult,
+				"createQuery returns a CSWSearchResult implementation");
 		
-		assertTrue("createRecord returns a CSWRecord implementation",
-				f.createRecord() instanceof CSWRecord);
+		assertTrue(f.createRecord() instanceof CSWRecord,
+				"createRecord returns a CSWRecord implementation");
 	}
 }
