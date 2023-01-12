@@ -25,6 +25,7 @@
  */
 package de.ingrid.iplug.csw.dsc.analyze;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -60,7 +61,7 @@ public class IsoCacheCoupledResourcesAnalyzer {
 
         CoupledResources result = new CoupledResources();
 
-        Map<String, String> coupledResourceIdentifier2ServiceRecords = new HashMap<String, String>();
+        Map<String, ArrayList<String>> coupledResourceIdentifier2ServiceRecords = new HashMap<String, ArrayList<String>>();
         Map<String, String> resourceIdentifierMap = new HashMap<String, String>();
 
         if (log.isInfoEnabled()) {
@@ -104,22 +105,32 @@ public class IsoCacheCoupledResourcesAnalyzer {
                 for (String coupledResource : coupledResources) {
                     coupledResource = coupledResource.trim();
                     if (coupledResource != null && coupledResource.length() > 0) {
-                        coupledResourceIdentifier2ServiceRecords.put(coupledResource, record.getId());
+                        String recordId = record.getId();
+                        ArrayList<String> recordIds = coupledResourceIdentifier2ServiceRecords.get(coupledResource);
+                        if(recordIds == null) {
+                            recordIds = new ArrayList<String>();
+                        }
+                        if(!recordIds.contains(recordId)) {
+                            recordIds.add(recordId);
+                        }
+                        coupledResourceIdentifier2ServiceRecords.put(coupledResource, recordIds);
                     }
                 }
             }
         }
         for (String resourceIdentifier : resourceIdentifierMap.keySet()) {
             String datasetRecordId = resourceIdentifierMap.get(resourceIdentifier);
-            String serviceRecordId = coupledResourceIdentifier2ServiceRecords.get(resourceIdentifier);
-            if (serviceRecordId != null) {
-                if (log.isDebugEnabled()) {
-                    log.debug("Found coupling between dataset '" + datasetRecordId + "' and service '" + serviceRecordId + "' by resource identifier reference.");
+            ArrayList<String> serviceRecordIds = coupledResourceIdentifier2ServiceRecords.get(resourceIdentifier);
+            if (serviceRecordIds != null) {
+                for (String serviceRecordId : serviceRecordIds) {
+                    if (log.isDebugEnabled()) {
+                        log.debug("Found coupling between dataset '" + datasetRecordId + "' and service '" + serviceRecordId + "' by resource identifier reference.");
+                    }
+                    // add dataset -> service record
+                    result.addCoupling(datasetRecordId, serviceRecordId);
+                    // add service -> dataset record
+                    result.addCoupling(serviceRecordId, datasetRecordId);
                 }
-                // add dataset -> service record
-                result.addCoupling(datasetRecordId, serviceRecordId);
-                // add service -> dataset record
-                result.addCoupling(serviceRecordId, datasetRecordId);
             }
         }
         resourceIdentifierMap.clear();
