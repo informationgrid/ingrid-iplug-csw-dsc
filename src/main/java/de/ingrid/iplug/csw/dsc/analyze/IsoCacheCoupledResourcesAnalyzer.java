@@ -83,7 +83,7 @@ public class IsoCacheCoupledResourcesAnalyzer {
 
             // get coupled datasets for service records that are coupled over
             // the uuid of the record
-            String[] coupledDatasets = xPathUtils.getStringArray(n, "//srv:operatesOn[//srv:serviceType/gco:LocalName='view']/@uuidref");
+            String[] coupledDatasets = xPathUtils.getStringArray(n, "//srv:operatesOn/@uuidref");
             if (coupledDatasets != null && coupledDatasets.length > 0) {
                 for (String datasetId : coupledDatasets) {
                     datasetId = datasetId.trim();
@@ -99,7 +99,7 @@ public class IsoCacheCoupledResourcesAnalyzer {
                 }
             }
 
-            String[] coupledResources = xPathUtils.getStringArray(n, "//srv:operatesOn[//srv:serviceType/gco:LocalName='view']/@xlink:href");
+            String[] coupledResources = xPathUtils.getStringArray(n, "//srv:operatesOn/@xlink:href");
             if (coupledResources != null && coupledResources.length > 0) {
                 for (String coupledResource : coupledResources) {
                     coupledResource = coupledResource.trim();
