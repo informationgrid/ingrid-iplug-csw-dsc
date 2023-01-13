@@ -2,7 +2,7 @@
  * **************************************************-
  * ingrid-iplug-csw-dsc:war
  * ==================================================
- * Copyright (C) 2014 - 2022 wemove digital solutions GmbH
+ * Copyright (C) 2014 - 2023 wemove digital solutions GmbH
  * ==================================================
  * Licensed under the EUPL, Version 1.1 or – as soon they will be
  * approved by the European Commission - subsequent versions of the
@@ -22,7 +22,7 @@
  */
 package de.ingrid.iplug.csw.dsc.cswclient.impl;
 
-import org.apache.axiom.om.impl.llom.util.AXIOMUtil;
+import org.apache.axiom.om.util.AXIOMUtil;
 import org.apache.axis2.client.ServiceClient;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -46,7 +46,7 @@ public class SamlTicketSoapRequestPreprocessor implements CSWRequestPreprocessor
 
         try {
 
-            soapHeaderTemplate = soapHeaderTemplate.replaceAll("\\$\\{SAML_TICKET\\}", samlTicket);
+            soapHeaderTemplate = soapHeaderTemplate.replaceAll("###SAML_TICKET###", samlTicket);
 
             param.addHeader(AXIOMUtil.stringToOM(soapHeaderTemplate));
         } catch (Exception e) {

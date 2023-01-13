@@ -2,7 +2,7 @@
  * **************************************************-
  * ingrid-iplug-csw-dsc:war
  * ==================================================
- * Copyright (C) 2014 - 2022 wemove digital solutions GmbH
+ * Copyright (C) 2014 - 2023 wemove digital solutions GmbH
  * ==================================================
  * Licensed under the EUPL, Version 1.1 or – as soon they will be
  * approved by the European Commission - subsequent versions of the
@@ -37,7 +37,7 @@ public class Configuration implements IConfig {
     @SuppressWarnings("unused")
     private static Log log = LogFactory.getLog( Configuration.class );
 
-    @Value("${plugdescription.fields}")
+    @Value("${plugdescription.fields:}")
     public String fields;
 
     @Value("${plugdescription.serviceUrl:}")

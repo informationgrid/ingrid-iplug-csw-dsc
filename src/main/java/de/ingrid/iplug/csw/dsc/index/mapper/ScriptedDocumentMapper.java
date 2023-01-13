@@ -2,7 +2,7 @@
  * **************************************************-
  * ingrid-iplug-csw-dsc:war
  * ==================================================
- * Copyright (C) 2014 - 2022 wemove digital solutions GmbH
+ * Copyright (C) 2014 - 2023 wemove digital solutions GmbH
  * ==================================================
  * Licensed under the EUPL, Version 1.1 or – as soon they will be
  * approved by the European Commission - subsequent versions of the
@@ -117,12 +117,12 @@ public class ScriptedDocumentMapper implements IRecordMapper {
             XPathUtils xpathUtils = new XPathUtils( new IDFNamespaceContext() );
 
             Bindings bindings = engine.createBindings();
+            bindings.put("polyglot.js.allowAllAccess", true);
             bindings.put( "cswRecord", idfRecord );
             bindings.put( "document", doc );
             bindings.put( "log", log );
             bindings.put( "codelistService", codelistService );
             bindings.put( "XPathUtils", xpathUtils );
-            bindings.put( "javaVersion", System.getProperty( "java.version" ) );
 
             if (compiledScript != null) {
                 compiledScript.eval( bindings );
@@ -130,10 +130,7 @@ public class ScriptedDocumentMapper implements IRecordMapper {
                 engine.eval( new InputStreamReader( mappingScript.getInputStream() ), bindings );
             }
         } catch (Exception e) {
-            String cswRecordId = null;
-            if (idfRecord != null) {
-                cswRecordId = idfRecord.getId();
-            }
+            String cswRecordId = idfRecord.getId();
             log.error( "Error mapping source record to lucene document: cswRecordId=" + cswRecordId, e );
             throw e;
         }

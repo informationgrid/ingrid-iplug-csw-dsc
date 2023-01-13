@@ -2,7 +2,7 @@
  * **************************************************-
  * ingrid-iplug-csw-dsc:war
  * ==================================================
- * Copyright (C) 2014 - 2022 wemove digital solutions GmbH
+ * Copyright (C) 2014 - 2023 wemove digital solutions GmbH
  * ==================================================
  * Licensed under the EUPL, Version 1.1 or – as soon they will be
  * approved by the European Commission - subsequent versions of the
@@ -31,14 +31,14 @@
  * @param log A Log instance
  *
  */
-if (javaVersion.indexOf( "1.8" ) === 0) {
-    load("nashorn:mozilla_compat.js");
-}
-
-importPackage(Packages.de.ingrid.iplug.csw.dsc.tools);
-importPackage(Packages.de.ingrid.iplug.csw.dsc.index);
-importPackage(Packages.de.ingrid.utils.udk);
-importPackage(Packages.org.w3c.dom);
+// importPackage(Packages.de.ingrid.iplug.csw.dsc.tools);
+// let Date = Java.type("de.ingrid.iplug.csw.dsc.tools");
+// importPackage(Packages.de.ingrid.iplug.csw.dsc.index);
+// importPackage(Packages.de.ingrid.utils.udk);
+// importPackage(Packages.org.w3c.dom);
+let UtilsCSWDate = Java.type("de.ingrid.utils.udk.UtilsCSWDate");
+let TM_PeriodDurationToTimeInterval = Java.type("de.ingrid.utils.udk.TM_PeriodDurationToTimeInterval");
+let TM_PeriodDurationToTimeAlle = Java.type("de.ingrid.utils.udk.TM_PeriodDurationToTimeAlle");
 
 //constant to punish the rank of a service/data object, which has no coupled resource
 var BOOST_NO_COUPLED_RESOURCE  = 0.9;
@@ -46,9 +46,7 @@ var BOOST_NO_COUPLED_RESOURCE  = 0.9;
 var BOOST_HAS_COUPLED_RESOURCE = 1.0;
 
 
-if (log.isDebugEnabled()) {
-    log.debug("Mapping csw record "+cswRecord.getId()+" to lucene document");
-}
+log.debug("Mapping csw record "+cswRecord.getId()+" to lucene document");
 
 // get the xml content of the record
 var recordNode = cswRecord.getOriginalResponse();
@@ -489,23 +487,17 @@ for (var i in transformationDescriptions) {
     
     // check for execution (special function)
     if (hasValue(t.execute)) {
-        if (log.isDebugEnabled()) {
-            log.debug("Execute function: " + t.execute.funct.name)
-        }
+        log.debug("Execute function: " + t.execute.funct.name)
         call_f(t.execute.funct, t.execute.params)
     } else {
-        if (log.isDebugEnabled()) {
-            log.debug("Working on " + t.indexField)
-        }
+        log.debug("Working on " + t.indexField)
         var tokenized = true;
         // iterate over all xpath results
         var nodeList = XPathUtils.getNodeList(recordNode, t.xpath);
         if (nodeList && nodeList.getLength() > 0) {
             for (j=0; j<nodeList.getLength(); j++ ) {
                 value = nodeList.item(j).getTextContent();
-                if (log.isDebugEnabled()) {
-                    log.debug("Found value '" + value + "'");
-                }
+                log.debug("Found value '" + value + "'");
                 // check for transformation
                 if (hasValue(t.transform) && hasValue(value)) {
                     var args = new Array(value);
@@ -553,9 +545,7 @@ for (var i in transformationDescriptions) {
 function mapAddresses(recordNode) {
     var addresses = XPathUtils.getNodeList(recordNode, "//*/idf:idfResponsibleParty");
     if (hasValue(addresses)) {
-        if (log.isDebugEnabled()) {
-            log.debug("number of found addresses:" + addresses.getLength())
-        }
+        log.debug("number of found addresses:" + addresses.getLength())
         for (i=0; i<addresses.getLength(); i++ ) {
             var addressRole = XPathUtils.getString(addresses.item(i), "gmd:role/gmd:CI_RoleCode/@codeListValue");
             if (hasValue(addressRole)) {
@@ -895,9 +885,7 @@ function transformToIgcDomainId(val, codeListId) {
         if (hasValue(idcCode)) {
             return idcCode;
         } else {
-            if (log.isDebugEnabled()) {
-                log.debug("Domain code '" + val + "' unknown in code list " + codeListId + ".");
-            }
+            log.debug("Domain code '" + val + "' unknown in code list " + codeListId + ".");
             return -1;
         }
     }
@@ -952,9 +940,7 @@ function addResourceMaintenance() {
             addToDoc("t01_object.time_interval", new TM_PeriodDurationToTimeInterval().parse(periodDuration), false);
             addToDoc("t01_object.time_alle", new TM_PeriodDurationToTimeAlle().parse(periodDuration), false);
         } else {
-            if (log.isDebugEnabled()) {
-                log.debug("MD_MaintenanceFrequencyCode '" + maintenanceFrequencyCode + "' unknown.")
-            }
+            log.debug("MD_MaintenanceFrequencyCode '" + maintenanceFrequencyCode + "' unknown.")
         }
     }
 }
@@ -1094,17 +1080,13 @@ function addObjectReferenceTo() {
 
 function addToDoc(field, content, tokenized, additionalTokenize) {
     if (typeof content != "undefined" && content != null) {
-        if (log.isDebugEnabled()) {
-          log.debug("Add '" + field + "'='" + content + "' to lucene index");
-        }
+        log.debug("Add '" + field + "'='" + content + "' to lucene index");
 
         // try to fix trim related errors (INGRID-2350)
         if (typeof(content.trim) === "function") {
           content = content.trim();
         } else {
-          if (log.isDebugEnabled()) {
-            log.debug("Could not execut trim() on '" + content + "' (Type: "+ (typeof content) +"). Trim() not found, fall back to regular expression based trimming.");
-          }
+          log.debug("Could not execut trim() on '" + content + "' (Type: "+ (typeof content) +"). Trim() not found, fall back to regular expression based trimming.");
           content = (""+content).replace(/^\s+|\s+$/gm,'');
         }
 
@@ -1126,9 +1108,7 @@ function doAdditionalTokenize(content, additionalTokenize) {
     if (additionalTokenize == "SPLIT_URL") {
         // split by "/" and "."
         var newContent = ("" + content).split(/[.\/]/).join(' ');
-        if (log.isDebugEnabled()) {
-          log.debug("Additional tokenizing of '" + content + "' to '" + newContent + "'");
-        }
+        log.debug("Additional tokenizing of '" + content + "' to '" + newContent + "'");
         return newContent;
     }
   }
@@ -1138,14 +1118,10 @@ function doAdditionalTokenize(content, additionalTokenize) {
 function addNumericToDoc(field, content) {
     if (typeof content != "undefined" && content != null) {
         try {
-            if (log.isDebugEnabled()) {
-                log.debug("Add numeric '" + field + "'='" + content + "' to lucene index.");
-            }
+            log.debug("Add numeric '" + field + "'='" + content + "' to lucene index.");
             document.put( field, content );
         } catch (e) {
-            if (log.isDebugEnabled()) {
-                log.debug("Value '" + content + "' is not a number. Ignoring field '" + field + "'.");
-            }
+            log.debug("Value '" + content + "' is not a number. Ignoring field '" + field + "'.");
         }
     }
 }
@@ -1158,7 +1134,7 @@ function hasValue(val) {
         return false; 
     } else if (typeof val == "string" && val == "") {
         return false;
-    } else if (typeof val == "object" && val.toString() == "") {
+    } else if (typeof val == "object" && Object.keys(val).length === 0) {
         return false;
     } else {
       return true;

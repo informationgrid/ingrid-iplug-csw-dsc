@@ -2,7 +2,7 @@
  * **************************************************-
  * ingrid-iplug-csw-dsc:war
  * ==================================================
- * Copyright (C) 2014 - 2022 wemove digital solutions GmbH
+ * Copyright (C) 2014 - 2023 wemove digital solutions GmbH
  * ==================================================
  * Licensed under the EUPL, Version 1.1 or – as soon they will be
  * approved by the European Commission - subsequent versions of the
@@ -31,20 +31,22 @@ import java.util.ArrayList;
 
 import javax.xml.namespace.QName;
 
-import junit.framework.TestCase;
-
 import org.apache.axiom.om.OMElement;
 import org.apache.axis2.AxisFault;
 import org.apache.axis2.client.ServiceClient;
 import org.apache.axis2.context.ConfigurationContext;
 import org.apache.axis2.context.ConfigurationContextFactory;
+import org.junit.jupiter.api.Test;
 import org.springframework.core.io.ClassPathResource;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 /**
  * @author joachim
  * 
  */
-public class SamlTicketSoapRequestPreprocessorTest extends TestCase {
+public class SamlTicketSoapRequestPreprocessorTest {
 
     /**
      * Test method for
@@ -59,6 +61,7 @@ public class SamlTicketSoapRequestPreprocessorTest extends TestCase {
      * @throws IllegalArgumentException
      */
     @SuppressWarnings("unchecked")
+    @Test
     public void testProcess() throws AxisFault, IOException, SecurityException, NoSuchFieldException,
             IllegalArgumentException, IllegalAccessException {
         SamlTicketSoapRequestPreprocessor p = new SamlTicketSoapRequestPreprocessor();
@@ -74,7 +77,7 @@ public class SamlTicketSoapRequestPreprocessorTest extends TestCase {
                         + "            <tcExt:tcSecuredAction>\n"
                         + "                <tcExt:action>service.csw::discovery.read</tcExt:action>\n"
                         + "            </tcExt:tcSecuredAction>\n"
-                        + "            <tcExt:samlTicket>${SAML_TICKET}</tcExt:samlTicket>\n"
+                        + "            <tcExt:samlTicket>###SAML_TICKET###</tcExt:samlTicket>\n"
                         + "        </tcExt:tcSecurity>");
 
         serviceClient = p.process(serviceClient);

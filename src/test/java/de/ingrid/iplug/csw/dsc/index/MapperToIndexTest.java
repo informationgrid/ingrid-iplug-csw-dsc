@@ -2,7 +2,7 @@
  * **************************************************-
  * ingrid-iplug-csw-dsc:war
  * ==================================================
- * Copyright (C) 2014 - 2022 wemove digital solutions GmbH
+ * Copyright (C) 2014 - 2023 wemove digital solutions GmbH
  * ==================================================
  * Licensed under the EUPL, Version 1.1 or – as soon they will be
  * approved by the European Commission - subsequent versions of the
@@ -25,6 +25,7 @@ package de.ingrid.iplug.csw.dsc.index;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.junit.jupiter.api.Test;
 import org.springframework.core.io.FileSystemResource;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
@@ -48,6 +49,10 @@ import de.ingrid.utils.ElasticDocument;
 import de.ingrid.utils.statusprovider.StatusProviderService;
 import de.ingrid.utils.tool.StringUtil;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+
 public class MapperToIndexTest extends BaseIndexTestCase {
 
     StatusProviderService statusProviderService;
@@ -56,10 +61,11 @@ public class MapperToIndexTest extends BaseIndexTestCase {
         super();
         statusProviderService = new StatusProviderService();
     }
-    
+
     /**
      * @throws Exception
      */
+    @Test
     public void testMapper() throws Exception {
 
         prepareCache(null);
@@ -107,16 +113,16 @@ public class MapperToIndexTest extends BaseIndexTestCase {
             
             Node idfNode = StringUtils.stringToDocument( (String)doc.get( IdfProducerDocumentMapper.DOCUMENT_FIELD_IDF ) );
 
-            assertTrue("Lucene doc found.", doc != null);
+            assertTrue(doc != null, "Lucene doc found.");
             assertEquals(id, doc.get("t01_object.obj_id"));
-            assertTrue("Valid hierarchyLevel set.", Integer.parseInt((String) doc.get("t01_object.obj_class")) >= 0 && Integer.parseInt((String) doc.get("t01_object.obj_class")) <= 5);
+            assertTrue(Integer.parseInt((String) doc.get("t01_object.obj_class")) >= 0 && Integer.parseInt((String) doc.get("t01_object.obj_class")) <= 5, "Valid hierarchyLevel set.");
             String mdBrowseGraphic_FileName = xPathUtils.getString(idfNode, "//gmd:identificationInfo//gmd:graphicOverview/gmd:MD_BrowseGraphic/gmd:fileName/gco:CharacterString");
             if (mdBrowseGraphic_FileName != null) {
-                assertFalse("MD_BrowseGraphic is mapped as link", (doc.getValues("t017_url_ref.url_link").length > 0 && mdBrowseGraphic_FileName.equals(doc.getValues("t017_url_ref.url_link")[0]))
-                        || (doc.getValues("t017_url_ref.url_link").length > 1 && mdBrowseGraphic_FileName.equals(doc.getValues("t017_url_ref.url_link")[1])));
+                assertFalse((doc.getValues("t017_url_ref.url_link").length > 0 && mdBrowseGraphic_FileName.equals(doc.getValues("t017_url_ref.url_link")[0]))
+                        || (doc.getValues("t017_url_ref.url_link").length > 1 && mdBrowseGraphic_FileName.equals(doc.getValues("t017_url_ref.url_link")[1])), "MD_BrowseGraphic is mapped as link");
             }
             String fileIdentifier = xPathUtils.getString(idfNode, "//idf:idfMdMetadata/gmd:fileIdentifier/gco:CharacterString").trim();
-            assertTrue("fileIdentifier is not mapped", fileIdentifier.equals(doc.getValues("t01_object.obj_id")[0]));
+            assertEquals(fileIdentifier, doc.getValues("t01_object.obj_id")[0], "fileIdentifier is not mapped");
 
             // check gmd:referenceSystemInfo
             NodeList rsIdentifiers = xPathUtils.getNodeList(idfNode, "//gmd:referenceSystemInfo/gmd:MD_ReferenceSystem/gmd:referenceSystemIdentifier/gmd:RS_Identifier");
@@ -129,8 +135,8 @@ public class MapperToIndexTest extends BaseIndexTestCase {
                         val = codeSpace + ":" + code;
                     }
                     if (val != null) {
-                        assertTrue("spatial_system.referencesystem_value is not mapped", StringUtil.containsString(doc.getValues("spatial_system.referencesystem_value"), val));
-                        assertTrue("t011_obj_geo.referencesystem_id", StringUtil.containsString(doc.getValues("t011_obj_geo.referencesystem_id"), val));
+                        assertTrue(StringUtil.containsString(doc.getValues("spatial_system.referencesystem_value"), val), "spatial_system.referencesystem_value is not mapped");
+                        assertTrue(StringUtil.containsString(doc.getValues("t011_obj_geo.referencesystem_id"), val), "t011_obj_geo.referencesystem_id");
                     }
                 }
             }
@@ -140,7 +146,7 @@ public class MapperToIndexTest extends BaseIndexTestCase {
             if (crossReference != null) {
                 String data = xPathUtils.getString(crossReference, "./@uuid").trim() + "@@" + xPathUtils.getString(crossReference, "idf:objectName").trim() + "@@" + xPathUtils.getString(crossReference, "idf:serviceUrl").trim() + "@@"
                         + xPathUtils.getString(idfNode, "//gmd:identificationInfo/*/gmd:citation/*/gmd:identifier/*/gmd:code/gco:CharacterString").trim();
-                assertEquals("Crossreference from dataset to service exists.", data, doc.getValues("refering_service_uuid")[0]);
+                assertEquals(data, doc.getValues("refering_service_uuid")[0], "Crossreference from dataset to service exists.");
             }
         }
     }

@@ -2,7 +2,7 @@
  * **************************************************-
  * ingrid-iplug-csw-dsc:war
  * ==================================================
- * Copyright (C) 2014 - 2022 wemove digital solutions GmbH
+ * Copyright (C) 2014 - 2023 wemove digital solutions GmbH
  * ==================================================
  * Licensed under the EUPL, Version 1.1 or – as soon they will be
  * approved by the European Commission - subsequent versions of the
@@ -34,8 +34,6 @@ import java.util.UUID;
 
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
-import javax.xml.soap.SOAPException;
-import javax.xml.soap.SOAPMessage;
 import javax.xml.transform.OutputKeys;
 import javax.xml.transform.Result;
 import javax.xml.transform.Source;
@@ -44,6 +42,7 @@ import javax.xml.transform.TransformerFactory;
 import javax.xml.transform.dom.DOMSource;
 import javax.xml.transform.stream.StreamResult;
 
+import org.apache.axiom.soap.SOAPMessage;
 import org.w3c.dom.Document;
 import org.w3c.dom.Node;
 import org.xml.sax.InputSource;
@@ -77,10 +76,10 @@ public class StringUtils {
         }
     }
     
-    public static String soapMessageTostring(SOAPMessage message) throws SOAPException, IOException {
+    public static String soapMessageTostring(SOAPMessage message) throws IOException {
         ByteArrayOutputStream out = new ByteArrayOutputStream();
-        message.writeTo(out);
-        return new String(out.toByteArray());
+        message.serialize(out, true);
+        return out.toString();
     }
 
     public static Document stringToDocument(String string) throws Exception {
@@ -89,15 +88,14 @@ public class StringUtils {
         DocumentBuilder builder = domFactory.newDocumentBuilder();
         InputSource inStream = new InputSource();
         inStream.setCharacterStream(new StringReader(string));
-        Document doc = builder.parse(inStream);
-        return doc;
+        return builder.parse(inStream);
     }
 
     
     
     public static String generateUuid() {
         UUID uuid = UUID.randomUUID();
-        StringBuffer idcUuid = new StringBuffer(uuid.toString().toUpperCase());
+        StringBuilder idcUuid = new StringBuilder(uuid.toString().toUpperCase());
         while (idcUuid.length() < 36) {
             idcUuid.append("0");
         }
