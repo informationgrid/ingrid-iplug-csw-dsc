@@ -2,7 +2,7 @@
  * **************************************************-
  * ingrid-iplug-csw-dsc:war
  * ==================================================
- * Copyright (C) 2014 - 2022 wemove digital solutions GmbH
+ * Copyright (C) 2014 - 2023 wemove digital solutions GmbH
  * ==================================================
  * Licensed under the EUPL, Version 1.1 or – as soon they will be
  * approved by the European Commission - subsequent versions of the
@@ -264,7 +264,7 @@ public class SoapRequest implements CSWRequest {
 
         Options opts = new Options();
         opts.setTo(new EndpointReference(serverURL));
-        opts.setProperty(org.apache.axis2.transport.http.HTTPConstants.CHUNKED, false);
+        opts.setProperty(org.apache.axis2.kernel.http.HTTPConstants.CHUNKED, false);
         opts.setProperty(org.apache.axis2.Constants.Configuration.CHARACTER_SET_ENCODING, "UTF-8");
         opts.setTimeOutInMilliSeconds(cswConfig.httpReadTimeout);
         /*

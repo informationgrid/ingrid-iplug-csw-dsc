@@ -1,14 +1,14 @@
 FROM alpine AS builder
 
 COPY ingrid-iplug-csw-dsc*-installer.jar /
-RUN unzip ingrid-*.jar -d /tmp \
+RUN unzip -q ingrid-*.jar -d /tmp \
     && export INSTALL_DIR=`ls -d1 /tmp/ingrid-*` \
     && touch $INSTALL_DIR/pattern \
     && mkdir -p $INSTALL_DIR/conf \
     && echo jetty.port=8080 > $INSTALL_DIR/conf/config.override.properties \
     && sed -i -r 's/(<AppenderRef.*\/>)/\1<AppenderRef ref="Console" \/>/g' $INSTALL_DIR/conf/log4j2.xml
 
-FROM docker-registry.wemove.com/ingrid-java:jre-8-slim
+FROM docker-registry.wemove.com/ingrid-java:jre-17
 ENV INGRID_USER=ingrid
 ENV RUN_DIRECTLY=true
 

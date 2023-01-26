@@ -3,11 +3,11 @@
   <parent>
     <groupId>de.ingrid</groupId>
     <artifactId>ingrid-releases-pom</artifactId>
-    <version>5.11.0</version>
+    <version>6.0.0</version>
   </parent>
   <modelVersion>4.0.0</modelVersion>
   <artifactId>ingrid-iplug-csw-dsc</artifactId>
-  <version>5.14.0.4346-SNAPSHOT</version>
+  <version>6.1.0.4346-SNAPSHOT</version>
   <packaging>jar</packaging>
   <name>InGrid iPlug CSW-DSC</name>
   <description>This iPlug indexes documents from a CSW-interface and can be requested by the iBus.</description>
@@ -32,10 +32,11 @@
   <!-- ==================== PROPERTIES ==================== -->
   <properties>
     <iplug.type>IPLUG_CSW_DSC</iplug.type>
+    <maven.compiler.release>17</maven.compiler.release>
     <!-- since spring 4.1 the quartz library 1.x is not supported anymore -->
-    <spring.version>4.3.20.RELEASE</spring.version>
-    <ingrid-base-webapp.version>5.12.0</ingrid-base-webapp.version>
-    <log4j2.version>2.17.1</log4j2.version>
+    <spring.version>2.7.7</spring.version>
+    <ingrid-base-webapp.version>6.0.0</ingrid-base-webapp.version>
+    <log4j2.version>2.19.0</log4j2.version>
   </properties>
 
   <!-- ==================== DEPENDENCY MANAGEMENT ==================== -->
@@ -47,14 +48,14 @@
         <version>1.1.1</version>
       </dependency>
       <dependency>
-        <groupId>org.springframework</groupId>
-        <artifactId>spring-web</artifactId>
+        <!-- Import dependency management from Spring Boot -->
+        <groupId>org.springframework.boot</groupId>
+        <artifactId>spring-boot-starter-parent</artifactId>
         <version>${spring.version}</version>
-      </dependency>
-      <dependency>
-        <groupId>org.springframework</groupId>
-        <artifactId>spring-webmvc</artifactId>
-        <version>${spring.version}</version>
+        <!-- <relativePath />-->
+        <!-- lookup parent from repository -->
+        <type>pom</type>
+        <scope>import</scope>
       </dependency>
     </dependencies>
   </dependencyManagement>
@@ -62,24 +63,14 @@
   <!-- ==================== DEPENDENCIES ==================== -->
   <dependencies>
     <dependency>
-      <groupId>org.springframework</groupId>
-      <artifactId>spring-context-support</artifactId>
-      <version>${spring.version}</version>
-    </dependency>
-    <dependency>
-      <groupId>org.springframework</groupId>
-      <artifactId>spring-tx</artifactId>
-      <version>${spring.version}</version>
-    </dependency>
-    <dependency>
       <groupId>de.ingrid</groupId>
       <artifactId>ingrid-utils</artifactId>
-      <version>5.14.1-SNAPSHOT</version>
+      <version>6.1.0-SNAPSHOT</version>
     </dependency>
     <dependency>
       <groupId>de.ingrid</groupId>
       <artifactId>ingrid-codelist-service</artifactId>
-      <version>5.11.0</version>
+      <version>6.0.0</version>
       <exclusions>
         <exclusion>
           <groupId>org.springframework</groupId>
@@ -114,7 +105,7 @@
     <dependency>
       <groupId>de.ingrid</groupId>
       <artifactId>ingrid-iplug</artifactId>
-      <version>5.3.0</version>
+      <version>6.0.0</version>
       <exclusions>
         <exclusion>
           <groupId>ant</groupId>
@@ -158,12 +149,11 @@
     <dependency>
       <groupId>commons-codec</groupId>
       <artifactId>commons-codec</artifactId>
-      <version>1.4</version>
     </dependency>
     <dependency>
       <groupId>org.apache.axis2</groupId>
       <artifactId>axis2-kernel</artifactId>
-      <version>1.4.1</version>
+      <version>1.8.2</version>
       <exclusions>
         <exclusion>
           <groupId>javax.servlet</groupId>
@@ -174,7 +164,7 @@
     <dependency>
       <groupId>org.apache.axis2</groupId>
       <artifactId>axis2-jaxws</artifactId>
-      <version>1.4.1</version>
+      <version>1.8.2</version>
       <exclusions>
         <exclusion>
           <groupId>commons-io</groupId>
@@ -263,6 +253,29 @@
       </exclusions>
     </dependency>
 
+    <dependency>
+      <groupId>org.apache.axis2</groupId>
+      <artifactId>axis2-adb</artifactId>
+      <version>1.8.2</version>
+    </dependency>
+    <dependency>
+      <groupId>org.apache.axis2</groupId>
+      <artifactId>axis2-transport-local</artifactId>
+      <version>1.8.2</version>
+    </dependency>
+    
+    <!-- JS support -->
+    <dependency>
+      <groupId>org.graalvm.js</groupId>
+      <artifactId>js</artifactId>
+      <version>22.2.0</version>
+    </dependency>
+    <dependency>
+      <groupId>org.graalvm.js</groupId>
+      <artifactId>js-scriptengine</artifactId>
+      <version>22.2.0</version>
+    </dependency>
+
     <!-- backward compatible -->
     <dependency>
       <groupId>org.apache.logging.log4j</groupId>
@@ -280,41 +293,15 @@
       <artifactId>log4j-core</artifactId>
       <version>${log4j2.version}</version>
     </dependency>
-
-    <!-- The two following dependencies are needed for Jetty -->
-    <dependency>
-      <groupId>org.mortbay.jetty</groupId>
-      <artifactId>jetty</artifactId>
-      <version>6.1.26</version>
-    </dependency>
-    <dependency>
-      <groupId>org.mortbay.jetty</groupId>
-      <artifactId>jsp-2.1</artifactId>
-      <version>6.1.14</version>
-      <exclusions>
-        <!-- already included in axis2-kernel -->
-        <exclusion>
-          <groupId>ant</groupId>
-          <artifactId>ant</artifactId>
-        </exclusion>
-        <!-- already included in jetty -->
-        <exclusion>
-          <groupId>org.mortbay.jetty</groupId>
-          <artifactId>servlet-api-2.5</artifactId>
-        </exclusion>
-      </exclusions>
-    </dependency>
-    <!-- End of Jetty - Dependencies -->
-    <dependency>
-      <groupId>junit</groupId>
-      <artifactId>junit</artifactId>
-      <version>4.13.1</version>
-      <scope>test</scope>
-    </dependency>
     <dependency>
       <groupId>org.mockito</groupId>
       <artifactId>mockito-core</artifactId>
-      <version>2.0.44-beta</version>
+      <version>4.8.1</version>
+    </dependency>
+    <dependency>
+      <groupId>org.junit.jupiter</groupId>
+      <artifactId>junit-jupiter</artifactId>
+      <scope>test</scope>
     </dependency>
   </dependencies>
 
@@ -348,6 +335,7 @@
           <noDeploy>true</noDeploy>
         </configuration>
       </plugin>
+
     </plugins>
   </build>
 </project>
