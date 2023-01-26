@@ -264,7 +264,7 @@ public class SoapRequest implements CSWRequest {
 
         Options opts = new Options();
         opts.setTo(new EndpointReference(serverURL));
-        opts.setProperty(org.apache.axis2.kernel.http.HTTPConstants.CHUNKED, false);
+        opts.setProperty(org.apache.axis2.transport.http.HTTPConstants.CHUNKED, false);
         opts.setProperty(org.apache.axis2.Constants.Configuration.CHARACTER_SET_ENCODING, "UTF-8");
         opts.setTimeOutInMilliSeconds(cswConfig.httpReadTimeout);
         /*
