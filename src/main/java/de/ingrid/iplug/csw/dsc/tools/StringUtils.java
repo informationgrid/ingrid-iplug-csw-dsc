@@ -34,6 +34,7 @@ import java.util.UUID;
 
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
+import javax.xml.stream.XMLStreamException;
 import javax.xml.transform.OutputKeys;
 import javax.xml.transform.Result;
 import javax.xml.transform.Source;
@@ -78,7 +79,11 @@ public class StringUtils {
     
     public static String soapMessageTostring(SOAPMessage message) throws IOException {
         ByteArrayOutputStream out = new ByteArrayOutputStream();
-        message.serialize(out, true);
+        try {
+            message.serialize(out);
+        } catch (XMLStreamException e) {
+            throw new RuntimeException(e);
+        }
         return out.toString();
     }
 
