@@ -235,10 +235,7 @@ var transformationDescriptions = [
     },
     //  t011_obj_serv
     {   "indexField":"t011_obj_serv.type",
-        "xpath":"//gmd:identificationInfo//srv:serviceType/gco:LocalName",
-        "transform":{
-            "funct":transformToLowerCase
-        }
+        "xpath":"//gmd:identificationInfo//srv:serviceType/gco:LocalName"
     },
     {   "indexField":"t011_obj_serv.history",
         "xpath":"//gmd:dataQualityInfo/gmd:DQ_DataQuality/gmd:lineage/gmd:LI_Lineage/gmd:processStep/gmd:LI_ProcessStep/gmd:description/gco:CharacterString"
@@ -857,14 +854,6 @@ function mapReferenceSystemInfo() {
     }
 }
 
-
-function transformToLowerCase(val) {
-    var value = null;
-    if (hasValue(val)) {
-        value = val.toLowerCase();
-    }
-    return value;
-}
 
 function transformGeneric(val, mappings, caseSensitive) {
     for (var t in mappings) {
