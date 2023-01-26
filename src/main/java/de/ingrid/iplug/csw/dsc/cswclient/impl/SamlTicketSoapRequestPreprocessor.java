@@ -22,7 +22,7 @@
  */
 package de.ingrid.iplug.csw.dsc.cswclient.impl;
 
-import org.apache.axiom.om.util.AXIOMUtil;
+import org.apache.axiom.om.impl.llom.util.AXIOMUtil;
 import org.apache.axis2.client.ServiceClient;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
