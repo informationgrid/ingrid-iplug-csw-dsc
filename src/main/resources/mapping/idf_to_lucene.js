@@ -971,23 +971,38 @@ function addTimeConstraints() {
     if (hasValue(t0)) {
         addToDoc("t01_object.time_type", "am", false);
         addToDoc("t0", t0, false);
+        addToDoc("t01_object.time_type", "am");
+        addToDoc("t01_object.time_from", t0);
+        addToDoc("t01_object.time_to", t0);
     } else if (hasValue(t1) && hasValue(t2)) {
         if (t1 == t2) {
             addToDoc("t01_object.time_type", "am", false);
             addToDoc("t0", t1, false);
+            addToDoc("t01_object.time_type", "am");
+            addToDoc("t01_object.time_from", t1);
+            addToDoc("t01_object.time_to", t1);
         } else {
             addToDoc("t01_object.time_type", "von", false);
             addToDoc("t1", t1, false);
             addToDoc("t2", t2, false);
+            addToDoc("t01_object.time_type", "von");
+            addToDoc("t01_object.time_from", t1);
+            addToDoc("t01_object.time_to", t2);
         }
     } else if (hasValue(t1) && !hasValue(t2)) {
         addToDoc("t01_object.time_type", "seit", false);
         addToDoc("t1", t1, false);
         addToDoc("t2", "99999999", false);
+        addToDoc("t01_object.time_type", "seit");
+        addToDoc("t01_object.time_from", t1);
+        addToDoc("t01_object.time_to", "");
     } else if (!hasValue(t1) && hasValue(t2)) {
         addToDoc("t01_object.time_type", "bis", false);
         addToDoc("t1", "00000000", false);
         addToDoc("t2", t2, false);
+        addToDoc("t01_object.time_type", "bis");
+        addToDoc("t01_object.time_from", "");
+        addToDoc("t01_object.time_to", t2);
     }
 }
 
