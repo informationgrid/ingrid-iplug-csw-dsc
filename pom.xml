@@ -34,7 +34,7 @@
     <iplug.type>IPLUG_CSW_DSC</iplug.type>
     <maven.compiler.release>17</maven.compiler.release>
     <!-- since spring 4.1 the quartz library 1.x is not supported anymore -->
-    <spring.version>2.7.7</spring.version>
+    <spring.version>2.7.10</spring.version>
     <ingrid-base-webapp.version>6.0.0</ingrid-base-webapp.version>
     <log4j2.version>2.19.0</log4j2.version>
   </properties>
@@ -56,6 +56,13 @@
         <!-- lookup parent from repository -->
         <type>pom</type>
         <scope>import</scope>
+      </dependency>
+
+      <!-- Fix security issue => https://avd.aquasec.com/nvd/cve-2022-1471 -->
+      <dependency>
+        <groupId>org.yaml</groupId>
+        <artifactId>snakeyaml</artifactId>
+        <version>2.0</version>
       </dependency>
     </dependencies>
   </dependencyManagement>
