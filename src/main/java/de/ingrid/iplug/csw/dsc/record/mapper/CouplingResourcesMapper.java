@@ -94,7 +94,7 @@ public class CouplingResourcesMapper implements IIdfMapper {
                             String serviceTypeVersion = "";
                             NodeList serviceVersionNodes = xPathUtils.getNodeList(coupledResourceNode, "//srv:serviceTypeVersion/gco:CharacterString");
                             for (int j = 0; j < serviceVersionNodes.getLength(); j++) {
-                                Node serviceVersionNode = serviceVersionNodes.item(i);
+                                Node serviceVersionNode = serviceVersionNodes.item(j);
                                 if(!serviceTypeVersion.isEmpty()) {
                                     serviceTypeVersion += ", ";
                                 }
