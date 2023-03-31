@@ -76,7 +76,7 @@ var transformationDescriptions = [
     }, 
     {   "indexField":"title",
         "tokenized":true,
-        "xpath":"//gmd:identificationInfo//gmd:citation/gmd:CI_Citation/gmd:title/gco:CharacterString"
+        "xpath":"(//gmd:identificationInfo//gmd:citation/gmd:CI_Citation/gmd:title/gco:CharacterString)[1]"
     },
     {   "indexField":"alternatetitle",
         "xpath":"//gmd:identificationInfo//gmd:citation/gmd:CI_Citation/gmd:alternateTitle/gco:CharacterString"
@@ -86,7 +86,7 @@ var transformationDescriptions = [
         "xpath":"//gmd:fileIdentifier/gco:CharacterString"
     },
     {   "indexField":"summary",
-        "xpath":"//gmd:identificationInfo//gmd:abstract/gco:CharacterString[1]"
+        "xpath":"(//gmd:identificationInfo//gmd:abstract/gco:CharacterString)[1]"
     },
     {   "indexField":"t01_object.info_note",
         "xpath":"//gmd:identificationInfo//gmd:purpose/gco:CharacterString"
