@@ -85,8 +85,10 @@ var transformationDescriptions = [
         "tokenized":true,
         "xpath":"//gmd:fileIdentifier/gco:CharacterString"
     },
-    {   "indexField":"summary",
-        "xpath":"//gmd:identificationInfo//gmd:abstract/gco:CharacterString"
+    {   "execute":{
+            "funct":addSummary,
+            "params":[recordNode]
+        }
     },
     {   "indexField":"t01_object.info_note",
         "xpath":"//gmd:identificationInfo//gmd:purpose/gco:CharacterString"
@@ -1099,6 +1101,16 @@ function addObjectReferenceTo() {
           addToDoc("object_reference.special_name", objSpecialName || "", false);
       }
   }
+}
+
+function addSummary() {
+    var summaries = XPathUtils.getNodeList(recordNode, "//gmd:identificationInfo//gmd:abstract/gco:CharacterString");
+    if (hasValue(summaries)) {
+        for (i=0; i<summaries.getLength(); i++ ) {
+            var summary = summaries.item(i);
+            addToDoc("summary", XPathUtils.getString(summary, "."), false);
+        }
+    }
 }
 
 function addToDoc(field, content, tokenized, additionalTokenize) {
