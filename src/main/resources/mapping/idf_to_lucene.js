@@ -86,7 +86,7 @@ var transformationDescriptions = [
         "xpath":"//gmd:fileIdentifier/gco:CharacterString"
     },
     {   "indexField":"summary",
-        "xpath":"//gmd:identificationInfo//gmd:abstract/gco:CharacterString"
+        "xpath":"//gmd:identificationInfo//gmd:abstract/gco:CharacterString[1]"
     },
     {   "indexField":"t01_object.info_note",
         "xpath":"//gmd:identificationInfo//gmd:purpose/gco:CharacterString"
