@@ -91,6 +91,16 @@ public class CouplingResourcesMapper implements IIdfMapper {
                             crossReference.addElement("idf:objectType").addText("3");
                             crossReference.addElement("idf:description").addText(xPathUtils.getString(coupledResourceNode, "//gmd:identificationInfo/*/gmd:abstract/gco:CharacterString"));
                             crossReference.addElement("idf:serviceType").addText(serviceType);
+                            String serviceTypeVersion = "";
+                            NodeList serviceVersionNodes = xPathUtils.getNodeList(coupledResourceNode, "//srv:serviceTypeVersion/gco:CharacterString");
+                            for (int j = 0; j < serviceVersionNodes.getLength(); j++) {
+                                Node serviceVersionNode = serviceVersionNodes.item(j);
+                                if(!serviceTypeVersion.isEmpty()) {
+                                    serviceTypeVersion += ", ";
+                                }
+                                serviceTypeVersion += xPathUtils.getString(serviceVersionNode, ".");
+                            }
+                            crossReference.addElement("idf:serviceVersion").addText(serviceTypeVersion);
                             crossReference.addElement("idf:serviceOperation").addText(operationName);
                             crossReference.addElement("idf:serviceUrl").addText(operationServiceUrl);
                             crossReference.addElement("idf:graphicOverview").addText(xPathUtils.getString(coupledResourceNode, "//gmd:graphicOverview/gmd:MD_BrowseGraphic/gmd:fileName/gco:CharacterString"));

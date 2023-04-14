@@ -76,7 +76,7 @@ var transformationDescriptions = [
     }, 
     {   "indexField":"title",
         "tokenized":true,
-        "xpath":"//gmd:identificationInfo//gmd:citation/gmd:CI_Citation/gmd:title/gco:CharacterString"
+        "xpath":"(//gmd:identificationInfo//gmd:citation/gmd:CI_Citation/gmd:title/gco:CharacterString)[1]"
     },
     {   "indexField":"alternatetitle",
         "xpath":"//gmd:identificationInfo//gmd:citation/gmd:CI_Citation/gmd:alternateTitle/gco:CharacterString"
@@ -86,7 +86,7 @@ var transformationDescriptions = [
         "xpath":"//gmd:fileIdentifier/gco:CharacterString"
     },
     {   "indexField":"summary",
-        "xpath":"//gmd:identificationInfo//gmd:abstract/gco:CharacterString"
+        "xpath":"(//gmd:identificationInfo//gmd:abstract/gco:CharacterString)[1]"
     },
     {   "indexField":"t01_object.info_note",
         "xpath":"//gmd:identificationInfo//gmd:purpose/gco:CharacterString"
@@ -295,7 +295,7 @@ var transformationDescriptions = [
         "xpath":"//gmd:identificationInfo//srv:containsOperations/srv:SV_OperationMetadata/srv:invocationName/gco:CharacterString"
     },
     // t011_obj_serv_version
-    {   "indexField":"t011_obj_serv_version.serv_version",
+    {   "indexField":"t011_obj_serv_version.version_value",
         "xpath":"//gmd:identificationInfo//srv:serviceTypeVersion/gco:CharacterString"
     },
     // t011_obj_topic_cat
@@ -771,6 +771,7 @@ function mapReferences(recordNode) {
                 addToDoc("object_reference.obj_name", "", false);
                 addToDoc("object_reference.obj_class", "", false);
                 addToDoc("object_reference.type", "", false);
+                addToDoc("object_reference.version", "", false);
                 addToDoc("object_reference.special_ref", "3345", true);
                 addToDoc("object_reference.special_name", "", false);
                 usedUuids+=value+"3345;"
@@ -788,6 +789,7 @@ function mapReferences(recordNode) {
                 addToDoc("object_reference.obj_name", "", false);
                 addToDoc("object_reference.obj_class", "", false);
                 addToDoc("object_reference.type", "", false);
+                addToDoc("object_reference.version", "", false);
                 addToDoc("object_reference.special_ref", "3345", true);
                 addToDoc("object_reference.special_name", "", false);
                 usedUuids+=value+"3345;"
@@ -805,6 +807,7 @@ function mapReferences(recordNode) {
                 addToDoc("object_reference.obj_name", "", false);
                 addToDoc("object_reference.obj_class", "", false);
                 addToDoc("object_reference.type", "", false);
+                addToDoc("object_reference.version", "", false);
                 addToDoc("object_reference.special_ref", "3535", true);
                 addToDoc("object_reference.special_name", "", false);
                 usedUuids+=value+"3535;"
@@ -822,6 +825,7 @@ function mapReferences(recordNode) {
                 addToDoc("object_reference.obj_name", "", false);
                 addToDoc("object_reference.obj_class", "", false);
                 addToDoc("object_reference.type", "", false);
+                addToDoc("object_reference.version", "", false);
                 addToDoc("object_reference.special_ref", "3555", true);
                 addToDoc("object_reference.special_name", "", false);
                 usedUuids+=value+"3555;"
@@ -967,23 +971,38 @@ function addTimeConstraints() {
     if (hasValue(t0)) {
         addToDoc("t01_object.time_type", "am", false);
         addToDoc("t0", t0, false);
+        addToDoc("t01_object.time_type", "am");
+        addToDoc("t01_object.time_from", t0);
+        addToDoc("t01_object.time_to", t0);
     } else if (hasValue(t1) && hasValue(t2)) {
         if (t1 == t2) {
             addToDoc("t01_object.time_type", "am", false);
             addToDoc("t0", t1, false);
+            addToDoc("t01_object.time_type", "am");
+            addToDoc("t01_object.time_from", t1);
+            addToDoc("t01_object.time_to", t1);
         } else {
             addToDoc("t01_object.time_type", "von", false);
             addToDoc("t1", t1, false);
             addToDoc("t2", t2, false);
+            addToDoc("t01_object.time_type", "von");
+            addToDoc("t01_object.time_from", t1);
+            addToDoc("t01_object.time_to", t2);
         }
     } else if (hasValue(t1) && !hasValue(t2)) {
         addToDoc("t01_object.time_type", "seit", false);
         addToDoc("t1", t1, false);
         addToDoc("t2", "99999999", false);
+        addToDoc("t01_object.time_type", "seit");
+        addToDoc("t01_object.time_from", t1);
+        addToDoc("t01_object.time_to", "");
     } else if (!hasValue(t1) && hasValue(t2)) {
         addToDoc("t01_object.time_type", "bis", false);
         addToDoc("t1", "00000000", false);
         addToDoc("t2", t2, false);
+        addToDoc("t01_object.time_type", "bis");
+        addToDoc("t01_object.time_from", "");
+        addToDoc("t01_object.time_to", t2);
     }
 }
 
@@ -1046,10 +1065,12 @@ function addObjectReference() {
             var objSpecialRef = XPathUtils.getString(crossReference, "idf:attachedToField/@entry-id");
             var objSpecialName = XPathUtils.getString(crossReference, "idf:attachedToField");
             var objServiceType = XPathUtils.getString(crossReference, "idf:serviceType");
+            var objServiceVersion = XPathUtils.getString(crossReference, "idf:serviceVersion");
             addToDoc("refering.object_reference.obj_uuid", objUuid || "", false);
             addToDoc("refering.object_reference.obj_name", objName || "", false);
             addToDoc("refering.object_reference.obj_class", objClass || "", false);
             addToDoc("refering.object_reference.type", objServiceType || "", false);
+            addToDoc("refering.object_reference.version", objServiceVersion || "", false);
             addToDoc("refering.object_reference.special_ref", objSpecialRef || "", false);
             addToDoc("refering.object_reference.special_name", objSpecialName || "", false);
         }
@@ -1067,11 +1088,13 @@ function addObjectReferenceTo() {
           var objSpecialRef = XPathUtils.getString(crossReference, "idf:attachedToField/@entry-id");
           var objSpecialName = XPathUtils.getString(crossReference, "idf:attachedToField");
           var objServiceType = XPathUtils.getString(crossReference, "idf:serviceType");
+          var objServiceVersion = XPathUtils.getString(crossReference, "idf:serviceVersion");
           addToDoc("object_reference.obj_to_uuid", objUuid || "", false);
           addToDoc("object_reference.obj_uuid", objUuid || "", false);
           addToDoc("object_reference.obj_name", objName || "", false);
           addToDoc("object_reference.obj_class", objClass || "", false);
           addToDoc("object_reference.type", objServiceType || "", false);
+          addToDoc("object_reference.version", objServiceVersion || "", false);
           addToDoc("object_reference.special_ref", objSpecialRef || "", false);
           addToDoc("object_reference.special_name", objSpecialName || "", false);
       }
