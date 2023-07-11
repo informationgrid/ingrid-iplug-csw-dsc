@@ -8,17 +8,8 @@
 ### Bugfixes
 
 * Feststellungen im Update AdV-MIS auf 6.1.1, Portal: fehlende Ausgabe "Zeitbezug der Daten"  (#5320)
-    
-## 6.2.0 (10.07.2023)
-
-### Features
-
-* Reduzierung Memory Verbrauch (Anpassung der Garbage Collection Settings in JAVA) (#5117)
 
 
-
-
-    
 ## 6.1.0 (14.04.2023)
 
 ### Features
