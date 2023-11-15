@@ -878,9 +878,9 @@ function transformToIgcDomainId(val, codeListId) {
         // transform to IGC domain id
         var idcCode = null;
         try {
-            idcCode = codelistService.getCodeListEntryId(codeListId, val, "iso");
+            idcCode = codelistService.getCodeListEntryId(codeListId + "", val, "iso");
             if (idcCode == null)
-                idcCode = codelistService.getCodeListEntryId(codeListId, val, "en");
+                idcCode = codelistService.getCodeListEntryId(codeListId + "", val, "en");
         } catch (e) {
             if (log.isInfoEnabled()) {
                 log.info("Error tranforming value '" + val + "' with code list " + codeListId + ". Does the codeList exist?");
