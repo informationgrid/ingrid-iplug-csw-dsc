@@ -46,6 +46,7 @@ import de.ingrid.utils.query.FieldQuery;
 import de.ingrid.utils.query.IngridQuery;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.apache.tomcat.util.scan.Constants;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -274,6 +275,7 @@ public class CswDscSearchPlug extends HeartBeatPlug implements IRecordLoader {
     }
 
     public static void main(String[] args) throws Exception {
+        System.setProperty(Constants.SKIP_JARS_PROPERTY, "activation.jar,xercesImpl.jar,xml-apis.jar,serializer.jar");
         SpringApplication.run(CswDscSearchPlug.class, args);
     }
 
