@@ -7,7 +7,7 @@
   </parent>
   <modelVersion>4.0.0</modelVersion>
   <artifactId>ingrid-iplug-csw-dsc</artifactId>
-  <version>6.4.0-SNAPSHOT</version>
+  <version>6.3.1-SNAPSHOT</version>
   <packaging>jar</packaging>
   <name>InGrid iPlug CSW-DSC</name>
   <description>This iPlug indexes documents from a CSW-interface and can be requested by the iBus.</description>
