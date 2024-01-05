@@ -2,16 +2,16 @@
  * **************************************************-
  * ingrid-iplug-csw-dsc:war
  * ==================================================
- * Copyright (C) 2014 - 2023 wemove digital solutions GmbH
+ * Copyright (C) 2014 - 2024 wemove digital solutions GmbH
  * ==================================================
- * Licensed under the EUPL, Version 1.1 or – as soon they will be
+ * Licensed under the EUPL, Version 1.2 or – as soon they will be
  * approved by the European Commission - subsequent versions of the
  * EUPL (the "Licence");
  * 
  * You may not use this work except in compliance with the Licence.
  * You may obtain a copy of the Licence at:
  * 
- * http://ec.europa.eu/idabc/eupl5
+ * https://joinup.ec.europa.eu/software/page/eupl
  * 
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the Licence is distributed on an "AS IS" basis,
@@ -46,6 +46,7 @@ import de.ingrid.utils.query.FieldQuery;
 import de.ingrid.utils.query.IngridQuery;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.apache.tomcat.util.scan.Constants;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -274,6 +275,7 @@ public class CswDscSearchPlug extends HeartBeatPlug implements IRecordLoader {
     }
 
     public static void main(String[] args) throws Exception {
+        System.setProperty(Constants.SKIP_JARS_PROPERTY, "activation.jar,xercesImpl.jar,xml-apis.jar,serializer.jar");
         SpringApplication.run(CswDscSearchPlug.class, args);
     }
 
