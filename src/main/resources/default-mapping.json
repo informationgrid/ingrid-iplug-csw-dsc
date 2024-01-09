@@ -51,6 +51,10 @@
       "type": "keyword",
       "store": true
     },
+    "t02_address.identificationinfo_administrative_area_value": {
+      "type": "keyword",
+      "store": true
+    },
     "boost": {
       "type": "float",
       "store": true,
