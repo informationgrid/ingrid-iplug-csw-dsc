@@ -461,6 +461,10 @@ var transformationDescriptions = [
             "params":[recordNode]
         }
     },
+    {   "indexField":"t02_address.identificationinfo_administrative_area_value",
+        "xpath":"//gmd:identificationInfo/gmd:MD_DataIdentification/gmd:pointOfContact/*/gmd:contactInfo/*/gmd:address/*/gmd:administrativeArea/gco:CharacterString" +
+            " | //gmd:identificationInfo/gmd:SV_ServiceIdentification/gmd:pointOfContact/*/gmd:contactInfo/*/gmd:address/*/gmd:administrativeArea/gco:CharacterString"
+    },
     {   "execute":{
             "funct":addCoupledServices,
             "params":[recordNode]
