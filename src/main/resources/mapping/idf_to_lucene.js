@@ -463,7 +463,7 @@ var transformationDescriptions = [
     },
     {   "indexField":"t02_address.identificationinfo_administrative_area_value",
         "xpath":"//gmd:identificationInfo/gmd:MD_DataIdentification/gmd:pointOfContact/*/gmd:contactInfo/*/gmd:address/*/gmd:administrativeArea/gco:CharacterString" +
-            " | //srv:identificationInfo/gmd:SV_ServiceIdentification/gmd:pointOfContact/*/gmd:contactInfo/*/gmd:address/*/gmd:administrativeArea/gco:CharacterString"
+            " | //gmd:identificationInfo/srv:SV_ServiceIdentification/gmd:pointOfContact/*/gmd:contactInfo/*/gmd:address/*/gmd:administrativeArea/gco:CharacterString"
     },
     {   "execute":{
             "funct":addCoupledServices,
