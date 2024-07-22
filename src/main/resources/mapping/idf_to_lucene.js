@@ -971,6 +971,9 @@ function addTimeConstraints() {
         " | //gmd:identificationInfo//gmd:EX_Extent/gmd:temporalElement/gmd:EX_TemporalExtent/gmd:extent/gml311:TimePeriod/gml311:beginPosition"));
     var t2 = UtilsCSWDate.mapDateFromIso8601ToIndex(XPathUtils.getString(recordNode, "//gmd:identificationInfo//gmd:EX_Extent/gmd:temporalElement/gmd:EX_TemporalExtent/gmd:extent/gml:TimePeriod/gml:endPosition" +
         " | //gmd:identificationInfo//gmd:EX_Extent/gmd:temporalElement/gmd:EX_TemporalExtent/gmd:extent/gml311:TimePeriod/gml311:endPosition"));
+    var indeterminatePosition = XPathUtils.getString(recordNode, "//gmd:identificationInfo//gmd:EX_Extent/gmd:temporalElement/gmd:EX_TemporalExtent/gmd:extent/gml:TimePeriod/gml:endPosition/@indeterminatePosition" +
+        " | //gmd:identificationInfo//gmd:EX_Extent/gmd:temporalElement/gmd:EX_TemporalExtent/gmd:extent/gml311:TimePeriod/gml311:endPosition/@indeterminatePosition");
+
     if (hasValue(t0)) {
         addToDoc("t0", t0, false);
         addToDoc("t01_object.time_type", "am");
@@ -992,7 +995,15 @@ function addTimeConstraints() {
     } else if (hasValue(t1) && !hasValue(t2)) {
         addToDoc("t1", t1, false);
         addToDoc("t2", "99999999", false);
-        addToDoc("t01_object.time_type", "seit");
+        if (hasValue(indeterminatePosition)) {
+            if (indeterminatePosition == "now") {
+                addToDoc("t01_object.time_type", "seitX");
+            } else {
+                addToDoc("t01_object.time_type", "seit");
+            }
+        } else {
+            addToDoc("t01_object.time_type", "seit");
+        }
         addToDoc("t01_object.time_from", t1);
         addToDoc("t01_object.time_to", "");
     } else if (!hasValue(t1) && hasValue(t2)) {
