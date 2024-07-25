@@ -1,4 +1,11 @@
 
+## 7.2.1 (25.07.2024)
+
+### Features
+
+* AdV-MIS: Portalausgabe: Zeitbezug - anders betiteln (#6516)
+
+    
 ## 7.2.0 (08.07.2024)
 
 ### Features
