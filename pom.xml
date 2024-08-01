@@ -37,7 +37,7 @@
     <spring.version>2.7.18</spring.version>
     <jackson.version>2.17.1</jackson.version>
     <elastic.version>8.14.1</elastic.version>
-    <ingrid-base-webapp.version>7.2.0</ingrid-base-webapp.version>
+    <ingrid-base-webapp.version>7.3.0-SNAPSHOT</ingrid-base-webapp.version>
     <log4j2.version>2.22.1</log4j2.version>
   </properties>
 
