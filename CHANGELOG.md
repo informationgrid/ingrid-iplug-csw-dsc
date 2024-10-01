@@ -1,4 +1,14 @@
 
+## 7.3.0 (01.10.2024)
+
+### Features
+
+* AdV-MIS: Portalausgabe: Zeitbezug - anders betiteln (#6516)
+
+### Bugfixes
+
+* getRecord-Anfrage im iBus nicht eindeutig (#6637)
+    
 ## 7.2.0 (08.07.2024)
 
 ### Features
