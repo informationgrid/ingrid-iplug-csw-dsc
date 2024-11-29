@@ -479,6 +479,11 @@ var transformationDescriptions = [
             "funct":addObjectReferenceTo,
             "params":[recordNode]
         }
+    },
+    {   "execute":{
+            "funct":mapHVD,
+            "params":[recordNode]
+        }
     }
 ];
 
@@ -1108,6 +1113,15 @@ function addObjectReferenceTo() {
           addToDoc("object_reference.special_name", objSpecialName || "", false);
       }
   }
+}
+
+function mapHVD() {
+  var hvds = XPathUtils.getNodeList(recordNode, "//gmd:identificationInfo/*/gmd:descriptiveKeywords[./gmd:MD_Keywords/gmd:thesaurusName/gmd:CI_Citation/gmd:title/*[self::gco:CharacterString or self::gmx:Anchor][contains(translate(text(),'ABCDEFGHIJKLMNOPQRSTUVWXYZ','abcdefghijklmnopqrstuvwxyz'), 'high-value')]]/gmd:MD_Keywords/gmd:keyword/*[self::gco:CharacterString or self::gmx:Anchor]");
+  var hasHVD = false;
+  if (hasValue(hvds) ) {
+    hasHVD = true;
+  }
+  addToDoc("is_hvd", hasHVD);
 }
 
 function addToDoc(field, content, tokenized, additionalTokenize) {
