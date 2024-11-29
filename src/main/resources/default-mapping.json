@@ -246,6 +246,10 @@
       "type": "keyword",
       "store": true
     },
+    "is_hvd": {
+      "type": "keyword",
+      "store": true
+    },
     "sort_hash": {
       "type": "keyword"
     }
