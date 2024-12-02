@@ -1116,10 +1116,15 @@ function addObjectReferenceTo() {
 }
 
 function mapHVD() {
-  var hvds = XPathUtils.getNodeList(recordNode, "//gmd:identificationInfo/*/gmd:descriptiveKeywords[./gmd:MD_Keywords/gmd:thesaurusName/gmd:CI_Citation/gmd:title/*[self::gco:CharacterString or self::gmx:Anchor][contains(translate(text(),'ABCDEFGHIJKLMNOPQRSTUVWXYZ','abcdefghijklmnopqrstuvwxyz'), 'high-value')]]/gmd:MD_Keywords/gmd:keyword/*[self::gco:CharacterString or self::gmx:Anchor]");
-  var hasHVD = false;
-  if (hasValue(hvds) && hvds.getLength() > 0) {
-    hasHVD = true;
+  var xPathTextNode = "*[self::gco:CharacterString or self::gmx:Anchor]";
+  var xPathLowerCase = "translate(text(),'ABCDEFGHIJKLMNOPQRSTUVWXYZ','abcdefghijklmnopqrstuvwxyz')";
+  var opendata = XPathUtils.getString(recordNode,"//gmd:identificationInfo/*/gmd:descriptiveKeywords/gmd:MD_Keywords/gmd:keyword/" + xPathTextNode + "[contains(" + xPathLowerCase + ", 'opendata') or contains(" + xPathLowerCase + ", 'opendataident')]");
+  if(hasValue(opendata)) {
+      var hvds = XPathUtils.getNodeList(recordNode, "//gmd:identificationInfo/*/gmd:descriptiveKeywords[./gmd:MD_Keywords/gmd:thesaurusName/gmd:CI_Citation/gmd:title/" + xPathTextNode + "[contains(" + xPathLowerCase + ", 'high-value')]]/gmd:MD_Keywords/gmd:keyword/" + xPathTextNode);
+      var hasHVD = false;
+      if (hasValue(hvds) && hvds.getLength() > 0) {
+        hasHVD = true;
+      }
   }
   addToDoc("is_hvd", hasHVD);
 }
