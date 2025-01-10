@@ -2,7 +2,7 @@
  * **************************************************-
  * ingrid-iplug-csw-dsc:war
  * ==================================================
- * Copyright (C) 2014 - 2024 wemove digital solutions GmbH
+ * Copyright (C) 2014 - 2025 wemove digital solutions GmbH
  * ==================================================
  * Licensed under the EUPL, Version 1.2 or – as soon they will be
  * approved by the European Commission - subsequent versions of the
@@ -477,6 +477,11 @@ var transformationDescriptions = [
     },
     {   "execute":{
             "funct":addObjectReferenceTo,
+            "params":[recordNode]
+        }
+    },
+    {   "execute":{
+            "funct":mapHVD,
             "params":[recordNode]
         }
     }
@@ -1108,6 +1113,20 @@ function addObjectReferenceTo() {
           addToDoc("object_reference.special_name", objSpecialName || "", false);
       }
   }
+}
+
+function mapHVD() {
+  var xPathTextNode = "*[self::gco:CharacterString or self::gmx:Anchor]";
+  var xPathLowerCase = "translate(text(),'ABCDEFGHIJKLMNOPQRSTUVWXYZ','abcdefghijklmnopqrstuvwxyz')";
+  var opendata = XPathUtils.getString(recordNode,"//gmd:identificationInfo/*/gmd:descriptiveKeywords/gmd:MD_Keywords/gmd:keyword/" + xPathTextNode + "[contains(" + xPathLowerCase + ", 'opendata') or contains(" + xPathLowerCase + ", 'opendataident')]");
+  if(hasValue(opendata)) {
+      var hvds = XPathUtils.getNodeList(recordNode, "//gmd:identificationInfo/*/gmd:descriptiveKeywords[./gmd:MD_Keywords/gmd:thesaurusName/gmd:CI_Citation/gmd:title/" + xPathTextNode + "[contains(" + xPathLowerCase + ", 'high-value')]]/gmd:MD_Keywords/gmd:keyword/" + xPathTextNode);
+      var hasHVD = false;
+      if (hasValue(hvds) && hvds.getLength() > 0) {
+        hasHVD = true;
+      }
+  }
+  addToDoc("is_hvd", hasHVD);
 }
 
 function addToDoc(field, content, tokenized, additionalTokenize) {
