@@ -179,10 +179,7 @@ var transformationDescriptions = [
         }
     },
     {   "indexField":"modified",
-        "xpath":"//gmd:dateStamp/gco:DateTime | //gmd:dateStamp/gco:Date[not(../gco:DateTime)]",
-        "transform":{
-          "funct":UtilsCSWDate.mapDateFromIso8601ToIndex
-        }
+        "xpath":"//gmd:dateStamp/gco:DateTime | //gmd:dateStamp/gco:Date[not(../gco:DateTime)]"
     },
     // object_access
     {   "indexField":"object_access.restriction_key",
