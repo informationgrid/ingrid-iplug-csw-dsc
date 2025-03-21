@@ -7,7 +7,7 @@
   </parent>
   <modelVersion>4.0.0</modelVersion>
   <artifactId>ingrid-iplug-csw-dsc</artifactId>
-  <version>7.4.0</version>
+  <version>7.5.0</version>
   <packaging>jar</packaging>
   <name>InGrid iPlug CSW-DSC</name>
   <description>This iPlug indexes documents from a CSW-interface and can be requested by the iBus.</description>
@@ -34,10 +34,10 @@
     <iplug.type>IPLUG_CSW_DSC</iplug.type>
     <maven.compiler.release>17</maven.compiler.release>
     <!-- since spring 4.1 the quartz library 1.x is not supported anymore -->
-    <spring.version>2.7.18</spring.version>
-    <jackson.version>2.17.1</jackson.version>
+    <spring.version>3.4.2</spring.version>
+    <jackson.version>2.17.3</jackson.version>
     <elastic.version>8.14.1</elastic.version>
-    <ingrid-base-webapp.version>7.3.0</ingrid-base-webapp.version>
+    <ingrid-base-webapp.version>7.5.0</ingrid-base-webapp.version>
     <log4j2.version>2.22.1</log4j2.version>
   </properties>
 
@@ -111,7 +111,23 @@
       <dependency>
         <groupId>commons-fileupload</groupId>
         <artifactId>commons-fileupload</artifactId>
-        <version>1.3.3</version>
+        <version>1.5</version>
+      </dependency>
+      <dependency>
+        <groupId>commons-collections</groupId>
+        <artifactId>commons-collections</artifactId>
+        <version>3.2.2</version>
+      </dependency>
+      <dependency>
+        <groupId>commons-io</groupId>
+        <artifactId>commons-io</artifactId>
+        <version>2.17.0</version>
+      </dependency>
+      <!--  -->
+      <dependency>
+        <groupId>xalan</groupId>
+        <artifactId>xalan</artifactId>
+        <version>2.7.2</version>
       </dependency>
     </dependencies>
   </dependencyManagement>
@@ -121,7 +137,7 @@
     <dependency>
       <groupId>de.ingrid</groupId>
       <artifactId>ingrid-utils</artifactId>
-      <version>7.0.0</version>
+      <version>7.5.0</version>
     </dependency>
     <dependency>
       <groupId>de.ingrid</groupId>
