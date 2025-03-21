@@ -37,7 +37,7 @@
     <spring.version>3.4.2</spring.version>
     <jackson.version>2.17.3</jackson.version>
     <elastic.version>8.14.1</elastic.version>
-    <ingrid-base-webapp.version>7.5.0-SNAPSHOT</ingrid-base-webapp.version>
+    <ingrid-base-webapp.version>7.5.0</ingrid-base-webapp.version>
     <log4j2.version>2.22.1</log4j2.version>
   </properties>
 
@@ -137,7 +137,7 @@
     <dependency>
       <groupId>de.ingrid</groupId>
       <artifactId>ingrid-utils</artifactId>
-      <version>7.5.0-SNAPSHOT</version>
+      <version>7.5.0</version>
     </dependency>
     <dependency>
       <groupId>de.ingrid</groupId>
