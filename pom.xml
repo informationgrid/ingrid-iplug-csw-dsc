@@ -34,7 +34,7 @@
     <iplug.type>IPLUG_CSW_DSC</iplug.type>
     <maven.compiler.release>17</maven.compiler.release>
     <!-- since spring 4.1 the quartz library 1.x is not supported anymore -->
-    <spring.version>3.4.2</spring.version>
+    <spring.version>3.5.7</spring.version>
     <jackson.version>2.17.3</jackson.version>
     <elastic.version>8.14.1</elastic.version>
     <ingrid-base-webapp.version>7.5.0</ingrid-base-webapp.version>
