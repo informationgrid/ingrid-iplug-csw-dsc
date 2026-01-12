@@ -7,7 +7,7 @@
   </parent>
   <modelVersion>4.0.0</modelVersion>
   <artifactId>ingrid-iplug-csw-dsc</artifactId>
-  <version>8.1.0</version>
+  <version>8.2.0</version>
   <packaging>jar</packaging>
   <name>InGrid iPlug CSW-DSC</name>
   <description>This iPlug indexes documents from a CSW-interface and can be requested by the iBus.</description>
@@ -34,7 +34,7 @@
     <iplug.type>IPLUG_CSW_DSC</iplug.type>
     <maven.compiler.release>17</maven.compiler.release>
     <!-- since spring 4.1 the quartz library 1.x is not supported anymore -->
-    <spring.version>3.4.2</spring.version>
+    <spring.version>3.5.7</spring.version>
     <jackson.version>2.17.3</jackson.version>
     <elastic.version>8.14.1</elastic.version>
     <ingrid-base-webapp.version>7.5.0</ingrid-base-webapp.version>
